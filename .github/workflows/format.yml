@@ -1,0 +1,67 @@
+name: Format With Prettier
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      
+      - name: Pull latest changes
+        run: |
+          if [ "${GITHUB_EVENT_NAME}" == "pull_request" ]; then
+            git fetch origin
+            git checkout "${GITHUB_HEAD_REF}"
+            git pull origin "${GITHUB_HEAD_REF}"
+          elif [ "${GITHUB_EVENT_NAME}" == "push" ]; then
+            git fetch origin
+            git pull origin "${GITHUB_REF#refs/heads/}"
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+
+      - name: Clean Install
+        run: |
+          if [ -d "node_modules" ]; then
+            rm -rf node_modules
+          fi
+          npm install
+
+      - name: Apply Prettier Foramtting
+        run: npx prettier --write "**/*.java"
+
+      - name: Check for Changes
+        id: git-check
+        run: |
+          git diff --exit-code || echo "Changes detected"
+        continue-on-error: true
+
+      - name: Commit Changes
+        if: steps.git-check.outcome == 'success'
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add .
+          git commit -m 'Apply Prettier format' || echo "No changes to commit"
+          if [ "${GITHUB_EVENT_NAME}" == "pull_request" ]; then
+            git push origin "${GITHUB_HEAD_REF}"
+          elif [ "${GITHUB_EVENT_NAME}" == "push" ]; then
+            git push origin "${GITHUB_REF#refs/heads/}"
+          fi
+
+      - name: Notify if no Changes
+        if: steps.git-check.outcome == 'failure'
+        run: echo "Formatting not Required"
