@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import org.team7525.CI.CrashCheck;
+
 import edu.wpi.first.wpilibj.RobotBase;
 
 public final class Main {
