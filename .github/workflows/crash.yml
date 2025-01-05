@@ -1,0 +1,41 @@
+name: Crash
+
+on: 
+  push:
+
+jobs:
+  Crash:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17'
+      - name: Grant execute permission
+        run: chmod +x gradlew
+      - name: Build robot code
+        run: ./gradlew build
+      - name: Run Simulation and Capture Logs
+        env:                
+            CI_NAME: "Crash"
+        run: ./gradlew simulateJava | tee simulateJava.log
+
+      - name: Check for Errors in Logs
+        run: |
+          # Check for errors
+          if grep -qE "Exception|Error|NULL|NullPointerException" simulateJava.log; then
+            echo "Errors detected in simulation logs (See Crash for Details)."
+            exit 1
+          fi
+
+          # Check for modes
+          if grep -q "DISABLED" simulateJava.log && grep -q "TELEOP" simulateJava.log && grep -q "AUTONOMOUS" simulateJava.log && grep -q "TEST" simulateJava.log; then
+            echo "All modes found in simulation logs."
+          else
+            echo "One or more modes not found in simulation logs (See Crash for Details)."
+            exit 1
+          fi

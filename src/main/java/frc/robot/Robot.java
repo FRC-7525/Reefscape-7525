@@ -4,11 +4,15 @@
 
 package frc.robot;
 
+import org.team7525.misc.CommandsUtil;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 
 public class Robot extends TimedRobot {
 
-  public Robot() {}
+  public Robot() {
+    CommandsUtil.logCommands();
+  }
 
   @Override
   public void robotPeriodic() {
