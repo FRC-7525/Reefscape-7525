@@ -10,6 +10,20 @@ java {
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
 
+repositories {
+    mavenLocal()
+	mavenCentral()
+
+    // Team lib heheheheheh
+    maven {
+        url = uri("https://maven.pkg.github.com/FRC-7525/PioneersLib")
+        credentials {
+            username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
+            password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+        }
+    }
+}
+
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project DeployUtils.
 deploy {
@@ -72,6 +86,9 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Team Lib
+    implementation 'com.github.FRC-7525:pioneerslib:1.0.1'
 }
 
 test {

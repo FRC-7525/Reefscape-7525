@@ -6,6 +6,7 @@ ctre_Sim/
 logs/
 
 settings.json
+gradle.properties
 
 ### C++ ###
 # Prerequisites
