@@ -2,7 +2,6 @@ package frc.robot.subsystems.Coraler;
 
 import com.revrobotics.sim.SparkMaxSim;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkSim;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
