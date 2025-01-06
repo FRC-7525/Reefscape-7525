@@ -1,18 +1,17 @@
 package frc.robot.subsystems.Coraler;
 
+import edu.wpi.first.units.measure.AngularVelocity;
 import org.littletonrobotics.junction.AutoLog;
 
-import edu.wpi.first.units.measure.AngularVelocity;
-
 public interface CoralerIO {
-    
-    @AutoLog
-    class CoralerIOInputs {
-        public double velocityRPS;
-        public double speedPointRPS;
-    }
+	@AutoLog
+	class CoralerIOInputs {
 
-    public default void updateInputs(CoralerIOInputs inputs) {};
+		public double velocityRPS;
+		public double speedPointRPS;
+	}
 
-    public default void setVelocity(AngularVelocity speedPoint) {};
+	public default void updateInputs(CoralerIOInputs inputs) {}
+
+	public default void setVelocity(AngularVelocity speedPoint) {}
 }
