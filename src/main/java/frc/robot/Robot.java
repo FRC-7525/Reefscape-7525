@@ -4,50 +4,45 @@
 
 package frc.robot;
 
-import org.team7525.misc.CommandsUtil;
-
 import edu.wpi.first.wpilibj.TimedRobot;
+import org.team7525.misc.CommandsUtil;
 
 public class Robot extends TimedRobot {
 
-  public Robot() {
-    CommandsUtil.logCommands();
-  }
+	public Robot() {
+		CommandsUtil.logCommands();
+	}
 
-  @Override
-  public void robotPeriodic() {
-  
-  }
+	@Override
+	public void robotPeriodic() {}
 
-  @Override
-  public void autonomousInit() {}
+	@Override
+	public void autonomousInit() {}
 
-  @Override
-  public void autonomousPeriodic() {}
+	@Override
+	public void autonomousPeriodic() {}
 
-  @Override
-  public void teleopInit() {}
+	@Override
+	public void teleopInit() {}
 
-  @Override
-  public void teleopPeriodic() {
-  
-  }
+	@Override
+	public void teleopPeriodic() {}
 
-  @Override
-  public void disabledInit() {}
+	@Override
+	public void disabledInit() {}
 
-  @Override
-  public void disabledPeriodic() {}
+	@Override
+	public void disabledPeriodic() {}
 
-  @Override
-  public void testInit() {}
+	@Override
+	public void testInit() {}
 
-  @Override
-  public void testPeriodic() {}
+	@Override
+	public void testPeriodic() {}
 
-  @Override
-  public void simulationInit() {}
+	@Override
+	public void simulationInit() {}
 
-  @Override
-  public void simulationPeriodic() {}
+	@Override
+	public void simulationPeriodic() {}
 }
