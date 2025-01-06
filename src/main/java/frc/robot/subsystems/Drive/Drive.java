@@ -27,9 +27,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.GlobalConstants;
+import org.littletonrobotics.junction.Logger;
 import org.team7525.misc.LocalADStarAK;
 import org.team7525.subsystem.Subsystem;
-import org.littletonrobotics.junction.Logger;
 
 public class Drive extends Subsystem<DriveStates> {
 

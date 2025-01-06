@@ -5,7 +5,6 @@ import static edu.wpi.first.units.Units.DegreesPerSecond;
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -14,7 +13,7 @@ import frc.robot.subsystems.Drive.Drive.SysIdMode;
 
 public class GlobalConstants {
 
-    public enum RobotMode {
+	public enum RobotMode {
 		REAL,
 		TESTING,
 		SIM,
@@ -25,7 +24,7 @@ public class GlobalConstants {
 		? RobotMode.SIM
 		: RobotMode.SIM;
 
-    public static class Controllers {
+	public static class Controllers {
 
 		public static final XboxController DRIVER_CONTROLLER = new XboxController(0);
 		public static final XboxController OPERATOR_CONTROLLER = new XboxController(1);

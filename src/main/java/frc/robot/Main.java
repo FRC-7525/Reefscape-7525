@@ -4,16 +4,18 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import org.team7525.CI.CrashCheck;
 
-import edu.wpi.first.wpilibj.RobotBase;
-
 public final class Main {
-  private Main() {}
 
-  public static void main(String... args) {
-    RobotBase.startRobot(
-            "Crash".equals(System.getenv("CI_NAME")) ? () -> new CrashCheck(new Robot()) : Robot::new
-        );
-  }
+	private Main() {}
+
+	public static void main(String... args) {
+		RobotBase.startRobot(
+			"Crash".equals(System.getenv("CI_NAME"))
+				? () -> new CrashCheck(new Robot())
+				: Robot::new
+		);
+	}
 }
