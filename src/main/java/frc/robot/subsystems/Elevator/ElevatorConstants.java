@@ -56,7 +56,7 @@ public final class ElevatorConstants {
 	public static class Real {
 
 		// TODO get rid of limit switch cuz otto said so
-		public static final int LIMIT_SWITCH_DIO = 1; 
+		public static final int LIMIT_SWITCH_DIO = 1;
 
 		public static final boolean LEFT_INVERTED = false;
 		public static final NeutralModeValue LEFT_NEUTRAL_MODE = NeutralModeValue.Brake;
