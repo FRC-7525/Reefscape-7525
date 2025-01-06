@@ -99,7 +99,6 @@ public class ElevatorIOSim implements ElevatorIO {
 			pidController.calculate(elevatorSim.getPositionMeters()) +
 			ffcontroller.calculate(pidController.getSetpoint().velocity);
 		elevatorSim.setInputVoltage(appliedVoltage);
-
 	}
 
 	@Override

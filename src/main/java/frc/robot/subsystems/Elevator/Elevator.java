@@ -3,8 +3,8 @@ package frc.robot.subsystems.Elevator;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.subsystems.Elevator.ElevatorConstants.SUBSYSTEM_NAME;
 
-import org.team7525.subsystem.Subsystem;
 import org.littletonrobotics.junction.Logger;
+import org.team7525.subsystem.Subsystem;
 
 public class Elevator extends Subsystem<ElevatorStates> {
 

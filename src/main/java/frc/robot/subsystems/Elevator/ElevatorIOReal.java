@@ -59,8 +59,7 @@ public class ElevatorIOReal implements ElevatorIO {
 		leftConfigurations.MotorOutput.NeutralMode = LEFT_NEUTRAL_MODE;
 		leftConfigurations.CurrentLimits.StatorCurrentLimitEnable =
 			LEFT_STRATOR_CURRENT_LIMIT_ENABLED;
-		leftConfigurations.CurrentLimits.StatorCurrentLimit =
-			LEFT_STRATOR_CURRENT_LIMIT.in(Amps);
+		leftConfigurations.CurrentLimits.StatorCurrentLimit = LEFT_STRATOR_CURRENT_LIMIT.in(Amps);
 		leftConfigurator.apply(leftConfigurations);
 
 		rightConfigurations.MotorOutput.Inverted = RIGHT_INVERTED
@@ -69,8 +68,7 @@ public class ElevatorIOReal implements ElevatorIO {
 		rightConfigurations.MotorOutput.NeutralMode = RIGHT_NEUTRAL_MODE;
 		rightConfigurations.CurrentLimits.StatorCurrentLimitEnable =
 			RIGHT_STRATOR_CURRENT_LIMIT_ENABLED;
-		rightConfigurations.CurrentLimits.StatorCurrentLimit =
-			RIGHT_STRATOR_CURRENT_LIMIT.in(Amps);
+		rightConfigurations.CurrentLimits.StatorCurrentLimit = RIGHT_STRATOR_CURRENT_LIMIT.in(Amps);
 		rightConfigurator.apply(rightConfigurations);
 
 		//PID and FF controller setup
@@ -122,8 +120,7 @@ public class ElevatorIOReal implements ElevatorIO {
 			pidController.calculate(
 				leftMotor.getPosition().getValueAsDouble() * metersPerRotation
 			) +
-			ffcontroller
-				.calculate(pidController.getSetpoint().velocity);
+			ffcontroller.calculate(pidController.getSetpoint().velocity);
 		rightMotorVoltage =
 			pidController.calculate(
 				rightMotor.getPosition().getValueAsDouble() * metersPerRotation
