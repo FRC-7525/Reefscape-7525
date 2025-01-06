@@ -1,11 +1,13 @@
 package frc.robot.subsystems.Elevator;
 
+import static edu.wpi.first.units.Units.Meter;
+
 import org.team7525.subsystem.SubsystemStates;
 
 public enum ElevatorStates implements SubsystemStates {
-	HIGH("HIGH", ElevatorConstants.HIGH_POSITION_HEIGHT.magnitude()),
-	MID("MID", ElevatorConstants.MID_POSITION_HEIGHT.magnitude()),
-	IDLE("IDLE", ElevatorConstants.IDLE_POSITION_HEIGHT.magnitude());
+	HIGH("HIGH", ElevatorConstants.HIGH_POSITION_HEIGHT.in(Meter)),
+	MID("MID", ElevatorConstants.MID_POSITION_HEIGHT.in(Meter)),
+	DOWN("Down", ElevatorConstants.DOWN_POSITION_HEIGHT.in(Meter));
 
 	ElevatorStates(String stateString, double targetHeight) {
 		this.targetHeight = targetHeight;

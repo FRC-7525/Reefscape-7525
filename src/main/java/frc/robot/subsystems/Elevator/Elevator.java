@@ -14,7 +14,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	private ElevatorIOInputsAutoLogged inputs;
 
 	private Elevator() {
-		super(SUBSYSTEM_NAME, ElevatorStates.IDLE);
+		super(SUBSYSTEM_NAME, ElevatorStates.DOWN);
 		this.io = switch (ROBOT_MODE) {
 			case SIM -> new ElevatorIOSim();
 			case REAL -> new ElevatorIOReal();

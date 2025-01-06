@@ -32,20 +32,22 @@ public final class ElevatorConstants {
 
 	public static final Distance HIGH_POSITION_HEIGHT = Meters.of(2.5146);
 	public static final Distance MID_POSITION_HEIGHT = Meters.of(1.54305); //mid is all the way down according to nick
-	public static final Distance IDLE_POSITION_HEIGHT = Meters.of(1.54305);
+	public static final Distance DOWN_POSITION_HEIGHT = Meters.of(1.54305);
 	public static final Distance METERS_PER_ROTATION = Meters.of(1); // random value lol
 
 	public static class Sim {
 
+		// TODO change all of these values when new robot is done
 		public static final DCMotor GEARBOX = DCMotor.getKrakenX60(2);
 		public static final double GEARING = 9;
 		public static final Mass CARRIAGE_MASS = Kilogram.of(28.44);
 		public static final Distance DRUM_RADIUS = Meters.of(.5); // Random value cuz mech is bum
 		public static final Distance MIN_HEIGHT = Meters.of(1.54305);
 		public static final Distance MAX_HEIGHT = Meters.of(2.60985);
-		public static final boolean SIMULATE_GRAVITY = false;
+		public static final boolean SIMULATE_GRAVITY = true;
 		public static final Distance STARTING_HEIGHT = Meters.of(1.54305);
-		//idk these values
+
+		// TODO Tune once we get new values
 		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(2, 0, 0, 0);
 
 		public static final FFConstants FF_CONSTANTS = new FFConstants(.2, .2, 0, 0);
@@ -53,7 +55,8 @@ public final class ElevatorConstants {
 
 	public static class Real {
 
-		public static final int LIMIT_SWITCH_DIO = 1;
+		// TODO get rid of limit switch cuz otto said so
+		public static final int LIMIT_SWITCH_DIO = 1; 
 
 		public static final boolean LEFT_INVERTED = false;
 		public static final NeutralModeValue LEFT_NEUTRAL_MODE = NeutralModeValue.Brake;
