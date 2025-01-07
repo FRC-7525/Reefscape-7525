@@ -1,8 +1,8 @@
-package frc.robot.subsystems.Elevator;
+package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.*;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.Sim.*;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Elevator;
+package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Kilogram;
