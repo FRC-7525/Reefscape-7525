@@ -1,9 +1,9 @@
 package frc.robot.Subsystems.Coraler;
 
-import com.pathplanner.lib.config.PIDConstants;
-
-import edu.wpi.first.units.measure.AngularVelocity;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+
+import com.pathplanner.lib.config.PIDConstants;
+import edu.wpi.first.units.measure.AngularVelocity;
 
 public class CoralerConstants {
 
