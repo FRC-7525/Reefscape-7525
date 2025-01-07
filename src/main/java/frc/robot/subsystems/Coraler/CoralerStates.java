@@ -1,14 +1,14 @@
 package frc.robot.Subsystems.Coraler;
 
-import static edu.wpi.first.units.Units.RotationsPerSecond;
-
 import edu.wpi.first.units.measure.AngularVelocity;
 import org.team7525.subsystem.SubsystemStates;
 
+import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
+
 public enum CoralerStates implements SubsystemStates {
-	CORALING("Coraling", RotationsPerSecond.of(2)),
-	INAKING("Inaking", RotationsPerSecond.of(0)),
-	IDLE("Stopped", RotationsPerSecond.of(0));
+	CORALING("Coraling", CORALING_VELOCITY),
+	INAKING("Inaking", INTAKING_VELOCITY),
+	IDLE("Stopped", IDLE_VELOCITY);
 
 	private String stateString;
 	private AngularVelocity velocity;
