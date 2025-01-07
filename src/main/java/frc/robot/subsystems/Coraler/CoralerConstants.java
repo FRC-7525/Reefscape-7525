@@ -7,6 +7,8 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 public class CoralerConstants {
 
+	// TODO: CHANGE CONSTANTS ONCE MECH CADS THE ROBOT
+
 	public static final String SUBSYSTEM_NAME = "Coraler";
 
 	public static final int VELOCITY_MOTOR_CAN_ID = 1;
