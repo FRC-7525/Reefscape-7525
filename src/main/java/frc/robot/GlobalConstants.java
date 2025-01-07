@@ -9,7 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.subsystems.Drive.Drive.SysIdMode;
+import frc.robot.Subsystems.Drive.Drive.SysIdMode;
 
 public class GlobalConstants {
 

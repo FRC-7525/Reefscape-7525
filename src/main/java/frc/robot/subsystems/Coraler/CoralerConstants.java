@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Coraler;
+package frc.robot.Subsystems.Coraler;
 
 import com.pathplanner.lib.config.PIDConstants;
 

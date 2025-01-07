@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Coraler;
+package frc.robot.Subsystems.Coraler;
 
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 

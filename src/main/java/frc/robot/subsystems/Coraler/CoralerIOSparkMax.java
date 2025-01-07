@@ -1,7 +1,7 @@
-package frc.robot.subsystems.Coraler;
+package frc.robot.Subsystems.Coraler;
 
 import static edu.wpi.first.units.Units.RotationsPerSecond;
-import static frc.robot.subsystems.Coraler.CoralerConstants.*;
+import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;

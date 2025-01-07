@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Coraler;
+package frc.robot.Subsystems.Coraler;
 
 import edu.wpi.first.units.measure.AngularVelocity;
 import org.littletonrobotics.junction.AutoLog;
