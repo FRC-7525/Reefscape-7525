@@ -12,29 +12,32 @@ import org.team7525.misc.CommandsUtil;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Subsystems.AutoAlign.AutoAlign;
+import frc.robot.Subsystems.Manager.Manager;
 
 public class Robot extends LoggedRobot {
 
-	// private final Manager manager = Manager.getInstance;
+	private final Manager manager = Manager.getInstance();
+	private final AutoAlign autoAlign = AutoAlign.getInstance();
 
 	@Override
 	public void robotInit() {
 		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL:
-				Logger.addDataReceiver(new NT4Publisher());
-				Logger.addDataReceiver(new WPILOGWriter());
-				break;
-			case SIM:
-				Logger.addDataReceiver(new NT4Publisher());
-				break;
-			case TESTING:
-				Logger.addDataReceiver(new NT4Publisher());
-				break;
-			case REPLAY:
-				Logger.addDataReceiver(new NT4Publisher());
-				break;
-		}
-
+				case REAL:
+					Logger.addDataReceiver(new NT4Publisher());
+					Logger.addDataReceiver(new WPILOGWriter());
+					break;
+				case SIM:
+					Logger.addDataReceiver(new NT4Publisher());
+					break;
+				case TESTING:
+					Logger.addDataReceiver(new NT4Publisher());
+					break;
+				case REPLAY:
+					Logger.addDataReceiver(new NT4Publisher());
+					break;
+			}
+			
 		Logger.start();
 		CommandsUtil.logCommands();
 		DriverStation.silenceJoystickConnectionWarning(true);
@@ -43,7 +46,8 @@ public class Robot extends LoggedRobot {
 @Override
 	public void robotPeriodic() {
 		CommandScheduler.getInstance().run();
-		// manager.periodic();
+		manager.periodic();
+		autoAlign.periodic();
 	}
 
 	@Override

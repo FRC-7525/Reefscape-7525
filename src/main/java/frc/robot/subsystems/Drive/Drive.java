@@ -9,6 +9,7 @@ import static frc.robot.Subsystems.Drive.TunerConstants.kSpeedAt12Volts;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
+import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -371,6 +372,14 @@ public class Drive extends Subsystem<DriveStates> {
 
 	public ChassisSpeeds getRobotRelativeSpeeds() {
 		return driveIO.getDrive().getState().Speeds;
+	}
+
+
+	public void driveAutoAlign(ApplyFieldSpeeds fieldSpeeds, double[] moduleForcesX, double[] moduleForcesY) {
+		driveIO.getDrive().setControl(fieldSpeeds
+		// .withWheelForceFeedforwardsX(moduleForcesX)
+		// .withWheelForceFeedforwardsY(moduleForcesY)
+		);
 	}
 
 	public void configurePathPlanner() {
