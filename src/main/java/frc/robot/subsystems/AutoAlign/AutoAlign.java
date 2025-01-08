@@ -1,20 +1,19 @@
 package frc.robot.Subsystems.AutoAlign;
 
 import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
 
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.RunnableTrigger;
 import org.team7525.subsystem.Subsystem;
 
-import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import choreo.trajectory.SwerveSample;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.trajectory.Trajectory;
 import frc.robot.GlobalConstants.Controllers;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Manager.Manager;
@@ -42,22 +41,26 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
     private AutoAlign() {
         super("AutoAlign", AutoAlignStates.IDLE);
 
+        // TODO tune real once robot is done. sim tuning is also kinda mid
         switch (ROBOT_MODE) {
             case REAL:
             case TESTING:
-                translationController = new PIDController(1, 0, 0);
-                rotationController = new PIDController(1, 0,0);
+                translationController = new PIDController(Real.TRANSLATIONAL_PID_CONSTANTS.kP,Real.TRANSLATIONAL_PID_CONSTANTS.kI, Real.TRANSLATIONAL_PID_CONSTANTS.kD);
+                rotationController = new PIDController(Real.ROTATIONAL_PID_CONSTANTS.kP, Real.ROTATIONAL_PID_CONSTANTS.kI, Real.ROTATIONAL_PID_CONSTANTS.kD);
                 break;
             case SIM:
             case REPLAY:
-                translationController = new PIDController(2.5, 0, 0);
-                rotationController = new PIDController(.8, 0,0);
+                translationController = new PIDController(Sim.TRANSLATIONAL_PID_CONSTANTS.kP,Sim.TRANSLATIONAL_PID_CONSTANTS.kI, Sim.TRANSLATIONAL_PID_CONSTANTS.kD);
+                rotationController = new PIDController(Sim.ROTATIONAL_PID_CONSTANTS.kP, Sim.ROTATIONAL_PID_CONSTANTS.kI, Sim.ROTATIONAL_PID_CONSTANTS.kD);
                 break;  
         }
 
-        targetPose = new Pose2d(5.6, 1.67, new Rotation2d());
+        targetPose = Poses.Testing.test1; // testing
+
+        // addRunnableTrigger(() -> setState(AutoAlignStates.IDLE), instance::atTarget);
 
         addTrigger(AutoAlignStates.IDLE, AutoAlignStates.DRIVING_REEF_L1, Controllers.DRIVER_CONTROLLER::getAButtonPressed);
+
     }
 
     public static AutoAlign getInstance() {
@@ -69,7 +72,12 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
 
     @Override
     protected void runState() {
-        if (getState() == AutoAlignStates.IDLE) return;
+        if (atTarget()) setState(AutoAlignStates.IDLE);
+
+        if (getState() == AutoAlignStates.IDLE) {
+            logOutput();
+            return;
+        }
 
         manager.setState(getState().getManagerState());
 
@@ -78,7 +86,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
             repulsorActivated = false;
         } else {
             repulsor.setGoal(targetPose.getTranslation());  
-            repulsorAutoAlign(drive.getPose(), repulsor.getCmd(drive.getPose(), drive.getRobotRelativeSpeeds(), 4, true, targetPose.getRotation()));
+            repulsorAutoAlign(drive.getPose(), repulsor.getCmd(drive.getPose(), drive.getRobotRelativeSpeeds(), MAX_SPEED, USE_GOAL, targetPose.getRotation()));
             repulsorActivated = true;
         }
 
@@ -87,7 +95,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
 
 
     private void braindeadAutoAlign() {
-        rotationController.enableContinuousInput(-180, 180);
+        rotationController.enableContinuousInput(MIN_HEADING_ANGLE, MAX_HEADING_ANGLE);
         Pose2d drivePose = drive.getPose();
 
         // idk why applied needs to be negative but it works if it is negative 💀
@@ -100,7 +108,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
     // may have to use seperate PID controllers for this function instead of the one for regular AA
     // also stolen lol
     private void repulsorAutoAlign(Pose2d pose, SwerveSample sample) {
-        rotationController.enableContinuousInput(-180, 180);
+        rotationController.enableContinuousInput(MIN_HEADING_ANGLE, MAX_HEADING_ANGLE);
 
         var targetSpeeds = sample.getChassisSpeeds();
         targetSpeeds.vxMetersPerSecond += translationController.calculate(
@@ -130,9 +138,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
     private double calculateClosestPoint(Pose2d startPose, Pose2d endPose) {
         double numeratorX = (reefPose.getX() - startPose.getX()) * (endPose.getX() - startPose.getX());
         double numeratorY = (reefPose.getY() - startPose.getY()) * (endPose.getY() - startPose.getY());
-        double denominator = Math.pow(endPose.getX() - startPose.getX(), 2) + Math.pow(endPose.getY() - startPose.getY(), 2);
+        double denominator = Math.pow(endPose.getX() - startPose.getX(), TWO) + Math.pow(endPose.getY() - startPose.getY(), TWO);
 
-        return MathUtil.clamp((numeratorX + numeratorY) / denominator, 0, 1);
+        return MathUtil.clamp((numeratorX + numeratorY) / denominator, ZERO, ONE);
     }
 
     private void logOutput() {
@@ -145,7 +153,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
     }
 
     public boolean atTarget() {
-        return drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < 0.1;
+        return drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < DISTANCE_ERROR_MARGIN &&
+        Math.abs(drive.getPose().getRotation().getDegrees() - targetPose.getRotation().getDegrees()) < ANGLE_ERROR_MARGIN;
     }
 }
-
