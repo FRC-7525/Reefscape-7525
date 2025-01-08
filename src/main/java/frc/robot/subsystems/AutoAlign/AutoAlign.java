@@ -7,7 +7,6 @@ import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.RunnableTrigger;
 import org.team7525.subsystem.Subsystem;
 
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import choreo.trajectory.SwerveSample;
 import edu.wpi.first.math.MathUtil;
@@ -28,8 +27,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
 
     private RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner();
 
-    private final double ROBOT_RADIUS = 0;
-    private final double REEF_RADIUS = 1.71; //1.66 m radius + 0.05 m for 
+    private final double ROBOT_RADIUS = .31;
+    private final double REEF_RADIUS = 1.31; //1.66 m radius + 0.05 m for 
     private PIDController translationController;
     private PIDController rotationController;
     private Pose2d targetPose;

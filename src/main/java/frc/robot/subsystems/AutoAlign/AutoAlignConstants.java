@@ -18,7 +18,7 @@ public final class AutoAlignConstants {
     // TODO update max speed once robot is built
     public static final double MAX_SPEED = 4;
     public static final boolean USE_GOAL = true;
-    public static final double DISTANCE_ERROR_MARGIN = .1;
+    public static final double DISTANCE_ERROR_MARGIN = .05;
     public static final double ANGLE_ERROR_MARGIN = .1;
 
 

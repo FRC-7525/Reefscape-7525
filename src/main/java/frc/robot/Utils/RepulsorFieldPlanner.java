@@ -1,6 +1,6 @@
 package frc.robot.Utils;
 
-// stolen from 6995 oin LPS
+// stolen from 6995 in LPS
 
 import java.util.ArrayList;
 import java.util.EnumSet;
