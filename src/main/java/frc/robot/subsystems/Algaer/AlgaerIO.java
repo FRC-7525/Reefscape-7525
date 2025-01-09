@@ -1,9 +1,8 @@
 package frc.robot.subsystems.Algaer;
 
-import org.littletonrobotics.junction.AutoLog;
-
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+import org.littletonrobotics.junction.AutoLog;
 
 public interface AlgaerIO {
 	@AutoLog

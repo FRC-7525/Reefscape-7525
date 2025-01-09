@@ -8,9 +8,8 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.AngularVelocityUnit;
@@ -57,7 +56,7 @@ public class AlgaerIOReal implements AlgaerIO {
 	public void updateInputs(AlgaerIOInputs inputs) {
 		inputs.pivotPosition = Units.rotationsToDegrees(pivotEncoder.getPosition());
 		inputs.pivotSetpoint = pivotPositionSetpoint;
-		inputs.wheelSpeed = wheelEncoder.getVelocity()/60;
+		inputs.wheelSpeed = wheelEncoder.getVelocity() / 60;
 		inputs.wheelSpeedSetpoint = wheelSpeedSetpoint;
 
 		if (GlobalConstants.ROBOT_MODE == RobotMode.TESTING) {
@@ -80,7 +79,7 @@ public class AlgaerIOReal implements AlgaerIO {
 	public void setWheelSpeed(AngularVelocity wheelSpeed) {
 		this.wheelSpeedSetpoint = wheelSpeed.in(RotationsPerSecond);
 		double voltage = wheelSpeedController.calculate(
-			wheelEncoder.getVelocity()/60,
+			wheelEncoder.getVelocity() / 60,
 			wheelSpeed.in(DegreesPerSecond)
 		);
 		wheelMotor.setVoltage(voltage);
