@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.AutoAlign;
 
+import static edu.wpi.first.units.Units.Meters;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.GlobalConstants.Controllers.FIGHT_STICK;
 import static frc.robot.GlobalConstants.Controllers.OPERATOR_CONTROLLER;
@@ -25,12 +26,12 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
     private final Drive drive = Drive.getInstance();
     private final Manager manager = Manager.getInstance();
 
-    private RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner();
+    private final RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner();
 
-    private final double ROBOT_RADIUS = .31;
-    private final double REEF_RADIUS = 1.31; //1.66 m radius + 0.05 m for 
     private PIDController translationController;
     private PIDController rotationController;
+    private PIDController repulsionTranslationController;
+    private PIDController repulsionRotationController;
     private Pose2d targetPose;
     private Pose2d reefPose = new Pose2d(4.57, 4.09, new Rotation2d());
     private Pose2d interpolatedPose;
@@ -62,11 +63,15 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
             case TESTING:
                 translationController = new PIDController(Real.TRANSLATIONAL_PID_CONSTANTS.kP,Real.TRANSLATIONAL_PID_CONSTANTS.kI, Real.TRANSLATIONAL_PID_CONSTANTS.kD);
                 rotationController = new PIDController(Real.ROTATIONAL_PID_CONSTANTS.kP, Real.ROTATIONAL_PID_CONSTANTS.kI, Real.ROTATIONAL_PID_CONSTANTS.kD);
+                repulsionTranslationController = new PIDController(Real.TRANSLATIONAL_PID_CONSTANTS.kP,Real.TRANSLATIONAL_PID_CONSTANTS.kI, Real.TRANSLATIONAL_PID_CONSTANTS.kD);
+                repulsionRotationController = new PIDController(Real.ROTATIONAL_PID_CONSTANTS.kP, Real.ROTATIONAL_PID_CONSTANTS.kI, Real.ROTATIONAL_PID_CONSTANTS.kD);
                 break;
             case SIM:
             case REPLAY:
                 translationController = new PIDController(Sim.TRANSLATIONAL_PID_CONSTANTS.kP,Sim.TRANSLATIONAL_PID_CONSTANTS.kI, Sim.TRANSLATIONAL_PID_CONSTANTS.kD);
                 rotationController = new PIDController(Sim.ROTATIONAL_PID_CONSTANTS.kP, Sim.ROTATIONAL_PID_CONSTANTS.kI, Sim.ROTATIONAL_PID_CONSTANTS.kD);
+                repulsionTranslationController = new PIDController(Sim.TRANSLATIONAL_PID_CONSTANTS.kP,Sim.TRANSLATIONAL_PID_CONSTANTS.kI, Sim.TRANSLATIONAL_PID_CONSTANTS.kD);
+                repulsionTranslationController = new PIDController(Sim.ROTATIONAL_PID_CONSTANTS.kP, Sim.ROTATIONAL_PID_CONSTANTS.kI, Sim.ROTATIONAL_PID_CONSTANTS.kD);
                 break;  
         }
 
@@ -88,7 +93,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
         addTrigger(AutoAlignStates.IDLE, AutoAlignStates.DRIVING_REEF_L4, () -> FIGHT_STICK.getPOV(0) == 0);
 
         addRunnableTrigger(this::setTargetPose, OPERATOR_CONTROLLER::getYButtonPressed);
+        addRunnableTrigger(() -> setState(AutoAlignStates.IDLE), this::atTarget);
     }
+
 
     public static AutoAlign getInstance() {
         if (instance == null) {
@@ -99,16 +106,15 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
 
     @Override
     protected void runState() {
-        if (atTarget()) setState(AutoAlignStates.IDLE);
+        logOutput();
 
-        if (getState() == AutoAlignStates.IDLE) {
-            logOutput();
-            return;
-        }
+        if (getState() == AutoAlignStates.IDLE) return;
 
         manager.setState(getState().getManagerState());
 
-        if (!checkCollision()) {
+
+        // if there is no collision, it will go to braindead AA, or use repulsor to avoid the collision
+        if (!checkForReefCollision()) {
             braindeadAutoAlign();
             repulsorActivated = false;
         } else {
@@ -117,7 +123,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
             repulsorActivated = true;
         }
 
-        logOutput();
     }
 
 
@@ -127,9 +132,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
 
         // idk why applied needs to be negative but it works if it is negative 💀
         // update: it's negative because otto is a bum and can't set up his sim properly
-        double xApplied = -translationController.calculate(drivePose.getX(), targetPose.getX());
-        double yApplied = -translationController.calculate(drivePose.getY(), targetPose.getY());
-        double rotationApplied = rotationController.calculate(drivePose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
+        double xApplied = -repulsionTranslationController.calculate(drivePose.getX(), targetPose.getX());
+        double yApplied = -repulsionTranslationController.calculate(drivePose.getY(), targetPose.getY());
+        double rotationApplied = repulsionRotationController.calculate(drivePose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
         drive.driveFieldRelative(xApplied, yApplied, rotationApplied);
     }
 
@@ -153,14 +158,14 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
         -targetSpeeds.vyMetersPerSecond,
         targetSpeeds.omegaRadiansPerSecond);
     }
-    private boolean checkCollision() {
+    private boolean checkForReefCollision() {
         Pose2d currentPose = drive.getPose();
 
         double t = calculateClosestPoint(currentPose, targetPose);
         interpolatedPose = currentPose.interpolate(targetPose, t);
 
         interpolatedDistanceFromReef = interpolatedPose.getTranslation().getDistance(reefPose.getTranslation());
-        return interpolatedDistanceFromReef < REEF_RADIUS + ROBOT_RADIUS;
+        return interpolatedDistanceFromReef < REEF_HITBOX.in(Meters) + ROBOT_RADIUS.in(Meters);
     }
 
     private double calculateClosestPoint(Pose2d startPose, Pose2d endPose) {
