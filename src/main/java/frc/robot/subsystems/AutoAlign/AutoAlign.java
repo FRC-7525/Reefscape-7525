@@ -1,10 +1,11 @@
 package frc.robot.Subsystems.AutoAlign;
 
 import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.GlobalConstants.Controllers.FIGHT_STICK;
+import static frc.robot.GlobalConstants.Controllers.OPERATOR_CONTROLLER;
 import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
 
 import org.littletonrobotics.junction.Logger;
-import org.team7525.subsystem.RunnableTrigger;
 import org.team7525.subsystem.Subsystem;
 
 
@@ -13,7 +14,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.GlobalConstants.Controllers;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Manager.Manager;
 import frc.robot.Utils.RepulsorFieldPlanner;
@@ -37,6 +37,22 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
     private double interpolatedDistanceFromReef;
     private boolean repulsorActivated;
 
+    private BranchLevel branchLevel;
+    private int branchNumber;
+    private ReefSide reefSide;
+
+    private static enum ReefSide {
+        left,
+        right
+    }
+
+    private static enum BranchLevel {
+        L1,
+        L2,
+        L3,
+        L4
+    }
+
     private AutoAlign() {
         super("AutoAlign", AutoAlignStates.IDLE);
 
@@ -56,10 +72,22 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
 
         targetPose = Poses.Testing.test1; // testing
 
-        // addRunnableTrigger(() -> setState(AutoAlignStates.IDLE), instance::atTarget);
+        addRunnableTrigger(() -> branchNumber = 1, () -> FIGHT_STICK.getRawButtonPressed(3));
+        addRunnableTrigger(() -> branchNumber = 2, () -> FIGHT_STICK.getRawButtonPressed(4));
+        addRunnableTrigger(() -> branchNumber = 3, () -> FIGHT_STICK.getRawButtonPressed(6));
+        addRunnableTrigger(() -> branchNumber = 4, () -> FIGHT_STICK.getRawButtonPressed(5));
+        addRunnableTrigger(() -> branchNumber = 5, () -> FIGHT_STICK.getRawButtonPressed(1));
+        addRunnableTrigger(() -> branchNumber = 6, () -> FIGHT_STICK.getRawButtonPressed(2));
+        addRunnableTrigger(() -> reefSide = ReefSide.left, () -> FIGHT_STICK.getRawAxis(3) > .9);
+        addRunnableTrigger(() -> reefSide = ReefSide.right, () -> FIGHT_STICK.getRawAxis(2) > .9);
+        addRunnableTrigger(this::setReefLevel, () -> FIGHT_STICK.getPOV() != -1);
 
-        addTrigger(AutoAlignStates.IDLE, AutoAlignStates.DRIVING_REEF_L1, Controllers.DRIVER_CONTROLLER::getAButtonPressed);
+        addTrigger(AutoAlignStates.IDLE, AutoAlignStates.DRIVING_REEF_L1, () -> FIGHT_STICK.getPOV(0) == 270);
+        addTrigger(AutoAlignStates.IDLE, AutoAlignStates.DRIVING_REEF_L2, () -> FIGHT_STICK.getPOV(0) == 180);
+        addTrigger(AutoAlignStates.IDLE, AutoAlignStates.DRIVING_REEF_L3, () -> FIGHT_STICK.getPOV(0) == 90);
+        addTrigger(AutoAlignStates.IDLE, AutoAlignStates.DRIVING_REEF_L4, () -> FIGHT_STICK.getPOV(0) == 0);
 
+        addRunnableTrigger(this::setTargetPose, OPERATOR_CONTROLLER::getYButtonPressed);
     }
 
     public static AutoAlign getInstance() {
@@ -98,6 +126,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
         Pose2d drivePose = drive.getPose();
 
         // idk why applied needs to be negative but it works if it is negative 💀
+        // update: it's negative because otto is a bum and can't set up his sim properly
         double xApplied = -translationController.calculate(drivePose.getX(), targetPose.getX());
         double yApplied = -translationController.calculate(drivePose.getY(), targetPose.getY());
         double rotationApplied = rotationController.calculate(drivePose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
@@ -142,6 +171,18 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
         return MathUtil.clamp((numeratorX + numeratorY) / denominator, ZERO, ONE);
     }
 
+    private void setReefLevel() {
+        branchLevel = switch((int) FIGHT_STICK.getRawAxis(2)) {
+            case 0 -> BranchLevel.L4;
+            case 90 -> BranchLevel.L3;
+            case 180 -> BranchLevel.L2;
+            case 270 -> BranchLevel.L1;
+
+            // ignore default, the fight stick will only go to multiples of 45
+            default -> BranchLevel.L4;
+        };
+    }
+
     private void logOutput() {
         Logger.recordOutput("AutoAlign/State", getState().getStateString());
         Logger.recordOutput("AutoAlign/Target Pose", targetPose);
@@ -155,4 +196,31 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
         return drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < DISTANCE_ERROR_MARGIN &&
         Math.abs(drive.getPose().getRotation().getDegrees() - targetPose.getRotation().getDegrees()) < ANGLE_ERROR_MARGIN;
     }
+
+
+    // TODO change these once we get the CAD
+    // TODO this is also kinda buns
+    private void setTargetPose() {
+       if (reefSide == ReefSide.left) {
+            targetPose = switch (branchNumber) {
+                case 1 -> AutoAlignConstants.Poses.Testing.test1;
+                case 2 -> AutoAlignConstants.Poses.Testing.test1;
+                case 3 -> AutoAlignConstants.Poses.Testing.test1;
+                case 4 -> AutoAlignConstants.Poses.Testing.test1;
+                case 5 -> AutoAlignConstants.Poses.Testing.test1;
+                case 6 -> AutoAlignConstants.Poses.Testing.test1;
+                default -> AutoAlignConstants.Poses.Testing.test1;
+            };
+        } else {
+            targetPose = switch (branchNumber) {
+                case 1 -> AutoAlignConstants.Poses.Testing.test1;
+                case 2 -> AutoAlignConstants.Poses.Testing.test1;
+                case 3 -> AutoAlignConstants.Poses.Testing.test1;
+                case 4 -> AutoAlignConstants.Poses.Testing.test1;
+                case 5 -> AutoAlignConstants.Poses.Testing.test1;
+                case 6 -> AutoAlignConstants.Poses.Testing.test1;
+                default -> AutoAlignConstants.Poses.Testing.test1;
+            };
+        }
+    } 
 }

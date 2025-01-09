@@ -10,7 +10,7 @@ import edu.wpi.first.units.measure.Distance;
 
 public final class AutoAlignConstants {
     public static final Distance ROBOT_RADIUS = Meters.of(0.3);
-    public static final Distance REEF_HITBOX = Meters.of(1.71); //1.66 m radius + 0.05 m for wiggle-room
+    public static final Distance REEF_HITBOX = Meters.of(1.31); 
 
     public static final double MIN_HEADING_ANGLE = -180;
     public static final double MAX_HEADING_ANGLE = 180;

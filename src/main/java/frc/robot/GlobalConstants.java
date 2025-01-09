@@ -8,6 +8,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Subsystems.Drive.Drive.SysIdMode;
 
@@ -32,6 +33,7 @@ public class GlobalConstants {
 
 		public static final XboxController DRIVER_CONTROLLER = new XboxController(0);
 		public static final XboxController OPERATOR_CONTROLLER = new XboxController(1);
+		public static final GenericHID FIGHT_STICK = new GenericHID(2);
 		public static final XboxController TEST_CONTROLLER = new XboxController(3);
 
 		// NOTE: Set to 0.1 on trash controllers
