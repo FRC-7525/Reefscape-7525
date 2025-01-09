@@ -24,6 +24,8 @@ public class GlobalConstants {
 		? RobotMode.SIM
 		: RobotMode.SIM;
 
+	public static final double SIM_PERIOD = 0.01;
+
 	public static class Controllers {
 
 		public static final XboxController DRIVER_CONTROLLER = new XboxController(0);
