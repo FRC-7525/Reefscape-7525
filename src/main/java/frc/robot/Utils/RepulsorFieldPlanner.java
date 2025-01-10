@@ -23,20 +23,47 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 @Logged
 public class RepulsorFieldPlanner {
 
+    /**
+     * Generic obstacle object.
+     *  
+     * <p>Default: strength = 1.0;
+     * 
+     * <p>Defaul: positive force, meaning it is repelling. 
+     */
     static abstract class Obstacle {
         double strength = 1.0;
         boolean positive = true;
+
+        /**
+         * Creates a generic obstacle object
+         * 
+         * @param strength How strong the object should pull/repel
+         * @param positive Is the positive pulling or repeling. Positive: Repel
+         */
         public Obstacle(double strength, boolean positive) {
             this.strength = strength;
             this.positive = positive;
         }
+
         public abstract Force getForceAtPosition(Translation2d position, Translation2d target);
+
+        /**
+         * Gets the force that an object would apply on the robot at a certain distance.
+         * @param dist the distance between the robot and the object in meters
+         * @return The force applied by that object on the robot.
+         */
         protected double distToForceMag(double dist) {
             var forceMag = strength / (0.00001 + Math.abs(dist*dist));
             forceMag *= positive ? 1 : -1;
             return forceMag;
         }
 
+        /**
+         * Gets the force that an object would apply on the robot at a certain distance.
+         * @param dist the distance between the robot and the object in meters
+         * @param falloff A value used to influence the falloff of a force on an object. falloff > 1 diminish. falloff < 1 amplify.
+         * @return The force applied by that object on the robot.
+         */
         protected double distToForceMag(double dist, double falloff) {
             var original = strength / (0.00001 + Math.abs(dist*dist));
             var falloffMag = strength / (0.00001 + Math.abs(falloff*falloff));
@@ -44,40 +71,78 @@ public class RepulsorFieldPlanner {
         }
 
     }
+    
+    /**
+     * Obstacle object with an associated position on the field.
+     *  
+     * <p> Default: strength = 1.0.
+     * <p> Default: Radius of 0.5 meters.
+     * <p> Defaul: positive force, meaning it is repelling. 
+     */
     static class PointObstacle extends Obstacle {
         Translation2d loc;
         double radius = 0.5;
+
+        /**
+         * Creates an obstacle with an associated position
+         * 
+         * @param loc Location of the object on the field
+         * @param strength How strong the object should pull/repel
+         * @param positive Is the positive pulling or repeling. Positive: Repel
+         */
         public PointObstacle(Translation2d loc, double strength, boolean positive) {
             super(strength, positive);
             this.loc = loc;
         }
+
+        /**
+         * Calculates a force that avoids the obstacle and points to the direction of the target point.
+         * @param position Position of the robot on the field
+         * @param target The target position of the robot
+         * @return Guiding force that pushes the robot towards the target.
+         */
         public Force getForceAtPosition(Translation2d position, Translation2d target) {
             var dist = loc.getDistance(position);
             if (dist > 4) {return new Force();}
+
+            // gets repulsion force. points from loc directly towards position
             var outwardsMag = distToForceMag(loc.getDistance(position)-radius);
             var initial = new Force(
                 outwardsMag,
                 position.minus(loc).getAngle()
                 );
-            // theta = angle between position->target vector and obstacle->position vector
+
+            // angle between target and force towards position from loc
             var theta = target.minus(position).getAngle().minus(position.minus(loc).getAngle());
+            // makes sure that the force is still in the correct direction
             double mag = outwardsMag * Math.signum(Math.sin(theta.getRadians()/2)) / 2;
 
-            // if (theta.getRadians() > 0) {
-                return initial.rotateBy(Rotation2d.kCCW_90deg).div(initial.getNorm()).times(mag).plus(initial);                
-            // } else {
-            //     return initial.rotateBy(Rotation2d.kCW_90deg).div(initial.getNorm()).times(mag).plus(initial);
-            // }
+            // Rotates the force by 90 degrees so that the robot can go around the obstacle
+            return initial.rotateBy(Rotation2d.kCCW_90deg)
+                .div(initial.getNorm())
+                .times(mag)
+                .plus(initial);                
         }
     }
 
-    static class SnowmanObstacle extends Obstacle {
+    /**
+     * Point Object but with a more guiding force around the object.
+     */
+    static class GuidedObstacle extends Obstacle { // AKA scarecrow
         Translation2d loc;
         double radius = 0.5;
-        public SnowmanObstacle(Translation2d loc, double strength, boolean positive) {
+
+        /**
+         * Calculates a force that avoids the obstacle and points to the direction of the target point.
+         * @param position Position of the robot on the field
+         * @param target The target position of the robot
+         * @return Guiding force that pushes the robot towards the target.
+         */
+        public GuidedObstacle(Translation2d loc, double strength, boolean positive) {
             super(strength, positive);
             this.loc = loc;
         }
+
         public Force getForceAtPosition(Translation2d position, Translation2d target) {            
             var targetToLoc = loc.minus(target);
             var targetToLocAngle = targetToLoc.getAngle();
@@ -86,6 +151,8 @@ public class RepulsorFieldPlanner {
             var dist = loc.getDistance(position);
             var sidewaysDist = sidewaysCircle.getDistance(position);
             var sidewaysMag = distToForceMag(sidewaysCircle.getDistance(position));
+
+            // finds outward force. points from loc to position
             var outwardsMag = distToForceMag(loc.getDistance(position));
             var initial = new Force(
                 outwardsMag,
@@ -100,7 +167,9 @@ public class RepulsorFieldPlanner {
             return new Force(sideways, sidewaysAngle).plus(initial);                
         }
     }
-
+    /**
+     * Horizontal wall
+     */
     static class HorizontalObstacle extends Obstacle {
         double y;
         public HorizontalObstacle(double y, double strength, boolean positive) {
@@ -114,6 +183,10 @@ public class RepulsorFieldPlanner {
                 );
         }
     }
+
+    /**
+     * Vertical Wall
+     */
     static class VerticalObstacle extends Obstacle {
         double x;
         public VerticalObstacle(double x, double strength, boolean positive) {
@@ -131,8 +204,8 @@ public class RepulsorFieldPlanner {
     public static final double GOAL_STRENGTH = 0.65;
 
     public static final List<Obstacle> FIELD_OBSTACLES = List.of(
-    new SnowmanObstacle(new Translation2d(4.49, 4),  1, true),
-    new SnowmanObstacle(new Translation2d(13.08, 4),  1, true)
+    new GuidedObstacle(new Translation2d(4.49, 4),  1, true),
+    new GuidedObstacle(new Translation2d(13.08, 4),  1, true)
     );
     static final double FIELD_LENGTH = 16.42;
     static final double FIELD_WIDTH = 8.16;
