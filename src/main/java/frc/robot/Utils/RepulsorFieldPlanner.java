@@ -201,32 +201,39 @@ public class RepulsorFieldPlanner {
                 );
         }
     }
-    public static final double GOAL_STRENGTH = 0.65;
 
-    public static final List<Obstacle> FIELD_OBSTACLES = List.of(
-    new GuidedObstacle(new Translation2d(4.49, 4),  1, true),
-    new GuidedObstacle(new Translation2d(13.08, 4),  1, true)
-    );
+    public static final double GOAL_STRENGTH = 0.65;
     static final double FIELD_LENGTH = 16.42;
     static final double FIELD_WIDTH = 8.16;
+
+    public static final List<Obstacle> FIELD_OBSTACLES = List.of(
+        new GuidedObstacle(new Translation2d(4.49, 4),  1, true),
+        new GuidedObstacle(new Translation2d(13.08, 4),  1, true)
+    );
+
     public static final List<Obstacle> WALLS = List.of(
-    new HorizontalObstacle(0.0,         0.5, true),
-    new HorizontalObstacle(FIELD_WIDTH,   0.5, false),
-    new VerticalObstacle(0.0,           0.5, true),
-    new VerticalObstacle(FIELD_LENGTH,    0.5, false),
-    new VerticalObstacle(7.55,    0.5, false),
-    new VerticalObstacle(10,    0.5, true)
+        new HorizontalObstacle(0.0, 0.5, true),
+        new HorizontalObstacle(FIELD_WIDTH, 0.5, false),
+        new VerticalObstacle(0.0, 0.5, true),
+        new VerticalObstacle(FIELD_LENGTH, 0.5, false),
+        new VerticalObstacle(7.55, 0.5, false),
+        new VerticalObstacle(10, 0.5, true)
     );
 
     private List<Obstacle> fixedObstacles = new ArrayList<>();
     private Optional<Translation2d> goalOpt = Optional.empty();
-    public Pose2d goal() {
-        return new Pose2d(goalOpt.orElse(Translation2d.kZero), Rotation2d.kZero);
-    }
     private final static int ARROWS_X = 40;
     private final static int ARROWS_Y = 20;
     private final static int ARROWS_SIZE = (ARROWS_X + 1) * (ARROWS_Y + 1);
     private ArrayList<Pose2d> arrows = new ArrayList<>(ARROWS_SIZE);
+
+    public Pose2d goal() {
+        return new Pose2d(goalOpt.orElse(Translation2d.kZero), Rotation2d.kZero);
+    }
+
+    /**
+     * Creates a new repulsor field planner object
+     */
     public RepulsorFieldPlanner() {
         fixedObstacles.addAll(FIELD_OBSTACLES);
         fixedObstacles.addAll(WALLS);
@@ -234,13 +241,13 @@ public class RepulsorFieldPlanner {
             arrows.add(new Pose2d());
         }
         {
-        var topic = NetworkTableInstance.getDefault().getBooleanTopic("useGoalInArrows");
-        topic.publish().set(useGoalInArrows);
-        NetworkTableListener.createListener(topic,EnumSet.of(Kind.kValueAll), (event)->{
-            useGoalInArrows = event.valueData.value.getBoolean();
-            updateArrows();
-        });
-        topic.subscribe(useGoalInArrows);
+            var topic = NetworkTableInstance.getDefault().getBooleanTopic("useGoalInArrows");
+            topic.publish().set(useGoalInArrows);
+            NetworkTableListener.createListener(topic,EnumSet.of(Kind.kValueAll), (event)-> {
+                useGoalInArrows = event.valueData.value.getBoolean();
+                updateArrows();
+            });
+            topic.subscribe(useGoalInArrows);
         }
         {
             var topic = NetworkTableInstance.getDefault().getBooleanTopic("useObstaclesInArrows");
