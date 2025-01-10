@@ -10,13 +10,13 @@ public interface VisionIO {
 	@AutoLog
 	public class VisionIOInputs {
 
-		Pose2d sideVisionPose;
+		Pose2d backVisionPose;
 		Pose2d frontVisionPose;
-		boolean hasSideVision = false;
+		boolean hasBackVision = false;
 		boolean hasFrontVision = false;
-		boolean sideCameraConnected = false;
+		boolean backCameraConnected = false;
 		boolean frontCameraConnected = false;
-		int sideTargetCount = 0;
+		int backTargetCount = 0;
 		int frontTargetCount = 0;
 	}
 
@@ -30,7 +30,7 @@ public interface VisionIO {
 		return Optional.empty();
 	}
 
-	public default Optional<EstimatedRobotPose> getSidePoseEstimation() {
+	public default Optional<EstimatedRobotPose> getBackPoseEstimation() {
 		return Optional.empty();
 	}
 }

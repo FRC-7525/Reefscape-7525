@@ -12,15 +12,15 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 public class VisionIOReal implements VisionIO {
 
-	private PhotonCamera sideCamera;
+	private PhotonCamera backCamera;
 	private PhotonCamera frontCamera;
-	private PhotonPoseEstimator sideEstimator;
+	private PhotonPoseEstimator backEstimator;
 	private PhotonPoseEstimator frontEstimator;
-	private Debouncer sideDebouncer;
+	private Debouncer backDebouncer;
 	private Debouncer frontDebouncer;
 
 	public VisionIOReal() {
-		sideCamera = new PhotonCamera("Side Camera");
+		backCamera = new PhotonCamera("Back Camera");
 		frontCamera = new PhotonCamera("Front Camera");
 
 		// Pose estimators :/
@@ -29,12 +29,12 @@ public class VisionIOReal implements VisionIO {
 			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
 			GlobalConstants.Vision.ROBOT_TO_FRONT_CAMERA
 		);
-		sideEstimator = new PhotonPoseEstimator(
+		backEstimator = new PhotonPoseEstimator(
 			GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT,
 			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			GlobalConstants.Vision.ROBOT_TO_SIDE_CAMERA
+			GlobalConstants.Vision.ROBOT_TO_BACK_CAMERA
 		);
-		sideDebouncer = new Debouncer(
+		backDebouncer = new Debouncer(
 			GlobalConstants.Vision.CAMERA_DEBOUNCE_TIME,
 			DebounceType.kFalling
 		);
@@ -46,16 +46,16 @@ public class VisionIOReal implements VisionIO {
 
 	@Override
 	public void updateInputs(VisionIOInputs inputs) {
-		Optional<EstimatedRobotPose> sidePose = getSidePoseEstimation();
+		Optional<EstimatedRobotPose> backPose = getBackPoseEstimation();
 		Optional<EstimatedRobotPose> frontPose = getFrontPoseEstimation();
 
-		inputs.hasSideVision = sideDebouncer.calculate(sidePose.isPresent());
+		inputs.hasBackVision = backDebouncer.calculate(backPose.isPresent());
 		inputs.hasFrontVision = frontDebouncer.calculate(frontPose.isPresent());
-		inputs.sideCameraConnected = sideCamera.isConnected();
+		inputs.backCameraConnected = backCamera.isConnected();
 		inputs.frontCameraConnected = frontCamera.isConnected();
-		inputs.sideTargetCount = sidePose.get().targetsUsed.size();
+		inputs.backTargetCount = backPose.get().targetsUsed.size();
 		inputs.frontTargetCount = frontPose.get().targetsUsed.size();
-		if (inputs.hasSideVision) inputs.sideVisionPose = sidePose.get().estimatedPose.toPose2d();
+		if (inputs.hasBackVision) inputs.backVisionPose = backPose.get().estimatedPose.toPose2d();
 		if (inputs.hasFrontVision) inputs.frontVisionPose = frontPose
 			.get()
 			.estimatedPose.toPose2d();
@@ -71,16 +71,16 @@ public class VisionIOReal implements VisionIO {
 	public void setStrategy(PoseStrategy strategy) {
 		if (strategy != frontEstimator.getPrimaryStrategy()) {
 			frontEstimator.setPrimaryStrategy(strategy);
-			sideEstimator.setPrimaryStrategy(strategy);
+			backEstimator.setPrimaryStrategy(strategy);
 		}
 	}
 
 	// Not just returning a pose3d bc timestamps needed for main pose estimation & easier to handle optional logic in vision.java
 	@Override
-	public Optional<EstimatedRobotPose> getSidePoseEstimation() {
+	public Optional<EstimatedRobotPose> getBackPoseEstimation() {
 		Optional<EstimatedRobotPose> pose = Optional.empty();
-		for (var change : sideCamera.getAllUnreadResults()) {
-			pose = sideEstimator.update(change);
+		for (var change : backCamera.getAllUnreadResults()) {
+			pose = backEstimator.update(change);
 		}
 		return pose;
 	}
