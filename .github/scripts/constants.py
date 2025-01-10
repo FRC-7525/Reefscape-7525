@@ -3,7 +3,8 @@ import os
 import sys
 
 # List of files to excuse (constants and things we didnt make and stuff we wont use)
-excused_files = ["GlobalConstants.java", "Drive.java", "TunerConstants.java", "BuildConstants.java", "LocalADStarAK.java", "VisionUtil.java", "SwerveModule.java", "VisionIOSim.java", "ElevatorConstants.java", "IntakeConstants.java"]
+excused_files = ["GlobalConstants.java", "Drive.java", "TunerConstants.java", "BuildConstants.java", "LocalADStarAK.java", "VisionUtil.java", "SwerveModule.java", "VisionIOSim.java", "ElevatorConstants.java", "IntakeConstants.java", 
+                "RepulsorFieldPlanner.java", "Force.java"]
 
 # Not really dirs becasue the full ones didnt work
 excused_dirs = [
