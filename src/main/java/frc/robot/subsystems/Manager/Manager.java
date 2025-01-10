@@ -25,18 +25,17 @@ public class Manager extends Subsystem<ManagerStates> {
 		return instance;
 	}
 
-    @Override
-    public void runState() {
-        Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
+	@Override
+	public void runState() {
+		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
 
+		// Set States
+		elevator.setState(getState().getElevatorState());
+		coraler.setState(getState().getCoralerState());
 
-        // Set States
-        elevator.setState(getState().getElevatorState());
-        coraler.setState(getState().getCoralerState());
-
-        // Periodics
-        drive.periodic();
-        elevator.periodic();
-        coraler.periodic();
-    }
+		// Periodics
+		drive.periodic();
+		elevator.periodic();
+		coraler.periodic();
+	}
 }
