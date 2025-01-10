@@ -5,9 +5,12 @@ import static edu.wpi.first.units.Units.Meter;
 import org.team7525.subsystem.SubsystemStates;
 
 public enum ElevatorStates implements SubsystemStates {
-	HIGH("HIGH", ElevatorConstants.HIGH_POSITION_HEIGHT.in(Meter)),
-	MID("MID", ElevatorConstants.MID_POSITION_HEIGHT.in(Meter)),
-	DOWN("Down", ElevatorConstants.DOWN_POSITION_HEIGHT.in(Meter));
+	L4("L4", ElevatorConstants.L4_HEIGHT.in(Meter)),
+	L3("L3", ElevatorConstants.L3_HEIGHT.in(Meter)),
+	L2("L2", ElevatorConstants.L2_HEIGHT.in(Meter)),
+	L1("L1", ElevatorConstants.L1_HEIGHT.in(Meter)),
+	CORAL_STATION("Coral Station", ElevatorConstants.L1_HEIGHT.in(Meter)),
+	IDLE("Idle", ElevatorConstants.IDLE_HEIGHT.in(Meter));
 
 	ElevatorStates(String stateString, double targetHeight) {
 		this.targetHeight = targetHeight;
