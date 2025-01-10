@@ -71,7 +71,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates>{
                 translationController = new PIDController(Sim.TRANSLATIONAL_PID_CONSTANTS.kP,Sim.TRANSLATIONAL_PID_CONSTANTS.kI, Sim.TRANSLATIONAL_PID_CONSTANTS.kD);
                 rotationController = new PIDController(Sim.ROTATIONAL_PID_CONSTANTS.kP, Sim.ROTATIONAL_PID_CONSTANTS.kI, Sim.ROTATIONAL_PID_CONSTANTS.kD);
                 repulsionTranslationController = new PIDController(Sim.TRANSLATIONAL_PID_CONSTANTS.kP,Sim.TRANSLATIONAL_PID_CONSTANTS.kI, Sim.TRANSLATIONAL_PID_CONSTANTS.kD);
-                repulsionTranslationController = new PIDController(Sim.ROTATIONAL_PID_CONSTANTS.kP, Sim.ROTATIONAL_PID_CONSTANTS.kI, Sim.ROTATIONAL_PID_CONSTANTS.kD);
+                repulsionRotationController = new PIDController(Sim.ROTATIONAL_PID_CONSTANTS.kP, Sim.ROTATIONAL_PID_CONSTANTS.kI, Sim.ROTATIONAL_PID_CONSTANTS.kD);
                 break;  
         }
 
