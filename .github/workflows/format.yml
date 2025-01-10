@@ -2,10 +2,8 @@ name: Format With Prettier
 
 on:
   pull_request:
-    types:
-      - reopened
-      - opened
-      - synchronize
+    branches:
+      - main
 
 permissions:
   contents: write
