@@ -17,52 +17,52 @@ import org.photonvision.simulation.VisionSystemSim;
 public class VisionIOSim implements VisionIO {
 
 	private VisionSystemSim visionSim;
-	private SimCameraProperties sideCameraProperties;
+	private SimCameraProperties backCameraProperties;
 	private SimCameraProperties frontCameraProperties;
-	private PhotonCameraSim sideCamera;
+	private PhotonCameraSim backCamera;
 	private PhotonCameraSim frontCamera;
-	private PhotonPoseEstimator sideEstimator;
+	private PhotonPoseEstimator backEstimator;
 	private PhotonPoseEstimator frontEstimator;
-	private Debouncer sideDebouncer;
+	private Debouncer backDebouncer;
 	private Debouncer frontDebouncer;
 	private Pose2d robotPose;
 
 	public VisionIOSim() {
 		visionSim = new VisionSystemSim("Vision");
-		sideCameraProperties = new SimCameraProperties();
+		backCameraProperties = new SimCameraProperties();
 		frontCameraProperties = new SimCameraProperties();
 
 		// TODO: Tune to accurate values & put in constants ig
 		// A 640 x 480 camera with a 100 degree diagonal FOV.
-		sideCameraProperties.setCalibration(1200, 800, Rotation2d.fromDegrees(84.47));
+		backCameraProperties.setCalibration(1200, 800, Rotation2d.fromDegrees(84.47));
 		frontCameraProperties.setCalibration(1200, 800, Rotation2d.fromDegrees(84.47));
 		// Approximate detection noise with average and standard deviation error in pixels.
-		sideCameraProperties.setCalibError(0.25, 0.08);
+		backCameraProperties.setCalibError(0.25, 0.08);
 		frontCameraProperties.setCalibError(0.25, 0.08);
 		// Set the camera image capture framerate (Note: this is limited by robot loop rate).
-		sideCameraProperties.setFPS(40);
+		backCameraProperties.setFPS(40);
 		frontCameraProperties.setFPS(40);
 		// The average and standard deviation in milliseconds of image data latency.
-		sideCameraProperties.setAvgLatencyMs(40);
-		sideCameraProperties.setLatencyStdDevMs(10);
+		backCameraProperties.setAvgLatencyMs(40);
+		backCameraProperties.setLatencyStdDevMs(10);
 		frontCameraProperties.setAvgLatencyMs(40);
 		frontCameraProperties.setLatencyStdDevMs(10);
 
-		sideCamera = new PhotonCameraSim(new PhotonCamera("Side Camera"), sideCameraProperties);
+		ROBOT_TO_BACK_CAMERACamera = new PhotonCameraSim(new PhotonCamera("Back Camera"), backCameraProperties);
 		frontCamera = new PhotonCameraSim(new PhotonCamera("Front Camera"), frontCameraProperties);
 
 		visionSim.addAprilTags(GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT);
-		visionSim.addCamera(sideCamera, GlobalConstants.Vision.ROBOT_TO_SIDE_CAMERA);
+		visionSim.addCamera(backCamera, GlobalConstants.Vision.ROBOT_TO_BACK_CAMERA);
 		visionSim.addCamera(frontCamera, GlobalConstants.Vision.ROBOT_TO_FRONT_CAMERA);
 
 		// Puts a camera stream onto nt4
 		frontCamera.enableRawStream(true);
 		frontCamera.enableProcessedStream(true);
-		sideCamera.enableRawStream(true);
-		sideCamera.enableProcessedStream(true);
+		backCamera.enableRawStream(true);
+		backCamera.enableProcessedStream(true);
 		// Disable this if ur laptop is bad (makes the camera stream easy to understanda)
 		frontCamera.enableDrawWireframe(true);
-		sideCamera.enableDrawWireframe(true);
+		backCamera.enableDrawWireframe(true);
 
 		robotPose = new Pose2d();
 		// Pose estimators :/
@@ -71,12 +71,12 @@ public class VisionIOSim implements VisionIO {
 			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
 			GlobalConstants.Vision.ROBOT_TO_FRONT_CAMERA
 		);
-		sideEstimator = new PhotonPoseEstimator(
+		backEstimator = new PhotonPoseEstimator(
 			GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT,
 			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			GlobalConstants.Vision.ROBOT_TO_SIDE_CAMERA
+			GlobalConstants.Vision.ROBOT_TO_BACK_CAMERA
 		);
-		sideDebouncer = new Debouncer(
+		backDebouncer = new Debouncer(
 			GlobalConstants.Vision.CAMERA_DEBOUNCE_TIME,
 			DebounceType.kFalling
 		);
@@ -88,16 +88,16 @@ public class VisionIOSim implements VisionIO {
 
 	@Override
 	public void updateInputs(VisionIOInputs inputs) {
-		Optional<EstimatedRobotPose> sidePose = getSidePoseEstimation();
+		Optional<EstimatedRobotPose> backPose = getBackPoseEstimation();
 		Optional<EstimatedRobotPose> frontPose = getFrontPoseEstimation();
 
-		inputs.hasSideVision = sideDebouncer.calculate(sidePose.isPresent());
+		inputs.hasBackVision = backDebouncer.calculate(backPose.isPresent());
 		inputs.hasFrontVision = frontDebouncer.calculate(frontPose.isPresent());
-		inputs.sideCameraConnected = sideCamera.getCamera().isConnected();
+		inputs.backCameraConnected = backCamera.getCamera().isConnected();
 		inputs.frontCameraConnected = frontCamera.getCamera().isConnected();
-		inputs.sideTargetCount = sidePose.get().targetsUsed.size();
+		inputs.backTargetCount = backPose.get().targetsUsed.size();
 		inputs.frontTargetCount = frontPose.get().targetsUsed.size();
-		if (inputs.hasSideVision) inputs.sideVisionPose = sidePose.get().estimatedPose.toPose2d();
+		if (inputs.hasBackVision) inputs.backVisionPose = backPose.get().estimatedPose.toPose2d();
 		if (inputs.hasFrontVision) inputs.frontVisionPose = frontPose
 			.get()
 			.estimatedPose.toPose2d();
@@ -113,16 +113,16 @@ public class VisionIOSim implements VisionIO {
 	public void setStrategy(PoseStrategy strategy) {
 		if (strategy != frontEstimator.getPrimaryStrategy()) {
 			frontEstimator.setPrimaryStrategy(strategy);
-			sideEstimator.setPrimaryStrategy(strategy);
+			backEstimator.setPrimaryStrategy(strategy);
 		}
 	}
 
 	// Not just returning a pose3d bc timestamps needed for main pose estimation & easier to handle optional logic in vision.java
 	@Override
-	public Optional<EstimatedRobotPose> getSidePoseEstimation() {
+	public Optional<EstimatedRobotPose> getBackPoseEstimation() {
 		Optional<EstimatedRobotPose> pose = Optional.empty();
-		for (var change : sideCamera.getCamera().getAllUnreadResults()) {
-			pose = sideEstimator.update(change);
+		for (var change : backCamera.getCamera().getAllUnreadResults()) {
+			pose = backEstimator.update(change);
 		}
 		return pose;
 	}

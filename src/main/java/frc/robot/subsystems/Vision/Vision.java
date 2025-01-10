@@ -51,12 +51,12 @@ public class Vision extends Subsystem<VisionStates> {
 				);
 			}
 
-			Optional<EstimatedRobotPose> sidePose = io.getSidePoseEstimation();
-			if (sidePose.isPresent()) {
+			Optional<EstimatedRobotPose> backPose = io.getBackPoseEstimation();
+			if (backPose.isPresent()) {
 				drive.addVisionMeasurement(
-					sidePose.get().estimatedPose.toPose2d(),
-					sidePose.get().timestampSeconds,
-					VisionUtil.getEstimationStdDevs(sidePose.get(), SIDE_RESOLUTION)
+					backPose.get().estimatedPose.toPose2d(),
+					backPose.get().timestampSeconds,
+					VisionUtil.getEstimationStdDevs(backPose.get(), BACK_RESOLUTION)
 				);
 			}
 		}
