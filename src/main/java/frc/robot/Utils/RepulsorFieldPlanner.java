@@ -277,6 +277,10 @@ public class RepulsorFieldPlanner {
     private boolean useWallsInArrows = true;
     private Pose2d arrowBackstage = new Pose2d(-10, -10, Rotation2d.kZero);
     // A grid of arrows drawn in AScope
+
+    /**
+     * updates the arrows drawn in advantage scope
+     */
     void updateArrows () {
         for (int x = 0; x <= ARROWS_X; x++) {
             for (int y = 0; y <= ARROWS_Y; y++) {
@@ -297,6 +301,12 @@ public class RepulsorFieldPlanner {
             }
         }
     }
+    /**
+     * Calculates how much the goal is pulling the robot
+     * @param curLocation current robot location
+     * @param goal goal location
+     * @return returns the pull force applied by the goal
+     */
     Force getGoalForce(Translation2d curLocation, Translation2d goal) {
             var displacement = goal.minus(curLocation);
             if (displacement.getNorm() == 0) {
@@ -306,6 +316,13 @@ public class RepulsorFieldPlanner {
             var mag = GOAL_STRENGTH * (1 + 1.0/(0.0001 + displacement.getNorm()*displacement.getNorm()));
             return new Force(mag, direction);
     }
+
+    /**
+     * Calculates the repel force applied by the walls
+     * @param curLocation current robot location
+     * @param target path endpoint
+     * @return returns the repel force applied by the walls
+     */
     Force getWallForce(Translation2d curLocation, Translation2d target) {
         var force = Force.kZero;
         for (Obstacle obs : WALLS) {
@@ -313,6 +330,13 @@ public class RepulsorFieldPlanner {
         }
         return force;
     }
+
+    /**
+     * Calculates the repel force applied by field obstacles
+     * @param curLocation current robot location
+     * @param target path endpoint
+     * @return returns the repel force applied by field obstacles
+     */
     Force getObstacleForce(Translation2d curLocation, Translation2d target) {
         var force = Force.kZero;
         for (Obstacle obs : FIELD_OBSTACLES) {
@@ -320,11 +344,27 @@ public class RepulsorFieldPlanner {
         }
         return force;
     }
+
+    /**
+     * Calculates total force applied onto the robot from all sources.
+     * @param curLocation current robot location
+     * @param target path endpoint
+     * @return returns total force applied from all sources.
+     */
     Force getForce(Translation2d curLocation, Translation2d target) {
         var goalForce = getGoalForce(curLocation, target).plus(getObstacleForce(curLocation, target)).plus(getWallForce(curLocation, target));
         return goalForce;
     }
 
+    /**
+     * 
+     * @param trans robot translation 2d
+     * @param rot robot rotation
+     * @param vx robot x velocity
+     * @param vy robot y velocity
+     * @param omega robot angular velocity
+     * @return SwerveSample object
+     */
     private SwerveSample sample(Translation2d trans, Rotation2d rot, double vx, double vy, double omega) {
         return new SwerveSample(0, 
         trans.getX(), 
@@ -336,13 +376,37 @@ public class RepulsorFieldPlanner {
         new double[4]
         );
     }
+
+    /**
+     * Sets the goal point for repulsor calculations
+     * @param goal robot target point
+     */
     public void setGoal(Translation2d goal) {
         this.goalOpt = Optional.of(goal);
         updateArrows();
     }
+
+    /**
+     * 
+     * @param pose current robot pose
+     * @param currentSpeeds current robot speeds
+     * @param maxSpeed max robot speed in meters
+     * @param useGoal include goal in path calculation
+     * @return SwerveSample object
+     */
     public SwerveSample getCmd(Pose2d pose, ChassisSpeeds currentSpeeds, double maxSpeed, boolean useGoal) {
         return getCmd(pose, currentSpeeds, maxSpeed, useGoal, pose.getRotation());
     }
+
+    /**
+     * 
+     * @param pose current robot pose
+     * @param currentSpeeds current robot speeds
+     * @param maxSpeed max robot speed in meters
+     * @param useGoal include goal in path calculation
+     * @param goalRotation rotation of goal point
+     * @return SwerveSample object
+     */
     public SwerveSample getCmd(Pose2d pose, ChassisSpeeds currentSpeeds, double maxSpeed, boolean useGoal, Rotation2d goalRotation) {
         Translation2d speedPerSec = new Translation2d(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
         double currentSpeed = Math.hypot(currentSpeeds.vxMetersPerSecond, currentSpeeds.vyMetersPerSecond);
@@ -380,6 +444,7 @@ public class RepulsorFieldPlanner {
         }
         
     }
+    
     public double pathLength = 0;
     public ArrayList<Translation2d> getTrajectory(Translation2d current, Translation2d goalTranslation, double stepSize_m) {
         pathLength = 0;
