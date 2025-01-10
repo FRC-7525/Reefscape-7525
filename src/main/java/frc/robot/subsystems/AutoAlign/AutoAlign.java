@@ -21,7 +21,6 @@ import frc.robot.Utils.RepulsorFieldPlanner;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
-
 public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	private static AutoAlign instance;
@@ -116,22 +115,46 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		addRunnableTrigger(() -> reefSideNum = 5, () -> FIGHT_STICK.getRawButtonPressed(5));
 
 		// Branch Levels
-		addRunnableTrigger(() -> branchLevel = BranchLevel.L1, () -> FIGHT_STICK.getRawButtonPressed(7));
-		addRunnableTrigger(() -> branchLevel = BranchLevel.L2, () -> FIGHT_STICK.getRawButtonPressed(8));
-		addRunnableTrigger(() -> branchLevel = BranchLevel.L3, () -> FIGHT_STICK.getRawButtonPressed(9));
-		addRunnableTrigger(() -> branchLevel = BranchLevel.L4, () -> FIGHT_STICK.getRawButtonPressed(10));
+		addRunnableTrigger(
+			() -> branchLevel = BranchLevel.L1,
+			() -> FIGHT_STICK.getRawButtonPressed(7)
+		);
+		addRunnableTrigger(
+			() -> branchLevel = BranchLevel.L2,
+			() -> FIGHT_STICK.getRawButtonPressed(8)
+		);
+		addRunnableTrigger(
+			() -> branchLevel = BranchLevel.L3,
+			() -> FIGHT_STICK.getRawButtonPressed(9)
+		);
+		addRunnableTrigger(
+			() -> branchLevel = BranchLevel.L4,
+			() -> FIGHT_STICK.getRawButtonPressed(10)
+		);
 
 		// Left or right branch
-		addRunnableTrigger(() -> leftSideSelected = false, () -> FIGHT_STICK.getRawButtonPressed(11));
-		addRunnableTrigger(() -> leftSideSelected = true, () -> FIGHT_STICK.getRawButtonPressed(12));
-		
+		addRunnableTrigger(
+			() -> leftSideSelected = false,
+			() -> FIGHT_STICK.getRawButtonPressed(11)
+		);
+		addRunnableTrigger(
+			() -> leftSideSelected = true,
+			() -> FIGHT_STICK.getRawButtonPressed(12)
+		);
+
 		// Start Auto Align
 		addRunnableTrigger(this::launchAutoAlign, () -> FIGHT_STICK.getRawButtonPressed(14));
-		
+
 		addRunnableTrigger(this::launchAutoAlign, OPERATOR_CONTROLLER::getYButtonPressed);
 		addRunnableTrigger(() -> setState(AutoAlignStates.IDLE), this::atTarget);
 
-		addRunnableTrigger(() -> {setState(AutoAlignStates.IDLE); manager.setState(ManagerStates.IDLE);}, () -> FIGHT_STICK.getRawButtonPressed(13));
+		addRunnableTrigger(
+			() -> {
+				setState(AutoAlignStates.IDLE);
+				manager.setState(ManagerStates.IDLE);
+			},
+			() -> FIGHT_STICK.getRawButtonPressed(13)
+		);
 	}
 
 	public static AutoAlign getInstance() {
@@ -260,14 +283,23 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	// TODO change these once we get the CAD
 	// TODO this is also kinda buns
 	private void launchAutoAlign() {
-		targetPose = leftSideSelected ? poseContainer.getReefSides(reefSideNum).leftPose
-		: poseContainer.getReefSides(reefSideNum).rightPose;
+		targetPose = leftSideSelected
+			? poseContainer.getReefSides(reefSideNum).leftPose
+			: poseContainer.getReefSides(reefSideNum).rightPose;
 
 		switch (branchLevel) {
-			case L1: setState(AutoAlignStates.DRIVING_REEF_L1); break;
-			case L2: setState(AutoAlignStates.DRIVING_REEF_L2); break;
-			case L3: setState(AutoAlignStates.DRIVING_REEF_L3); break;
- 			case L4: setState(AutoAlignStates.DRIVING_REEF_L4); break;
+			case L1:
+				setState(AutoAlignStates.DRIVING_REEF_L1);
+				break;
+			case L2:
+				setState(AutoAlignStates.DRIVING_REEF_L2);
+				break;
+			case L3:
+				setState(AutoAlignStates.DRIVING_REEF_L3);
+				break;
+			case L4:
+				setState(AutoAlignStates.DRIVING_REEF_L4);
+				break;
 		}
 	}
 }
