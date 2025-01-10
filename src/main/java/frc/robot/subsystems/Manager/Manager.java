@@ -1,22 +1,22 @@
 package frc.robot.Subsystems.Manager;
 
-import org.littletonrobotics.junction.Logger;
-import org.team7525.subsystem.Subsystem;
-
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
+import org.littletonrobotics.junction.Logger;
+import org.team7525.subsystem.Subsystem;
 
 public class Manager extends Subsystem<ManagerStates> {
-    private static Manager instance;
 
-    private final Drive drive = Drive.getInstance();
-    private final Elevator elevator = Elevator.getInstance();
-    private final Coraler coraler = Coraler.getInstance();
+	private static Manager instance;
 
-    private Manager() {
-        super("Manager", ManagerStates.IDLE);
-    }
+	private final Drive drive = Drive.getInstance();
+	private final Elevator elevator = Elevator.getInstance();
+	private final Coraler coraler = Coraler.getInstance();
+
+	private Manager() {
+		super("Manager", ManagerStates.IDLE);
+	}
 
 	public static Manager getInstance() {
 		if (instance == null) {
@@ -39,5 +39,4 @@ public class Manager extends Subsystem<ManagerStates> {
         elevator.periodic();
         coraler.periodic();
     }
-
 }

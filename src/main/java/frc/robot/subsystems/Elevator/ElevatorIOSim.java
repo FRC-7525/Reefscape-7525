@@ -67,7 +67,7 @@ public class ElevatorIOSim implements ElevatorIO {
 	}
 
 	public void updateInputs(ElevatorIOInputs inputs) {
-		elevatorSim.update(GlobalConstants.SIM_DELTA_TIME);
+		elevatorSim.update(GlobalConstants.SIMULATION_PERIOD);
 
 		inputs.currentElevatorHeight = elevatorSim.getPositionMeters();
 		inputs.elevatorHeightSetpoint = pidController.getSetpoint().position;

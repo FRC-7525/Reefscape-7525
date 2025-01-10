@@ -14,8 +14,6 @@ import frc.robot.Subsystems.Drive.Drive.SysIdMode;
 
 public class GlobalConstants {
 
-	public static double SIM_DELTA_TIME = 0.02;
-
 	public enum RobotMode {
 		REAL,
 		TESTING,
