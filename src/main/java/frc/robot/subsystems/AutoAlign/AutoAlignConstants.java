@@ -1,8 +1,10 @@
 package frc.robot.Subsystems.AutoAlign;
 
 import static edu.wpi.first.units.Units.Meters;
+import static frc.robot.Subsystems.AutoAlign.PoseContainer.PosePair;
 
 import com.pathplanner.lib.config.PIDConstants;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
@@ -33,23 +35,36 @@ public final class AutoAlignConstants {
 		public static final PIDConstants TRANSLATIONAL_PID_CONSTANTS = new PIDConstants(2.5, 0, 0);
 		public static final PIDConstants ROTATIONAL_PID_CONSTANTS = new PIDConstants(0.8, 0, 0);
 	}
-
-	public static final class Poses {
-
-		public static final class Red {
-
-			public static final Pose2d REEF_POSE = new Pose2d(4.57, 4.09, new Rotation2d());
-		}
-
-		public static final class Blue {}
-
-		public static final class Testing {
-
-			public static final Pose2d test1 = new Pose2d(5.6, 1.67, new Rotation2d());
-		}
+	
+	public static final class Testing {
+		public static final Pose2d test1 = new Pose2d(5.6, 1.67, new Rotation2d());
 	}
+	
+	public static final PoseContainer RED_POSES = new PoseContainer(
+		new PosePair[] {
+			new PosePair(new Pose2d(), new Pose2d()),
+			new PosePair(new Pose2d(), new Pose2d()),
+			new PosePair(new Pose2d(), new Pose2d()),
+			new PosePair(new Pose2d(), new Pose2d()),
+			new PosePair(new Pose2d(), new Pose2d()),
+			new PosePair(new Pose2d(), new Pose2d()),
+		},
+		new PosePair(new Pose2d(), new Pose2d()));
+		
+		public static final PoseContainer BLUE_POSES = new PoseContainer(
+			new PosePair[] {
+				new PosePair(new Pose2d(), new Pose2d()),
+				new PosePair(new Pose2d(), new Pose2d()),
+				new PosePair(new Pose2d(), new Pose2d()),
+				new PosePair(new Pose2d(), new Pose2d()),
+				new PosePair(new Pose2d(), new Pose2d()),
+				new PosePair(new Pose2d(), new Pose2d()),
+			},
+		new PosePair(new Pose2d(), new Pose2d()));
 
-	public static final int TWO = 2;
-	public static final int ONE = 1;
-	public static final int ZERO = 0;
-}
+		public static final int TWO = 2;
+		public static final int ONE = 1;
+		public static final int ZERO = 0;
+	}
+	
+	

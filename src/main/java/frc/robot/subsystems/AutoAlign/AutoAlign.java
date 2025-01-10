@@ -11,11 +11,16 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.Subsystems.AutoAlign.AutoAlignConstants.Real;
+import frc.robot.Subsystems.AutoAlign.AutoAlignConstants.Sim;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Manager.Manager;
+import frc.robot.Subsystems.Manager.ManagerStates;
 import frc.robot.Utils.RepulsorFieldPlanner;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
+
 
 public class AutoAlign extends Subsystem<AutoAlignStates> {
 
@@ -23,27 +28,23 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	private final Drive drive = Drive.getInstance();
 	private final Manager manager = Manager.getInstance();
-
 	private final RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner();
 
 	private PIDController translationController;
 	private PIDController rotationController;
 	private PIDController repulsionTranslationController;
 	private PIDController repulsionRotationController;
+
 	private Pose2d targetPose;
 	private Pose2d reefPose = new Pose2d(4.57, 4.09, new Rotation2d());
 	private Pose2d interpolatedPose;
 	private double interpolatedDistanceFromReef;
 	private boolean repulsorActivated;
 
+	private PoseContainer poseContainer;
 	private BranchLevel branchLevel;
-	private int branchNumber;
-	private ReefSide reefSide;
-
-	private static enum ReefSide {
-		left,
-		right,
-	}
+	private int reefSideNum;
+	private boolean leftSideSelected;
 
 	private static enum BranchLevel {
 		L1,
@@ -104,41 +105,33 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 				break;
 		}
 
-		targetPose = Poses.Testing.test1; // testing
+		targetPose = Testing.test1; // testing
 
-		addRunnableTrigger(() -> branchNumber = 1, () -> FIGHT_STICK.getRawButtonPressed(3));
-		addRunnableTrigger(() -> branchNumber = 2, () -> FIGHT_STICK.getRawButtonPressed(4));
-		addRunnableTrigger(() -> branchNumber = 3, () -> FIGHT_STICK.getRawButtonPressed(6));
-		addRunnableTrigger(() -> branchNumber = 4, () -> FIGHT_STICK.getRawButtonPressed(5));
-		addRunnableTrigger(() -> branchNumber = 5, () -> FIGHT_STICK.getRawButtonPressed(1));
-		addRunnableTrigger(() -> branchNumber = 6, () -> FIGHT_STICK.getRawButtonPressed(2));
-		addRunnableTrigger(() -> reefSide = ReefSide.left, () -> FIGHT_STICK.getRawAxis(3) > .9);
-		addRunnableTrigger(() -> reefSide = ReefSide.right, () -> FIGHT_STICK.getRawAxis(2) > .9);
-		addRunnableTrigger(this::setReefLevel, () -> FIGHT_STICK.getPOV() != -1);
+		// Reef Sides
+		addRunnableTrigger(() -> reefSideNum = 0, () -> FIGHT_STICK.getRawButtonPressed(0));
+		addRunnableTrigger(() -> reefSideNum = 1, () -> FIGHT_STICK.getRawButtonPressed(1));
+		addRunnableTrigger(() -> reefSideNum = 2, () -> FIGHT_STICK.getRawButtonPressed(2));
+		addRunnableTrigger(() -> reefSideNum = 3, () -> FIGHT_STICK.getRawButtonPressed(3));
+		addRunnableTrigger(() -> reefSideNum = 4, () -> FIGHT_STICK.getRawButtonPressed(4));
+		addRunnableTrigger(() -> reefSideNum = 5, () -> FIGHT_STICK.getRawButtonPressed(5));
 
-		addTrigger(
-			AutoAlignStates.IDLE,
-			AutoAlignStates.DRIVING_REEF_L1,
-			() -> FIGHT_STICK.getPOV(0) == 270
-		);
-		addTrigger(
-			AutoAlignStates.IDLE,
-			AutoAlignStates.DRIVING_REEF_L2,
-			() -> FIGHT_STICK.getPOV(0) == 180
-		);
-		addTrigger(
-			AutoAlignStates.IDLE,
-			AutoAlignStates.DRIVING_REEF_L3,
-			() -> FIGHT_STICK.getPOV(0) == 90
-		);
-		addTrigger(
-			AutoAlignStates.IDLE,
-			AutoAlignStates.DRIVING_REEF_L4,
-			() -> FIGHT_STICK.getPOV(0) == 0
-		);
+		// Branch Levels
+		addRunnableTrigger(() -> branchLevel = BranchLevel.L1, () -> FIGHT_STICK.getRawButtonPressed(7));
+		addRunnableTrigger(() -> branchLevel = BranchLevel.L2, () -> FIGHT_STICK.getRawButtonPressed(8));
+		addRunnableTrigger(() -> branchLevel = BranchLevel.L3, () -> FIGHT_STICK.getRawButtonPressed(9));
+		addRunnableTrigger(() -> branchLevel = BranchLevel.L4, () -> FIGHT_STICK.getRawButtonPressed(10));
 
-		addRunnableTrigger(this::setTargetPose, OPERATOR_CONTROLLER::getYButtonPressed);
+		// Left or right branch
+		addRunnableTrigger(() -> leftSideSelected = false, () -> FIGHT_STICK.getRawButtonPressed(11));
+		addRunnableTrigger(() -> leftSideSelected = true, () -> FIGHT_STICK.getRawButtonPressed(12));
+		
+		// Start Auto Align
+		addRunnableTrigger(this::launchAutoAlign, () -> FIGHT_STICK.getRawButtonPressed(14));
+		
+		addRunnableTrigger(this::launchAutoAlign, OPERATOR_CONTROLLER::getYButtonPressed);
 		addRunnableTrigger(() -> setState(AutoAlignStates.IDLE), this::atTarget);
+
+		addRunnableTrigger(() -> {setState(AutoAlignStates.IDLE); manager.setState(ManagerStates.IDLE);}, () -> FIGHT_STICK.getRawButtonPressed(13));
 	}
 
 	public static AutoAlign getInstance() {
@@ -241,17 +234,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		return MathUtil.clamp((numeratorX + numeratorY) / denominator, ZERO, ONE);
 	}
 
-	private void setReefLevel() {
-		branchLevel = switch ((int) FIGHT_STICK.getRawAxis(2)) {
-			case 0 -> BranchLevel.L4;
-			case 90 -> BranchLevel.L3;
-			case 180 -> BranchLevel.L2;
-			case 270 -> BranchLevel.L1;
-			// ignore default, the fight stick will only go to multiples of 45
-			default -> BranchLevel.L4;
-		};
-	}
-
 	private void logOutput() {
 		Logger.recordOutput("AutoAlign/State", getState().getStateString());
 		Logger.recordOutput("AutoAlign/Target Pose", targetPose);
@@ -277,27 +259,15 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	// TODO change these once we get the CAD
 	// TODO this is also kinda buns
-	private void setTargetPose() {
-		if (reefSide == ReefSide.left) {
-			targetPose = switch (branchNumber) {
-				case 1 -> AutoAlignConstants.Poses.Testing.test1;
-				case 2 -> AutoAlignConstants.Poses.Testing.test1;
-				case 3 -> AutoAlignConstants.Poses.Testing.test1;
-				case 4 -> AutoAlignConstants.Poses.Testing.test1;
-				case 5 -> AutoAlignConstants.Poses.Testing.test1;
-				case 6 -> AutoAlignConstants.Poses.Testing.test1;
-				default -> AutoAlignConstants.Poses.Testing.test1;
-			};
-		} else {
-			targetPose = switch (branchNumber) {
-				case 1 -> AutoAlignConstants.Poses.Testing.test1;
-				case 2 -> AutoAlignConstants.Poses.Testing.test1;
-				case 3 -> AutoAlignConstants.Poses.Testing.test1;
-				case 4 -> AutoAlignConstants.Poses.Testing.test1;
-				case 5 -> AutoAlignConstants.Poses.Testing.test1;
-				case 6 -> AutoAlignConstants.Poses.Testing.test1;
-				default -> AutoAlignConstants.Poses.Testing.test1;
-			};
+	private void launchAutoAlign() {
+		targetPose = leftSideSelected ? poseContainer.getReefSides(reefSideNum).leftPose
+		: poseContainer.getReefSides(reefSideNum).rightPose;
+
+		switch (branchLevel) {
+			case L1: setState(AutoAlignStates.DRIVING_REEF_L1); break;
+			case L2: setState(AutoAlignStates.DRIVING_REEF_L2); break;
+			case L3: setState(AutoAlignStates.DRIVING_REEF_L3); break;
+ 			case L4: setState(AutoAlignStates.DRIVING_REEF_L4); break;
 		}
 	}
 }

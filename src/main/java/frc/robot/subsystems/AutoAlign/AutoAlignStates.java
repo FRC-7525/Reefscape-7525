@@ -10,8 +10,8 @@ public enum AutoAlignStates implements SubsystemStates {
 	DRIVING_REEF_L2("Driving to Reef L2", ManagerStates.IDLE),
 	DRIVING_REEF_L3("Driving to Reef L3", ManagerStates.IDLE),
 	DRIVING_REEF_L4("Driving to Reef L4", ManagerStates.IDLE),
-	DRIVING_LEFT_CORAL("Driving to left Reef", ManagerStates.IDLE),
-	DRIVING_RIGHT_CORAL("Driving to right Coral", ManagerStates.IDLE);
+	DRIVING_CORAL("Driving to Coral Station", ManagerStates.IDLE);
+
 
 	AutoAlignStates(String stateString, ManagerStates managerState) {
 		this.stateString = stateString;
