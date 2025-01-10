@@ -27,17 +27,11 @@ public class Manager extends Subsystem<ManagerStates> {
 
 	@Override
 	public void runState() {
-		ManagerStates currentState = getState();
-
-		Logger.recordOutput(
-			ManagerConstants.SUBSYSTEM_NAME + "/State",
-			currentState.getStateString()
-		);
 		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
 
 		// Set States
-		elevator.setState(currentState.getElevatorState());
-		coraler.setState(currentState.getCoralerState());
+		elevator.setState(getState().getElevatorState());
+		coraler.setState(getState().getCoralerState());
 
 		// Periodics
 		drive.periodic();
