@@ -8,6 +8,8 @@ import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.subsystems.Climber.Climber;
+
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -20,6 +22,7 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final Coraler coraler = Coraler.getInstance();
 	private final Algaer algaer = Algaer.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
+	private final Climber climber = Climber.getInstance();
 
 	public boolean leftSourceSelected = false;
 	// The runnable triggers and regular triggers will race eachother and if runnable loses our code crashes because you can't map -1 to a map without -1 :boiled: (fix it to change -1 to 1, im not gona do that tho)
