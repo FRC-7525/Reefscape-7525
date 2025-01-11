@@ -79,7 +79,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 					Real.ROTATIONAL_PID_CONSTANTS.kI,
 					Real.ROTATIONAL_PID_CONSTANTS.kD
 				);
-                poseContainer = DriverStation.getAlliance().get() == Alliance.Blue ? BLUE_POSES : RED_POSES;
+				poseContainer = DriverStation.getAlliance().get() == Alliance.Blue
+					? BLUE_POSES
+					: RED_POSES;
 				break;
 			case SIM:
 			case REPLAY:
@@ -103,14 +105,13 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 					Sim.ROTATIONAL_PID_CONSTANTS.kI,
 					Sim.ROTATIONAL_PID_CONSTANTS.kD
 				);
-                poseContainer = BLUE_POSES;
+				poseContainer = BLUE_POSES;
 				break;
 		}
 
-        
 		targetPose = Testing.test1; // testing
-        branchLevel = BranchLevel.L4;
-        reefSideNum = 0;
+		branchLevel = BranchLevel.L4;
+		reefSideNum = 0;
 
 		// Reef Sides
 		addRunnableTrigger(() -> reefSideNum = 0, () -> FIGHT_STICK.getRawButtonPressed(0));
