@@ -8,8 +8,9 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.subsystems.Drive.Drive.SysIdMode;
+import frc.robot.Subsystems.Drive.Drive.SysIdMode;
 
 public class GlobalConstants {
 
@@ -24,11 +25,15 @@ public class GlobalConstants {
 		? RobotMode.SIM
 		: RobotMode.SIM;
 
+	public static final double SIMULATION_PERIOD = 0.02;
+
 	public static class Controllers {
 
 		public static final XboxController DRIVER_CONTROLLER = new XboxController(0);
 		public static final XboxController OPERATOR_CONTROLLER = new XboxController(1);
-		public static final XboxController TEST_CONTROLLER = new XboxController(3);
+		public static final GenericHID FIGHT_STICK_1 = new GenericHID(2);
+		public static final GenericHID FIGHT_STICK_2 = new GenericHID(3);
+		public static final XboxController TEST_CONTROLLER = new XboxController(4);
 
 		// NOTE: Set to 0.1 on trash controllers
 		public static final double DEADBAND = 0.01;

@@ -1,16 +1,17 @@
-package frc.robot.subsystems.Drive;
+package frc.robot.Subsystems.Drive;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.*;
 import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.GlobalConstants.Drive.*;
-import static frc.robot.subsystems.Drive.TunerConstants.kSpeedAt12Volts;
+import static frc.robot.Subsystems.Drive.TunerConstants.kSpeedAt12Volts;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.DriveFeedforwards;
@@ -371,6 +372,20 @@ public class Drive extends Subsystem<DriveStates> {
 
 	public ChassisSpeeds getRobotRelativeSpeeds() {
 		return driveIO.getDrive().getState().Speeds;
+	}
+
+	public void driveAutoAlign(
+		ApplyFieldSpeeds fieldSpeeds,
+		double[] moduleForcesX,
+		double[] moduleForcesY
+	) {
+		driveIO
+			.getDrive()
+			.setControl(
+				fieldSpeeds
+				// .withWheelForceFeedforwardsX(moduleForcesX)
+				// .withWheelForceFeedforwardsY(moduleForcesY)
+			);
 	}
 
 	public void configurePathPlanner() {
