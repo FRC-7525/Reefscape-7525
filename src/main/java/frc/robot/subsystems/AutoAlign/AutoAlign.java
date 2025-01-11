@@ -32,7 +32,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
-
 		// PID Config
 		this.translationController = TRANSLATIONAL_CONTROLLER.get();
 		this.rotationController = ROTATIONAL_CONTROLLER.get();
