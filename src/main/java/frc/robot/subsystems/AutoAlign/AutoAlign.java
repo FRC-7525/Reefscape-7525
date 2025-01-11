@@ -36,7 +36,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private PIDController repulsionRotationController;
 
 	private Pose2d targetPose;
-	private Pose2d reefPose = new Pose2d(4.57, 4.09, new Rotation2d());
+	private Pose2d reefPose;
 	private Pose2d interpolatedPose;
 	private double interpolatedDistanceFromReef;
 	private boolean repulsorActivated;
