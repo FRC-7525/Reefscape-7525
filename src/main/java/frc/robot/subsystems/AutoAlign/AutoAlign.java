@@ -50,8 +50,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	protected void runState() {
 		logOutput();
 
-		if (getState() == AutoAlignStates.OFF)
-			return;
+		if (getState() == AutoAlignStates.OFF) return;
 
 		// if there is no collision, it will go to braindead AA, or use repulsor to
 		// avoid the collision
@@ -61,13 +60,15 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		} else {
 			repulsor.setGoal(targetPose.getTranslation());
 			repulsorAutoAlign(
+				drive.getPose(),
+				repulsor.getCmd(
 					drive.getPose(),
-					repulsor.getCmd(
-							drive.getPose(),
-							drive.getRobotRelativeSpeeds(),
-							MAX_SPEED,
-							USE_GOAL,
-							targetPose.getRotation()));
+					drive.getRobotRelativeSpeeds(),
+					MAX_SPEED,
+					USE_GOAL,
+					targetPose.getRotation()
+				)
+			);
 			repulsorActivated = true;
 		}
 	}
@@ -79,14 +80,17 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		// idk why applied needs to be negative but it works if it is negative 💀
 		// update: it's negative because otto is a bum and can't set up his sim properly
 		double xApplied = -repulsionTranslationController.calculate(
-				drivePose.getX(),
-				targetPose.getX());
+			drivePose.getX(),
+			targetPose.getX()
+		);
 		double yApplied = -repulsionTranslationController.calculate(
-				drivePose.getY(),
-				targetPose.getY());
+			drivePose.getY(),
+			targetPose.getY()
+		);
 		double rotationApplied = repulsionRotationController.calculate(
-				drivePose.getRotation().getDegrees(),
-				targetPose.getRotation().getDegrees());
+			drivePose.getRotation().getDegrees(),
+			targetPose.getRotation().getDegrees()
+		);
 		drive.driveFieldRelative(xApplied, yApplied, rotationApplied);
 	}
 
@@ -97,13 +101,15 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		targetSpeeds.vxMetersPerSecond += translationController.calculate(pose.getX(), sample.x);
 		targetSpeeds.vyMetersPerSecond += translationController.calculate(pose.getY(), sample.y);
 		targetSpeeds.omegaRadiansPerSecond += rotationController.calculate(
-				pose.getRotation().getRadians(),
-				sample.heading);
+			pose.getRotation().getRadians(),
+			sample.heading
+		);
 
 		drive.driveFieldRelative(
-				-targetSpeeds.vxMetersPerSecond,
-				-targetSpeeds.vyMetersPerSecond,
-				targetSpeeds.omegaRadiansPerSecond);
+			-targetSpeeds.vxMetersPerSecond,
+			-targetSpeeds.vyMetersPerSecond,
+			targetSpeeds.omegaRadiansPerSecond
+		);
 	}
 
 	private boolean checkForReefCollision() {
@@ -113,16 +119,19 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		interpolatedPose = currentPose.interpolate(targetPose, t);
 
 		interpolatedDistanceFromReef = interpolatedPose
-				.getTranslation()
-				.getDistance(reefPose.getTranslation());
+			.getTranslation()
+			.getDistance(reefPose.getTranslation());
 		return interpolatedDistanceFromReef < REEF_HITBOX.in(Meters) + ROBOT_RADIUS.in(Meters);
 	}
 
 	private double calculateClosestPoint(Pose2d startPose, Pose2d endPose) {
-		double numeratorX = (reefPose.getX() - startPose.getX()) * (endPose.getX() - startPose.getX());
-		double numeratorY = (reefPose.getY() - startPose.getY()) * (endPose.getY() - startPose.getY());
-		double denominator = Math.pow(endPose.getX() - startPose.getX(), TWO) +
-				Math.pow(endPose.getY() - startPose.getY(), TWO);
+		double numeratorX =
+			(reefPose.getX() - startPose.getX()) * (endPose.getX() - startPose.getX());
+		double numeratorY =
+			(reefPose.getY() - startPose.getY()) * (endPose.getY() - startPose.getY());
+		double denominator =
+			Math.pow(endPose.getX() - startPose.getX(), TWO) +
+			Math.pow(endPose.getY() - startPose.getY(), TWO);
 
 		return MathUtil.clamp((numeratorX + numeratorY) / denominator, ZERO, ONE);
 	}
@@ -132,22 +141,28 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/Target Pose", targetPose);
 		Logger.recordOutput("AutoAlign/Interpolated Pose", interpolatedPose);
 		Logger.recordOutput(
-				"AutoAlign/Interpolated Distance From Reef",
-				interpolatedDistanceFromReef);
+			"AutoAlign/Interpolated Distance From Reef",
+			interpolatedDistanceFromReef
+		);
 		Logger.recordOutput("AutoAlign/ReefPose", reefPose);
 		Logger.recordOutput("AutoAlign/Repulsor Activated", repulsorActivated);
 	}
 
 	public boolean nearTarget() {
-		return (drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < DISTANCE_ERROR_MARGIN &&
-				Math.abs(
-						drive.getPose().getRotation().getDegrees()
-								- targetPose.getRotation().getDegrees()) < ANGLE_ERROR_MARGIN);
+		return (
+			drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) <
+				DISTANCE_ERROR_MARGIN &&
+			Math.abs(
+				drive.getPose().getRotation().getDegrees() - targetPose.getRotation().getDegrees()
+			) <
+			ANGLE_ERROR_MARGIN
+		);
 	}
 
 	public boolean readyForClose() {
-		return drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < getState()
-				.getDistanceForCloseAA()
-				.in(Meters);
+		return (
+			drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) <
+			getState().getDistanceForCloseAA().in(Meters)
+		);
 	}
 }

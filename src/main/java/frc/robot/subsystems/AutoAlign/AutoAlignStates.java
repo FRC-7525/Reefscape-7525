@@ -1,11 +1,10 @@
 package frc.robot.Subsystems.AutoAlign;
 
+import static edu.wpi.first.units.Units.*;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.units.measure.Distance;
-
 import org.team7525.subsystem.SubsystemStates;
-
-import static edu.wpi.first.units.Units.*;
 
 public enum AutoAlignStates implements SubsystemStates {
 	OFF("OFF, No Aligning!", new Pose2d(), Meters.of(0.0)),
