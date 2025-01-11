@@ -240,12 +240,14 @@ public class Manager extends Subsystem<ManagerStates> {
 		// Set States
 		elevator.setState(getState().getElevatorState());
 		coraler.setState(getState().getCoralerState());
+		climber.setState(getState().getClimberState());
 
 		// Periodics
 		autoAlign.periodic();
 		drive.periodic();
 		elevator.periodic();
 		coraler.periodic();
+		climber.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getXButtonPressed() || FIGHT_STICK_2.getRawButtonPressed(1)) {
