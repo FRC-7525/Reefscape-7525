@@ -46,9 +46,9 @@ public enum AutoAlignStates implements SubsystemStates {
 	}
 
 	public Pose2d getTargetPose() {
-		return DriverStation.getAlliance().get() == Alliance.Blue
-			? targetPose.getBluePose()
-			: targetPose.getRedPose();
+		return DriverStation.getAlliance().get() != null && DriverStation.getAlliance().get() == Alliance.Red
+			? targetPose.getRedPose()
+			: targetPose.getBluePose();
 	}
 
 	public Distance getDistanceForCloseAA() {
