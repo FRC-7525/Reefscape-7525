@@ -19,11 +19,15 @@ public enum ManagerStates implements SubsystemStates {
 	SCORING_REEF("Scoring Reef", ElevatorStates.IDLE, CoralerStates.CORALING, AlgaerStates.IDLE, AutoAlignStates.OFF),
 	TRANSITIONING_SCORING_REEF("Transitioning Scoring", ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, AutoAlignStates.OFF),;
 
-
 	// NOTE: Transitioning Scoring, AA, and any state meant to score on reef has a FILLER ELEVATOR AND POSSIBLY CORALER STATE
 
-
-	ManagerStates(String stateString, ElevatorStates elevatorState, CoralerStates coralerState, AlgaerStates algaerState, AutoAlignStates autoAlignState) {
+	ManagerStates(
+		String stateString,
+		ElevatorStates elevatorState,
+		CoralerStates coralerState,
+		AlgaerStates algaerState,
+		AutoAlignStates autoAlignState
+	) {
 		this.stateString = stateString;
 		this.elevatorState = elevatorState;
 		this.coralerState = coralerState;

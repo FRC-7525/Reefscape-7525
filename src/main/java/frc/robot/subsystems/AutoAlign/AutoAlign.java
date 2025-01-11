@@ -174,7 +174,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		if (getState() == AutoAlignStates.OFF) return;
 
-
 		// if there is no collision, it will go to braindead AA, or use repulsor to avoid the collision
 		if (!checkForReefCollision()) {
 			braindeadAutoAlign();
