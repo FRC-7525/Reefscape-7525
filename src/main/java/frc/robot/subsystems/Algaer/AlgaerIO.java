@@ -22,4 +22,6 @@ public interface AlgaerIO {
 	public void setPivotSetpoint(Angle pivotSetpoint);
 
 	public void setWheelSpeed(AngularVelocity wheelSpeed);
+
+	public boolean nearTarget();
 }

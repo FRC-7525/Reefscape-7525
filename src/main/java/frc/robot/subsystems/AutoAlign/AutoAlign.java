@@ -151,7 +151,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		addRunnableTrigger(this::launchAutoAlign, () -> FIGHT_STICK.getRawButtonPressed(14));
 
 		addRunnableTrigger(this::launchAutoAlign, OPERATOR_CONTROLLER::getYButtonPressed);
-		addRunnableTrigger(() -> setState(AutoAlignStates.OFF), this::atTarget);
+		addRunnableTrigger(() -> setState(AutoAlignStates.OFF), this::nearTarget);
 
 		addRunnableTrigger(
 			() -> {
@@ -272,7 +272,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/Repulsor Activated", repulsorActivated);
 	}
 
-	public boolean atTarget() {
+	public boolean nearTarget() {
 		return (
 			drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) <
 				DISTANCE_ERROR_MARGIN &&
@@ -281,6 +281,12 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 			) <
 			ANGLE_ERROR_MARGIN
 		);
+	}
+
+
+	// TODO: This
+	public boolean readyForClose() {
+		return false;
 	}
 
 	// TODO change these once we get the CAD

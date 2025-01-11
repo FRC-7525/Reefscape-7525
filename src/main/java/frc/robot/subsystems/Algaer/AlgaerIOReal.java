@@ -1,9 +1,5 @@
 package frc.robot.Subsystems.Algaer;
 
-import static edu.wpi.first.units.Units.Degrees;
-import static edu.wpi.first.units.Units.DegreesPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
-
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -14,6 +10,9 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants;
 import frc.robot.GlobalConstants.RobotMode;
+
+import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
+import static edu.wpi.first.units.Units.*;
 
 public class AlgaerIOReal implements AlgaerIO {
 
@@ -79,5 +78,11 @@ public class AlgaerIOReal implements AlgaerIO {
 			wheelSpeed.in(DegreesPerSecond)
 		);
 		wheelMotor.setVoltage(voltage);
+	}
+
+	@Override
+	public boolean nearTarget() {
+		return Math.abs(Units.rotationsToDegrees(pivotEncoder.getPosition()) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees) 
+			&& Math.abs(wheelEncoder.getVelocity() / 60 - wheelSpeedSetpoint) < WHEEL_TOLERANCE.in(RotationsPerSecond);
 	}
 }

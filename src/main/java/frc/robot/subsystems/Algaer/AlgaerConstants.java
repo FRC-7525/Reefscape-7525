@@ -23,6 +23,9 @@ public final class AlgaerConstants {
 	public static final Angle PASSING_PIVOT = Degrees.of(0);
 	public static final Angle IDLE_PIVOT = Degrees.of(0);
 
+	public static final Angle PIVOT_TOLERANCE = Degrees.of(5);
+	public static final AngularVelocity WHEEL_TOLERANCE = RotationsPerSecond.of(5);
+
 	public static final class Sim {
 
 		public static final int NUM_PIVOT_MOTORS = 1;

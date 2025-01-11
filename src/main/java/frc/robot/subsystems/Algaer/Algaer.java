@@ -26,6 +26,10 @@ public class Algaer extends Subsystem<AlgaerStates> {
 		Logger.processInputs("Algaer", inputs);
 	}
 
+	public boolean nearTarget() {
+		return io.nearTarget();
+	}
+
 	public static Algaer getInstance() {
 		if (instance == null) {
 			AlgaerIO AlgaerIO =

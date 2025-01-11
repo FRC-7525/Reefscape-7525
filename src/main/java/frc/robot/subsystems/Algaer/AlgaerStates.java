@@ -7,6 +7,7 @@ import org.team7525.subsystem.SubsystemStates;
 public enum AlgaerStates implements SubsystemStates {
 	INTAKING("INTAKING", AlgaerConstants.INTAKING_SPEED, AlgaerConstants.INTAKING_PIVOT),
 	SHOOTING("PASSING", AlgaerConstants.PASSING_SPEED, AlgaerConstants.PASSING_PIVOT),
+	GOING_TO_SHOOT("GOING TO SHOOT", AlgaerConstants.IDLE_SPEED, AlgaerConstants.PASSING_PIVOT),
 	IDLE("IDLE", AlgaerConstants.IDLE_SPEED, AlgaerConstants.IDLE_PIVOT);
 
 	AlgaerStates(String stateString, AngularVelocity wheelSpeed, Angle pivotSetpoint) {
