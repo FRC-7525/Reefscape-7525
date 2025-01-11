@@ -1,8 +1,7 @@
 package frc.robot.Subsystems.AutoAlign;
 
-import org.team7525.subsystem.SubsystemStates;
-
 import edu.wpi.first.math.geometry.Pose2d;
+import org.team7525.subsystem.SubsystemStates;
 
 public enum AutoAlignStates implements SubsystemStates {
 	OFF("OFF, No Aligning!", new Pose2d()),
@@ -19,7 +18,7 @@ public enum AutoAlignStates implements SubsystemStates {
 	L6("Driving to Reef Left 6", new Pose2d()),
 	R6("Driving to Reef Right 6", new Pose2d()),
 	RIGHT_SOURCE("Driving to Source Right", new Pose2d()),
-	LEFT_SOURCE("Driving to Source Left", new Pose2d()),;
+	LEFT_SOURCE("Driving to Source Left", new Pose2d());
 
 	AutoAlignStates(String stateString, Pose2d targetPose) {
 		this.stateString = stateString;
