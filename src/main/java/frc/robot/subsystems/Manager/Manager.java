@@ -30,16 +30,33 @@ public class Manager extends Subsystem<ManagerStates> {
 
 	private Manager() {
 		super("Manager", ManagerStates.IDLE);
-
 		// Toggling which source to AA to
-		addRunnableTrigger(() -> this.leftSourceSelected = true, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
-		addRunnableTrigger(() -> this.leftSourceSelected = false, DRIVER_CONTROLLER::getRightBumperButtonPressed);
+		addRunnableTrigger(
+			() -> this.leftSourceSelected = true,
+			DRIVER_CONTROLLER::getLeftBumperButtonPressed
+		);
+		addRunnableTrigger(
+			() -> this.leftSourceSelected = false,
+			DRIVER_CONTROLLER::getRightBumperButtonPressed
+		);
 
 		// Toggling which level to score at (manual)
-		addRunnableTrigger(() -> this.driverReefScoringLevel = 1, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
-		addRunnableTrigger(() -> this.driverReefScoringLevel = 2, () -> DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
-		addRunnableTrigger(() -> this.driverReefScoringLevel = 3, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD);
-		addRunnableTrigger(() -> this.driverReefScoringLevel = 4, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
+		addRunnableTrigger(
+			() -> this.driverReefScoringLevel = 1,
+			() -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD
+		);
+		addRunnableTrigger(
+			() -> this.driverReefScoringLevel = 2,
+			() -> DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD
+		);
+		addRunnableTrigger(
+			() -> this.driverReefScoringLevel = 3,
+			() -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD
+		);
+		addRunnableTrigger(
+			() -> this.driverReefScoringLevel = 4,
+			() -> DRIVER_CONTROLLER.getPOV() == UP_DPAD
+		);
 
 		// Toggling which level to score at (auto align)
 		addRunnableTrigger(() -> this.operatorReefScoringLevel = 1, () -> FIGHT_STICK_1.getRawButtonPressed(1));
@@ -175,7 +192,7 @@ public class Manager extends Subsystem<ManagerStates> {
 			instance = new Manager();
 		}
 		return instance;
-	}	
+	}
 
 	public boolean isLeftSourceSelected() {
 		return leftSourceSelected;
