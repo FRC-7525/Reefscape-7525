@@ -6,6 +6,8 @@ import frc.robot.Subsystems.Coraler.CoralerStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import org.team7525.subsystem.SubsystemStates;
 
+import static frc.robot.Subsystems.Manager.ManagerConstants.*;
+
 public enum ManagerStates implements SubsystemStates {
 	IDLE("Idle", ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, AutoAlignStates.OFF),
 	CLIMBING(
@@ -52,7 +54,7 @@ public enum ManagerStates implements SubsystemStates {
 	),
 	AUTO_ALIGN_CLOSE(
 		"Aligning Close",
-		ElevatorStates.IDLE,
+		REEF_SCORING_LEVELS.get(Manager.getInstance().operatorReefScoringLevel),
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
 		AutoAlignStates.DRIVING_REEF
@@ -64,22 +66,27 @@ public enum ManagerStates implements SubsystemStates {
 		AlgaerStates.IDLE,
 		AutoAlignStates.DRIVING_REEF
 	),
-	SCORING_REEF(
+	SCORING_REEF_MANUAL(
 		"Scoring Reef",
-		ElevatorStates.IDLE,
+		REEF_SCORING_LEVELS.get(Manager.getInstance().driverReefScoringLevel),
+		CoralerStates.CORALING,
+		AlgaerStates.IDLE,
+		AutoAlignStates.OFF
+	),
+	SCORING_REEF_AA(
+		"Scoring Reef",
+		REEF_SCORING_LEVELS.get(Manager.getInstance().operatorReefScoringLevel),
 		CoralerStates.CORALING,
 		AlgaerStates.IDLE,
 		AutoAlignStates.OFF
 	),
 	TRANSITIONING_SCORING_REEF(
 		"Transitioning Scoring",
-		ElevatorStates.IDLE,
+		REEF_SCORING_LEVELS.get(Manager.getInstance().driverReefScoringLevel),
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
 		AutoAlignStates.OFF
 	);
-
-	// NOTE: Transitioning Scoring, AA, and any state meant to score on reef has a FILLER ELEVATOR AND POSSIBLY CORALER STATE
 
 	ManagerStates(
 		String stateString,

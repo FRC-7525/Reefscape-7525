@@ -21,8 +21,26 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final Algaer algaer = Algaer.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 
+	public boolean leftSourceSelected = false;
+	public int driverReefScoringLevel = -1;
+	public int operatorReefScoringLevel = -1;
+
 	private Manager() {
 		super("Manager", ManagerStates.IDLE);
+
+		// Toggling which source to AA to
+		addRunnableTrigger(() -> this.leftSourceSelected = true, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
+		addRunnableTrigger(() -> this.leftSourceSelected = false, DRIVER_CONTROLLER::getRightBumperButtonPressed);
+
+		// Toggling which level to score at (manual)
+		addRunnableTrigger(() -> this.driverReefScoringLevel = 1, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
+		addRunnableTrigger(() -> this.driverReefScoringLevel = 2, () -> DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
+		addRunnableTrigger(() -> this.driverReefScoringLevel = 3, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD);
+		addRunnableTrigger(() -> this.driverReefScoringLevel = 4, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
+
+		// Toggling which level to score at (auto align)
+		
+
 		// Climbing
 		// TODO: Check with yussuf if holding down the trigger for letting up the climber then releasing is good
 		addTrigger(
@@ -105,11 +123,11 @@ public class Manager extends Subsystem<ManagerStates> {
 		);
 		addTrigger(
 			ManagerStates.TRANSITIONING_SCORING_REEF,
-			ManagerStates.SCORING_REEF,
+			ManagerStates.SCORING_REEF_MANUAL,
 			DRIVER_CONTROLLER::getYButtonPressed
 		);
 		addTrigger(
-			ManagerStates.SCORING_REEF,
+			ManagerStates.SCORING_REEF_MANUAL,
 			ManagerStates.IDLE,
 			DRIVER_CONTROLLER::getYButtonPressed
 		);
@@ -124,11 +142,11 @@ public class Manager extends Subsystem<ManagerStates> {
 		);
 		addTrigger(
 			ManagerStates.AUTO_ALIGN_CLOSE,
-			ManagerStates.SCORING_REEF,
+			ManagerStates.SCORING_REEF_AA,
 			autoAlign::nearTarget
 		);
 		addTrigger(
-			ManagerStates.SCORING_REEF,
+			ManagerStates.SCORING_REEF_AA,
 			ManagerStates.IDLE,
 			DRIVER_CONTROLLER::getYButtonPressed
 		);
@@ -139,6 +157,18 @@ public class Manager extends Subsystem<ManagerStates> {
 			instance = new Manager();
 		}
 		return instance;
+	}	
+
+	public boolean isLeftSourceSelected() {
+		return leftSourceSelected;
+	}
+
+	public int getDriverReefScoringLevel() {
+		return driverReefScoringLevel;
+	}
+
+	public int getOperatorReefScoringLevel() {
+		return operatorReefScoringLevel;
 	}
 
 	@Override
