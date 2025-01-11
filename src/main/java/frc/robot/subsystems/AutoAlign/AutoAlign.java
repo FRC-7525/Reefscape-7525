@@ -16,7 +16,6 @@ import frc.robot.Subsystems.AutoAlign.AutoAlignConstants.Real;
 import frc.robot.Subsystems.AutoAlign.AutoAlignConstants.Sim;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Manager.Manager;
-import frc.robot.Subsystems.Manager.ManagerStates;
 import frc.robot.Utils.RepulsorFieldPlanner;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
@@ -53,7 +52,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	private AutoAlign() {
-		super("AutoAlign", AutoAlignStates.IDLE);
+		super("AutoAlign", AutoAlignStates.OFF);
 		// TODO tune real once robot is done. sim tuning is also kinda mid
 		switch (ROBOT_MODE) {
 			case REAL:
@@ -152,12 +151,11 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		addRunnableTrigger(this::launchAutoAlign, () -> FIGHT_STICK.getRawButtonPressed(14));
 
 		addRunnableTrigger(this::launchAutoAlign, OPERATOR_CONTROLLER::getYButtonPressed);
-		addRunnableTrigger(() -> setState(AutoAlignStates.IDLE), this::atTarget);
+		addRunnableTrigger(() -> setState(AutoAlignStates.OFF), this::atTarget);
 
 		addRunnableTrigger(
 			() -> {
-				setState(AutoAlignStates.IDLE);
-				manager.setState(ManagerStates.IDLE);
+				setState(AutoAlignStates.OFF);
 			},
 			() -> FIGHT_STICK.getRawButtonPressed(13)
 		);
@@ -174,9 +172,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	protected void runState() {
 		logOutput();
 
-		if (getState() == AutoAlignStates.IDLE) return;
+		if (getState() == AutoAlignStates.OFF) return;
 
-		manager.setState(getState().getManagerState());
 
 		// if there is no collision, it will go to braindead AA, or use repulsor to avoid the collision
 		if (!checkForReefCollision()) {
@@ -295,16 +292,16 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		switch (branchLevel) {
 			case L1:
-				setState(AutoAlignStates.DRIVING_REEF_L1);
+				setState(AutoAlignStates.DRIVING_REEF);
 				break;
 			case L2:
-				setState(AutoAlignStates.DRIVING_REEF_L2);
+				setState(AutoAlignStates.DRIVING_REEF);
 				break;
 			case L3:
-				setState(AutoAlignStates.DRIVING_REEF_L3);
+				setState(AutoAlignStates.DRIVING_REEF);
 				break;
 			case L4:
-				setState(AutoAlignStates.DRIVING_REEF_L4);
+				setState(AutoAlignStates.DRIVING_REEF);
 				break;
 		}
 	}
