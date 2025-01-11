@@ -234,27 +234,4 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	public boolean readyForClose() {
 		return false;
 	}
-
-	// TODO change these once we get the CAD
-	// TODO this is also kinda buns
-	private void launchAutoAlign() {
-		targetPose = leftSideSelected
-			? poseContainer.getReefSides(reefSideNum).leftPose
-			: poseContainer.getReefSides(reefSideNum).rightPose;
-
-		// switch (branchLevel) {
-		// 	case L1:
-		// 		setState(AutoAlignStates.DRIVING_REEF);
-		// 		break;
-		// 	case L2:
-		// 		setState(AutoAlignStates.DRIVING_REEF);
-		// 		break;
-		// 	case L3:
-		// 		setState(AutoAlignStates.DRIVING_REEF);
-		// 		break;
-		// 	case L4:
-		// 		setState(AutoAlignStates.);
-		// 		break;
-		// }
-	}
 }

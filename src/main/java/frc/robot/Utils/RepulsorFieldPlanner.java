@@ -1,8 +1,6 @@
 package frc.robot.Utils;
 
 import choreo.trajectory.SwerveSample;
-import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.epilogue.NotLogged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,7 +17,6 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
-@Logged
 public class RepulsorFieldPlanner {
 
 	/**
@@ -276,13 +273,8 @@ public class RepulsorFieldPlanner {
 			);
 	}
 
-	@NotLogged
 	private boolean useGoalInArrows = false;
-
-	@NotLogged
 	private boolean useObstaclesInArrows = true;
-
-	@NotLogged
 	private boolean useWallsInArrows = true;
 
 	private Pose2d arrowBackstage = new Pose2d(-10, -10, Rotation2d.kZero);

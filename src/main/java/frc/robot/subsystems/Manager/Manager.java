@@ -126,7 +126,6 @@ public class Manager extends Subsystem<ManagerStates> {
 		);
 
 		// Intaking at Coral Station
-		// TODO: Cache left or right bumper presses in a variable for AA to the correct source
 		addTrigger(
 			ManagerStates.IDLE,
 			ManagerStates.INTAKING_CORALER,
