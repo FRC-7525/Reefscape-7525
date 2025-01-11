@@ -98,6 +98,8 @@ public enum ManagerStates implements SubsystemStates {
 		this.stateString = stateString;
 		this.elevatorState = elevatorState;
 		this.coralerState = coralerState;
+		this.algaerState = algaerState;
+		this.autoAlignState = autoAlignState;
 	}
 
 	private String stateString;
