@@ -1,12 +1,12 @@
 package frc.robot.Subsystems.Manager;
 
+import static frc.robot.Subsystems.Manager.ManagerConstants.*;
+
 import frc.robot.Subsystems.Algaer.AlgaerStates;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Coraler.CoralerStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import org.team7525.subsystem.SubsystemStates;
-
-import static frc.robot.Subsystems.Manager.ManagerConstants.*;
 
 public enum ManagerStates implements SubsystemStates {
 	IDLE("Idle", ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, AutoAlignStates.OFF),
