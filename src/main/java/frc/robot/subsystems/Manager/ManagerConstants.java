@@ -66,7 +66,7 @@ public final class ManagerConstants {
 		hexagonTargetSides.put(AAReefTarget.of(6, false), AutoAlignStates.R6);
 		REEF_TARGET_MAP = Map.copyOf(hexagonTargetSides);
 	}
-
+	
 	public static final Map<Boolean, AutoAlignStates> SOURCE_TARGET_MAP = Map.of(
 		true,
 		AutoAlignStates.LEFT_SOURCE,

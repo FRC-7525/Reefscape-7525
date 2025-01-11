@@ -22,7 +22,7 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final Algaer algaer = Algaer.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 
-	public boolean leftSourceSelected = false;
+	public Boolean leftSourceSelected = false;
 
 	public int driverReefScoringLevel = 1;
 	public int operatorReefScoringLevel = 1;
@@ -134,12 +134,11 @@ public class Manager extends Subsystem<ManagerStates> {
 				DRIVER_CONTROLLER.getLeftBumperButtonPressed() ||
 				DRIVER_CONTROLLER.getRightBumperButtonPressed()
 		);
+		// TODO: Change to beam break at coraler!
 		addTrigger(
 			ManagerStates.INTAKING_CORALER,
 			ManagerStates.IDLE,
-			() ->
-				DRIVER_CONTROLLER.getLeftBumperButtonReleased() &&
-				DRIVER_CONTROLLER.getRightBumperButtonReleased()
+			() -> false
 		);
 
 		// Intaking Algae
@@ -230,6 +229,26 @@ public class Manager extends Subsystem<ManagerStates> {
 		return instance;
 	}
 
+	public boolean getLeftSourceSelected() {
+		return leftSourceSelected;
+	}
+
+	public boolean getScoringReefLeft() {
+		return scoringReefLeft;
+	}
+
+	public int getHexagonTargetSide() {
+		return hexagonTargetSide;
+	}
+
+	public int getDriverReefScoringLevel() {
+		return driverReefScoringLevel;
+	}
+
+	public int getOperatorReefScoringLevel() {
+		return operatorReefScoringLevel;
+	}
+
 	@Override
 	public void runState() {
 		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
@@ -237,6 +256,8 @@ public class Manager extends Subsystem<ManagerStates> {
 			ManagerConstants.SUBSYSTEM_NAME + "/State String",
 			getState().getStateString()
 		);
+
+
 		// Set States
 		elevator.setState(getState().getElevatorState());
 		coraler.setState(getState().getCoralerState());

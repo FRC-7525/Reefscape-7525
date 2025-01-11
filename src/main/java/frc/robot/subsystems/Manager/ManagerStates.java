@@ -47,42 +47,43 @@ public enum ManagerStates implements SubsystemStates {
 	),
 	AUTO_ALIGN_CLOSE(
 		"Aligning Close",
-		REEF_SCORING_LEVELS.get(Manager.getInstance().operatorReefScoringLevel),
+		REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()),
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
-		REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().operatorReefScoringLevel, false))
+		REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getOperatorReefScoringLevel(), Manager.getInstance().getScoringReefLeft()))
 	),
 	AUTO_ALIGN_FAR(
 		"Aligning Close",
 		ElevatorStates.IDLE,
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
-		REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().operatorReefScoringLevel, false))
+		REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getOperatorReefScoringLevel(), Manager.getInstance().getScoringReefLeft()))
 	),
 	INTAKING_CORALER(
 		"Intaking at Coral Station",
 		ElevatorStates.IDLE,
 		CoralerStates.INAKING,
 		AlgaerStates.IDLE,
-		SOURCE_TARGET_MAP.get(Manager.getInstance().leftSourceSelected)
+		// AutoAlignStates.OFF
+		SOURCE_TARGET_MAP.get(Manager.getInstance().getLeftSourceSelected())
 	),
 	SCORING_REEF_MANUAL(
 		"Scoring Reef",
-		REEF_SCORING_LEVELS.get(Manager.getInstance().driverReefScoringLevel),
+		REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()),
 		CoralerStates.CORALING,
 		AlgaerStates.IDLE,
 		AutoAlignStates.OFF
 	),
 	SCORING_REEF_AA(
 		"Scoring Reef",
-		REEF_SCORING_LEVELS.get(Manager.getInstance().operatorReefScoringLevel),
+		REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()),
 		CoralerStates.CORALING,
 		AlgaerStates.IDLE,
 		AutoAlignStates.OFF
 	),
 	TRANSITIONING_SCORING_REEF(
 		"Transitioning Scoring",
-		REEF_SCORING_LEVELS.get(Manager.getInstance().driverReefScoringLevel),
+		REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()),
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
 		AutoAlignStates.OFF
