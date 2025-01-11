@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Algaer;
+package frc.robot.Subsystems.Algaer;
 
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 

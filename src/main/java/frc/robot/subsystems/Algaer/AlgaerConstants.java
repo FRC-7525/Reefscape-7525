@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Algaer;
+package frc.robot.Subsystems.Algaer;
 
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.KilogramSquareMeters;
