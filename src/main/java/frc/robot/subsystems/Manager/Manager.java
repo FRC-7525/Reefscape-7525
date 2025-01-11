@@ -203,7 +203,6 @@ public class Manager extends Subsystem<ManagerStates> {
 		);
 
 		// Scoring Reef Auto Align
-		// TODO: Implement operator input & make near target scale to setpoint
 		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () ->
 			FIGHT_STICK_2.getRawButtonPressed(8)
 		);
