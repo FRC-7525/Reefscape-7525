@@ -35,6 +35,10 @@ public final class ElevatorConstants {
 	public static final Distance L2_HEIGHT = Meters.of(1.54305);
 	public static final Distance L1_HEIGHT = Meters.of(1);
 	public static final Distance IDLE_HEIGHT = Meters.of(0.1);
+	public static final Distance ALGAE_LOW_HEIGHT = Meters.of(1);
+	public static final Distance ALGAE_HIGH_HEIGHT = Meters.of(1);
+	public static final Distance ALGAE_PROCESSOR_HEIGHT = Meters.of(1);
+	
 	public static final Distance METERS_PER_ROTATION = Meters.of(1); // random value lol
 
 	public static class Sim {

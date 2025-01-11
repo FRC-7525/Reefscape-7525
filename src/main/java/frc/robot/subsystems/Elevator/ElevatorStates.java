@@ -10,10 +10,9 @@ public enum ElevatorStates implements SubsystemStates {
 	L2("L2", ElevatorConstants.L2_HEIGHT.in(Meter)),
 	L1("L1", ElevatorConstants.L1_HEIGHT.in(Meter)),
 	CORAL_STATION("Coral Station", ElevatorConstants.L1_HEIGHT.in(Meter)),
-	CLIMBING("Elevator Climbing", 100),
-	ALGAE_LOW("Elevator Algae Low", 100),
-	ALGAE_HIGH("Elevator Algae High", 100),
-	ALGAE_PROCESSOR("Elevator Processor Level", 100),
+	ALGAE_LOW("Elevator Algae Low", ElevatorConstants.ALGAE_LOW_HEIGHT.in(Meter)),
+	ALGAE_HIGH("Elevator Algae High", ElevatorConstants.ALGAE_HIGH_HEIGHT.in(Meter)),
+	ALGAE_PROCESSOR("Elevator Processor Level", ElevatorConstants.ALGAE_PROCESSOR_HEIGHT.in(Meter)),
 	IDLE("Idle", ElevatorConstants.IDLE_HEIGHT.in(Meter));
 
 	ElevatorStates(String stateString, double targetHeight) {

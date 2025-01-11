@@ -12,7 +12,7 @@ public enum ManagerStates implements SubsystemStates {
 	IDLE("Idle", ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, AutoAlignStates.OFF),
 	CLIMBING(
 		"Climbing",
-		ElevatorStates.CLIMBING,
+		ElevatorStates.IDLE,
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
 		AutoAlignStates.OFF
