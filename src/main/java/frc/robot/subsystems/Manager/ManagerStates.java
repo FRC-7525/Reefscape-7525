@@ -14,7 +14,8 @@ public enum ManagerStates implements SubsystemStates {
 	SCORING_PROCESSOR("Scoring at Processor", ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE),
 	AUTO_ALIGN_CLOSE("Aligning Close", ElevatorStates.IDLE, CoralerStates.IDLE),
 	AUTO_ALIGN_FAR("Aligning Close", ElevatorStates.IDLE, CoralerStates.IDLE),
-	SCORING_REEF("Scoring Reef", ElevatorStates.IDLE, CoralerStates.CORALING);
+	SCORING_REEF("Scoring Reef", ElevatorStates.IDLE, CoralerStates.CORALING),
+	TRANSITIONING_SCORING_REEF("Transitioning Scoring", ElevatorStates.IDLE, CoralerStates.IDLE),;
 
 
 	
