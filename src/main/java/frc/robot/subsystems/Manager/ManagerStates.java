@@ -17,13 +17,6 @@ public enum ManagerStates implements SubsystemStates {
 		AlgaerStates.IDLE,
 		AutoAlignStates.OFF
 	),
-	INTAKING_CORALER(
-		"Intaking at Coral Station",
-		ElevatorStates.IDLE,
-		CoralerStates.INAKING,
-		AlgaerStates.IDLE,
-		SOURCE_TARGET_MAP.get(Manager.getInstance().leftSourceSelected)
-	),
 	INTAKING_ALGAE_LOW(
 		"Intaking Algae Low",
 		ElevatorStates.ALGAE_LOW,
@@ -66,6 +59,13 @@ public enum ManagerStates implements SubsystemStates {
 		AlgaerStates.IDLE,
 		REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().operatorReefScoringLevel, false))
 	),
+	INTAKING_CORALER(
+		"Intaking at Coral Station",
+		ElevatorStates.IDLE,
+		CoralerStates.INAKING,
+		AlgaerStates.IDLE,
+		SOURCE_TARGET_MAP.get(Manager.getInstance().leftSourceSelected)
+	),
 	SCORING_REEF_MANUAL(
 		"Scoring Reef",
 		REEF_SCORING_LEVELS.get(Manager.getInstance().driverReefScoringLevel),
@@ -86,7 +86,7 @@ public enum ManagerStates implements SubsystemStates {
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
 		AutoAlignStates.OFF
-	);
+	),;
 
 	ManagerStates(
 		String stateString,
@@ -113,19 +113,19 @@ public enum ManagerStates implements SubsystemStates {
 		return stateString;
 	}
 
-	protected ElevatorStates getElevatorState() {
+	public ElevatorStates getElevatorState() {
 		return elevatorState;
 	}
 
-	protected CoralerStates getCoralerState() {
+	public CoralerStates getCoralerState() {
 		return coralerState;
 	}
 
-	protected AlgaerStates getAlgaerState() {
+	public AlgaerStates getAlgaerState() {
 		return algaerState;
 	}
 
-	protected AutoAlignStates getAutoAlignState() {
+	public AutoAlignStates getAutoAlignState() {
 		return autoAlignState;
 	}
 }

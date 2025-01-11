@@ -26,30 +26,28 @@ public final class ManagerConstants {
 	);
 
 	public static class AAReefTarget {
-
 		private int hexagonSide;
 		private boolean leftReef;
-
+	
 		private AAReefTarget(int hexagonSide, boolean leftReef) {
 			this.hexagonSide = hexagonSide;
 			this.leftReef = leftReef;
 		}
-
+	
 		public int getHexagonSide() {
 			return hexagonSide;
 		}
-
+	
 		public boolean isLeftReef() {
 			return leftReef;
 		}
-
+		
 		public static AAReefTarget of(int hexagonSide, boolean leftReef) {
 			return new AAReefTarget(hexagonSide, leftReef);
 		}
 	}
 
 	public static final Map<AAReefTarget, AutoAlignStates> REEF_TARGET_MAP;
-
 	static {
 		Map<AAReefTarget, AutoAlignStates> hexagonTargetSides = new HashMap<>();
 		hexagonTargetSides.put(AAReefTarget.of(1, true), AutoAlignStates.L1);
