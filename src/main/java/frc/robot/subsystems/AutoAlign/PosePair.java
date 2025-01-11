@@ -2,7 +2,6 @@ package frc.robot.Subsystems.AutoAlign;
 
 import edu.wpi.first.math.geometry.Pose2d;
 
-
 public final class PosePair {
 
 	private Pose2d redPose;
@@ -21,5 +20,3 @@ public final class PosePair {
 		return bluePose;
 	}
 }
-
-
