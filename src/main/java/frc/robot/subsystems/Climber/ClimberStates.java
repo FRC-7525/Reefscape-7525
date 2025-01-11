@@ -2,9 +2,8 @@ package frc.robot.subsystems.Climber;
 
 import static edu.wpi.first.units.Units.Meter;
 
-import org.team7525.subsystem.SubsystemStates;
-
 import edu.wpi.first.units.measure.Distance;
+import org.team7525.subsystem.SubsystemStates;
 
 public enum ClimberStates implements SubsystemStates {
 	UP("UP", ClimberConstants.UP),

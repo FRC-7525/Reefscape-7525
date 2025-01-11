@@ -1,17 +1,16 @@
 package frc.robot.subsystems.Climber;
 
+import static edu.wpi.first.units.Units.Meters;
+import static frc.robot.subsystems.Climber.ClimberConstants.*;
+import static frc.robot.subsystems.Climber.ClimberConstants.Sim.*;
+
+import com.google.flatbuffers.Constants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-
-import static edu.wpi.first.units.Units.Meters;
-import static frc.robot.subsystems.Climber.ClimberConstants.*;
-import static frc.robot.subsystems.Climber.ClimberConstants.Sim.*;
-
-import com.google.flatbuffers.Constants;
 
 public class ClimberIOSim implements ClimberIO {
 
@@ -34,18 +33,16 @@ public class ClimberIOSim implements ClimberIO {
 			),
 			DCMotor.getNEO(NUM_MOTORS)
 		);
-		pidController = new PIDController(
-			PID_CONSTANTS.kP,
-			PID_CONSTANTS.kI,
-			PID_CONSTANTS.kD
-		);
+		pidController = new PIDController(PID_CONSTANTS.kP, PID_CONSTANTS.kI, PID_CONSTANTS.kD);
 		climberSetpoint = 0;
 	}
 
 	public void updateInputs(ClimberIOInputs inputs) {
 		inputs.climberSpeed = climberSim.getAngularVelocityRPM() / 60;
 		inputs.climberPosition = climberSim.getAngularPositionRotations() * metersPerRotation;
-		inputs.climberAngularPosition = Units.rotationsToDegrees(climberSim.getAngularPositionRotations());
+		inputs.climberAngularPosition = Units.rotationsToDegrees(
+			climberSim.getAngularPositionRotations()
+		);
 		inputs.climberHeightPoint = climberSetpoint;
 	}
 
@@ -59,7 +56,6 @@ public class ClimberIOSim implements ClimberIO {
 		);
 		climberSim.setInputVoltage(voltage);
 	}
-
 
 	public void stop() {
 		climberSim.setInputVoltage(0);

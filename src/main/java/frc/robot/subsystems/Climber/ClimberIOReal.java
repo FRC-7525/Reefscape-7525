@@ -11,9 +11,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.google.flatbuffers.Constants;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.util.Units;
@@ -23,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
 
 public class ClimberIOReal implements ClimberIO {
+
 	private SparkMax motor;
 	private RelativeEncoder motorEncoder;
 
@@ -44,11 +44,7 @@ public class ClimberIOReal implements ClimberIO {
 
 		filter = LinearFilter.movingAverage(CURRENT_FILTER_TAPS);
 
-		pidController = new PIDController(
-			PID_CONSTANTS.kP,
-			PID_CONSTANTS.kI,
-			PID_CONSTANTS.kD
-		);
+		pidController = new PIDController(PID_CONSTANTS.kP, PID_CONSTANTS.kI, PID_CONSTANTS.kD);
 
 		if (ROBOT_MODE == RobotMode.TESTING) {
 			SmartDashboard.putData("Climber PID controller", pidController);
@@ -58,7 +54,7 @@ public class ClimberIOReal implements ClimberIO {
 	@Override
 	public void updateInputs(ClimberIOInputs inputs) {
 		inputs.climberPosition = motorEncoder.getPosition() * metersPerRotation;
-		inputs.climberSpeed = motorEncoder.getVelocity()/60;
+		inputs.climberSpeed = motorEncoder.getVelocity() / 60;
 		inputs.climberAngularPosition = Units.rotationsToDegrees(motorEncoder.getPosition());
 		inputs.climberHeightPoint = setpoint;
 	}
@@ -68,23 +64,35 @@ public class ClimberIOReal implements ClimberIO {
 		double height = setpoint.in(Meters);
 		this.setpoint = height;
 
-		double voltage = pidController.calculate((motorEncoder.getPosition() * metersPerRotation), height);
+		double voltage = pidController.calculate(
+			(motorEncoder.getPosition() * metersPerRotation),
+			height
+		);
 		motor.setVoltage(voltage);
 	}
 
 	@Override
 	public boolean nearSetpoint() {
-		return Math.abs((motorEncoder.getPosition() * metersPerRotation) - setpoint) < POSITION_TOLERANCE.in(Meters);
+		return (
+			Math.abs((motorEncoder.getPosition() * metersPerRotation) - setpoint) <
+			POSITION_TOLERANCE.in(Meters)
+		);
 	}
 
 	@Override
 	public void zero() {
 		double zeroingSpeed = -ZEROING_VELOCITY.in(MetersPerSecond);
 
-		if (filter.calculate(motor.getOutputCurrent()) > ZEROING_CURRENT_LIMIT.in(Amps) || motorZeroed) {
+		if (
+			filter.calculate(motor.getOutputCurrent()) > ZEROING_CURRENT_LIMIT.in(Amps) ||
+			motorZeroed
+		) {
 			if (!motorZeroed) motorEncoder.setPosition(0);
 			setpoint = IDLE.in(Meters);
-			zeroingSpeed = pidController.calculate(motorEncoder.getPosition() * metersPerRotation, setpoint);
+			zeroingSpeed = pidController.calculate(
+				motorEncoder.getPosition() * metersPerRotation,
+				setpoint
+			);
 			motorZeroed = true;
 		}
 
