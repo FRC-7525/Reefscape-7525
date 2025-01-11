@@ -1,5 +1,9 @@
 package frc.robot.Subsystems.Algaer;
 
+import static edu.wpi.first.units.Units.*;
+import static frc.robot.GlobalConstants.SIM_PERIOD;
+import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -8,10 +12,6 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
-
-import static edu.wpi.first.units.Units.*;
-import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
-import static frc.robot.GlobalConstants.SIM_PERIOD;
 
 public class AlgaerIOSim implements AlgaerIO {
 
@@ -94,7 +94,14 @@ public class AlgaerIOSim implements AlgaerIO {
 
 	@Override
 	public boolean nearTarget() {
-		return (Math.abs(Units.radiansToDegrees(pivotSim.getAngleRads()) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees)) &&
-			(Math.abs(Units.radiansToRotations(wheelMotorSim.getAngularVelocityRadPerSec()) - wheelSpeedSetpoint) < WHEEL_TOLERANCE.in(RotationsPerSecond));
+		return (
+			(Math.abs(Units.radiansToDegrees(pivotSim.getAngleRads()) - pivotPositionSetpoint) <
+				PIVOT_TOLERANCE.in(Degrees)) &&
+			(Math.abs(
+					Units.radiansToRotations(wheelMotorSim.getAngularVelocityRadPerSec()) -
+					wheelSpeedSetpoint
+				) <
+				WHEEL_TOLERANCE.in(RotationsPerSecond))
+		);
 	}
 }

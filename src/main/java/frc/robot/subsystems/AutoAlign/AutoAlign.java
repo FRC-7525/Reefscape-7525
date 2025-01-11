@@ -282,7 +282,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		);
 	}
 
-
 	// TODO: This
 	public boolean readyForClose() {
 		return false;
