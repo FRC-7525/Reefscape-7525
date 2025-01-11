@@ -50,14 +50,24 @@ public enum ManagerStates implements SubsystemStates {
 		REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()),
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
-		REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getOperatorReefScoringLevel(), Manager.getInstance().getScoringReefLeft()))
+		REEF_TARGET_MAP.get(
+			AAReefTarget.of(
+				Manager.getInstance().getOperatorReefScoringLevel(),
+				Manager.getInstance().getScoringReefLeft()
+			)
+		)
 	),
 	AUTO_ALIGN_FAR(
 		"Aligning Close",
 		ElevatorStates.IDLE,
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
-		REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getOperatorReefScoringLevel(), Manager.getInstance().getScoringReefLeft()))
+		REEF_TARGET_MAP.get(
+			AAReefTarget.of(
+				Manager.getInstance().getOperatorReefScoringLevel(),
+				Manager.getInstance().getScoringReefLeft()
+			)
+		)
 	),
 	INTAKING_CORALER(
 		"Intaking at Coral Station",
