@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Manager;
 
+import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -13,6 +14,7 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final Drive drive = Drive.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
+	private final AutoAlign autoAlign = AutoAlign.getInstance();
 
 	private Manager() {
 		super("Manager", ManagerStates.IDLE);
@@ -34,6 +36,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		coraler.setState(getState().getCoralerState());
 
 		// Periodics
+		autoAlign.periodic();
 		drive.periodic();
 		elevator.periodic();
 		coraler.periodic();
