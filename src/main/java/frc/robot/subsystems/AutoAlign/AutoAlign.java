@@ -1,18 +1,12 @@
 package frc.robot.Subsystems.AutoAlign;
 
 import static edu.wpi.first.units.Units.Meters;
-import static frc.robot.GlobalConstants.Controllers.OPERATOR_CONTROLLER;
-import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
 
 import choreo.trajectory.SwerveSample;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.Subsystems.AutoAlign.AutoAlignConstants.Real;
-import frc.robot.Subsystems.AutoAlign.AutoAlignConstants.Sim;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Utils.RepulsorFieldPlanner;
 import org.littletonrobotics.junction.Logger;
@@ -36,77 +30,14 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private double interpolatedDistanceFromReef;
 	private boolean repulsorActivated;
 
-	private PoseContainer poseContainer;
-	private BranchLevel branchLevel;
-	private int reefSideNum;
-	private boolean leftSideSelected;
-
-	private static enum BranchLevel {
-		L1,
-		L2,
-		L3,
-		L4,
-	}
-
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
-		// TODO tune real once robot is done. sim tuning is also kinda mid
-		switch (ROBOT_MODE) {
-			case REAL:
-			case TESTING:
-				translationController = new PIDController(
-					Real.TRANSLATIONAL_PID_CONSTANTS.kP,
-					Real.TRANSLATIONAL_PID_CONSTANTS.kI,
-					Real.TRANSLATIONAL_PID_CONSTANTS.kD
-				);
-				rotationController = new PIDController(
-					Real.ROTATIONAL_PID_CONSTANTS.kP,
-					Real.ROTATIONAL_PID_CONSTANTS.kI,
-					Real.ROTATIONAL_PID_CONSTANTS.kD
-				);
-				repulsionTranslationController = new PIDController(
-					Real.TRANSLATIONAL_PID_CONSTANTS.kP,
-					Real.TRANSLATIONAL_PID_CONSTANTS.kI,
-					Real.TRANSLATIONAL_PID_CONSTANTS.kD
-				);
-				repulsionRotationController = new PIDController(
-					Real.ROTATIONAL_PID_CONSTANTS.kP,
-					Real.ROTATIONAL_PID_CONSTANTS.kI,
-					Real.ROTATIONAL_PID_CONSTANTS.kD
-				);
-				poseContainer = DriverStation.getAlliance().get() == Alliance.Blue
-					? BLUE_POSES
-					: RED_POSES;
-				break;
-			case SIM:
-			case REPLAY:
-				translationController = new PIDController(
-					Sim.TRANSLATIONAL_PID_CONSTANTS.kP,
-					Sim.TRANSLATIONAL_PID_CONSTANTS.kI,
-					Sim.TRANSLATIONAL_PID_CONSTANTS.kD
-				);
-				rotationController = new PIDController(
-					Sim.ROTATIONAL_PID_CONSTANTS.kP,
-					Sim.ROTATIONAL_PID_CONSTANTS.kI,
-					Sim.ROTATIONAL_PID_CONSTANTS.kD
-				);
-				repulsionTranslationController = new PIDController(
-					Sim.TRANSLATIONAL_PID_CONSTANTS.kP,
-					Sim.TRANSLATIONAL_PID_CONSTANTS.kI,
-					Sim.TRANSLATIONAL_PID_CONSTANTS.kD
-				);
-				repulsionRotationController = new PIDController(
-					Sim.ROTATIONAL_PID_CONSTANTS.kP,
-					Sim.ROTATIONAL_PID_CONSTANTS.kI,
-					Sim.ROTATIONAL_PID_CONSTANTS.kD
-				);
-				poseContainer = BLUE_POSES;
-				break;
-		}
 
-		targetPose = Testing.test1; // testing
-		branchLevel = BranchLevel.L4;
-		reefSideNum = 0;
+		// PID Config
+		this.translationController = TRANSLATIONAL_CONTROLLER.get();
+		this.rotationController = ROTATIONAL_CONTROLLER.get();
+		this.repulsionTranslationController = REPULSOR_TRANSLATIONAL_CONTROLLER.get();
+		this.repulsionRotationController = REPULSOR_ROTATIONAL_CONTROLLER.get();
 	}
 
 	public static AutoAlign getInstance() {

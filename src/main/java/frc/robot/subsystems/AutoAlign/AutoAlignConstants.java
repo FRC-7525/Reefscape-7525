@@ -1,12 +1,17 @@
 package frc.robot.Subsystems.AutoAlign;
 
 import static edu.wpi.first.units.Units.Meters;
-import static frc.robot.Subsystems.AutoAlign.PoseContainer.PosePair;
+
+import java.util.function.Supplier;
 
 import com.pathplanner.lib.config.PIDConstants;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
+
+import frc.robot.GlobalConstants;
 
 public final class AutoAlignConstants {
 
@@ -22,47 +27,55 @@ public final class AutoAlignConstants {
 	public static final double DISTANCE_ERROR_MARGIN = .05;
 	public static final double ANGLE_ERROR_MARGIN = .1;
 
-	// TODO tune once we get the real robot
-	public static final class Real {
+	public static final Supplier<PIDController> TRANSLATIONAL_CONTROLLER = 
+	() -> switch(GlobalConstants.ROBOT_MODE) {
+		case REAL -> new PIDController(1, 0, 0);
+		case SIM -> new PIDController(1, 0, 0);
+		default -> new PIDController(1, 0, 0);
+	};
 
-		public static final PIDConstants TRANSLATIONAL_PID_CONSTANTS = new PIDConstants(1, 0, 0);
-		public static final PIDConstants ROTATIONAL_PID_CONSTANTS = new PIDConstants(1, 0, 0);
-	}
+	public static final Supplier<PIDController> ROTATIONAL_CONTROLLER =
+	() -> switch(GlobalConstants.ROBOT_MODE) {
+		case REAL -> new PIDController(1, 0, 0);
+		case SIM -> new PIDController(1, 0, 0);
+		default -> new PIDController(1, 0, 0);
+	};
 
-	public static final class Sim {
+	public static final Supplier<PIDController> REPULSOR_TRANSLATIONAL_CONTROLLER =
+	() -> switch(GlobalConstants.ROBOT_MODE) {
+		case REAL -> new PIDController(1, 0, 0);
+		case SIM -> new PIDController(1, 0, 0);
+		default -> new PIDController(1, 0, 0);
+	};
 
-		public static final PIDConstants TRANSLATIONAL_PID_CONSTANTS = new PIDConstants(2.5, 0, 0);
-		public static final PIDConstants ROTATIONAL_PID_CONSTANTS = new PIDConstants(0.8, 0, 0);
-	}
+	public static final Supplier<PIDController> REPULSOR_ROTATIONAL_CONTROLLER =
+	() -> switch(GlobalConstants.ROBOT_MODE) {
+		case REAL -> new PIDController(1, 0, 0);
+		case SIM -> new PIDController(1, 0, 0);
+		default -> new PIDController(1, 0, 0);
+	};
 
 	public static final class Testing {
-
 		public static final Pose2d test1 = new Pose2d(5.6, 1.67, new Rotation2d());
 	}
 
-	public static final PoseContainer RED_POSES = new PoseContainer(
-		new PosePair[] {
+	public static final PosePair[] RED_POSES = new PosePair[] {
 			new PosePair(new Pose2d(), new Pose2d()),
 			new PosePair(new Pose2d(), new Pose2d()),
 			new PosePair(new Pose2d(), new Pose2d()),
 			new PosePair(new Pose2d(), new Pose2d()),
 			new PosePair(new Pose2d(), new Pose2d()),
 			new PosePair(new Pose2d(), new Pose2d()),
-		},
-		new PosePair(new Pose2d(), new Pose2d())
-	);
+	};
 
-	public static final PoseContainer BLUE_POSES = new PoseContainer(
-		new PosePair[] {
+	public static final PosePair[] BLUE_POSES = new PosePair[] {
 			new PosePair(new Pose2d(), new Pose2d()),
 			new PosePair(new Pose2d(), new Pose2d()),
 			new PosePair(new Pose2d(), new Pose2d()),
 			new PosePair(new Pose2d(), new Pose2d()),
 			new PosePair(new Pose2d(), new Pose2d()),
 			new PosePair(new Pose2d(), new Pose2d()),
-		},
-		new PosePair(new Pose2d(), new Pose2d())
-	);
+	};
 
 	public static final int TWO = 2;
 	public static final int ONE = 1;
