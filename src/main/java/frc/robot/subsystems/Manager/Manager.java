@@ -168,7 +168,6 @@ public class Manager extends Subsystem<ManagerStates> {
 			ManagerStates.IDLE,
 			DRIVER_CONTROLLER::getBButtonPressed
 		);
-
 		// Scoring Algae at Processor
 		// addTrigger(
 		// 	ManagerStates.IDLE,
@@ -234,7 +233,10 @@ public class Manager extends Subsystem<ManagerStates> {
 	@Override
 	public void runState() {
 		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
-		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State String", getState().getStateString());
+		Logger.recordOutput(
+			ManagerConstants.SUBSYSTEM_NAME + "/State String",
+			getState().getStateString()
+		);
 		// Set States
 		elevator.setState(getState().getElevatorState());
 		coraler.setState(getState().getCoralerState());

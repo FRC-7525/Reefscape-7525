@@ -86,7 +86,7 @@ public enum ManagerStates implements SubsystemStates {
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
 		AutoAlignStates.OFF
-	),;
+	);
 
 	ManagerStates(
 		String stateString,
