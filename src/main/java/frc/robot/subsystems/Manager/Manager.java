@@ -135,11 +135,7 @@ public class Manager extends Subsystem<ManagerStates> {
 				DRIVER_CONTROLLER.getRightBumperButtonPressed()
 		);
 		// TODO: Change to beam break at coraler!
-		addTrigger(
-			ManagerStates.INTAKING_CORALER,
-			ManagerStates.IDLE,
-			() -> false
-		);
+		addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.IDLE, () -> false);
 
 		// Intaking Algae
 		addTrigger(
@@ -256,7 +252,6 @@ public class Manager extends Subsystem<ManagerStates> {
 			ManagerConstants.SUBSYSTEM_NAME + "/State String",
 			getState().getStateString()
 		);
-
 
 		// Set States
 		elevator.setState(getState().getElevatorState());
