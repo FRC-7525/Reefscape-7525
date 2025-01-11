@@ -22,8 +22,11 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 
 	public boolean leftSourceSelected = false;
+	// The runnable triggers and regular triggers will race eachother and if runnable loses our code crashes because you can't map -1 to a map without -1 :boiled: (fix it to change -1 to 1, im not gona do that tho)
 	public int driverReefScoringLevel = -1;
 	public int operatorReefScoringLevel = -1;
+	public int hexagonTargetSide = -1;
+	public boolean scoringReefLeft = false;
 
 	private Manager() {
 		super("Manager", ManagerStates.IDLE);
@@ -39,7 +42,22 @@ public class Manager extends Subsystem<ManagerStates> {
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 4, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
 
 		// Toggling which level to score at (auto align)
-		
+		addRunnableTrigger(() -> this.operatorReefScoringLevel = 1, () -> FIGHT_STICK_1.getRawButtonPressed(1));
+		addRunnableTrigger(() -> this.operatorReefScoringLevel = 2, () -> FIGHT_STICK_1.getRawButtonPressed(2));
+		addRunnableTrigger(() -> this.operatorReefScoringLevel = 3, () -> FIGHT_STICK_1.getRawButtonPressed(3));
+		addRunnableTrigger(() -> this.operatorReefScoringLevel = 4, () -> FIGHT_STICK_1.getRawButtonPressed(4));
+
+		// Togling which side of the hexagon to score at (auto align)
+		addRunnableTrigger(() -> this.hexagonTargetSide = 1, () -> FIGHT_STICK_2.getRawButtonPressed(2));
+		addRunnableTrigger(() -> this.hexagonTargetSide = 2, () -> FIGHT_STICK_2.getRawButtonPressed(3));
+		addRunnableTrigger(() -> this.hexagonTargetSide = 3, () -> FIGHT_STICK_2.getRawButtonPressed(4));
+		addRunnableTrigger(() -> this.hexagonTargetSide = 4, () -> FIGHT_STICK_2.getRawButtonPressed(5));
+		addRunnableTrigger(() -> this.hexagonTargetSide = 5, () -> FIGHT_STICK_2.getRawButtonPressed(6));
+		addRunnableTrigger(() -> this.hexagonTargetSide = 6, () -> FIGHT_STICK_2.getRawButtonPressed(7));
+
+		// Toggling Left or Right Hexagon Side Scoring (auto align)
+		addRunnableTrigger(() -> this.scoringReefLeft = true, () -> FIGHT_STICK_1.getRawButtonPressed(5));
+		addRunnableTrigger(() -> this.scoringReefLeft = false, () -> FIGHT_STICK_1.getRawButtonPressed(6));
 
 		// Climbing
 		// TODO: Check with yussuf if holding down the trigger for letting up the climber then releasing is good
@@ -134,7 +152,7 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Scoring Reef Auto Align
 		// TODO: Implement operator input & make near target scale to setpoint
-		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> false);
+		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> FIGHT_STICK_2.getRawButtonPressed(8));
 		addTrigger(
 			ManagerStates.AUTO_ALIGN_FAR,
 			ManagerStates.AUTO_ALIGN_CLOSE,
@@ -171,6 +189,14 @@ public class Manager extends Subsystem<ManagerStates> {
 		return operatorReefScoringLevel;
 	}
 
+	public int getHexagonTargetSide() {
+		return hexagonTargetSide;
+	}
+
+	public boolean isScoringReefLeft() {
+		return scoringReefLeft;
+	}
+
 	@Override
 	public void runState() {
 		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
@@ -185,7 +211,8 @@ public class Manager extends Subsystem<ManagerStates> {
 		elevator.periodic();
 		coraler.periodic();
 
-		if (DRIVER_CONTROLLER.getXButtonPressed()) {
+		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		if (DRIVER_CONTROLLER.getXButtonPressed() || FIGHT_STICK_2.getRawButtonPressed(1)) {
 			setState(ManagerStates.IDLE);
 		}
 	}
