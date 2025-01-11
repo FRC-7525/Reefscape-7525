@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Manager.Manager;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -17,7 +16,6 @@ import org.team7525.misc.CommandsUtil;
 public class Robot extends LoggedRobot {
 
 	private final Manager manager = Manager.getInstance();
-	private final AutoAlign autoAlign = AutoAlign.getInstance();
 
 	@Override
 	public void robotInit() {
@@ -46,7 +44,6 @@ public class Robot extends LoggedRobot {
 	public void robotPeriodic() {
 		CommandScheduler.getInstance().run();
 		manager.periodic();
-		autoAlign.periodic();
 	}
 
 	@Override
