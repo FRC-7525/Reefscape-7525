@@ -25,8 +25,6 @@ public class GlobalConstants {
 		? RobotMode.SIM
 		: RobotMode.SIM;
 
-	public static final double SIM_PERIOD = 0.01;
-
 	public static final double SIMULATION_PERIOD = 0.02;
 
 	public static class Controllers {

@@ -1,7 +1,7 @@
 package frc.robot.Subsystems.Algaer;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.GlobalConstants.SIM_PERIOD;
+import static frc.robot.GlobalConstants.SIMULATION_PERIOD;
 import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -61,8 +61,8 @@ public class AlgaerIOSim implements AlgaerIO {
 
 	@Override
 	public void updateInputs(AlgaerIOInputs input) {
-		pivotSim.update(SIM_PERIOD);
-		wheelMotorSim.update(SIM_PERIOD);
+		pivotSim.update(SIMULATION_PERIOD);
+		wheelMotorSim.update(SIMULATION_PERIOD);
 
 		input.wheelSpeed = Units.radiansToDegrees(wheelMotorSim.getAngularVelocityRadPerSec());
 		input.wheelSpeedSetpoint = wheelSpeedSetpoint;
