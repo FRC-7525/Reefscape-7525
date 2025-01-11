@@ -232,26 +232,6 @@ public class Manager extends Subsystem<ManagerStates> {
 		return instance;
 	}
 
-	public boolean isLeftSourceSelected() {
-		return leftSourceSelected;
-	}
-
-	public int getDriverReefScoringLevel() {
-		return driverReefScoringLevel;
-	}
-
-	public int getOperatorReefScoringLevel() {
-		return operatorReefScoringLevel;
-	}
-
-	public int getHexagonTargetSide() {
-		return hexagonTargetSide;
-	}
-
-	public boolean isScoringReefLeft() {
-		return scoringReefLeft;
-	}
-
 	@Override
 	public void runState() {
 		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());

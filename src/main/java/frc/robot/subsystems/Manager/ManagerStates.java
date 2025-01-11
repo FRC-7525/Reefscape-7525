@@ -22,7 +22,7 @@ public enum ManagerStates implements SubsystemStates {
 		ElevatorStates.IDLE,
 		CoralerStates.INAKING,
 		AlgaerStates.IDLE,
-		AutoAlignStates.OFF
+		SOURCE_TARGET_MAP.get(Manager.getInstance().leftSourceSelected)
 	),
 	INTAKING_ALGAE_LOW(
 		"Intaking Algae Low",
@@ -57,14 +57,14 @@ public enum ManagerStates implements SubsystemStates {
 		REEF_SCORING_LEVELS.get(Manager.getInstance().operatorReefScoringLevel),
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
-		AutoAlignStates.DRIVING_REEF
+		REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().operatorReefScoringLevel, false))
 	),
 	AUTO_ALIGN_FAR(
 		"Aligning Close",
 		ElevatorStates.IDLE,
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
-		AutoAlignStates.DRIVING_REEF
+		REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().operatorReefScoringLevel, false))
 	),
 	SCORING_REEF_MANUAL(
 		"Scoring Reef",
