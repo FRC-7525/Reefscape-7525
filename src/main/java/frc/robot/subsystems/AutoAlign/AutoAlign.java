@@ -12,6 +12,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Subsystems.AutoAlign.AutoAlignConstants.Real;
 import frc.robot.Subsystems.AutoAlign.AutoAlignConstants.Sim;
 import frc.robot.Subsystems.Drive.Drive;
@@ -78,6 +79,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 					Real.ROTATIONAL_PID_CONSTANTS.kI,
 					Real.ROTATIONAL_PID_CONSTANTS.kD
 				);
+                poseContainer = DriverStation.getAlliance().get() == Alliance.Blue ? BLUE_POSES : RED_POSES;
 				break;
 			case SIM:
 			case REPLAY:
@@ -101,10 +103,14 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 					Sim.ROTATIONAL_PID_CONSTANTS.kI,
 					Sim.ROTATIONAL_PID_CONSTANTS.kD
 				);
+                poseContainer = BLUE_POSES;
 				break;
 		}
 
+        
 		targetPose = Testing.test1; // testing
+        branchLevel = BranchLevel.L4;
+        reefSideNum = 0;
 
 		// Reef Sides
 		addRunnableTrigger(() -> reefSideNum = 0, () -> FIGHT_STICK.getRawButtonPressed(0));
