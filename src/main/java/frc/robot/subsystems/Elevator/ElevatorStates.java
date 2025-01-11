@@ -16,7 +16,6 @@ public enum ElevatorStates implements SubsystemStates {
 	ALGAE_PROCESSOR("Elevator Processor Level", 100),
 	IDLE("Idle", ElevatorConstants.IDLE_HEIGHT.in(Meter));
 
-
 	ElevatorStates(String stateString, double targetHeight) {
 		this.targetHeight = targetHeight;
 		this.stateString = stateString;
