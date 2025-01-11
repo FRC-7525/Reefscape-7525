@@ -59,22 +59,58 @@ public class Manager extends Subsystem<ManagerStates> {
 		);
 
 		// Toggling which level to score at (auto align)
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 1, () -> FIGHT_STICK_1.getRawButtonPressed(1));
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 2, () -> FIGHT_STICK_1.getRawButtonPressed(2));
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 3, () -> FIGHT_STICK_1.getRawButtonPressed(3));
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 4, () -> FIGHT_STICK_1.getRawButtonPressed(4));
+		addRunnableTrigger(
+			() -> this.operatorReefScoringLevel = 1,
+			() -> FIGHT_STICK_1.getRawButtonPressed(1)
+		);
+		addRunnableTrigger(
+			() -> this.operatorReefScoringLevel = 2,
+			() -> FIGHT_STICK_1.getRawButtonPressed(2)
+		);
+		addRunnableTrigger(
+			() -> this.operatorReefScoringLevel = 3,
+			() -> FIGHT_STICK_1.getRawButtonPressed(3)
+		);
+		addRunnableTrigger(
+			() -> this.operatorReefScoringLevel = 4,
+			() -> FIGHT_STICK_1.getRawButtonPressed(4)
+		);
 
 		// Togling which side of the hexagon to score at (auto align)
-		addRunnableTrigger(() -> this.hexagonTargetSide = 1, () -> FIGHT_STICK_2.getRawButtonPressed(2));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 2, () -> FIGHT_STICK_2.getRawButtonPressed(3));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 3, () -> FIGHT_STICK_2.getRawButtonPressed(4));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 4, () -> FIGHT_STICK_2.getRawButtonPressed(5));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 5, () -> FIGHT_STICK_2.getRawButtonPressed(6));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 6, () -> FIGHT_STICK_2.getRawButtonPressed(7));
+		addRunnableTrigger(
+			() -> this.hexagonTargetSide = 1,
+			() -> FIGHT_STICK_2.getRawButtonPressed(2)
+		);
+		addRunnableTrigger(
+			() -> this.hexagonTargetSide = 2,
+			() -> FIGHT_STICK_2.getRawButtonPressed(3)
+		);
+		addRunnableTrigger(
+			() -> this.hexagonTargetSide = 3,
+			() -> FIGHT_STICK_2.getRawButtonPressed(4)
+		);
+		addRunnableTrigger(
+			() -> this.hexagonTargetSide = 4,
+			() -> FIGHT_STICK_2.getRawButtonPressed(5)
+		);
+		addRunnableTrigger(
+			() -> this.hexagonTargetSide = 5,
+			() -> FIGHT_STICK_2.getRawButtonPressed(6)
+		);
+		addRunnableTrigger(
+			() -> this.hexagonTargetSide = 6,
+			() -> FIGHT_STICK_2.getRawButtonPressed(7)
+		);
 
 		// Toggling Left or Right Hexagon Side Scoring (auto align)
-		addRunnableTrigger(() -> this.scoringReefLeft = true, () -> FIGHT_STICK_1.getRawButtonPressed(5));
-		addRunnableTrigger(() -> this.scoringReefLeft = false, () -> FIGHT_STICK_1.getRawButtonPressed(6));
+		addRunnableTrigger(
+			() -> this.scoringReefLeft = true,
+			() -> FIGHT_STICK_1.getRawButtonPressed(5)
+		);
+		addRunnableTrigger(
+			() -> this.scoringReefLeft = false,
+			() -> FIGHT_STICK_1.getRawButtonPressed(6)
+		);
 
 		// Climbing
 		// TODO: Check with yussuf if holding down the trigger for letting up the climber then releasing is good
@@ -169,7 +205,9 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Scoring Reef Auto Align
 		// TODO: Implement operator input & make near target scale to setpoint
-		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> FIGHT_STICK_2.getRawButtonPressed(8));
+		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () ->
+			FIGHT_STICK_2.getRawButtonPressed(8)
+		);
 		addTrigger(
 			ManagerStates.AUTO_ALIGN_FAR,
 			ManagerStates.AUTO_ALIGN_CLOSE,
