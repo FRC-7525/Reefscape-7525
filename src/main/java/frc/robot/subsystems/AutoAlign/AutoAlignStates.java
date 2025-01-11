@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-
 import org.team7525.subsystem.SubsystemStates;
 
 public enum AutoAlignStates implements SubsystemStates {
@@ -24,7 +23,11 @@ public enum AutoAlignStates implements SubsystemStates {
 	R5("Driving to Reef Right 5", PosePair.of(new Pose2d(), new Pose2d()), Meters.of(1.5)),
 	L6("Driving to Reef Left 6", PosePair.of(new Pose2d(), new Pose2d()), Meters.of(1.5)),
 	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(), new Pose2d()), Meters.of(1.5)),
-	RIGHT_SOURCE("Driving to Source Right", PosePair.of(new Pose2d(), new Pose2d()), Meters.of(1.5)),
+	RIGHT_SOURCE(
+		"Driving to Source Right",
+		PosePair.of(new Pose2d(), new Pose2d()),
+		Meters.of(1.5)
+	),
 	LEFT_SOURCE("Driving to Source Left", PosePair.of(new Pose2d(), new Pose2d()), Meters.of(1.5));
 
 	AutoAlignStates(String stateString, PosePair targetPose, Distance distanceForCloseAA) {
@@ -43,7 +46,9 @@ public enum AutoAlignStates implements SubsystemStates {
 	}
 
 	public Pose2d getTargetPose() {
-		return DriverStation.getAlliance().equals(Alliance.Blue) ? targetPose.getBluePose() : targetPose.getRedPose();
+		return DriverStation.getAlliance().equals(Alliance.Blue)
+			? targetPose.getBluePose()
+			: targetPose.getRedPose();
 	}
 
 	public Distance getDistanceForCloseAA() {
