@@ -241,7 +241,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		targetPose = leftSideSelected
 			? poseContainer.getReefSides(reefSideNum).leftPose
 			: poseContainer.getReefSides(reefSideNum).rightPose;
-
 		// switch (branchLevel) {
 		// 	case L1:
 		// 		setState(AutoAlignStates.DRIVING_REEF);
