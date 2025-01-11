@@ -130,10 +130,10 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		double numeratorY =
 			(reefPose.getY() - startPose.getY()) * (endPose.getY() - startPose.getY());
 		double denominator =
-			Math.pow(endPose.getX() - startPose.getX(), TWO) +
-			Math.pow(endPose.getY() - startPose.getY(), TWO);
+			Math.pow(endPose.getX() - startPose.getX(), 2) +
+			Math.pow(endPose.getY() - startPose.getY(), 2);
 
-		return MathUtil.clamp((numeratorX + numeratorY) / denominator, ZERO, ONE);
+		return MathUtil.clamp((numeratorX + numeratorY) / denominator, 0, 1);
 	}
 
 	private void logOutput() {

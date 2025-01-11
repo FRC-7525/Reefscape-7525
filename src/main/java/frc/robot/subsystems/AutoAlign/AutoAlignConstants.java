@@ -55,26 +55,4 @@ public final class AutoAlignConstants {
 
 		public static final Pose2d test1 = new Pose2d(5.6, 1.67, new Rotation2d());
 	}
-
-	public static final PosePair[] RED_POSES = new PosePair[] {
-		new PosePair(new Pose2d(), new Pose2d()),
-		new PosePair(new Pose2d(), new Pose2d()),
-		new PosePair(new Pose2d(), new Pose2d()),
-		new PosePair(new Pose2d(), new Pose2d()),
-		new PosePair(new Pose2d(), new Pose2d()),
-		new PosePair(new Pose2d(), new Pose2d()),
-	};
-
-	public static final PosePair[] BLUE_POSES = new PosePair[] {
-		new PosePair(new Pose2d(), new Pose2d()),
-		new PosePair(new Pose2d(), new Pose2d()),
-		new PosePair(new Pose2d(), new Pose2d()),
-		new PosePair(new Pose2d(), new Pose2d()),
-		new PosePair(new Pose2d(), new Pose2d()),
-		new PosePair(new Pose2d(), new Pose2d()),
-	};
-
-	public static final int TWO = 2;
-	public static final int ONE = 1;
-	public static final int ZERO = 0;
 }
