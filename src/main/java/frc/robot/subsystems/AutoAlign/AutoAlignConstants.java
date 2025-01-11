@@ -2,13 +2,12 @@ package frc.robot.Subsystems.AutoAlign;
 
 import static edu.wpi.first.units.Units.Meters;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
 import frc.robot.GlobalConstants;
+import java.util.function.Supplier;
 
 public final class AutoAlignConstants {
 
