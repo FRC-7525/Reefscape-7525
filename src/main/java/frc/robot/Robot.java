@@ -38,29 +38,33 @@ public class Robot extends LoggedRobot {
 		Logger.start();
 		CommandsUtil.logCommands();
 		DriverStation.silenceJoystickConnectionWarning(true);
+
+		CommandScheduler.getInstance().unregisterAllSubsystems();
 	}
 
 	@Override
 	public void robotPeriodic() {
-		// CommandScheduler.getInstance().run();
-		CommandScheduler.getInstance().disable();
+		CommandScheduler.getInstance().run();
 		manager.periodic();
 	}
 
 	@Override
-	public void autonomousInit() {}
+	public void autonomousInit() {
+	}
 
 	@Override
 	public void autonomousPeriodic() {}
 
 	@Override
-	public void teleopInit() {}
+	public void teleopInit() {
+	}
 
 	@Override
 	public void teleopPeriodic() {}
 
 	@Override
-	public void disabledInit() {}
+	public void disabledInit() {
+	}
 
 	@Override
 	public void disabledPeriodic() {}
