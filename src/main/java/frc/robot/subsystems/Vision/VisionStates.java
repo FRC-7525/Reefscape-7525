@@ -1,6 +1,7 @@
 package frc.robot.subsystems.Vision;
 
-import frc.robot.pioneersLib.subsystem.SubsystemStates;
+import org.team7525.subsystem.SubsystemStates;
+
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 public enum VisionStates implements SubsystemStates {

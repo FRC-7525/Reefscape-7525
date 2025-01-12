@@ -48,7 +48,7 @@ public class VisionIOSim implements VisionIO {
 		frontCameraProperties.setAvgLatencyMs(40);
 		frontCameraProperties.setLatencyStdDevMs(10);
 
-		ROBOT_TO_BACK_CAMERACamera = new PhotonCameraSim(new PhotonCamera("Back Camera"), backCameraProperties);
+		backCamera = new PhotonCameraSim(new PhotonCamera("Back Camera"), backCameraProperties);
 		frontCamera = new PhotonCameraSim(new PhotonCamera("Front Camera"), frontCameraProperties);
 
 		visionSim.addAprilTags(GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT);
