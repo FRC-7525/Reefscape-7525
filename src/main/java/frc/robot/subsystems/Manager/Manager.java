@@ -134,7 +134,13 @@ public class Manager extends Subsystem<ManagerStates> {
 				DRIVER_CONTROLLER.getLeftBumperButtonPressed() ||
 				DRIVER_CONTROLLER.getRightBumperButtonPressed()
 		);
-		addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
+		addTrigger(
+			ManagerStates.INTAKING_CORALER,
+			ManagerStates.IDLE,
+			() ->
+				DRIVER_CONTROLLER.getLeftBumperButtonPressed() ||
+				DRIVER_CONTROLLER.getRightBumperButtonPressed()
+		);
 
 		// Intaking Algae
 		addTrigger(
