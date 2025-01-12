@@ -8,9 +8,9 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.Subsystems.Drive.Drive;
-import frc.robot.Utils.RepulsorFieldPlanner;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
+import org.team7525.autoAlign.RepulsorFieldPlanner;
 
 public class AutoAlign extends Subsystem<AutoAlignStates> {
 
