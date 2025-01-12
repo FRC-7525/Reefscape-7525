@@ -30,7 +30,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.GlobalConstants;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
-
 import org.littletonrobotics.junction.Logger;
 import org.team7525.misc.LocalADStarAK;
 import org.team7525.subsystem.Subsystem;
@@ -146,7 +145,10 @@ public class Drive extends Subsystem<DriveStates> {
 		logOutputs(driveIO.getDrive().getState());
 
 		// Otherwise it will try to force wheels to stop in auto
-		if (!DriverStation.isAutonomous() && AutoAlign.getInstance().getState() == AutoAlignStates.OFF) {
+		if (
+			!DriverStation.isAutonomous() &&
+			AutoAlign.getInstance().getState() == AutoAlignStates.OFF
+		) {
 			getState().driveRobot();
 		}
 	}
