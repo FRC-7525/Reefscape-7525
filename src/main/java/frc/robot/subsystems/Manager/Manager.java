@@ -134,8 +134,7 @@ public class Manager extends Subsystem<ManagerStates> {
 				DRIVER_CONTROLLER.getLeftBumperButtonPressed() ||
 				DRIVER_CONTROLLER.getRightBumperButtonPressed()
 		);
-		// TODO: Change to beam break at coraler!
-		addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.IDLE, () -> false);
+		addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
 
 		// Intaking Algae
 		addTrigger(
