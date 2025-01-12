@@ -1,7 +1,7 @@
 package frc.robot.subsystems.Vision;
 
-import org.team7525.subsystem.SubsystemStates;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.team7525.subsystem.SubsystemStates;
 
 public enum VisionStates implements SubsystemStates {
 	ON("Vision On", true, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR),

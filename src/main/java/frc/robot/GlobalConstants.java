@@ -2,12 +2,9 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 
-import org.team7525.misc.VisionUtil.CameraResolution;
-
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -20,6 +17,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Subsystems.Drive.Drive.SysIdMode;
+import org.team7525.misc.VisionUtil.CameraResolution;
 
 public class GlobalConstants {
 
@@ -94,7 +92,8 @@ public class GlobalConstants {
 
 		public static final RobotConfig ROBOT_CONFIG = geRobotConfig();
 	}
-		public static final class Vision {
+
+	public static final class Vision {
 
 		// Robot to cam
 		public static final Translation3d ROBOT_TO_BACK_CAMERA_TRALSLATION = new Translation3d(
