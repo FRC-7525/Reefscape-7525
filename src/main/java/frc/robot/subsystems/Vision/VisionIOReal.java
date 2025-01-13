@@ -1,5 +1,7 @@
 package frc.robot.Subsystems.Vision;
 
+import static frc.robot.Subsystems.Vision.VisionConstants.*;
+
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -8,8 +10,6 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-
-import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
 public class VisionIOReal implements VisionIO {
 
@@ -25,20 +25,10 @@ public class VisionIOReal implements VisionIO {
 		frontCamera = new PhotonCamera("Front Camera");
 
 		// Pose estimators :/
-		frontEstimator = new PhotonPoseEstimator(
-				APRIL_TAG_FIELD_LAYOUT,
-				PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-				ROBOT_TO_FRONT_CAMERA);
-		backEstimator = new PhotonPoseEstimator(
-				APRIL_TAG_FIELD_LAYOUT,
-				PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-				ROBOT_TO_BACK_CAMERA);
-		backDebouncer = new Debouncer(
-				CAMERA_DEBOUNCE_TIME,
-				DebounceType.kFalling);
-		frontDebouncer = new Debouncer(
-				CAMERA_DEBOUNCE_TIME,
-				DebounceType.kFalling);
+		frontEstimator = new PhotonPoseEstimator(APRIL_TAG_FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, ROBOT_TO_FRONT_CAMERA);
+		backEstimator = new PhotonPoseEstimator(APRIL_TAG_FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, ROBOT_TO_BACK_CAMERA);
+		backDebouncer = new Debouncer(CAMERA_DEBOUNCE_TIME, DebounceType.kFalling);
+		frontDebouncer = new Debouncer(CAMERA_DEBOUNCE_TIME, DebounceType.kFalling);
 	}
 
 	@Override
@@ -52,11 +42,8 @@ public class VisionIOReal implements VisionIO {
 		inputs.frontCameraConnected = frontCamera.isConnected();
 		inputs.backTargetCount = backPose.get().targetsUsed.size();
 		inputs.frontTargetCount = frontPose.get().targetsUsed.size();
-		if (inputs.hasBackVision)
-			inputs.backVisionPose = backPose.get().estimatedPose.toPose2d();
-		if (inputs.hasFrontVision)
-			inputs.frontVisionPose = frontPose
-					.get().estimatedPose.toPose2d();
+		if (inputs.hasBackVision) inputs.backVisionPose = backPose.get().estimatedPose.toPose2d();
+		if (inputs.hasFrontVision) inputs.frontVisionPose = frontPose.get().estimatedPose.toPose2d();
 	}
 
 	@Override

@@ -1,13 +1,13 @@
 package frc.robot.Subsystems.Vision;
 
-import org.team7525.misc.VisionUtil;
-import org.team7525.subsystem.Subsystem;
+import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.Subsystems.Vision.VisionConstants.*;
+
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
-
-import static frc.robot.Subsystems.Vision.VisionConstants.*;
-import static frc.robot.GlobalConstants.ROBOT_MODE;
+import org.team7525.misc.VisionUtil;
+import org.team7525.subsystem.Subsystem;
 
 public class Vision extends Subsystem<VisionStates> {
 
@@ -21,8 +21,7 @@ public class Vision extends Subsystem<VisionStates> {
 		this.io = switch (ROBOT_MODE) {
 			case REAL -> new VisionIOReal();
 			case SIM -> new VisionIOSim();
-			case TESTING -> new VisionIO() {
-			};
+			case TESTING -> new VisionIO() {};
 			case REPLAY -> new VisionIOSim();
 		};
 		this.drive = Drive.getInstance();
@@ -43,18 +42,12 @@ public class Vision extends Subsystem<VisionStates> {
 
 			Optional<EstimatedRobotPose> frontPose = io.getFrontPoseEstimation();
 			if (frontPose.isPresent()) {
-				drive.addVisionMeasurement(
-						frontPose.get().estimatedPose.toPose2d(),
-						frontPose.get().timestampSeconds,
-						VisionUtil.getEstimationStdDevs(frontPose.get(), FRONT_RESOLUTION));
+				drive.addVisionMeasurement(frontPose.get().estimatedPose.toPose2d(), frontPose.get().timestampSeconds, VisionUtil.getEstimationStdDevs(frontPose.get(), FRONT_RESOLUTION));
 			}
 
 			Optional<EstimatedRobotPose> backPose = io.getBackPoseEstimation();
 			if (backPose.isPresent()) {
-				drive.addVisionMeasurement(
-						backPose.get().estimatedPose.toPose2d(),
-						backPose.get().timestampSeconds,
-						VisionUtil.getEstimationStdDevs(backPose.get(), BACK_RESOLUTION));
+				drive.addVisionMeasurement(backPose.get().estimatedPose.toPose2d(), backPose.get().timestampSeconds, VisionUtil.getEstimationStdDevs(backPose.get(), BACK_RESOLUTION));
 			}
 		}
 	}
