@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Climber;
+package frc.robot.Subsystems.Climber;
 
 import edu.wpi.first.units.measure.Distance;
 import org.littletonrobotics.junction.AutoLog;
