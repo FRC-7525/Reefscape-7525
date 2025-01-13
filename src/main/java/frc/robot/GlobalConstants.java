@@ -9,9 +9,11 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.subsystems.Drive.Drive.SysIdMode;
+import frc.robot.Subsystems.Drive.Drive.SysIdMode;
 
 public class GlobalConstants {
+
+	public static double SIM_DELTA_TIME = 0.02;
 
 	public enum RobotMode {
 		REAL,
@@ -25,6 +27,7 @@ public class GlobalConstants {
 		: RobotMode.SIM;
 
 	public static final double SIM_PERIOD = 0.01;
+	public static final double SIMULATION_PERIOD = 0.02;
 
 	public static class Controllers {
 

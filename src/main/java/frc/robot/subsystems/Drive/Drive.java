@@ -1,10 +1,10 @@
-package frc.robot.subsystems.Drive;
+package frc.robot.Subsystems.Drive;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.*;
 import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.GlobalConstants.Drive.*;
-import static frc.robot.subsystems.Drive.TunerConstants.kSpeedAt12Volts;
+import static frc.robot.Subsystems.Drive.TunerConstants.kSpeedAt12Volts;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
@@ -111,7 +111,7 @@ public class Drive extends Subsystem<DriveStates> {
 	/**
 	 * Returns the singleton instance of the Drive subsystem.
 	 *
-	 * @return The Drive instance.
+	 * @return The Drive Instance.
 	 */
 	public static Drive getInstance() {
 		if (instance == null) {
