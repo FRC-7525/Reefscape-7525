@@ -12,15 +12,15 @@ import org.team7525.misc.VisionUtil.CameraResolution;
 public class VisionConstants {
 
 	// Robot to cam
-	public static final Translation3d ROBOT_TO_BACK_CAMERA_TRALSLATION = new Translation3d(Units.inchesToMeters(-14.25), Units.inchesToMeters(-14.25), Units.inchesToMeters(5));
+	public static final Translation3d ROBOT_TO_BACK_CAMERA_TRALSLATION = new Translation3d(Units.inchesToMeters(-11.5), Units.inchesToMeters(11.5), Units.inchesToMeters(9));
 	public static final Rotation3d ROBOT_TO_BACK_CAMERA_ROTATION = new Rotation3d(
 		0,
-		Math.toRadians(-15), // pitch i think
-		Math.toRadians(-160) // yaw i think
+		Math.toRadians(-10), // pitch i think
+		Math.toRadians(-10) // yaw i think
 	);
 	public static final Transform3d ROBOT_TO_BACK_CAMERA = new Transform3d(ROBOT_TO_BACK_CAMERA_TRALSLATION, ROBOT_TO_BACK_CAMERA_ROTATION);
-	public static final Translation3d ROBOT_TO_FRONT_CAMERA_TRANSLATION = new Translation3d(Units.inchesToMeters(14.25), Units.inchesToMeters(14.25), Units.inchesToMeters(5));
-	public static final Rotation3d ROBOT_TO_FRONT_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-10), Math.toRadians(190));
+	public static final Translation3d ROBOT_TO_FRONT_CAMERA_TRANSLATION = new Translation3d(Units.inchesToMeters(11.5), Units.inchesToMeters(-11.5), Units.inchesToMeters(9));
+	public static final Rotation3d ROBOT_TO_FRONT_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-10), Math.toRadians(-15));
 	public static final Transform3d ROBOT_TO_FRONT_CAMERA = new Transform3d(ROBOT_TO_FRONT_CAMERA_TRANSLATION, ROBOT_TO_FRONT_CAMERA_ROTATION);
 
 	public static final double CAMERA_DEBOUNCE_TIME = 0.5;
