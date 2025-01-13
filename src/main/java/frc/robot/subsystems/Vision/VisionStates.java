@@ -1,15 +1,8 @@
-<<<<<<< HEAD
 package frc.robot.Subsystems.Vision;
 
 import org.team7525.subsystem.SubsystemStates;
 
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-=======
-package frc.robot.subsystems.Vision;
-
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.team7525.subsystem.SubsystemStates;
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0
 
 public enum VisionStates implements SubsystemStates {
 	ON("Vision On", true, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR),
@@ -37,8 +30,4 @@ public enum VisionStates implements SubsystemStates {
 	public String getStateString() {
 		return stateString;
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0

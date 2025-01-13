@@ -1,17 +1,9 @@
-<<<<<<< HEAD
 package frc.robot.Subsystems.Vision;
-=======
-package frc.robot.subsystems.Vision;
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-<<<<<<< HEAD
-=======
-import frc.robot.GlobalConstants;
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -21,11 +13,8 @@ import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 
-<<<<<<< HEAD
 import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
-=======
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0
 public class VisionIOSim implements VisionIO {
 
 	private VisionSystemSim visionSim;
@@ -63,15 +52,9 @@ public class VisionIOSim implements VisionIO {
 		backCamera = new PhotonCameraSim(new PhotonCamera("Back Camera"), backCameraProperties);
 		frontCamera = new PhotonCameraSim(new PhotonCamera("Front Camera"), frontCameraProperties);
 
-<<<<<<< HEAD
 		visionSim.addAprilTags(APRIL_TAG_FIELD_LAYOUT);
 		visionSim.addCamera(backCamera, ROBOT_TO_BACK_CAMERA);
 		visionSim.addCamera(frontCamera, ROBOT_TO_FRONT_CAMERA);
-=======
-		visionSim.addAprilTags(GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT);
-		visionSim.addCamera(backCamera, GlobalConstants.Vision.ROBOT_TO_BACK_CAMERA);
-		visionSim.addCamera(frontCamera, GlobalConstants.Vision.ROBOT_TO_FRONT_CAMERA);
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0
 
 		// Puts a camera stream onto nt4
 		frontCamera.enableRawStream(true);
@@ -85,7 +68,6 @@ public class VisionIOSim implements VisionIO {
 		robotPose = new Pose2d();
 		// Pose estimators :/
 		frontEstimator = new PhotonPoseEstimator(
-<<<<<<< HEAD
 			APRIL_TAG_FIELD_LAYOUT,
 			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
 			ROBOT_TO_FRONT_CAMERA
@@ -101,23 +83,6 @@ public class VisionIOSim implements VisionIO {
 		);
 		frontDebouncer = new Debouncer(
 			CAMERA_DEBOUNCE_TIME,
-=======
-			GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT,
-			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			GlobalConstants.Vision.ROBOT_TO_FRONT_CAMERA
-		);
-		backEstimator = new PhotonPoseEstimator(
-			GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT,
-			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			GlobalConstants.Vision.ROBOT_TO_BACK_CAMERA
-		);
-		backDebouncer = new Debouncer(
-			GlobalConstants.Vision.CAMERA_DEBOUNCE_TIME,
-			DebounceType.kFalling
-		);
-		frontDebouncer = new Debouncer(
-			GlobalConstants.Vision.CAMERA_DEBOUNCE_TIME,
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0
 			DebounceType.kFalling
 		);
 	}
@@ -171,8 +136,4 @@ public class VisionIOSim implements VisionIO {
 		}
 		return pose;
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0

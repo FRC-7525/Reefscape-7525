@@ -1,27 +1,16 @@
-<<<<<<< HEAD
 package frc.robot.Subsystems.Vision;
-=======
-package frc.robot.subsystems.Vision;
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0
 
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
-<<<<<<< HEAD
-=======
-import frc.robot.GlobalConstants;
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
-<<<<<<< HEAD
 import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
-=======
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0
 public class VisionIOReal implements VisionIO {
 
 	private PhotonCamera backCamera;
@@ -37,7 +26,6 @@ public class VisionIOReal implements VisionIO {
 
 		// Pose estimators :/
 		frontEstimator = new PhotonPoseEstimator(
-<<<<<<< HEAD
 			APRIL_TAG_FIELD_LAYOUT,
 			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
 			ROBOT_TO_FRONT_CAMERA
@@ -53,23 +41,6 @@ public class VisionIOReal implements VisionIO {
 		);
 		frontDebouncer = new Debouncer(
 			CAMERA_DEBOUNCE_TIME,
-=======
-			GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT,
-			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			GlobalConstants.Vision.ROBOT_TO_FRONT_CAMERA
-		);
-		backEstimator = new PhotonPoseEstimator(
-			GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT,
-			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			GlobalConstants.Vision.ROBOT_TO_BACK_CAMERA
-		);
-		backDebouncer = new Debouncer(
-			GlobalConstants.Vision.CAMERA_DEBOUNCE_TIME,
-			DebounceType.kFalling
-		);
-		frontDebouncer = new Debouncer(
-			GlobalConstants.Vision.CAMERA_DEBOUNCE_TIME,
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0
 			DebounceType.kFalling
 		);
 	}
@@ -123,8 +94,4 @@ public class VisionIOReal implements VisionIO {
 		}
 		return pose;
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0

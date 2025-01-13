@@ -33,8 +33,4 @@ public interface VisionIO {
 	public default Optional<EstimatedRobotPose> getBackPoseEstimation() {
 		return Optional.empty();
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 6170d84f776a200f651043c1f12fc5104016ffe0
