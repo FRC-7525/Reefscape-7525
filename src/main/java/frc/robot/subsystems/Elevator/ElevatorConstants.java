@@ -29,6 +29,8 @@ public final class ElevatorConstants {
 	public static final LinearVelocity ZEROING_VELOCITY = MetersPerSecond.of(0.25);
 	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(10.0);
 
+
+	// TODO: All of these are RANDOM values, once the robot is built GET REAL ONES
 	public static final Distance L4_HEIGHT = Meters.of(2.5146);
 	public static final Distance L3_HEIGHT = Meters.of(1.54305); //mid is all the way down according to nick
 	public static final Distance L2_HEIGHT = Meters.of(1.54305);
