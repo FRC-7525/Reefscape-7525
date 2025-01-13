@@ -4,7 +4,6 @@ import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.GlobalConstants;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -13,6 +12,8 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
+
+import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
 public class VisionIOSim implements VisionIO {
 
@@ -51,9 +52,9 @@ public class VisionIOSim implements VisionIO {
 		backCamera = new PhotonCameraSim(new PhotonCamera("Back Camera"), backCameraProperties);
 		frontCamera = new PhotonCameraSim(new PhotonCamera("Front Camera"), frontCameraProperties);
 
-		visionSim.addAprilTags(GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT);
-		visionSim.addCamera(backCamera, GlobalConstants.Vision.ROBOT_TO_BACK_CAMERA);
-		visionSim.addCamera(frontCamera, GlobalConstants.Vision.ROBOT_TO_FRONT_CAMERA);
+		visionSim.addAprilTags(APRIL_TAG_FIELD_LAYOUT);
+		visionSim.addCamera(backCamera, ROBOT_TO_BACK_CAMERA);
+		visionSim.addCamera(frontCamera, ROBOT_TO_FRONT_CAMERA);
 
 		// Puts a camera stream onto nt4
 		frontCamera.enableRawStream(true);
@@ -67,21 +68,21 @@ public class VisionIOSim implements VisionIO {
 		robotPose = new Pose2d();
 		// Pose estimators :/
 		frontEstimator = new PhotonPoseEstimator(
-			GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT,
+			APRIL_TAG_FIELD_LAYOUT,
 			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			GlobalConstants.Vision.ROBOT_TO_FRONT_CAMERA
+			ROBOT_TO_FRONT_CAMERA
 		);
 		backEstimator = new PhotonPoseEstimator(
-			GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT,
+			APRIL_TAG_FIELD_LAYOUT,
 			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			GlobalConstants.Vision.ROBOT_TO_BACK_CAMERA
+			ROBOT_TO_BACK_CAMERA
 		);
 		backDebouncer = new Debouncer(
-			GlobalConstants.Vision.CAMERA_DEBOUNCE_TIME,
+			CAMERA_DEBOUNCE_TIME,
 			DebounceType.kFalling
 		);
 		frontDebouncer = new Debouncer(
-			GlobalConstants.Vision.CAMERA_DEBOUNCE_TIME,
+			CAMERA_DEBOUNCE_TIME,
 			DebounceType.kFalling
 		);
 	}

@@ -3,12 +3,13 @@ package frc.robot.Subsystems.Vision;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
-import frc.robot.GlobalConstants;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+
+import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
 public class VisionIOReal implements VisionIO {
 
@@ -25,21 +26,21 @@ public class VisionIOReal implements VisionIO {
 
 		// Pose estimators :/
 		frontEstimator = new PhotonPoseEstimator(
-			GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT,
+			APRIL_TAG_FIELD_LAYOUT,
 			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			GlobalConstants.Vision.ROBOT_TO_FRONT_CAMERA
+			ROBOT_TO_FRONT_CAMERA
 		);
 		backEstimator = new PhotonPoseEstimator(
-			GlobalConstants.Vision.APRIL_TAG_FIELD_LAYOUT,
+			APRIL_TAG_FIELD_LAYOUT,
 			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			GlobalConstants.Vision.ROBOT_TO_BACK_CAMERA
+			ROBOT_TO_BACK_CAMERA
 		);
 		backDebouncer = new Debouncer(
-			GlobalConstants.Vision.CAMERA_DEBOUNCE_TIME,
+			CAMERA_DEBOUNCE_TIME,
 			DebounceType.kFalling
 		);
 		frontDebouncer = new Debouncer(
-			GlobalConstants.Vision.CAMERA_DEBOUNCE_TIME,
+			CAMERA_DEBOUNCE_TIME,
 			DebounceType.kFalling
 		);
 	}
