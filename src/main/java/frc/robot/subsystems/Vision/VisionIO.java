@@ -20,11 +20,14 @@ public interface VisionIO {
 		int frontTargetCount = 0;
 	}
 
-	public default void updateInputs(VisionIOInputs inputs) {}
+	public default void updateInputs(VisionIOInputs inputs) {
+	}
 
-	public default void updateRobotPose(Pose2d robotPose) {}
+	public default void updateRobotPose(Pose2d robotPose) {
+	}
 
-	public default void setStrategy(PoseStrategy strategy) {}
+	public default void setStrategy(PoseStrategy strategy) {
+	}
 
 	public default Optional<EstimatedRobotPose> getFrontPoseEstimation() {
 		return Optional.empty();

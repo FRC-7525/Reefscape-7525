@@ -26,23 +26,19 @@ public class VisionIOReal implements VisionIO {
 
 		// Pose estimators :/
 		frontEstimator = new PhotonPoseEstimator(
-			APRIL_TAG_FIELD_LAYOUT,
-			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			ROBOT_TO_FRONT_CAMERA
-		);
+				APRIL_TAG_FIELD_LAYOUT,
+				PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+				ROBOT_TO_FRONT_CAMERA);
 		backEstimator = new PhotonPoseEstimator(
-			APRIL_TAG_FIELD_LAYOUT,
-			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			ROBOT_TO_BACK_CAMERA
-		);
+				APRIL_TAG_FIELD_LAYOUT,
+				PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+				ROBOT_TO_BACK_CAMERA);
 		backDebouncer = new Debouncer(
-			CAMERA_DEBOUNCE_TIME,
-			DebounceType.kFalling
-		);
+				CAMERA_DEBOUNCE_TIME,
+				DebounceType.kFalling);
 		frontDebouncer = new Debouncer(
-			CAMERA_DEBOUNCE_TIME,
-			DebounceType.kFalling
-		);
+				CAMERA_DEBOUNCE_TIME,
+				DebounceType.kFalling);
 	}
 
 	@Override
@@ -56,10 +52,11 @@ public class VisionIOReal implements VisionIO {
 		inputs.frontCameraConnected = frontCamera.isConnected();
 		inputs.backTargetCount = backPose.get().targetsUsed.size();
 		inputs.frontTargetCount = frontPose.get().targetsUsed.size();
-		if (inputs.hasBackVision) inputs.backVisionPose = backPose.get().estimatedPose.toPose2d();
-		if (inputs.hasFrontVision) inputs.frontVisionPose = frontPose
-			.get()
-			.estimatedPose.toPose2d();
+		if (inputs.hasBackVision)
+			inputs.backVisionPose = backPose.get().estimatedPose.toPose2d();
+		if (inputs.hasFrontVision)
+			inputs.frontVisionPose = frontPose
+					.get().estimatedPose.toPose2d();
 	}
 
 	@Override
@@ -76,7 +73,8 @@ public class VisionIOReal implements VisionIO {
 		}
 	}
 
-	// Not just returning a pose3d bc timestamps needed for main pose estimation & easier to handle optional logic in vision.java
+	// Not just returning a pose3d bc timestamps needed for main pose estimation &
+	// easier to handle optional logic in vision.java
 	@Override
 	public Optional<EstimatedRobotPose> getBackPoseEstimation() {
 		Optional<EstimatedRobotPose> pose = Optional.empty();

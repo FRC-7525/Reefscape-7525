@@ -35,19 +35,22 @@ public class VisionIOSim implements VisionIO {
 
 		// TODO: Tune to accurate values & put in constants ig
 		// A 640 x 480 camera with a 100 degree diagonal FOV.
-		backCameraProperties.setCalibration(1200, 800, Rotation2d.fromDegrees(84.47));
-		frontCameraProperties.setCalibration(1200, 800, Rotation2d.fromDegrees(84.47));
-		// Approximate detection noise with average and standard deviation error in pixels.
-		backCameraProperties.setCalibError(0.25, 0.08);
-		frontCameraProperties.setCalibError(0.25, 0.08);
-		// Set the camera image capture framerate (Note: this is limited by robot loop rate).
-		backCameraProperties.setFPS(40);
-		frontCameraProperties.setFPS(40);
+		backCameraProperties.setCalibration(CAMERA_WIDTH, CAMERA_HEIGHT, CAMERA_ROTATION);
+		frontCameraProperties.setCalibration(CAMERA_WIDTH, CAMERA_HEIGHT, CAMERA_ROTATION);
+
+		// Approximate detection noise with average and standard deviation error in
+		// pixels.
+		backCameraProperties.setCalibError(CALIB_ERROR_AVG, CALIB_ERROR_STD_DEV);
+		frontCameraProperties.setCalibError(CALIB_ERROR_AVG, CALIB_ERROR_STD_DEV);
+		// Set the camera image capture framerate (Note: this is limited by robot loop
+		// rate).
+		backCameraProperties.setFPS(CAMERA_FPS);
+		frontCameraProperties.setFPS(CAMERA_FPS);
 		// The average and standard deviation in milliseconds of image data latency.
-		backCameraProperties.setAvgLatencyMs(40);
-		backCameraProperties.setLatencyStdDevMs(10);
-		frontCameraProperties.setAvgLatencyMs(40);
-		frontCameraProperties.setLatencyStdDevMs(10);
+		backCameraProperties.setAvgLatencyMs(AVG_LATENCY_MS);
+		backCameraProperties.setLatencyStdDevMs(LATENCY_STD_DEV_MS);
+		frontCameraProperties.setAvgLatencyMs(AVG_LATENCY_MS);
+		frontCameraProperties.setLatencyStdDevMs(LATENCY_STD_DEV_MS);
 
 		backCamera = new PhotonCameraSim(new PhotonCamera("Back Camera"), backCameraProperties);
 		frontCamera = new PhotonCameraSim(new PhotonCamera("Front Camera"), frontCameraProperties);
@@ -61,30 +64,27 @@ public class VisionIOSim implements VisionIO {
 		frontCamera.enableProcessedStream(true);
 		backCamera.enableRawStream(true);
 		backCamera.enableProcessedStream(true);
-		// Disable this if ur laptop is bad (makes the camera stream easy to understanda)
+		// Disable this if ur laptop is bad (makes the camera stream easy to
+		// understanda)
 		frontCamera.enableDrawWireframe(true);
 		backCamera.enableDrawWireframe(true);
 
 		robotPose = new Pose2d();
 		// Pose estimators :/
 		frontEstimator = new PhotonPoseEstimator(
-			APRIL_TAG_FIELD_LAYOUT,
-			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			ROBOT_TO_FRONT_CAMERA
-		);
+				APRIL_TAG_FIELD_LAYOUT,
+				PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+				ROBOT_TO_FRONT_CAMERA);
 		backEstimator = new PhotonPoseEstimator(
-			APRIL_TAG_FIELD_LAYOUT,
-			PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-			ROBOT_TO_BACK_CAMERA
-		);
+				APRIL_TAG_FIELD_LAYOUT,
+				PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+				ROBOT_TO_BACK_CAMERA);
 		backDebouncer = new Debouncer(
-			CAMERA_DEBOUNCE_TIME,
-			DebounceType.kFalling
-		);
+				CAMERA_DEBOUNCE_TIME,
+				DebounceType.kFalling);
 		frontDebouncer = new Debouncer(
-			CAMERA_DEBOUNCE_TIME,
-			DebounceType.kFalling
-		);
+				CAMERA_DEBOUNCE_TIME,
+				DebounceType.kFalling);
 	}
 
 	@Override
@@ -98,10 +98,11 @@ public class VisionIOSim implements VisionIO {
 		inputs.frontCameraConnected = frontCamera.getCamera().isConnected();
 		inputs.backTargetCount = backPose.get().targetsUsed.size();
 		inputs.frontTargetCount = frontPose.get().targetsUsed.size();
-		if (inputs.hasBackVision) inputs.backVisionPose = backPose.get().estimatedPose.toPose2d();
-		if (inputs.hasFrontVision) inputs.frontVisionPose = frontPose
-			.get()
-			.estimatedPose.toPose2d();
+		if (inputs.hasBackVision)
+			inputs.backVisionPose = backPose.get().estimatedPose.toPose2d();
+		if (inputs.hasFrontVision)
+			inputs.frontVisionPose = frontPose
+					.get().estimatedPose.toPose2d();
 	}
 
 	@Override
@@ -118,7 +119,8 @@ public class VisionIOSim implements VisionIO {
 		}
 	}
 
-	// Not just returning a pose3d bc timestamps needed for main pose estimation & easier to handle optional logic in vision.java
+	// Not just returning a pose3d bc timestamps needed for main pose estimation &
+	// easier to handle optional logic in vision.java
 	@Override
 	public Optional<EstimatedRobotPose> getBackPoseEstimation() {
 		Optional<EstimatedRobotPose> pose = Optional.empty();
