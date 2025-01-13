@@ -13,17 +13,13 @@ public class CoralerIOSparkMax implements CoralerIO {
 
 	private final SparkMax velocityMotor;
 	private final RelativeEncoder velocityEncoder;
-	private final PIDController velocityController;
+	private final PIDController wheelController;
 	private double speedPoint;
 
 	public CoralerIOSparkMax() {
-		velocityMotor = new SparkMax(VELOCITY_MOTOR_CAN_ID, MotorType.kBrushless);
+		velocityMotor = new SparkMax(Real.WHEEL_MOTOR_CAN_ID, MotorType.kBrushless);
 		velocityEncoder = velocityMotor.getEncoder();
-		velocityController = new PIDController(
-			Real.VELOCITY_PID.kP,
-			Real.VELOCITY_PID.kI,
-			Real.VELOCITY_PID.kD
-		);
+		wheelController = WHEEL_CONTROLLER.get();
 		speedPoint = 0.0;
 	}
 
@@ -37,7 +33,7 @@ public class CoralerIOSparkMax implements CoralerIO {
 	public void setVelocity(AngularVelocity speedPoint) {
 		this.speedPoint = speedPoint.in(RotationsPerSecond);
 		velocityMotor.setVoltage(
-			velocityController.calculate(
+			wheelController.calculate(
 				velocityEncoder.getVelocity(),
 				speedPoint.in(RotationsPerSecond)
 			)

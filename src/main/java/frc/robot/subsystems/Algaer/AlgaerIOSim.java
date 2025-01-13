@@ -44,16 +44,8 @@ public class AlgaerIOSim implements AlgaerIO {
 			DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS)
 		);
 
-		pivotController = new PIDController(
-			AlgaerConstants.Sim.PIVOT_PID_CONSTANTS.kP,
-			AlgaerConstants.Sim.PIVOT_PID_CONSTANTS.kI,
-			AlgaerConstants.Sim.PIVOT_PID_CONSTANTS.kD
-		);
-		wheelSpeedController = new PIDController(
-			AlgaerConstants.Sim.WHEEL_PID_CONSTANTS.kP,
-			AlgaerConstants.Sim.WHEEL_PID_CONSTANTS.kI,
-			AlgaerConstants.Sim.WHEEL_PID_CONSTANTS.kD
-		);
+		pivotController = PIVOT_CONTROLLER.get();
+		wheelSpeedController = WHEEL_CONTROLLER.get();
 
 		wheelSpeedSetpoint = 0;
 		pivotPositionSetpoint = 0;

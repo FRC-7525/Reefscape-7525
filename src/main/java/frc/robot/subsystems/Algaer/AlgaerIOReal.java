@@ -1,8 +1,5 @@
 package frc.robot.Subsystems.Algaer;
 
-import static edu.wpi.first.units.Units.*;
-import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
-
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
@@ -13,6 +10,9 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants;
 import frc.robot.GlobalConstants.RobotMode;
+
+import static edu.wpi.first.units.Units.*;
+import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
 public class AlgaerIOReal implements AlgaerIO {
 
@@ -35,16 +35,8 @@ public class AlgaerIOReal implements AlgaerIO {
 		wheelEncoder.setPosition(0);
 		pivotEncoder.setPosition(0);
 
-		pivotController = new PIDController(
-			AlgaerConstants.Real.PIVOT_PID_CONSTANTS.kP,
-			AlgaerConstants.Real.PIVOT_PID_CONSTANTS.kI,
-			AlgaerConstants.Real.PIVOT_PID_CONSTANTS.kD
-		);
-		wheelSpeedController = new PIDController(
-			AlgaerConstants.Real.WHEEL_PID_CONSTANTS.kP,
-			AlgaerConstants.Real.WHEEL_PID_CONSTANTS.kI,
-			AlgaerConstants.Real.WHEEL_PID_CONSTANTS.kD
-		);
+		pivotController = PIVOT_CONTROLLER.get();
+		wheelSpeedController = WHEEL_CONTROLLER.get();
 	}
 
 	@Override

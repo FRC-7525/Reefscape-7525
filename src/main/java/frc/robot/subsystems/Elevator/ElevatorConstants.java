@@ -53,7 +53,7 @@ public final class ElevatorConstants {
 		public static final boolean SIMULATE_GRAVITY = true;
 		public static final Distance STARTING_HEIGHT = Meters.of(1.54305);
 
-		// TODO Tune once we get new values
+		// TODO Tune once we get new values, this has Izone so I didn't make it a supplier
 		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(2, 0, 0, 0);
 
 		// The move is prob to keep this at 0 and not bother tuning
