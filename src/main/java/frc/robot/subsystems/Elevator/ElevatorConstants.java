@@ -25,16 +25,20 @@ public final class ElevatorConstants {
 
 	public static final Distance POSITION_TOLERANCE = Meters.of(.1);
 	public static final LinearVelocity VELOCITY_TOLERANCE = MetersPerSecond.of(.1);
-	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS =
-		new TrapezoidProfile.Constraints(1, .5);
+	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(1, .5);
 	public static final LinearVelocity ZEROING_VELOCITY = MetersPerSecond.of(0.25);
 	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(10.0);
 
+	// TODO: All of these are RANDOM values, once the robot is built GET REAL ONES
 	public static final Distance L4_HEIGHT = Meters.of(2.5146);
 	public static final Distance L3_HEIGHT = Meters.of(1.54305); //mid is all the way down according to nick
 	public static final Distance L2_HEIGHT = Meters.of(1.54305);
 	public static final Distance L1_HEIGHT = Meters.of(1);
 	public static final Distance IDLE_HEIGHT = Meters.of(0.1);
+	public static final Distance ALGAE_LOW_HEIGHT = Meters.of(1);
+	public static final Distance ALGAE_HIGH_HEIGHT = Meters.of(1);
+	public static final Distance ALGAE_PROCESSOR_HEIGHT = Meters.of(1);
+
 	public static final Distance METERS_PER_ROTATION = Meters.of(1); // random value lol
 
 	public static class Sim {
@@ -49,7 +53,7 @@ public final class ElevatorConstants {
 		public static final boolean SIMULATE_GRAVITY = true;
 		public static final Distance STARTING_HEIGHT = Meters.of(1.54305);
 
-		// TODO Tune once we get new values
+		// TODO Tune once we get new values, this has Izone so I didn't make it a supplier
 		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(2, 0, 0, 0);
 
 		// The move is prob to keep this at 0 and not bother tuning
