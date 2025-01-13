@@ -27,18 +27,18 @@ public class AlgaerIOSim implements AlgaerIO {
 		pivotSim = new SingleJointedArmSim(
 			DCMotor.getNEO(AlgaerConstants.Sim.NUM_PIVOT_MOTORS),
 			AlgaerConstants.Sim.PIVOT_GEARING,
-			AlgaerConstants.Sim.PIVOT_MOI.magnitude(),
-			AlgaerConstants.Sim.PIVOT_ARM_LENGTH.magnitude(),
-			Units.degreesToRadians(AlgaerConstants.Sim.MIN_PIVOT_ANGLE.magnitude()),
-			Units.degreesToRadians(AlgaerConstants.Sim.MAX_PIVOT_ANGLE.magnitude()),
+			AlgaerConstants.Sim.PIVOT_MOI.in(KilogramSquareMeters),
+			AlgaerConstants.Sim.PIVOT_ARM_LENGTH.in(Meters),
+			AlgaerConstants.Sim.MIN_PIVOT_ANGLE.in(Radians),
+			AlgaerConstants.Sim.MAX_PIVOT_ANGLE.in(Radians),
 			false,
-			Units.degreesToRadians(AlgaerConstants.Sim.STARTING_PIVOT_ANGLE.magnitude())
+			AlgaerConstants.Sim.STARTING_PIVOT_ANGLE.in(Radians)
 		);
 
 		wheelMotorSim = new DCMotorSim(
 			LinearSystemId.createDCMotorSystem(
 				DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS),
-				AlgaerConstants.Sim.WHEEL_MOTOR_MOI.magnitude(),
+				AlgaerConstants.Sim.WHEEL_MOTOR_MOI.in(KilogramSquareMeters),
 				AlgaerConstants.Sim.WHEEL_MOTOR_GEARING
 			),
 			DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS)
