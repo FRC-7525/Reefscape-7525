@@ -1,12 +1,12 @@
 package frc.robot.Subsystems.Climber;
 
+import static edu.wpi.first.units.Units.*;
+
 import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.MomentOfInertia;
-
-import static edu.wpi.first.units.Units.*;
 
 public final class ClimberConstants {
 
@@ -24,6 +24,7 @@ public final class ClimberConstants {
 	public static final Distance METERS_PER_ROTATION = Meters.of(1); // random value lol
 
 	public static class Sim {
+
 		// TODO change all of these values when new robot is done
 		public static final int NUM_MOTORS = 1;
 		public static final MomentOfInertia MOTOR_MOI = KilogramSquareMeters.of(1); //TODO: Get an actual value for htis;

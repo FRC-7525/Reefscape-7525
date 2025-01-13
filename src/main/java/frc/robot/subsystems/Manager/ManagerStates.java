@@ -16,8 +16,22 @@ public enum ManagerStates implements SubsystemStates {
 	INTAKING_ALGAE_HIGH("Intaking Algae High", ElevatorStates.ALGAE_HIGH, CoralerStates.IDLE, AlgaerStates.INTAKING, ClimberStates.DOWN, AutoAlignStates.OFF),
 	GOING_PROCESSOR("Going to Processor", ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.GOING_TO_SHOOT, ClimberStates.DOWN, AutoAlignStates.OFF),
 	SCORING_PROCESSOR("Scoring at Processor", ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.SHOOTING, ClimberStates.DOWN, AutoAlignStates.OFF),
-	AUTO_ALIGN_CLOSE("Aligning Close", REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()), CoralerStates.IDLE, AlgaerStates.IDLE, ClimberStates.DOWN, REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getOperatorReefScoringLevel(), Manager.getInstance().getScoringReefLeft()))),
-	AUTO_ALIGN_FAR("Aligning Close", ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, ClimberStates.DOWN, REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getOperatorReefScoringLevel(), Manager.getInstance().getScoringReefLeft()))),
+	AUTO_ALIGN_CLOSE(
+		"Aligning Close",
+		REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()),
+		CoralerStates.IDLE,
+		AlgaerStates.IDLE,
+		ClimberStates.DOWN,
+		REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getOperatorReefScoringLevel(), Manager.getInstance().getScoringReefLeft()))
+	),
+	AUTO_ALIGN_FAR(
+		"Aligning Close",
+		ElevatorStates.IDLE,
+		CoralerStates.IDLE,
+		AlgaerStates.IDLE,
+		ClimberStates.DOWN,
+		REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getOperatorReefScoringLevel(), Manager.getInstance().getScoringReefLeft()))
+	),
 	INTAKING_CORALER(
 		"Intaking at Coral Station",
 		ElevatorStates.IDLE,
@@ -28,7 +42,14 @@ public enum ManagerStates implements SubsystemStates {
 	),
 	SCORING_REEF_MANUAL("Scoring Reef", REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, ClimberStates.DOWN, AutoAlignStates.OFF),
 	SCORING_REEF_AA("Scoring Reef", REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, ClimberStates.DOWN, AutoAlignStates.OFF),
-	TRANSITIONING_SCORING_REEF("Transitioning Scoring", REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()), CoralerStates.IDLE, AlgaerStates.IDLE, ClimberStates.DOWN, AutoAlignStates.OFF);
+	TRANSITIONING_SCORING_REEF(
+		"Transitioning Scoring",
+		REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()),
+		CoralerStates.IDLE,
+		AlgaerStates.IDLE,
+		ClimberStates.DOWN,
+		AutoAlignStates.OFF
+	);
 
 	ManagerStates(String stateString, ElevatorStates elevatorState, CoralerStates coralerState, AlgaerStates algaerState, ClimberStates climberState, AutoAlignStates autoAlignState) {
 		this.stateString = stateString;

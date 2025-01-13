@@ -1,12 +1,11 @@
 package frc.robot.Subsystems.Climber;
 
-import org.team7525.subsystem.SubsystemStates;
-
 import edu.wpi.first.units.measure.Distance;
+import org.team7525.subsystem.SubsystemStates;
 
 public enum ClimberStates implements SubsystemStates {
 	UP("UP", ClimberConstants.UP),
-	DOWN("DOWN", ClimberConstants.DOWN),;
+	DOWN("DOWN", ClimberConstants.DOWN);
 
 	ClimberStates(String stateString, Distance targetHeight) {
 		this.targetHeight = targetHeight;
