@@ -105,7 +105,11 @@ public class Drive extends Subsystem<DriveStates> {
 		if (!robotMirrored || DriverStation.isDisabled()) {
 			DriverStation.getAlliance()
 				.ifPresent(allianceColor -> {
-					driveIO.getDrive().setOperatorPerspectiveForward(allianceColor == Alliance.Red ? GlobalConstants.Drive.RED_ALLIANCE_PERSPECTIVE_ROTATION : GlobalConstants.Drive.BLUE_ALLIANCE_PERSPECTIVE_ROTATION);
+					driveIO
+						.getDrive()
+						.setOperatorPerspectiveForward(
+							allianceColor == Alliance.Red ? GlobalConstants.Drive.RED_ALLIANCE_PERSPECTIVE_ROTATION : GlobalConstants.Drive.BLUE_ALLIANCE_PERSPECTIVE_ROTATION
+						);
 					robotMirrored = true;
 				});
 		}
@@ -131,7 +135,11 @@ public class Drive extends Subsystem<DriveStates> {
 		Logger.recordOutput(SUBSYSTEM_NAME + "/swerveModulePosition", state.ModulePositions);
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Translation Difference", state.Pose.getTranslation().minus(lastPose.getTranslation()));
 		Logger.recordOutput(SUBSYSTEM_NAME + "/State", getState().getStateString());
-		Logger.recordOutput(SUBSYSTEM_NAME + "/Pose Jumped", Math.hypot(state.Pose.getTranslation().minus(lastPose.getTranslation()).getX(), state.Pose.getTranslation().minus(lastPose.getTranslation()).getY()) > (kSpeedAt12Volts.in(MetersPerSecond) * 2 * (Utils.getSystemTimeSeconds() - lastTime)));
+		Logger.recordOutput(
+			SUBSYSTEM_NAME + "/Pose Jumped",
+			Math.hypot(state.Pose.getTranslation().minus(lastPose.getTranslation()).getX(), state.Pose.getTranslation().minus(lastPose.getTranslation()).getY()) >
+			(kSpeedAt12Volts.in(MetersPerSecond) * 2 * (Utils.getSystemTimeSeconds() - lastTime))
+		);
 
 		lastPose = state.Pose;
 		lastTime = Utils.getSystemTimeSeconds();
@@ -145,7 +153,15 @@ public class Drive extends Subsystem<DriveStates> {
 	 * @param angularVelocity The desired angular velocity.
 	 */
 	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity) {
-		driveIO.setControl(new SwerveRequest.FieldCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(angularVelocity).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
+		driveIO.setControl(
+			new SwerveRequest.FieldCentric()
+				.withDeadband(DEADBAND)
+				.withVelocityX(xVelocity)
+				.withVelocityY(yVelocity)
+				.withRotationalRate(angularVelocity)
+				.withDriveRequestType(SwerveModule.DriveRequestType.Velocity)
+				.withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo)
+		);
 	}
 
 	/**
@@ -156,7 +172,15 @@ public class Drive extends Subsystem<DriveStates> {
 	 * @param angularVelocity The desired angular velocity.
 	 */
 	public void driveRobotRelative(double xVelocity, double yVelocity, double angularVelocity) {
-		driveIO.setControl(new SwerveRequest.RobotCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(angularVelocity).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
+		driveIO.setControl(
+			new SwerveRequest.RobotCentric()
+				.withDeadband(DEADBAND)
+				.withVelocityX(xVelocity)
+				.withVelocityY(yVelocity)
+				.withRotationalRate(angularVelocity)
+				.withDriveRequestType(SwerveModule.DriveRequestType.Velocity)
+				.withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo)
+		);
 	}
 
 	/**
@@ -272,7 +296,14 @@ public class Drive extends Subsystem<DriveStates> {
 
 	// Better at driving stuff or sum (I think this makes a meh difference)
 	public void driveRobotRelativeWithFF(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
-		driveIO.getDrive().setControl(new SwerveRequest.ApplyRobotSpeeds().withSpeeds(speeds).withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons()).withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons()));
+		driveIO
+			.getDrive()
+			.setControl(
+				new SwerveRequest.ApplyRobotSpeeds()
+					.withSpeeds(speeds)
+					.withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
+					.withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
+			);
 	}
 
 	public Pose2d getPose() {

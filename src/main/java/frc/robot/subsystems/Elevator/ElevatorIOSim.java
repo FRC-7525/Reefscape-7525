@@ -27,7 +27,16 @@ public class ElevatorIOSim implements ElevatorIO {
 	public double metersPerRotation;
 
 	public ElevatorIOSim() {
-		elevatorSim = new ElevatorSim(GEARBOX, GEARING, CARRIAGE_MASS.in(Kilograms), DRUM_RADIUS.in(Meters), MIN_HEIGHT.in(Meters), MAX_HEIGHT.in(Meters), SIMULATE_GRAVITY, STARTING_HEIGHT.in(Meters));
+		elevatorSim = new ElevatorSim(
+			GEARBOX,
+			GEARING,
+			CARRIAGE_MASS.in(Kilograms),
+			DRUM_RADIUS.in(Meters),
+			MIN_HEIGHT.in(Meters),
+			MAX_HEIGHT.in(Meters),
+			SIMULATE_GRAVITY,
+			STARTING_HEIGHT.in(Meters)
+		);
 
 		pidController = new ProfiledPIDController(PROFILLED_PID_CONSTANTS.kP, PROFILLED_PID_CONSTANTS.kI, PROFILLED_PID_CONSTANTS.kD, ElevatorConstants.TRAPEZOID_PROFILE_CONSTRAINTS);
 		pidController.setTolerance(ElevatorConstants.POSITION_TOLERANCE.in(Meters), ElevatorConstants.VELOCITY_TOLERANCE.in(MetersPerSecond));

@@ -53,7 +53,10 @@ public class GlobalConstants {
 		public static final Rotation2d RED_ALLIANCE_PERSPECTIVE_ROTATION = Rotation2d.fromDegrees(180);
 
 		// Weird syntax because we have our own PIDConstants class (literally just the PP one :skull: copy pasted) so we can use it without installing PP Lib
-		public static final PPHolonomicDriveController PATH_PLANNER_PID = new PPHolonomicDriveController(new com.pathplanner.lib.config.PIDConstants(5.0, 0, 0), new com.pathplanner.lib.config.PIDConstants(5.0, 0, 0));
+		public static final PPHolonomicDriveController PATH_PLANNER_PID = new PPHolonomicDriveController(
+			new com.pathplanner.lib.config.PIDConstants(5.0, 0, 0),
+			new com.pathplanner.lib.config.PIDConstants(5.0, 0, 0)
+		);
 
 		public static RobotConfig geRobotConfig() {
 			try {

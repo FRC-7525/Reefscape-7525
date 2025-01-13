@@ -68,6 +68,9 @@ public class AlgaerIOReal implements AlgaerIO {
 
 	@Override
 	public boolean nearTarget() {
-		return (Math.abs(Units.rotationsToDegrees(pivotEncoder.getPosition()) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees) && Math.abs(wheelEncoder.getVelocity() / 60 - wheelSpeedSetpoint) < WHEEL_TOLERANCE.in(RotationsPerSecond));
+		return (
+			Math.abs(Units.rotationsToDegrees(pivotEncoder.getPosition()) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees) &&
+			Math.abs(wheelEncoder.getVelocity() / 60 - wheelSpeedSetpoint) < WHEEL_TOLERANCE.in(RotationsPerSecond)
+		);
 	}
 }

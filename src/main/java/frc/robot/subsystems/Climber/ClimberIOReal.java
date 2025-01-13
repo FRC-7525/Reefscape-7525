@@ -1,9 +1,13 @@
 package frc.robot.Subsystems.Climber;
 
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
+import static edu.wpi.first.units.Units.*;
+import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.Subsystems.Climber.ClimberConstants.*;
+import static frc.robot.Subsystems.Climber.ClimberConstants.Real.*;
 
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.util.Units;
@@ -11,12 +15,8 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
 
-import static edu.wpi.first.units.Units.*;
-import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.Subsystems.Climber.ClimberConstants.*;
-import static frc.robot.Subsystems.Climber.ClimberConstants.Real.*;
-
 public class ClimberIOReal implements ClimberIO {
+
 	private SparkMax motor;
 	private RelativeEncoder motorEncoder;
 
@@ -38,11 +38,7 @@ public class ClimberIOReal implements ClimberIO {
 
 		filter = LinearFilter.movingAverage(CURRENT_FILTER_TAPS);
 
-		pidController = new PIDController(
-			PID_CONSTANTS.kP,
-			PID_CONSTANTS.kI,
-			PID_CONSTANTS.kD
-		);
+		pidController = new PIDController(PID_CONSTANTS.kP, PID_CONSTANTS.kI, PID_CONSTANTS.kD);
 
 		if (ROBOT_MODE == RobotMode.TESTING) {
 			SmartDashboard.putData("Climber PID controller", pidController);
@@ -52,7 +48,7 @@ public class ClimberIOReal implements ClimberIO {
 	@Override
 	public void updateInputs(ClimberIOInputs inputs) {
 		inputs.climberPosition = motorEncoder.getPosition() * metersPerRotation;
-		inputs.climberSpeed = motorEncoder.getVelocity()/60;
+		inputs.climberSpeed = motorEncoder.getVelocity() / 60;
 		inputs.climberAngularPosition = Units.rotationsToDegrees(motorEncoder.getPosition());
 		inputs.climberHeightPoint = setpoint;
 	}
