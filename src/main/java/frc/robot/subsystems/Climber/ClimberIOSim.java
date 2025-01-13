@@ -1,10 +1,9 @@
-package frc.robot.subsystems.Climber;
+package frc.robot.Subsystems.Climber;
 
 import static edu.wpi.first.units.Units.Meters;
-import static frc.robot.subsystems.Climber.ClimberConstants.*;
-import static frc.robot.subsystems.Climber.ClimberConstants.Sim.*;
+import static frc.robot.Subsystems.Climber.ClimberConstants.*;
+import static frc.robot.Subsystems.Climber.ClimberConstants.Sim.*;
 
-import com.google.flatbuffers.Constants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -25,14 +24,7 @@ public class ClimberIOSim implements ClimberIO {
 	public ClimberIOSim() {
 		metersPerRotation = METERS_PER_ROTATION.in(Meters);
 
-		climberSim = new DCMotorSim(
-			LinearSystemId.createDCMotorSystem(
-				DCMotor.getNEO(NUM_MOTORS),
-				MOTOR_MOI.magnitude(),
-				MOTOR_GEARING
-			),
-			DCMotor.getNEO(NUM_MOTORS)
-		);
+		climberSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(NUM_MOTORS), MOTOR_MOI.magnitude(), MOTOR_GEARING), DCMotor.getNEO(NUM_MOTORS));
 		pidController = new PIDController(PID_CONSTANTS.kP, PID_CONSTANTS.kI, PID_CONSTANTS.kD);
 		climberSetpoint = 0;
 	}
@@ -40,9 +32,7 @@ public class ClimberIOSim implements ClimberIO {
 	public void updateInputs(ClimberIOInputs inputs) {
 		inputs.climberSpeed = climberSim.getAngularVelocityRPM() / 60;
 		inputs.climberPosition = climberSim.getAngularPositionRotations() * metersPerRotation;
-		inputs.climberAngularPosition = Units.rotationsToDegrees(
-			climberSim.getAngularPositionRotations()
-		);
+		inputs.climberAngularPosition = Units.rotationsToDegrees(climberSim.getAngularPositionRotations());
 		inputs.climberHeightPoint = climberSetpoint;
 	}
 
@@ -50,10 +40,7 @@ public class ClimberIOSim implements ClimberIO {
 		double height = setpoint.in(Meters);
 
 		climberSetpoint = height;
-		double voltage = pidController.calculate(
-			climberSim.getAngularPositionRotations() * metersPerRotation,
-			height
-		);
+		double voltage = pidController.calculate(climberSim.getAngularPositionRotations() * metersPerRotation, height);
 		climberSim.setInputVoltage(voltage);
 	}
 
@@ -62,10 +49,7 @@ public class ClimberIOSim implements ClimberIO {
 	}
 
 	public boolean nearSetpoint() {
-		return (
-			Math.abs(climberSim.getAngularPositionRotations() - climberSetpoint) <
-			POSITION_TOLERANCE.in(Meters)
-		);
+		return (Math.abs(climberSim.getAngularPositionRotations() - climberSetpoint) < POSITION_TOLERANCE.in(Meters));
 	}
 
 	public void zero() {

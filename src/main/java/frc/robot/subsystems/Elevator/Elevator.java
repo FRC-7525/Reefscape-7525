@@ -1,7 +1,7 @@
-package frc.robot.subsystems.Elevator;
+package frc.robot.Subsystems.Elevator;
 
 import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.SUBSYSTEM_NAME;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.SUBSYSTEM_NAME;
 
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
@@ -14,7 +14,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	private ElevatorIOInputsAutoLogged inputs;
 
 	private Elevator() {
-		super(SUBSYSTEM_NAME, ElevatorStates.DOWN);
+		super(SUBSYSTEM_NAME, ElevatorStates.IDLE);
 		this.io = switch (ROBOT_MODE) {
 			case SIM -> new ElevatorIOSim();
 			case REAL -> new ElevatorIOReal();

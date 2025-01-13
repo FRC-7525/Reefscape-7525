@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Algaer;
+package frc.robot.Subsystems.Algaer;
 
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 
@@ -7,13 +7,18 @@ import org.team7525.subsystem.Subsystem;
 
 public class Algaer extends Subsystem<AlgaerStates> {
 
-	AlgaerIO io;
-	AlgaerIOInputsAutoLogged inputs;
+	private AlgaerIO io;
+	private AlgaerIOInputsAutoLogged inputs;
 	private static Algaer instance;
 
-	private Algaer(AlgaerIO io) {
+	private Algaer() {
 		super("Algaer", AlgaerStates.IDLE);
-		this.io = io;
+		this.io = switch (ROBOT_MODE) {
+			case SIM -> new AlgaerIOSim();
+			case REAL -> new AlgaerIOReal();
+			case TESTING -> new AlgaerIOReal();
+			case REPLAY -> new AlgaerIOSim();
+		};
 		inputs = new AlgaerIOInputsAutoLogged();
 	}
 
@@ -26,16 +31,13 @@ public class Algaer extends Subsystem<AlgaerStates> {
 		Logger.processInputs("Algaer", inputs);
 	}
 
+	public boolean nearTarget() {
+		return io.nearTarget();
+	}
+
 	public static Algaer getInstance() {
 		if (instance == null) {
-			AlgaerIO AlgaerIO =
-				switch (ROBOT_MODE) {
-					case SIM -> new AlgaerIOSim();
-					case REAL -> new AlgaerIOReal();
-					case TESTING -> new AlgaerIOReal();
-					case REPLAY -> new AlgaerIOSim();
-				};
-			instance = new Algaer(AlgaerIO);
+			instance = new Algaer();
 		}
 		return instance;
 	}

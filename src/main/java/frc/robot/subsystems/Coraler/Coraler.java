@@ -1,8 +1,8 @@
 package frc.robot.Subsystems.Coraler;
 
+import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
-import frc.robot.GlobalConstants;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -12,21 +12,19 @@ public class Coraler extends Subsystem<CoralerStates> {
 	private final CoralerIO io;
 	private final CoralerIOInputsAutoLogged inputs = new CoralerIOInputsAutoLogged();
 
-	private Coraler(CoralerIO io) {
+	private Coraler() {
 		super(SUBSYSTEM_NAME, CoralerStates.IDLE);
-		this.io = io;
+		this.io = switch (ROBOT_MODE) {
+			case SIM -> new CoralerIOSim();
+			case REAL -> new CoralerIOSparkMax();
+			case TESTING -> new CoralerIOSparkMax();
+			case REPLAY -> new CoralerIO() {};
+		};
 	}
 
 	public static Coraler getInstance() {
 		if (instance == null) {
-			switch (GlobalConstants.ROBOT_MODE) {
-				case SIM -> instance = new Coraler(new CoralerIOSim());
-				case REAL -> instance = new Coraler(new CoralerIOSparkMax());
-				case REPLAY -> instance = new Coraler(new CoralerIO() {});
-				default -> throw new IllegalStateException(
-					"Unexpected value: " + GlobalConstants.ROBOT_MODE
-				);
-			}
+			instance = new Coraler();
 		}
 		return instance;
 	}

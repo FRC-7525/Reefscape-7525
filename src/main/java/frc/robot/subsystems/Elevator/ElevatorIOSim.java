@@ -1,8 +1,8 @@
-package frc.robot.subsystems.Elevator;
+package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.*;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.Sim.*;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
@@ -27,35 +27,13 @@ public class ElevatorIOSim implements ElevatorIO {
 	public double metersPerRotation;
 
 	public ElevatorIOSim() {
-		elevatorSim = new ElevatorSim(
-			GEARBOX,
-			GEARING,
-			CARRIAGE_MASS.in(Kilograms),
-			DRUM_RADIUS.in(Meters),
-			MIN_HEIGHT.in(Meters),
-			MAX_HEIGHT.in(Meters),
-			SIMULATE_GRAVITY,
-			STARTING_HEIGHT.in(Meters)
-		);
+		elevatorSim = new ElevatorSim(GEARBOX, GEARING, CARRIAGE_MASS.in(Kilograms), DRUM_RADIUS.in(Meters), MIN_HEIGHT.in(Meters), MAX_HEIGHT.in(Meters), SIMULATE_GRAVITY, STARTING_HEIGHT.in(Meters));
 
-		pidController = new ProfiledPIDController(
-			PROFILLED_PID_CONSTANTS.kP,
-			PROFILLED_PID_CONSTANTS.kI,
-			PROFILLED_PID_CONSTANTS.kD,
-			ElevatorConstants.TRAPEZOID_PROFILE_CONSTRAINTS
-		);
-		pidController.setTolerance(
-			ElevatorConstants.POSITION_TOLERANCE.in(Meters),
-			ElevatorConstants.VELOCITY_TOLERANCE.in(MetersPerSecond)
-		);
+		pidController = new ProfiledPIDController(PROFILLED_PID_CONSTANTS.kP, PROFILLED_PID_CONSTANTS.kI, PROFILLED_PID_CONSTANTS.kD, ElevatorConstants.TRAPEZOID_PROFILE_CONSTRAINTS);
+		pidController.setTolerance(ElevatorConstants.POSITION_TOLERANCE.in(Meters), ElevatorConstants.VELOCITY_TOLERANCE.in(MetersPerSecond));
 		pidController.setIZone(PROFILLED_PID_CONSTANTS.iZone);
 
-		ffcontroller = new ElevatorFeedforward(
-			FF_CONSTANTS.kS,
-			FF_CONSTANTS.kG,
-			FF_CONSTANTS.kV,
-			FF_CONSTANTS.kA
-		);
+		ffcontroller = new ElevatorFeedforward(FF_CONSTANTS.kS, FF_CONSTANTS.kG, FF_CONSTANTS.kV, FF_CONSTANTS.kA);
 		zeroed = false;
 
 		leftMotor = new TalonFX(LEFT_MOTOR_CANID);
@@ -67,7 +45,7 @@ public class ElevatorIOSim implements ElevatorIO {
 	}
 
 	public void updateInputs(ElevatorIOInputs inputs) {
-		elevatorSim.update(GlobalConstants.SIM_DELTA_TIME);
+		elevatorSim.update(GlobalConstants.SIMULATION_PERIOD);
 
 		inputs.currentElevatorHeight = elevatorSim.getPositionMeters();
 		inputs.elevatorHeightSetpoint = pidController.getSetpoint().position;
@@ -84,9 +62,7 @@ public class ElevatorIOSim implements ElevatorIO {
 		leftMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters() / metersPerRotation);
 		leftMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() / metersPerRotation);
 		rightMotorSim.setRawRotorPosition(-elevatorSim.getPositionMeters() / metersPerRotation); // negative bc right is inversed (probably)
-		rightMotorSim.setRotorVelocity(
-			-elevatorSim.getVelocityMetersPerSecond() / metersPerRotation
-		);
+		rightMotorSim.setRotorVelocity(-elevatorSim.getVelocityMetersPerSecond() / metersPerRotation);
 	}
 
 	@Override
@@ -95,9 +71,7 @@ public class ElevatorIOSim implements ElevatorIO {
 	}
 
 	public void runElevator() {
-		appliedVoltage =
-			pidController.calculate(elevatorSim.getPositionMeters()) +
-			ffcontroller.calculate(pidController.getSetpoint().velocity);
+		appliedVoltage = pidController.calculate(elevatorSim.getPositionMeters()) + ffcontroller.calculate(pidController.getSetpoint().velocity);
 		elevatorSim.setInputVoltage(appliedVoltage);
 	}
 

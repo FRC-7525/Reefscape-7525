@@ -1,6 +1,4 @@
-package frc.robot.subsystems.Climber;
-
-import static edu.wpi.first.units.Units.Meter;
+package frc.robot.Subsystems.Climber;
 
 import edu.wpi.first.units.measure.Distance;
 import org.team7525.subsystem.SubsystemStates;

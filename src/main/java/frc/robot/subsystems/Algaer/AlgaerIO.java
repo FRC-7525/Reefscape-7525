@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Algaer;
+package frc.robot.Subsystems.Algaer;
 
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -22,4 +22,6 @@ public interface AlgaerIO {
 	public void setPivotSetpoint(Angle pivotSetpoint);
 
 	public void setWheelSpeed(AngularVelocity wheelSpeed);
+
+	public boolean nearTarget();
 }
