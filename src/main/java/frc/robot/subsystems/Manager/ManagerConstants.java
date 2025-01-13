@@ -14,16 +14,7 @@ public final class ManagerConstants {
 	public static final double LEFT_DPAD = 270;
 	public static final double RIGHT_DPAD = 90;
 
-	public static final Map<Integer, ElevatorStates> REEF_SCORING_LEVELS = Map.of(
-		1,
-		ElevatorStates.L1,
-		2,
-		ElevatorStates.L2,
-		3,
-		ElevatorStates.L3,
-		4,
-		ElevatorStates.L4
-	);
+	public static final Map<Integer, ElevatorStates> REEF_SCORING_LEVELS = Map.of(1, ElevatorStates.L1, 2, ElevatorStates.L2, 3, ElevatorStates.L3, 4, ElevatorStates.L4);
 
 	public static class AAReefTarget {
 
@@ -67,10 +58,5 @@ public final class ManagerConstants {
 		REEF_TARGET_MAP = Map.copyOf(hexagonTargetSides);
 	}
 
-	public static final Map<Boolean, AutoAlignStates> SOURCE_TARGET_MAP = Map.of(
-		true,
-		AutoAlignStates.LEFT_SOURCE,
-		false,
-		AutoAlignStates.RIGHT_SOURCE
-	);
+	public static final Map<Boolean, AutoAlignStates> SOURCE_TARGET_MAP = Map.of(true, AutoAlignStates.LEFT_SOURCE, false, AutoAlignStates.RIGHT_SOURCE);
 }

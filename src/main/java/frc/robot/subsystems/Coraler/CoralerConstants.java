@@ -2,11 +2,10 @@ package frc.robot.Subsystems.Coraler;
 
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.AngularVelocity;
 import frc.robot.GlobalConstants;
+import java.util.function.Supplier;
 
 public class CoralerConstants {
 
@@ -30,6 +29,7 @@ public class CoralerConstants {
 	public static final AngularVelocity IDLE_VELOCITY = RotationsPerSecond.of(0);
 
 	public static class Real {
+
 		public static final int WHEEL_MOTOR_CAN_ID = 1;
 	}
 

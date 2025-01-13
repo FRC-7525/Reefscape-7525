@@ -32,11 +32,6 @@ public class CoralerIOSparkMax implements CoralerIO {
 	@Override
 	public void setVelocity(AngularVelocity speedPoint) {
 		this.speedPoint = speedPoint.in(RotationsPerSecond);
-		velocityMotor.setVoltage(
-			wheelController.calculate(
-				velocityEncoder.getVelocity(),
-				speedPoint.in(RotationsPerSecond)
-			)
-		);
+		velocityMotor.setVoltage(wheelController.calculate(velocityEncoder.getVelocity(), speedPoint.in(RotationsPerSecond)));
 	}
 }
