@@ -111,7 +111,7 @@ public class Drive extends Subsystem<DriveStates> {
 	/**
 	 * Returns the singleton instance of the Drive subsystem.
 	 *
-	 * @return The Drive instance.
+	 * @return The Drive Instance.
 	 */
 	public static Drive getInstance() {
 		if (instance == null) {
