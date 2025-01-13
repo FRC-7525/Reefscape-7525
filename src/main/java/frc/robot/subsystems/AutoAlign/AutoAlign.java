@@ -63,16 +63,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 			repulsorActivated = false;
 		} else {
 			repulsor.setGoal(targetPose.getTranslation());
-			repulsorAutoAlign(
-				drive.getPose(),
-				repulsor.getCmd(
-					drive.getPose(),
-					drive.getRobotRelativeSpeeds(),
-					MAX_SPEED.in(MetersPerSecond),
-					USE_GOAL,
-					targetPose.getRotation()
-				)
-			);
+			repulsorAutoAlign(drive.getPose(), repulsor.getCmd(drive.getPose(), drive.getRobotRelativeSpeeds(), MAX_SPEED.in(MetersPerSecond), USE_GOAL, targetPose.getRotation()));
 			repulsorActivated = true;
 		}
 	}
