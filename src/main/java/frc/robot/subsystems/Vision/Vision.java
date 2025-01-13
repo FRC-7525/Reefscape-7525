@@ -1,10 +1,10 @@
-package frc.robot.subsystems.Vision;
+package frc.robot.Subsystems.Vision;
 
 import static frc.robot.GlobalConstants.*;
 import static frc.robot.GlobalConstants.Vision.*;
 import org.team7525.misc.VisionUtil;
 import org.team7525.subsystem.Subsystem;
-import frc.robot.subsystems.Drive.Drive;
+import frc.robot.Subsystems.Drive.Drive;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 

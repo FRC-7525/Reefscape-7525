@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Vision;
+package frc.robot.Subsystems.Vision;
 
 import org.team7525.subsystem.SubsystemStates;
 

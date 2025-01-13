@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Vision;
+package frc.robot.Subsystems.Vision;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import java.util.Optional;
