@@ -1,23 +1,12 @@
-package frc.robot.subsystems.Climber;
+package frc.robot.Subsystems.Climber;
 
-import static edu.wpi.first.units.Units.Amps;
-import static edu.wpi.first.units.Units.Kilogram;
-import static edu.wpi.first.units.Units.Meters;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.KilogramSquareMeters;
-
-import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.config.PIDConstants;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.MomentOfInertia;
 
-import org.team7525.controlConstants.FFConstants;
+import static edu.wpi.first.units.Units.*;
 
 public final class ClimberConstants {
 

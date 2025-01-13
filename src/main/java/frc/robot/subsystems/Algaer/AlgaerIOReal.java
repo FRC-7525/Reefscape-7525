@@ -35,16 +35,8 @@ public class AlgaerIOReal implements AlgaerIO {
 		wheelEncoder.setPosition(0);
 		pivotEncoder.setPosition(0);
 
-		pivotController = new PIDController(
-			AlgaerConstants.Real.PIVOT_PID_CONSTANTS.kP,
-			AlgaerConstants.Real.PIVOT_PID_CONSTANTS.kI,
-			AlgaerConstants.Real.PIVOT_PID_CONSTANTS.kD
-		);
-		wheelSpeedController = new PIDController(
-			AlgaerConstants.Real.WHEEL_PID_CONSTANTS.kP,
-			AlgaerConstants.Real.WHEEL_PID_CONSTANTS.kI,
-			AlgaerConstants.Real.WHEEL_PID_CONSTANTS.kD
-		);
+		pivotController = PIVOT_CONTROLLER.get();
+		wheelSpeedController = WHEEL_CONTROLLER.get();
 	}
 
 	@Override
@@ -63,30 +55,19 @@ public class AlgaerIOReal implements AlgaerIO {
 	@Override
 	public void setPivotSetpoint(Angle pivotSetpoint) {
 		this.pivotPositionSetpoint = pivotSetpoint.in(Degrees);
-		double voltage = pivotController.calculate(
-			Units.rotationsToDegrees(pivotEncoder.getPosition()),
-			pivotSetpoint.in(Degrees)
-		);
+		double voltage = pivotController.calculate(Units.rotationsToDegrees(pivotEncoder.getPosition()), pivotSetpoint.in(Degrees));
 		pivotMotor.setVoltage(voltage);
 	}
 
 	@Override
 	public void setWheelSpeed(AngularVelocity wheelSpeed) {
 		this.wheelSpeedSetpoint = wheelSpeed.in(RotationsPerSecond);
-		double voltage = wheelSpeedController.calculate(
-			wheelEncoder.getVelocity() / 60,
-			wheelSpeed.in(DegreesPerSecond)
-		);
+		double voltage = wheelSpeedController.calculate(wheelEncoder.getVelocity() / 60, wheelSpeed.in(DegreesPerSecond));
 		wheelMotor.setVoltage(voltage);
 	}
 
 	@Override
 	public boolean nearTarget() {
-		return (
-			Math.abs(Units.rotationsToDegrees(pivotEncoder.getPosition()) - pivotPositionSetpoint) <
-				PIVOT_TOLERANCE.in(Degrees) &&
-			Math.abs(wheelEncoder.getVelocity() / 60 - wheelSpeedSetpoint) <
-			WHEEL_TOLERANCE.in(RotationsPerSecond)
-		);
+		return (Math.abs(Units.rotationsToDegrees(pivotEncoder.getPosition()) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees) && Math.abs(wheelEncoder.getVelocity() / 60 - wheelSpeedSetpoint) < WHEEL_TOLERANCE.in(RotationsPerSecond));
 	}
 }

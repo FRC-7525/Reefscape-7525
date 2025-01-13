@@ -1,7 +1,7 @@
-package frc.robot.subsystems.Climber;
+package frc.robot.Subsystems.Climber;
 
 import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.subsystems.Climber.ClimberConstants.SUBSYSTEM_NAME;
+import static frc.robot.Subsystems.Climber.ClimberConstants.SUBSYSTEM_NAME;
 
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;

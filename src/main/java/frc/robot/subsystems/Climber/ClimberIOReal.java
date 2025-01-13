@@ -1,15 +1,5 @@
-package frc.robot.subsystems.Climber;
+package frc.robot.Subsystems.Climber;
 
-import static edu.wpi.first.units.Units.*;
-import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.subsystems.Climber.ClimberConstants.*;
-import static frc.robot.subsystems.Climber.ClimberConstants.Real.*;
-
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfigurator;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.google.flatbuffers.Constants;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -18,9 +8,13 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
+
+import static edu.wpi.first.units.Units.*;
+import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.Subsystems.Climber.ClimberConstants.*;
+import static frc.robot.Subsystems.Climber.ClimberConstants.Real.*;
 
 public class ClimberIOReal implements ClimberIO {
 	private SparkMax motor;

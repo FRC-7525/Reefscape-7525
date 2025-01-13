@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Climber;
+package frc.robot.Subsystems.Climber;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -8,8 +8,8 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 import static edu.wpi.first.units.Units.Meters;
-import static frc.robot.subsystems.Climber.ClimberConstants.*;
-import static frc.robot.subsystems.Climber.ClimberConstants.Sim.*;
+import static frc.robot.Subsystems.Climber.ClimberConstants.*;
+import static frc.robot.Subsystems.Climber.ClimberConstants.Sim.*;
 
 import com.google.flatbuffers.Constants;
 
