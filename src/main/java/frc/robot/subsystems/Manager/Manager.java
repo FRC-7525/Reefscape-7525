@@ -5,6 +5,7 @@ import static frc.robot.Subsystems.Manager.ManagerConstants.*;
 
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
+import frc.robot.Subsystems.Climber.Climber;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -21,6 +22,7 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final Coraler coraler = Coraler.getInstance();
 	private final Algaer algaer = Algaer.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
+	private final Climber climber = Climber.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -126,6 +128,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		// Set States
 		elevator.setState(getState().getElevatorState());
 		coraler.setState(getState().getCoralerState());
+		climber.setState(getState().getClimberState());
 		algaer.setState(getState().getAlgaerState());
 		autoAlign.setState(getState().getAutoAlignState());
 
@@ -134,6 +137,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		drive.periodic();
 		elevator.periodic();
 		coraler.periodic();
+		climber.periodic();
 		algaer.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!

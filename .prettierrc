@@ -2,6 +2,6 @@
     "plugins": ["prettier-plugin-java"],
     "tabWidth": 4,
     "useTabs": true,
-    "printWidth": 300
+    "printWidth": 200
   }
   

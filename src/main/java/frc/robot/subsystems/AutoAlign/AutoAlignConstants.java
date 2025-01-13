@@ -27,7 +27,9 @@ public final class AutoAlignConstants {
 	public static final double DISTANCE_ERROR_MARGIN = .05;
 	public static final double ANGLE_ERROR_MARGIN = .1;
 
-	public static final Pose2d REEF_POSE = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
+	public static final Pose2d REEF_POSE = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red
+		? new Pose2d(13.08, 4, new Rotation2d())
+		: new Pose2d(4.49, 4, new Rotation2d());
 
 	public static final Supplier<PIDController> TRANSLATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
