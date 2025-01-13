@@ -21,6 +21,7 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final Coraler coraler = Coraler.getInstance();
 	private final Algaer algaer = Algaer.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
+	private final Climber climber = Climber.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -128,6 +129,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		coraler.setState(getState().getCoralerState());
 		algaer.setState(getState().getAlgaerState());
 		autoAlign.setState(getState().getAutoAlignState());
+		climber.setState(getState().getClimberState());
 
 		// Periodics
 		autoAlign.periodic();
@@ -135,6 +137,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		elevator.periodic();
 		coraler.periodic();
 		algaer.periodic();
+		climber.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getXButtonPressed() || FIGHT_STICK_2.getRawButtonPressed(1)) {
