@@ -1,6 +1,8 @@
 package frc.robot.Subsystems.AutoAlign;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
 
 import choreo.trajectory.SwerveSample;
@@ -66,7 +68,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 				repulsor.getCmd(
 					drive.getPose(),
 					drive.getRobotRelativeSpeeds(),
-					MAX_SPEED,
+					MAX_SPEED.in(MetersPerSecond),
 					USE_GOAL,
 					targetPose.getRotation()
 				)
@@ -76,7 +78,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	private void braindeadAutoAlign() {
-		rotationController.enableContinuousInput(MIN_HEADING_ANGLE, MAX_HEADING_ANGLE);
+		rotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Degrees), MAX_HEADING_ANGLE.in(Degrees));
 		Pose2d drivePose = drive.getPose();
 
 		// idk why applied needs to be negative but it works if it is negative 💀
@@ -97,7 +99,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	private void repulsorAutoAlign(Pose2d pose, SwerveSample sample) {
-		rotationController.enableContinuousInput(MIN_HEADING_ANGLE, MAX_HEADING_ANGLE);
+		rotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Degrees), MAX_HEADING_ANGLE.in(Degrees));
 
 		var targetSpeeds = sample.getChassisSpeeds();
 		targetSpeeds.vxMetersPerSecond += translationController.calculate(pose.getX(), sample.x);

@@ -1,27 +1,28 @@
 package frc.robot.Subsystems.AutoAlign;
 
-import static edu.wpi.first.units.Units.Meters;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.GlobalConstants;
 import java.util.function.Supplier;
+
+import static edu.wpi.first.units.Units.*;
 
 public final class AutoAlignConstants {
 
 	public static final Distance ROBOT_RADIUS = Meters.of(0.3);
 	public static final Distance REEF_HITBOX = Meters.of(1.31);
 
-	public static final double MIN_HEADING_ANGLE = -180;
-	public static final double MAX_HEADING_ANGLE = 180;
+	public static final Angle MIN_HEADING_ANGLE = Degrees.of(-180);
+	public static final Angle MAX_HEADING_ANGLE = Degrees.of(180);
 
 	// TODO update max speed once robot is built
-	public static final double MAX_SPEED = Units.feetToMeters(15);
+	public static final LinearVelocity MAX_SPEED = FeetPerSecond.of(15);
 	public static final boolean USE_GOAL = true;
 	public static final double DISTANCE_ERROR_MARGIN = .05;
 	public static final double ANGLE_ERROR_MARGIN = .1;
