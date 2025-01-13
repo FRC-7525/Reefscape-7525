@@ -35,14 +35,7 @@ public class AlgaerIOSim implements AlgaerIO {
 			AlgaerConstants.Sim.STARTING_PIVOT_ANGLE.in(Radians)
 		);
 
-		wheelMotorSim = new DCMotorSim(
-			LinearSystemId.createDCMotorSystem(
-				DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS),
-				AlgaerConstants.Sim.WHEEL_MOTOR_MOI.in(KilogramSquareMeters),
-				AlgaerConstants.Sim.WHEEL_MOTOR_GEARING
-			),
-			DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS)
-		);
+		wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS), AlgaerConstants.Sim.WHEEL_MOTOR_MOI.in(KilogramSquareMeters), AlgaerConstants.Sim.WHEEL_MOTOR_GEARING), DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS));
 
 		pivotController = PIVOT_CONTROLLER.get();
 		wheelSpeedController = WHEEL_CONTROLLER.get();
@@ -65,35 +58,17 @@ public class AlgaerIOSim implements AlgaerIO {
 	@Override
 	public void setPivotSetpoint(Angle pivotSetpoint) {
 		this.pivotPositionSetpoint = pivotSetpoint.in(Degrees);
-		pivotSim.setInputVoltage(
-			pivotController.calculate(
-				Units.radiansToDegrees(pivotSim.getAngleRads()),
-				pivotSetpoint.in(Degrees)
-			)
-		);
+		pivotSim.setInputVoltage(pivotController.calculate(Units.radiansToDegrees(pivotSim.getAngleRads()), pivotSetpoint.in(Degrees)));
 	}
 
 	@Override
 	public void setWheelSpeed(AngularVelocity wheelSpeedSetpoint) {
 		this.wheelSpeedSetpoint = wheelSpeedSetpoint.in(RotationsPerSecond);
-		wheelMotorSim.setInputVoltage(
-			wheelSpeedController.calculate(
-				Units.radiansToRotations(wheelMotorSim.getAngularVelocityRadPerSec()),
-				wheelSpeedSetpoint.in(RotationsPerSecond)
-			)
-		);
+		wheelMotorSim.setInputVoltage(wheelSpeedController.calculate(Units.radiansToRotations(wheelMotorSim.getAngularVelocityRadPerSec()), wheelSpeedSetpoint.in(RotationsPerSecond)));
 	}
 
 	@Override
 	public boolean nearTarget() {
-		return (
-			(Math.abs(Units.radiansToDegrees(pivotSim.getAngleRads()) - pivotPositionSetpoint) <
-				PIVOT_TOLERANCE.in(Degrees)) &&
-			(Math.abs(
-					Units.radiansToRotations(wheelMotorSim.getAngularVelocityRadPerSec()) -
-					wheelSpeedSetpoint
-				) <
-				WHEEL_TOLERANCE.in(RotationsPerSecond))
-		);
+		return ((Math.abs(Units.radiansToDegrees(pivotSim.getAngleRads()) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees)) && (Math.abs(Units.radiansToRotations(wheelMotorSim.getAngularVelocityRadPerSec()) - wheelSpeedSetpoint) < WHEEL_TOLERANCE.in(RotationsPerSecond)));
 	}
 }

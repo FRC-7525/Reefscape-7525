@@ -15,13 +15,7 @@ import edu.wpi.first.math.numbers.N3;
 public class DriveIOReal implements DriveIO {
 
 	public DriveIOInputs inputs = new DriveIOInputs();
-	private final TunerSwerveDrivetrain drivetrain = new TunerSwerveDrivetrain(
-		DrivetrainConstants,
-		FrontLeft,
-		FrontRight,
-		BackLeft,
-		BackRight
-	);
+	private final TunerSwerveDrivetrain drivetrain = new TunerSwerveDrivetrain(DrivetrainConstants, FrontLeft, FrontRight, BackLeft, BackRight);
 
 	/**
 	 * Updates the inputs for the drivetrain based on the current state of the SwerveDrivetrain.
@@ -72,11 +66,7 @@ public class DriveIOReal implements DriveIO {
 	 * @param standardDeviaton The standard deviation of the measurement.
 	 */
 	@Override
-	public void addVisionMeasurement(
-		Pose2d pose,
-		double timestamp,
-		Matrix<N3, N1> standardDeviaton
-	) {
+	public void addVisionMeasurement(Pose2d pose, double timestamp, Matrix<N3, N1> standardDeviaton) {
 		drivetrain.addVisionMeasurement(pose, timestamp, standardDeviaton);
 	}
 }

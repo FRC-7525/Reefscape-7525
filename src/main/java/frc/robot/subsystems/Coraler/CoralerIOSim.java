@@ -23,14 +23,7 @@ public class CoralerIOSim implements CoralerIO {
 	private double speedPoint;
 
 	public CoralerIOSim() {
-		motorSim = new DCMotorSim(
-			LinearSystemId.createDCMotorSystem(
-				DCMotor.getNEO(Sim.NUM_MOTORS),
-				Sim.MOTOR_MOI,
-				GEARING
-			),
-			DCMotor.getNEO(Sim.NUM_MOTORS)
-		);
+		motorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(Sim.NUM_MOTORS), Sim.MOTOR_MOI, GEARING), DCMotor.getNEO(Sim.NUM_MOTORS));
 		wheelController = WHEEL_CONTROLLER.get();
 		spark = new SparkMax(Real.WHEEL_MOTOR_CAN_ID, MotorType.kBrushless);
 		sparkSim = new SparkMaxSim(spark, DCMotor.getNEO(Sim.NUM_MOTORS));
@@ -51,8 +44,6 @@ public class CoralerIOSim implements CoralerIO {
 	@Override
 	public void setVelocity(AngularVelocity speedPoint) {
 		this.speedPoint = speedPoint.in(RotationsPerSecond);
-		motorSim.setInputVoltage(
-			wheelController.calculate(sparkSim.getVelocity(), speedPoint.in(RotationsPerSecond))
-		);
+		motorSim.setInputVoltage(wheelController.calculate(sparkSim.getVelocity(), speedPoint.in(RotationsPerSecond)));
 	}
 }

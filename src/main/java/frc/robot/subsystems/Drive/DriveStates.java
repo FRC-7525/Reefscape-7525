@@ -15,24 +15,14 @@ public enum DriveStates implements SubsystemStates {
 	 * The robot's drive is in field-relative mode.
 	 */
 	FIELD_RELATIVE("Field Relative", () -> {
-		Drive.getInstance()
-			.driveFieldRelative(
-				DRIVER_CONTROLLER.getLeftY() * kSpeedAt12Volts.in(MetersPerSecond),
-				DRIVER_CONTROLLER.getLeftX() * kSpeedAt12Volts.in(MetersPerSecond),
-				DRIVER_CONTROLLER.getRightX() * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond)
-			);
+		Drive.getInstance().driveFieldRelative(DRIVER_CONTROLLER.getLeftY() * kSpeedAt12Volts.in(MetersPerSecond), DRIVER_CONTROLLER.getLeftX() * kSpeedAt12Volts.in(MetersPerSecond), DRIVER_CONTROLLER.getRightX() * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond));
 	}),
 
 	/**
 	 * The robot's drive is in robot-relative mode.
 	 */
 	ROBOT_RELATIVE("Robot Relative", () -> {
-		Drive.getInstance()
-			.driveRobotRelative(
-				DRIVER_CONTROLLER.getLeftY() * kSpeedAt12Volts.in(MetersPerSecond),
-				DRIVER_CONTROLLER.getLeftX() * kSpeedAt12Volts.in(MetersPerSecond),
-				DRIVER_CONTROLLER.getRightX() * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond)
-			);
+		Drive.getInstance().driveRobotRelative(DRIVER_CONTROLLER.getLeftY() * kSpeedAt12Volts.in(MetersPerSecond), DRIVER_CONTROLLER.getLeftX() * kSpeedAt12Volts.in(MetersPerSecond), DRIVER_CONTROLLER.getRightX() * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond));
 	}),
 
 	/* The robot's drive is in locking wheels mode starting from field relative.

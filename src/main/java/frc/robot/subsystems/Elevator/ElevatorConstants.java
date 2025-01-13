@@ -25,8 +25,7 @@ public final class ElevatorConstants {
 
 	public static final Distance POSITION_TOLERANCE = Meters.of(.1);
 	public static final LinearVelocity VELOCITY_TOLERANCE = MetersPerSecond.of(.1);
-	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS =
-		new TrapezoidProfile.Constraints(1, .5);
+	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(1, .5);
 	public static final LinearVelocity ZEROING_VELOCITY = MetersPerSecond.of(0.25);
 	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(10.0);
 
