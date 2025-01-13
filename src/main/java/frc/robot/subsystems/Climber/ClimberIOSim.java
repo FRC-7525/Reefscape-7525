@@ -11,8 +11,6 @@ import static edu.wpi.first.units.Units.Meters;
 import static frc.robot.Subsystems.Climber.ClimberConstants.*;
 import static frc.robot.Subsystems.Climber.ClimberConstants.Sim.*;
 
-import com.google.flatbuffers.Constants;
-
 public class ClimberIOSim implements ClimberIO {
 
 	private DCMotorSim climberSim;
