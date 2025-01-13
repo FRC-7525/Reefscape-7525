@@ -14,6 +14,8 @@ import frc.robot.Subsystems.Drive.Drive.SysIdMode;
 
 public class GlobalConstants {
 
+	public static double SIM_DELTA_TIME = 0.02;
+
 	public enum RobotMode {
 		REAL,
 		TESTING,
@@ -23,6 +25,9 @@ public class GlobalConstants {
 
 	public static final RobotMode ROBOT_MODE = "Crash".equals(System.getenv("CI_NAME")) ? RobotMode.SIM : RobotMode.SIM;
 
+	public static final double SIMULATION_PERIOD = 0.02;
+
+	public static final double SIM_PERIOD = 0.01;
 	public static final double SIMULATION_PERIOD = 0.02;
 
 	public static class Controllers {
