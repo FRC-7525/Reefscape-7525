@@ -29,19 +29,24 @@ public final class AutoAlignConstants {
 
 	public static final Pose2d REEF_POSE = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
 
+	// TODO tune these
 	public static final Supplier<PIDController> TRANSLATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(1, 0, 0);
-			case SIM -> new PIDController(1, 0, 0);
+			case SIM -> new PIDController(2.5, 0, 0);
 			default -> new PIDController(1, 0, 0);
 		};
 
 	public static final Supplier<PIDController> ROTATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(1, 0, 0);
-			case SIM -> new PIDController(1, 0, 0);
+			case SIM -> new PIDController(.5, 0, 0);
 			default -> new PIDController(1, 0, 0);
 		};
+
+	static {
+		System.out.println("Translational P: " + TRANSLATIONAL_CONTROLLER.get().getP());
+	}
 
 	public static final Supplier<PIDController> REPULSOR_TRANSLATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {

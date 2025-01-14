@@ -25,6 +25,7 @@ public enum ManagerStates implements SubsystemStates {
 		// AutoAlignStates.OFF
 		SOURCE_TARGET_MAP.get(Manager.getInstance().getLeftSourceSelected())
 	),
+	CONTINUE_INTAKING_CORALER("Intaking Coral Station with Driver Control", ElevatorStates.IDLE, CoralerStates.INAKING, AlgaerStates.IDLE, AutoAlignStates.OFF),
 	SCORING_REEF_MANUAL("Scoring Reef", REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, AutoAlignStates.OFF),
 	SCORING_REEF_AA("Scoring Reef", REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, AutoAlignStates.OFF),
 	TRANSITIONING_SCORING_REEF("Transitioning Scoring", REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()), CoralerStates.IDLE, AlgaerStates.IDLE, AutoAlignStates.OFF);
