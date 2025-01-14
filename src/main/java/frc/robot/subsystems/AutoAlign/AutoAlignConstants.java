@@ -44,10 +44,6 @@ public final class AutoAlignConstants {
 			default -> new PIDController(1, 0, 0);
 		};
 
-	static {
-		System.out.println("Translational P: " + TRANSLATIONAL_CONTROLLER.get().getP());
-	}
-
 	public static final Supplier<PIDController> REPULSOR_TRANSLATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(1, 0, 0);

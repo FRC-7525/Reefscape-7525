@@ -66,8 +66,8 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Intaking at Coral Station
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
-		addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.CONTINUE_INTAKING_CORALER, autoAlign::nearTarget);
-		addTrigger(ManagerStates.CONTINUE_INTAKING_CORALER, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
+		addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
+		addTrigger(ManagerStates.INTAKING_CORALER_AA_OFF, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
 
 		// Intaking Algae
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
