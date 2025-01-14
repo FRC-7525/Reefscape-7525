@@ -1,5 +1,8 @@
 package frc.robot.Subsystems.Algaer;
 
+import static edu.wpi.first.units.Units.*;
+import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
+
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -11,9 +14,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants;
 import frc.robot.GlobalConstants.RobotMode;
-
-import static edu.wpi.first.units.Units.*;
-import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
 public class AlgaerIOReal implements AlgaerIO {
 

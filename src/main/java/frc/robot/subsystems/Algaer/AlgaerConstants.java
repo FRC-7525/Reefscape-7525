@@ -62,6 +62,7 @@ public final class AlgaerConstants {
 	}
 
 	public static final class Real {
+
 		public static final int WHEEL_MOTOR_CANID = 10; //TODO: Get actual CAN IDs
 		public static final int PIVOT_MOTOR_CANID = 11;
 		public static final int ABSOLUTE_ENCODER_CANID = 12;
