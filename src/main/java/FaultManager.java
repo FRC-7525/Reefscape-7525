@@ -1,15 +1,15 @@
 import java.util.concurrent.atomic.AtomicReference;
 
 public interface FaultManager {
-    public static AtomicReference<FaultManager> instance = new AtomicReference<>();
+	public static AtomicReference<FaultManager> instance = new AtomicReference<>();
 
-    public abstract FaultManager getInstance();
+	public abstract FaultManager getInstance();
 
-    public abstract void periodic();
+	public abstract void periodic();
 
-    public abstract void checkDevices();
+	public abstract void checkDevices();
 
-    public abstract void logDevices();
+	public abstract void logDevices();
 
-    public abstract void addDevice();
+	public abstract void addDevice();
 }

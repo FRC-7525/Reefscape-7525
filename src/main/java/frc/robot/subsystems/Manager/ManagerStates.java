@@ -15,13 +15,20 @@ public enum ManagerStates implements SubsystemStates {
 	INTAKING_ALGAE_HIGH("Intaking Algae High", ElevatorStates.ALGAE_HIGH, CoralerStates.IDLE, AlgaerStates.INTAKING, ClimberStates.IDLE, AutoAlignStates.OFF),
 	GOING_PROCESSOR("Going to Processor", ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.GOING_TO_SHOOT, ClimberStates.IDLE, AutoAlignStates.OFF),
 	SCORING_PROCESSOR("Scoring at Processor", ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.SHOOTING, ClimberStates.IDLE, AutoAlignStates.OFF),
-	AUTO_ALIGN_CLOSE("Aligning Close", REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()), CoralerStates.IDLE, AlgaerStates.IDLE, ClimberStates.IDLE, REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getOperatorReefScoringLevel(), Manager.getInstance().getScoringReefLeft()))),
+	AUTO_ALIGN_CLOSE(
+		"Aligning Close",
+		REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()),
+		CoralerStates.IDLE,
+		AlgaerStates.IDLE,
+		ClimberStates.IDLE,
+		REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getOperatorReefScoringLevel(), Manager.getInstance().getScoringReefLeft()))
+	),
 	AUTO_ALIGN_FAR("Aligning Close", ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, ClimberStates.IDLE, REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getOperatorReefScoringLevel(), Manager.getInstance().getScoringReefLeft()))),
 	INTAKING_CORALER(
 		"Intaking at Coral Station",
 		ElevatorStates.IDLE,
 		CoralerStates.INAKING,
-		AlgaerStates.IDLE, 
+		AlgaerStates.IDLE,
 		ClimberStates.IDLE,
 		// AutoAlignStates.OFF
 		SOURCE_TARGET_MAP.get(Manager.getInstance().getLeftSourceSelected())
