@@ -7,7 +7,6 @@ import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Coraler.CoralerStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Manager.ManagerConstants.AAReefTarget;
-
 import org.team7525.subsystem.SubsystemStates;
 
 public enum ManagerStates implements SubsystemStates {
