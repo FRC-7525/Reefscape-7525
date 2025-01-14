@@ -12,10 +12,6 @@ public final class Main {
 	private Main() {}
 
 	public static void main(String... args) {
-		RobotBase.startRobot(
-			"Crash".equals(System.getenv("CI_NAME"))
-				? () -> new CrashCheck(new Robot())
-				: Robot::new
-		);
+		RobotBase.startRobot("Crash".equals(System.getenv("CI_NAME")) ? () -> new CrashCheck(new Robot()) : Robot::new);
 	}
 }
