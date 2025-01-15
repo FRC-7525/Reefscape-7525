@@ -138,7 +138,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		algaer.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		if (DRIVER_CONTROLLER.getXButtonPressed() || OPERATOR_CONTROLLER.getRawAxis(1) > 0.1) {
+		if (DRIVER_CONTROLLER.getXButtonPressed() || OPERATOR_CONTROLLER.getRawAxis(0) > 0.8) {
 			setState(ManagerStates.IDLE);
 		}
 	}
