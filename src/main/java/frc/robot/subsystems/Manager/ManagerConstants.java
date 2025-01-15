@@ -39,7 +39,6 @@ public final class ManagerConstants {
 			return new AAReefTarget(hexagonSide, leftReef);
 		}
 
-		// #freekingston, HFA kids are some bums ngl
 		@Override
 		public boolean equals(Object o) {
 			if (this == o) return true;
