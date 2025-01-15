@@ -4,6 +4,7 @@ import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public final class ManagerConstants {
 
@@ -14,14 +15,15 @@ public final class ManagerConstants {
 	public static final double LEFT_DPAD = 270;
 	public static final double RIGHT_DPAD = 90;
 
-	public static final Map<Integer, ElevatorStates> REEF_SCORING_LEVELS = Map.of(1, ElevatorStates.L1, 2, ElevatorStates.L2, 3, ElevatorStates.L3, 4, ElevatorStates.L4);
+	public static final Map<Integer, ElevatorStates> REEF_SCORING_LEVELS = Map.of(1, ElevatorStates.L1, 2,
+			ElevatorStates.L2, 3, ElevatorStates.L3, 4, ElevatorStates.L4);
 
 	public static class AAReefTarget {
 
 		private int hexagonSide;
 		private boolean leftReef;
 
-		private AAReefTarget(int hexagonSide, boolean leftReef) {
+		public AAReefTarget(int hexagonSide, boolean leftReef) {
 			this.hexagonSide = hexagonSide;
 			this.leftReef = leftReef;
 		}
@@ -37,13 +39,37 @@ public final class ManagerConstants {
 		public static AAReefTarget of(int hexagonSide, boolean leftReef) {
 			return new AAReefTarget(hexagonSide, leftReef);
 		}
+
+		// #freekingston, HFA kids are some bums ngl
+		@Override
+		public boolean equals(Object o) {
+			if (this == o)
+				return true; 
+			if (o == null || getClass() != o.getClass())
+				return false;
+			AAReefTarget that = (AAReefTarget) o; 
+			return hexagonSide == that.hexagonSide && leftReef == that.leftReef; 
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(hexagonSide, leftReef); 
+		}
+
+		@Override
+		public String toString() {
+			return "AAReefTarget{" +
+					"hexagonSide=" + hexagonSide +
+					", leftReef=" + leftReef +
+					'}';
+		}
 	}
 
 	public static final Map<AAReefTarget, AutoAlignStates> REEF_TARGET_MAP;
 
 	static {
-		Map<AAReefTarget, AutoAlignStates> hexagonTargetSides = new HashMap<>();
-		hexagonTargetSides.put(AAReefTarget.of(1, true), AutoAlignStates.L1);
+		final Map<AAReefTarget, AutoAlignStates> hexagonTargetSides = new HashMap<>();
+		hexagonTargetSides.put(new AAReefTarget(1, true), AutoAlignStates.L1);
 		hexagonTargetSides.put(AAReefTarget.of(1, false), AutoAlignStates.R1);
 		hexagonTargetSides.put(AAReefTarget.of(2, true), AutoAlignStates.L2);
 		hexagonTargetSides.put(AAReefTarget.of(2, false), AutoAlignStates.R2);
@@ -58,5 +84,6 @@ public final class ManagerConstants {
 		REEF_TARGET_MAP = Map.copyOf(hexagonTargetSides);
 	}
 
-	public static final Map<Boolean, AutoAlignStates> SOURCE_TARGET_MAP = Map.of(true, AutoAlignStates.LEFT_SOURCE, false, AutoAlignStates.RIGHT_SOURCE);
+	public static final Map<Boolean, AutoAlignStates> SOURCE_TARGET_MAP = Map.of(true, AutoAlignStates.LEFT_SOURCE,
+			false, AutoAlignStates.RIGHT_SOURCE);
 }
