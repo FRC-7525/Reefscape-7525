@@ -86,7 +86,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 
 		// Scoring Reef Auto Align
-		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawAxis(1) < -0.1);
+		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawAxis(0) < -0.8);
 		addTrigger(ManagerStates.AUTO_ALIGN_FAR, ManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
 		addTrigger(ManagerStates.AUTO_ALIGN_CLOSE, ManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
 		addTrigger(ManagerStates.SCORING_REEF_AA, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
