@@ -23,7 +23,7 @@ public final class ManagerConstants {
 		private int hexagonSide;
 		private boolean leftReef;
 
-		public AAReefTarget(int hexagonSide, boolean leftReef) {
+		private AAReefTarget(int hexagonSide, boolean leftReef) {
 			this.hexagonSide = hexagonSide;
 			this.leftReef = leftReef;
 		}
@@ -69,7 +69,7 @@ public final class ManagerConstants {
 
 	static {
 		final Map<AAReefTarget, AutoAlignStates> hexagonTargetSides = new HashMap<>();
-		hexagonTargetSides.put(new AAReefTarget(1, true), AutoAlignStates.L1);
+		hexagonTargetSides.put(AAReefTarget.of(1, true), AutoAlignStates.L1);
 		hexagonTargetSides.put(AAReefTarget.of(1, false), AutoAlignStates.R1);
 		hexagonTargetSides.put(AAReefTarget.of(2, true), AutoAlignStates.L2);
 		hexagonTargetSides.put(AAReefTarget.of(2, false), AutoAlignStates.R2);
