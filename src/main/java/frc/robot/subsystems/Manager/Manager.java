@@ -8,6 +8,7 @@ import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Vision.Vision;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -21,6 +22,7 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final Coraler coraler = Coraler.getInstance();
 	private final Algaer algaer = Algaer.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
+	private final Vision vision = Vision.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -124,7 +126,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
 		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State String", getState().getStateString());
 
-		// Set States
+		// Set States, drive and vision are rogue so you don't need to set state
 		elevator.setState(getState().getElevatorState());
 		coraler.setState(getState().getCoralerState());
 		algaer.setState(getState().getAlgaerState());
@@ -132,10 +134,11 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Periodics
 		autoAlign.periodic();
-		drive.periodic();
 		elevator.periodic();
 		coraler.periodic();
 		algaer.periodic();
+		vision.periodic();
+		drive.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getXButtonPressed() || OPERATOR_CONTROLLER.getRawAxis(0) > AXIS_RECOGNITION_POINT) {
