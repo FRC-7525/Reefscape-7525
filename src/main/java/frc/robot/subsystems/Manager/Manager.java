@@ -44,22 +44,22 @@ public class Manager extends Subsystem<ManagerStates> {
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 4, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
 
 		// Toggling which level to score at (auto align)
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 1, () -> FIGHT_STICK_1.getRawButtonPressed(1));
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 2, () -> FIGHT_STICK_1.getRawButtonPressed(2));
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 3, () -> FIGHT_STICK_1.getRawButtonPressed(3));
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 4, () -> FIGHT_STICK_1.getRawButtonPressed(4));
+		addRunnableTrigger(() -> this.operatorReefScoringLevel = 1, () -> OPERATOR_CONTROLLER.getRawButtonPressed(1));
+		addRunnableTrigger(() -> this.operatorReefScoringLevel = 2, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
+		addRunnableTrigger(() -> this.operatorReefScoringLevel = 3, () -> OPERATOR_CONTROLLER.getRawButtonPressed(3));
+		addRunnableTrigger(() -> this.operatorReefScoringLevel = 4, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4));
 
 		// Togling which side of the hexagon to score at (auto align)
-		addRunnableTrigger(() -> this.hexagonTargetSide = 1, () -> FIGHT_STICK_2.getRawButtonPressed(2));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 2, () -> FIGHT_STICK_2.getRawButtonPressed(3));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 3, () -> FIGHT_STICK_2.getRawButtonPressed(4));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 4, () -> FIGHT_STICK_2.getRawButtonPressed(5));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 5, () -> FIGHT_STICK_2.getRawButtonPressed(6));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 6, () -> FIGHT_STICK_2.getRawButtonPressed(7));
+		addRunnableTrigger(() -> this.hexagonTargetSide = 1, () -> OPERATOR_CONTROLLER.getRawButtonPressed(5));
+		addRunnableTrigger(() -> this.hexagonTargetSide = 2, () -> OPERATOR_CONTROLLER.getRawButtonPressed(6));
+		addRunnableTrigger(() -> this.hexagonTargetSide = 3, () -> OPERATOR_CONTROLLER.getRawButtonPressed(7));
+		addRunnableTrigger(() -> this.hexagonTargetSide = 4, () -> OPERATOR_CONTROLLER.getRawButtonPressed(8));
+		addRunnableTrigger(() -> this.hexagonTargetSide = 5, () -> OPERATOR_CONTROLLER.getRawButtonPressed(9));
+		addRunnableTrigger(() -> this.hexagonTargetSide = 6, () -> OPERATOR_CONTROLLER.getRawButtonPressed(10));
 
 		// Toggling Left or Right Hexagon Side Scoring (auto align)
-		addRunnableTrigger(() -> this.scoringReefLeft = true, () -> FIGHT_STICK_1.getRawButtonPressed(5));
-		addRunnableTrigger(() -> this.scoringReefLeft = false, () -> FIGHT_STICK_1.getRawButtonPressed(6));
+		addRunnableTrigger(() -> this.scoringReefLeft = true, () -> OPERATOR_CONTROLLER.getRawButtonPressed(11));
+		addRunnableTrigger(() -> this.scoringReefLeft = false, () -> OPERATOR_CONTROLLER.getRawButtonPressed(12));
 
 		// Climbing
 		// TODO: Check with yussuf if holding down the trigger for letting up the climber then releasing is good
@@ -68,7 +68,8 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Intaking at Coral Station
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
-		addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
+		addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
+		addTrigger(ManagerStates.INTAKING_CORALER_AA_OFF, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
 
 		// Intaking Algae
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
@@ -87,7 +88,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 
 		// Scoring Reef Auto Align
-		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> FIGHT_STICK_2.getRawButtonPressed(8));
+		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawAxis(0) < -AXIS_RECOGNITION_POINT);
 		addTrigger(ManagerStates.AUTO_ALIGN_FAR, ManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
 		addTrigger(ManagerStates.AUTO_ALIGN_CLOSE, ManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
 		addTrigger(ManagerStates.SCORING_REEF_AA, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
@@ -139,8 +140,8 @@ public class Manager extends Subsystem<ManagerStates> {
 		vision.periodic();
 		drive.periodic();
 
-		// STOP, Cancel All
-		if (DRIVER_CONTROLLER.getXButtonPressed() || FIGHT_STICK_2.getRawButtonPressed(1)) {
+		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		if (DRIVER_CONTROLLER.getXButtonPressed() || OPERATOR_CONTROLLER.getRawAxis(0) > AXIS_RECOGNITION_POINT) {
 			setState(ManagerStates.IDLE);
 		}
 	}

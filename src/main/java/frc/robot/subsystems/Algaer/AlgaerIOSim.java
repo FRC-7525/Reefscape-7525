@@ -23,7 +23,7 @@ public class AlgaerIOSim implements AlgaerIO {
 	private double wheelSpeedSetpoint;
 	private double pivotPositionSetpoint;
 
-	AlgaerIOSim() {
+	public AlgaerIOSim() {
 		pivotSim = new SingleJointedArmSim(
 			DCMotor.getNEO(AlgaerConstants.Sim.NUM_PIVOT_MOTORS),
 			AlgaerConstants.Sim.PIVOT_GEARING,

@@ -30,9 +30,7 @@ public class GlobalConstants {
 	public static class Controllers {
 
 		public static final XboxController DRIVER_CONTROLLER = new XboxController(0);
-		public static final XboxController OPERATOR_CONTROLLER = new XboxController(1);
-		public static final GenericHID FIGHT_STICK_1 = new GenericHID(2);
-		public static final GenericHID FIGHT_STICK_2 = new GenericHID(3);
+		public static final GenericHID OPERATOR_CONTROLLER = new GenericHID(1);
 		public static final XboxController TEST_CONTROLLER = new XboxController(4);
 
 		// NOTE: Set to 0.1 on trash controllers
