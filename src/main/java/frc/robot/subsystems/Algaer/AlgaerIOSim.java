@@ -5,9 +5,8 @@ import static frc.robot.GlobalConstants.SIMULATION_PERIOD;
 import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
 import com.revrobotics.sim.SparkMaxSim;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -70,7 +69,7 @@ public class AlgaerIOSim implements AlgaerIO {
 		input.pivotPosition = Units.radiansToDegrees(pivotSim.getAngleRads());
 		input.pivotSetpoint = pivotPositionSetpoint;
 
-		wheelSparkSim.setVelocity(wheelMotorSim.getAngularVelocityRPM()/60);
+		wheelSparkSim.setVelocity(wheelMotorSim.getAngularVelocityRPM() / 60);
 		wheelSparkSim.setPosition(wheelMotorSim.getAngularPositionRotations());
 
 		pivotSparkSim.setVelocity(Units.radiansToRotations(pivotSim.getVelocityRadPerSec()));
