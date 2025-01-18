@@ -2,13 +2,12 @@ package frc.robot.Subsystems.Manager;
 
 import static frc.robot.Subsystems.Manager.ManagerConstants.*;
 
-import java.util.function.Supplier;
-
 import frc.robot.Subsystems.Algaer.AlgaerStates;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Coraler.CoralerStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Manager.ManagerConstants.AAReefTarget;
+import java.util.function.Supplier;
 import org.team7525.subsystem.SubsystemStates;
 
 public enum ManagerStates implements SubsystemStates {
