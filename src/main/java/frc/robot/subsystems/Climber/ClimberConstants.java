@@ -31,7 +31,7 @@ public final class ClimberConstants {
 		// TODO change all of these values when new robot is done
 		public static final int NUM_MOTORS = 1;
 		public static final MomentOfInertia MOTOR_MOI = KilogramSquareMeters.of(1); //TODO: Get an actual value for htis;
-		public static final double MOTOR_GEARING = 9;
+		public static final double MOTOR_GEARING = 25;
 
 		// TODO Tune once we get new values
 		public static final PIDConstants PID_CONSTANTS = new PIDConstants(2, 0, 0, 0);
