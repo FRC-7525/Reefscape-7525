@@ -39,6 +39,9 @@ public final class ClimberConstants {
 
 	public static class Real {
 
+		//TODO change CAN ID
+		public static final int CLIMBER_CANID = 18;
+
 		public static final LinearVelocity ZEROING_VELOCITY = MetersPerSecond.of(0.25);
 		public static final Current ZEROING_CURRENT_LIMIT = Amps.of(10.0);
 

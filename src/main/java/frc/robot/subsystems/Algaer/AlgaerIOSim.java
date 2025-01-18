@@ -4,6 +4,9 @@ import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.SIMULATION_PERIOD;
 import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
+import com.revrobotics.sim.SparkMaxSim;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -16,7 +19,14 @@ import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 public class AlgaerIOSim implements AlgaerIO {
 
 	private SingleJointedArmSim pivotSim;
+
 	private DCMotorSim wheelMotorSim;
+	private SparkMax dummyWheelSpark;
+	private SparkMax dummyPivotSpark;
+
+	private SparkMaxSim wheelSparkSim;
+	private SparkMaxSim pivotSparkSim;
+
 	private PIDController pivotController;
 	private PIDController wheelSpeedController;
 
@@ -37,6 +47,11 @@ public class AlgaerIOSim implements AlgaerIO {
 
 		wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS), AlgaerConstants.Sim.WHEEL_MOTOR_MOI.in(KilogramSquareMeters), AlgaerConstants.Sim.WHEEL_MOTOR_GEARING), DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS));
 
+		dummyWheelSpark = new SparkMax(Real.WHEEL_MOTOR_CANID, MotorType.kBrushless);
+		dummyPivotSpark = new SparkMax(Real.PIVOT_MOTOR_CANID, MotorType.kBrushless);
+		wheelSparkSim = new SparkMaxSim(dummyWheelSpark, DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS));
+		pivotSparkSim = new SparkMaxSim(dummyPivotSpark, DCMotor.getNEO(AlgaerConstants.Sim.NUM_PIVOT_MOTORS));
+
 		pivotController = PIVOT_CONTROLLER.get();
 		wheelSpeedController = WHEEL_CONTROLLER.get();
 
@@ -53,6 +68,12 @@ public class AlgaerIOSim implements AlgaerIO {
 		input.wheelSpeedSetpoint = wheelSpeedSetpoint;
 		input.pivotPosition = Units.radiansToDegrees(pivotSim.getAngleRads());
 		input.pivotSetpoint = pivotPositionSetpoint;
+
+		wheelSparkSim.setVelocity(wheelMotorSim.getAngularVelocityRPM() / 60);
+		wheelSparkSim.setPosition(wheelMotorSim.getAngularPositionRotations());
+
+		pivotSparkSim.setVelocity(Units.radiansToRotations(pivotSim.getVelocityRadPerSec()));
+		pivotSparkSim.setPosition(Units.radiansToRotations(pivotSim.getAngleRads()));
 	}
 
 	@Override
