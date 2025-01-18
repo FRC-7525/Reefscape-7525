@@ -1,9 +1,11 @@
 package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Kilogram;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Pounds;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.config.PIDConstants;
@@ -45,13 +47,13 @@ public final class ElevatorConstants {
 
 		// TODO change all of these values when new robot is done
 		public static final DCMotor GEARBOX = DCMotor.getKrakenX60(2);
-		public static final double GEARING = 9;
-		public static final Mass CARRIAGE_MASS = Kilogram.of(28.44);
-		public static final Distance DRUM_RADIUS = Meters.of(.5); // Random value cuz mech is bum
-		public static final Distance MIN_HEIGHT = Meters.of(1.54305);
-		public static final Distance MAX_HEIGHT = Meters.of(2.60985);
+		public static final double GEARING = 7.75;
+		public static final Mass CARRIAGE_MASS = Pounds.of(25);
+		public static final Distance DRUM_RADIUS = Inches.of(0.8755); // Random value cuz mech is bum
+		public static final Distance MIN_HEIGHT = Inches.of(37);
+		public static final Distance MAX_HEIGHT = Inches.of(63);
 		public static final boolean SIMULATE_GRAVITY = true;
-		public static final Distance STARTING_HEIGHT = Meters.of(1.54305);
+		public static final Distance STARTING_HEIGHT = Inches.of(37);
 
 		// TODO Tune once we get new values, this has Izone so I didn't make it a supplier
 		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(2, 0, 0, 0);
