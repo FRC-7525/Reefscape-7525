@@ -4,10 +4,9 @@ import static edu.wpi.first.units.Units.Meters;
 import static frc.robot.Subsystems.Climber.ClimberConstants.*;
 import static frc.robot.Subsystems.Climber.ClimberConstants.Sim.*;
 
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkSim;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
