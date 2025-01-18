@@ -8,6 +8,7 @@ import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.LED.LED;
 import frc.robot.Subsystems.Vision.Vision;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
@@ -23,6 +24,7 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final Algaer algaer = Algaer.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
+	private final LED ledSubsystem = LED.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -134,6 +136,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		coraler.setState(getState().getCoralerState());
 		algaer.setState(getState().getAlgaerState());
 		autoAlign.setState(getState().getAutoAlignSupplier().get());
+		ledSubsystem.setState(getState().getLedState());
 
 		// Periodics
 		autoAlign.periodic();
@@ -142,6 +145,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		algaer.periodic();
 		vision.periodic();
 		drive.periodic();
+		ledSubsystem.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getXButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(6)) {
