@@ -130,10 +130,10 @@ public class Manager extends Subsystem<ManagerStates> {
 		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/Left Pose Selected", scoringReefLeft);
 
 		// Set States, drive and vision are rogue so you don't need to set state
-		elevator.setState(getState().getElevatorState());
+		elevator.setState(getState().getElevatorStateSupplier().get());
 		coraler.setState(getState().getCoralerState());
 		algaer.setState(getState().getAlgaerState());
-		autoAlign.setState(getState().getAutoAlignState());
+		autoAlign.setState(getState().getAutoAlignSupplier().get());
 
 		// Periodics
 		autoAlign.periodic();
