@@ -47,11 +47,11 @@ public class ElevatorIOSim implements ElevatorIO {
 	public void updateInputs(ElevatorIOInputs inputs) {
 		elevatorSim.update(GlobalConstants.SIMULATION_PERIOD);
 
-		inputs.currentElevatorHeight = elevatorSim.getPositionMeters();
+		inputs.currentElevatorHeight = elevatorSim.getPositionMeters() * METERS_PER_ROTATION.in(Meters);
 		inputs.elevatorHeightSetpoint = pidController.getSetpoint().position;
 		inputs.elevatorHeightGoalpoint = pidController.getGoal().position;
 
-		inputs.elevatorVelocity = elevatorSim.getVelocityMetersPerSecond();
+		inputs.elevatorVelocity = elevatorSim.getVelocityMetersPerSecond() * METERS_PER_ROTATION.in(Meters);
 		inputs.elevatorVelocitySetpoint = pidController.getSetpoint().velocity;
 		inputs.elevatorVelocityGoalpoint = pidController.getGoal().velocity;
 
@@ -59,10 +59,10 @@ public class ElevatorIOSim implements ElevatorIO {
 		inputs.rightMotorVoltInput = appliedVoltage;
 		inputs.elevatorZeroed = zeroed;
 
-		leftMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters() / metersPerRotation);
-		leftMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() / metersPerRotation);
-		rightMotorSim.setRawRotorPosition(-elevatorSim.getPositionMeters() / metersPerRotation); // negative bc right is inversed (probably)
-		rightMotorSim.setRotorVelocity(-elevatorSim.getVelocityMetersPerSecond() / metersPerRotation);
+		leftMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters() / METERS_PER_ROTATION.in(Meters));
+		leftMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() / METERS_PER_ROTATION.in(Meters));
+		rightMotorSim.setRawRotorPosition(-elevatorSim.getPositionMeters() / METERS_PER_ROTATION.in(Meters)); // negative bc right is inversed (probably)
+		rightMotorSim.setRotorVelocity(-elevatorSim.getVelocityMetersPerSecond() / METERS_PER_ROTATION.in(Meters));
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class ElevatorIOSim implements ElevatorIO {
 	}
 
 	public void runElevator() {
-		appliedVoltage = pidController.calculate(elevatorSim.getPositionMeters()) + ffcontroller.calculate(pidController.getSetpoint().velocity);
+		appliedVoltage = pidController.calculate(elevatorSim.getPositionMeters() * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
 		elevatorSim.setInputVoltage(appliedVoltage);
 	}
 
