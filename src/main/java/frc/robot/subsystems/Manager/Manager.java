@@ -3,6 +3,7 @@ package frc.robot.Subsystems.Manager;
 import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.Subsystems.Manager.ManagerConstants.*;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
@@ -12,8 +13,6 @@ import frc.robot.Subsystems.LED.LED;
 import frc.robot.Subsystems.Vision.Vision;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
-
-import edu.wpi.first.wpilibj.DriverStation;
 
 public class Manager extends Subsystem<ManagerStates> {
 
