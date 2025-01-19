@@ -18,6 +18,7 @@ public enum ManagerStates implements SubsystemStates {
 	INTAKING_ALGAE_HIGH("Intaking Algae High", () -> ElevatorStates.ALGAE_HIGH, CoralerStates.IDLE, AlgaerStates.INTAKING, () -> AutoAlignStates.OFF, LEDStates.BLUE),
 	GOING_PROCESSOR("Going to Processor", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.GOING_TO_SHOOT, () -> AutoAlignStates.OFF, LEDStates.GREEN),
 	SCORING_PROCESSOR("Scoring at Processor", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.SHOOTING, () -> AutoAlignStates.OFF, LEDStates.GREEN),
+	HOLDING_ALGAE("Holding Algae", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.HOLDING_ALGAE, () -> AutoAlignStates.OFF, LEDStates.GREEN),
 	AUTO_ALIGN_CLOSE(
 		"Aligning Close",
 		() -> REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()),
