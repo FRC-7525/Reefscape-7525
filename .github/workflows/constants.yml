@@ -2,6 +2,10 @@ name: Find Misplaced Constants
 
 on:
   pull_request:
+    types:
+      - reopened
+      - opened
+      - synchronize
   push:
     branches:
       - main
