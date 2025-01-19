@@ -1,0 +1,67 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LN to CJ"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CJ to CIL"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CLI to CI"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CI to CLI"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CIL to CK"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CK to CIL"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CIL to CL"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CL to CIL"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CIL to CA"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
