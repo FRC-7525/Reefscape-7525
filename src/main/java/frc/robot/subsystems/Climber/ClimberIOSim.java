@@ -13,6 +13,7 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import frc.robot.Subsystems.Climber.ClimberConstants.Real;
 
 public class ClimberIOSim implements ClimberIO {
 
@@ -39,7 +40,7 @@ public class ClimberIOSim implements ClimberIO {
 
 	public void updateInputs(ClimberIOInputs inputs) {
 		inputs.climberSpeed = climberSim.getAngularVelocityRPM() / 60;
-		inputs.climberPosition = climberSim.getAngularPositionRotations() * metersPerRotation;
+		inputs.climberPosition = climberSim.getAngularPositionRotations();
 		inputs.climberAngularPosition = Units.rotationsToDegrees(climberSim.getAngularPositionRotations());
 		inputs.climberHeightPoint = climberSetpoint;
 
@@ -51,7 +52,7 @@ public class ClimberIOSim implements ClimberIO {
 		double height = setpoint.in(Meters);
 
 		climberSetpoint = height;
-		double voltage = pidController.calculate(climberSim.getAngularPositionRotations() * metersPerRotation, height);
+		double voltage = pidController.calculate(climberSim.getAngularPositionRotations(), height);
 		climberSim.setInputVoltage(voltage);
 	}
 

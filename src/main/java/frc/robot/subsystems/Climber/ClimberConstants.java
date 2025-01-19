@@ -2,8 +2,11 @@ package frc.robot.Subsystems.Climber;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.KilogramSquareMeters;
+import static edu.wpi.first.units.Units.Meter;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Millimeters;
+import static frc.robot.Subsystems.Climber.ClimberConstants.Sim.MOTOR_GEARING;
 
 import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.units.measure.Current;
@@ -24,7 +27,8 @@ public final class ClimberConstants {
 	public static final Distance UP = Meters.of(2.5146);
 	public static final Distance IDLE = Meters.of(0); //TODO: Change these setpoint distances to something that is actually real
 	public static final Distance DOWN = Meters.of(1.54305);
-	public static final Distance METERS_PER_ROTATION = Meters.of(1); // random value lol
+	public static final Distance OUTER_GEAR_DIAMETER = Millimeters.of(35.9);
+	public static final Distance METERS_PER_ROTATION = Meters.of(MOTOR_GEARING * (OUTER_GEAR_DIAMETER.in(Meters) * Math.PI)); // random value lol
 
 	public static class Sim {
 
