@@ -13,6 +13,8 @@ import frc.robot.Subsystems.Vision.Vision;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 public class Manager extends Subsystem<ManagerStates> {
 
 	// Needed for working code (having it not null on init that is)
@@ -88,6 +90,8 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(ManagerStates.IDLE, ManagerStates.TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
 		addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, DRIVER_CONTROLLER::getYButtonPressed);
 		addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
+		// Auto Only Transition
+		addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
 
 		// Scoring Reef Auto Align
 		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
@@ -121,6 +125,15 @@ public class Manager extends Subsystem<ManagerStates> {
 
 	public int getOperatorReefScoringLevel() {
 		return operatorReefScoringLevel;
+	}
+
+	// For use by auto manager & auto commands
+	public void setDriverReefScoringLevel(int driverReefScoringLevel) {
+		this.driverReefScoringLevel = driverReefScoringLevel;
+	}
+
+	public void setLeftSourceTargeted(boolean leftSourceTargeted) {
+		this.leftSourceSelected = leftSourceTargeted;
 	}
 
 	@Override

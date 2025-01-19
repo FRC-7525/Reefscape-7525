@@ -29,7 +29,6 @@ public class ElevatorIOReal implements ElevatorIO {
 	private ElevatorFeedforward ffcontroller;
 	private DigitalInput limitSwitch;
 
-	private double metersPerRotation;
 	private double leftMotorVoltage;
 	private double rightMotorVoltage;
 	private boolean leftMotorZeroed;
@@ -44,7 +43,6 @@ public class ElevatorIOReal implements ElevatorIO {
 		rightMotorVoltage = 0;
 		leftMotorZeroed = false;
 		rightMotorZeroed = false;
-		metersPerRotation = METERS_PER_ROTATION.in(Meters);
 
 		//Motor configs
 		leftConfigurator = leftMotor.getConfigurator();
