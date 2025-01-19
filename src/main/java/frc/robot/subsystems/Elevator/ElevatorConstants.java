@@ -6,6 +6,8 @@ import static edu.wpi.first.units.Units.Kilogram;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Pounds;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.DRUM_RADIUS;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.GEARING;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.config.PIDConstants;
@@ -41,7 +43,7 @@ public final class ElevatorConstants {
 	public static final Distance ALGAE_HIGH_HEIGHT = Meters.of(1);
 	public static final Distance ALGAE_PROCESSOR_HEIGHT = Meters.of(1);
 
-	public static final Distance METERS_PER_ROTATION = Meters.of(1); // random value lol
+	public static final Distance METERS_PER_ROTATION = Meters.of(GEARING * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right
 
 	public static class Sim {
 
