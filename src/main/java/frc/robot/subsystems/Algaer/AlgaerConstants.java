@@ -25,6 +25,7 @@ public final class AlgaerConstants {
 	public static final Angle INTAKING_PIVOT = Degrees.of(70).plus(ABSOLUTE_ENCODER_ZERO);
 	public static final Angle OUTTAKING_PIVOT = Degrees.of(70).plus(ABSOLUTE_ENCODER_ZERO);
 	public static final Angle PASSING_PIVOT = Degrees.of(0).plus(ABSOLUTE_ENCODER_ZERO);
+	public static final Angle HOLDING_PIVOT = Degrees.of(60).plus(ABSOLUTE_ENCODER_ZERO);
 	public static final Angle IDLE_PIVOT = Degrees.of(0).plus(ABSOLUTE_ENCODER_ZERO);
 
 	public static final Angle PIVOT_TOLERANCE = Degrees.of(5);

@@ -77,11 +77,12 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
 		addTrigger(ManagerStates.INTAKING_ALGAE_HIGH, ManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
 		addTrigger(ManagerStates.INTAKING_ALGAE_LOW, ManagerStates.INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
-		addTrigger(ManagerStates.INTAKING_ALGAE_HIGH, ManagerStates.IDLE, DRIVER_CONTROLLER::getBButtonPressed);
-		addTrigger(ManagerStates.INTAKING_ALGAE_LOW, ManagerStates.IDLE, DRIVER_CONTROLLER::getBButtonPressed);
+		addTrigger(ManagerStates.INTAKING_ALGAE_HIGH, ManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
+		addTrigger(ManagerStates.INTAKING_ALGAE_LOW, ManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
+
 		// Scoring Algae at Processor
 		addTrigger(ManagerStates.IDLE, ManagerStates.GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
-		addTrigger(ManagerStates.GOING_PROCESSOR, ManagerStates.SCORING_PROCESSOR, () -> elevator.nearTarget() && algaer.nearTarget());
+		addTrigger(ManagerStates.GOING_PROCESSOR, ManagerStates.SCORING_PROCESSOR, () -> elevator.nearTarget() && algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed());
 		addTrigger(ManagerStates.SCORING_PROCESSOR, ManagerStates.IDLE, DRIVER_CONTROLLER::getAButtonPressed);
 
 		// Scoring Reef Manual
