@@ -46,7 +46,7 @@ public class ClimberIOReal implements ClimberIO {
 	@Override
 	public void updateInputs(ClimberIOInputs inputs) {
 		inputs.climberPosition = motorEncoder.getPosition() * METERS_PER_ROTATION.in(Meters);
-		inputs.climberSpeed = motorEncoder.getVelocity() / 60 * METERS_PER_ROTATION.in(Meters);
+		inputs.climberSpeed = (motorEncoder.getVelocity() / 60) * METERS_PER_ROTATION.in(Meters);
 		inputs.climberAngularPosition = Units.rotationsToDegrees(motorEncoder.getPosition());
 		inputs.climberHeightPoint = setpoint;
 	}
