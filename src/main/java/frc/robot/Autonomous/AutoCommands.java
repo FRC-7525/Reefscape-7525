@@ -6,47 +6,47 @@ import frc.robot.Subsystems.Manager.ManagerStates;
 
 public class AutoCommands {
 
-    public class IntakeCoral extends Command {
-        private final Manager manager = Manager.getInstance();
-        private final boolean leftSourceTargeted;
+	public class IntakeCoral extends Command {
 
-        public IntakeCoral(boolean leftSourceTargeted) {
-            this.leftSourceTargeted = leftSourceTargeted;
-        }
+		private final Manager manager = Manager.getInstance();
+		private final boolean leftSourceTargeted;
 
-        @Override
-        public void initialize() {
-            manager.setLeftSourceTargeted(leftSourceTargeted);
-            manager.setState(ManagerStates.INTAKING_CORALER_AA_OFF);
-        }
+		public IntakeCoral(boolean leftSourceTargeted) {
+			this.leftSourceTargeted = leftSourceTargeted;
+		}
 
-        @Override
-        public boolean isFinished() {
-            return true;
-        }
-    }
+		@Override
+		public void initialize() {
+			manager.setLeftSourceTargeted(leftSourceTargeted);
+			manager.setState(ManagerStates.INTAKING_CORALER_AA_OFF);
+		}
 
-    public class ScoreReef extends Command {
-        private final Manager manager = Manager.getInstance();
-        private final int scoringLevel;
+		@Override
+		public boolean isFinished() {
+			return true;
+		}
+	}
 
-        public ScoreReef(int scoringLevel) {
-            this.scoringLevel = scoringLevel;
-        }
+	public class ScoreReef extends Command {
 
-        @Override
-        public void initialize() {
-            manager.setDriverReefScoringLevel(scoringLevel);
-            manager.setState(ManagerStates.TRANSITIONING_SCORING_REEF);
-        }
+		private final Manager manager = Manager.getInstance();
+		private final int scoringLevel;
 
-        @Override
-        public boolean isFinished() {
-            return manager.getState() == ManagerStates.IDLE;
-        }
-    } 
+		public ScoreReef(int scoringLevel) {
+			this.scoringLevel = scoringLevel;
+		}
 
-    public class ProcessAlgae extends Command {
-        
-    }
+		@Override
+		public void initialize() {
+			manager.setDriverReefScoringLevel(scoringLevel);
+			manager.setState(ManagerStates.TRANSITIONING_SCORING_REEF);
+		}
+
+		@Override
+		public boolean isFinished() {
+			return manager.getState() == ManagerStates.IDLE;
+		}
+	}
+
+	public class ProcessAlgae extends Command {}
 }

@@ -6,22 +6,17 @@ import frc.robot.Subsystems.Manager.Manager;
 
 public class AutoManager {
 
-    public static AutoManager instance;
-    
-    private final Manager manager = Manager.getInstance();
-    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
+	public static AutoManager instance;
 
+	private final Manager manager = Manager.getInstance();
+	private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
-    private AutoManager() {
-        
-    }
+	private AutoManager() {}
 
-    public static AutoManager getInstance() {
-        if (instance == null) {
-            instance = new AutoManager();
-        }
-        return instance;
-    }
-
-
+	public static AutoManager getInstance() {
+		if (instance == null) {
+			instance = new AutoManager();
+		}
+		return instance;
+	}
 }
