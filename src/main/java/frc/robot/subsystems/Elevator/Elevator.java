@@ -6,6 +6,8 @@ import static frc.robot.Subsystems.Elevator.ElevatorConstants.SUBSYSTEM_NAME;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
+import edu.wpi.first.units.measure.Distance;
+
 public class Elevator extends Subsystem<ElevatorStates> {
 
 	private static Elevator instance;
@@ -46,5 +48,9 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
 	public boolean nearTarget() {
 		return io.nearTarget();
+	}
+
+	public Distance getHeight() {
+		return io.getHeight();
 	}
 }

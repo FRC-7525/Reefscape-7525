@@ -103,7 +103,8 @@ public class TippingCalculator {
 	}
 
 	/**
-	 * Determines if the robot will tip based on velocity, deceleration, and CG.
+	 * Determines if the robot will tip based on velocity, deceleration, and CG. Assumes the robot
+	 * will come to a stop in the given time. This method is intended to be used in simulation.
 	 *
 	 * @param velocity Current velocity of the robot
 	 * @param time     Time to stop
@@ -118,10 +119,13 @@ public class TippingCalculator {
 	}
 
 	/**
-	 * Determines if the robot will tip based on velocity, deceleration, and CG.
+	 * Determines if the robot will tip based on the change in pose of the robot and its
+	 * starting velocity. This method is intended to be used in simulation and assumes the 
+	 * robot will come to a stop at the ending pose.
 	 *
-	 * @param velocity Current velocity of the robot
-	 * @param time     Time to stop
+	 * @param  endingPose The target pose where the robot needs to stop
+	 * @param  currentPose The current pose of the robot
+	 * @param  velocity The current velocity of the robot at the current post
 	 * @return True if the robot will tip, false otherwise.
 	 */
 	public boolean willTip(Pose2d endingPose, Pose2d currentPose, LinearVelocity velocity) {
@@ -129,6 +133,23 @@ public class TippingCalculator {
 		Torque tippingTorque = calculateTippingTorque(deceleration);
 		Torque restoringTorque = calculateRestoringTorque();
 
+		return tippingTorque.gt(restoringTorque);
+	}
+
+	/**
+	 * Determines if the robot will tip based on a starting and ending velocity in simulation. 
+	 * This method does not need to directly depend on path planners logging system and can be
+	 * more dynamically used than other functions.
+	 *
+	 * @param velocity Current velocity of the robot
+	 * @param time     Time to stop
+	 * @return True if the robot will tip, false otherwise.
+	 */
+	public boolean willTip(LinearVelocity startingVelocity, LinearVelocity endingVelocity, Time dt) {
+		LinearAcceleration deceleration = endingVelocity.minus(startingVelocity).div(dt);
+		Torque tippingTorque = calculateTippingTorque(deceleration);
+		Torque restoringTorque = calculateRestoringTorque();
+		
 		return tippingTorque.gt(restoringTorque);
 	}
 }

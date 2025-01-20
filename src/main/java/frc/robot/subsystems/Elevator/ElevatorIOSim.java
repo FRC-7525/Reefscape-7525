@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import frc.robot.GlobalConstants;
 
@@ -44,6 +45,12 @@ public class ElevatorIOSim implements ElevatorIO {
 		metersPerRotation = METERS_PER_ROTATION.in(Meters);
 	}
 
+	@Override
+	public Distance getHeight() {
+		return METERS_PER_ROTATION.times(leftMotor.getPosition().getValueAsDouble());
+	}
+
+	@Override
 	public void updateInputs(ElevatorIOInputs inputs) {
 		elevatorSim.update(GlobalConstants.SIMULATION_PERIOD);
 
@@ -70,6 +77,7 @@ public class ElevatorIOSim implements ElevatorIO {
 		pidController.setGoal(height);
 	}
 
+	@Override
 	public void runElevator() {
 		appliedVoltage = pidController.calculate(elevatorSim.getPositionMeters() * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
 		elevatorSim.setInputVoltage(appliedVoltage);
