@@ -29,6 +29,8 @@ public class TippingCalculator {
 		this.robotMass = mass;
 		// TODO: Care if or not the CG is at the center
 		this.cgDistance = wheelbase.div(2); // Assume CG is at the center, idrc if its not
+		// No division errors pls
+		cgHeight = Meters.of(0.001);
 	}
 
 	/**
