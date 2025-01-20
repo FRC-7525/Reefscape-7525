@@ -5,6 +5,7 @@ import frc.robot.Subsystems.Manager.Manager;
 import frc.robot.Subsystems.Manager.ManagerStates;
 
 public class AutoCommands {
+
 	public static AutoCommands instance;
 
 	private AutoCommands() {}
