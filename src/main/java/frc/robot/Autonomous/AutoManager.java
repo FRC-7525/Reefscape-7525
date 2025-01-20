@@ -5,6 +5,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.GlobalConstants;
@@ -18,7 +19,6 @@ public class AutoManager {
 
 	private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 	private final TippingCalculator tippingCalculator = new TippingCalculator(GlobalConstants.ROBOT_MASS, DriveConstants.WHEEL_BASE);
-	private final AutoCommands autoCommands = new AutoCommands();
 
 	private AutoManager() {
 		// Logging Config
@@ -28,9 +28,11 @@ public class AutoManager {
 		PathPlannerLogging.setLogActivePathCallback(activePath -> {
 			Logger.recordOutput("Auto/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
 
-			if (GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.SIM) {
+			if (GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.SIM && activePath.size() > 0) {
 				// NOTE: ASSUMES THAT THE LAST POSE IN THE CURRENT PATH HAS A TARGET VELOCITY OF 0 m/s, WILL ONLY REALLY WORK FOR THE END OF THE PATH!!!!
 				Logger.recordOutput("Auto/Tipping", tippingCalculator.willTip(activePath.get(activePath.size() - 1), Drive.getInstance().getPose(), Drive.getInstance().getVelocity()));
+			} else {
+				Logger.recordOutput("Auto/Tipping", false);
 			}
 		});
 		PathPlannerLogging.setLogTargetPoseCallback(targetPose -> {
@@ -38,17 +40,18 @@ public class AutoManager {
 		});
 
 		// Name Commands
-		NamedCommands.registerCommand("Score L4", autoCommands.new ScoreReef(4));
-		NamedCommands.registerCommand("Score L3", autoCommands.new ScoreReef(3));
-		NamedCommands.registerCommand("Score L2", autoCommands.new ScoreReef(2));
-		NamedCommands.registerCommand("Score L1", autoCommands.new ScoreReef(1));
-		NamedCommands.registerCommand("Intake Coral L", autoCommands.new IntakeCoral(true));
-		NamedCommands.registerCommand("Intake Coral R", autoCommands.new IntakeCoral(false));
-		NamedCommands.registerCommand("Process Algae", autoCommands.new ProcessAlgae());
+		NamedCommands.registerCommand("Score L4", AutoCommands.ScoreReef.atLevel(4));
+		NamedCommands.registerCommand("Score L3", AutoCommands.ScoreReef.atLevel(3));
+		NamedCommands.registerCommand("Score L2", AutoCommands.ScoreReef.atLevel(2));
+		NamedCommands.registerCommand("Score L1", AutoCommands.ScoreReef.atLevel(1));
+		NamedCommands.registerCommand("Intake Coral L", AutoCommands.IntakeCoral.fromLeftSource(true));
+		NamedCommands.registerCommand("Intake Coral R", AutoCommands.IntakeCoral.fromLeftSource(false));
 
 		// Autos
 		autoChooser.setDefaultOption("Do Nothing", new PrintCommand("Do Nothing"));
 		autoChooser.addOption("4 Note", new PathPlannerAuto("4 Note Testing"));
+
+		SmartDashboard.putData("Auto Chooser",autoChooser);
 	}
 
 	public static AutoManager getInstance() {
