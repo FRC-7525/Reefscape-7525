@@ -1,10 +1,10 @@
 package frc.robot.Subsystems.Drive;
 
+import static frc.robot.Subsystems.Drive.DriveConstants.*;
+
 import com.ctre.phoenix6.Utils;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
-
-import static frc.robot.Subsystems.Drive.DriveConstants.*;
 
 /**
  * This class represents the simulated input/output for the drive subsystem.
