@@ -4,6 +4,8 @@ import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.Subsystems.Manager.ManagerConstants.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Autonomous.AutoManager;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
@@ -26,6 +28,7 @@ public class Manager extends Subsystem<ManagerStates> {
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
+	private final AutoManager autoManager = AutoManager.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -124,6 +127,10 @@ public class Manager extends Subsystem<ManagerStates> {
 
 	public int getOperatorReefScoringLevel() {
 		return operatorReefScoringLevel;
+	}
+
+	public Command getSelectedAutonomousCommand() {
+		return autoManager.getSelectedCommand();
 	}
 
 	// For use by auto manager & auto commands
