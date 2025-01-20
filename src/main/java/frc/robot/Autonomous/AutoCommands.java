@@ -5,14 +5,28 @@ import frc.robot.Subsystems.Manager.Manager;
 import frc.robot.Subsystems.Manager.ManagerStates;
 
 public class AutoCommands {
+	public static AutoCommands instance;
+
+	private AutoCommands() {}
+
+	protected static AutoCommands getInstance() {
+		if (instance == null) {
+			instance = new AutoCommands();
+		}
+		return instance;
+	}
 
 	public class IntakeCoral extends Command {
 
 		private final Manager manager = Manager.getInstance();
 		private final boolean leftSourceTargeted;
 
-		public IntakeCoral(boolean leftSourceTargeted) {
+		private IntakeCoral(boolean leftSourceTargeted) {
 			this.leftSourceTargeted = leftSourceTargeted;
+		}
+
+		public static IntakeCoral fromLeftSource(boolean leftSourceTargeted) {
+			return AutoCommands.getInstance().new IntakeCoral(leftSourceTargeted);
 		}
 
 		@Override
@@ -32,8 +46,12 @@ public class AutoCommands {
 		private final Manager manager = Manager.getInstance();
 		private final int scoringLevel;
 
-		public ScoreReef(int scoringLevel) {
+		private ScoreReef(int scoringLevel) {
 			this.scoringLevel = scoringLevel;
+		}
+
+		public static ScoreReef atLevel(int scoringLevel) {
+			return AutoCommands.getInstance().new ScoreReef(scoringLevel);
 		}
 
 		@Override
