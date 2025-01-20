@@ -23,13 +23,9 @@ public class ClimberIOSim implements ClimberIO {
 
 	private PIDController pidController;
 
-	private double metersPerRotation;
-
 	private double climberSetpoint;
 
 	public ClimberIOSim() {
-		metersPerRotation = METERS_PER_ROTATION.in(Meters);
-
 		climberSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(NUM_MOTORS), MOTOR_MOI.magnitude(), MOTOR_GEARING), DCMotor.getNEO(NUM_MOTORS));
 		pidController = new PIDController(PID_CONSTANTS.kP, PID_CONSTANTS.kI, PID_CONSTANTS.kD);
 		climberSetpoint = 0;

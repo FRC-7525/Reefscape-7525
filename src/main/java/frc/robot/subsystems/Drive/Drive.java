@@ -3,7 +3,7 @@ package frc.robot.Subsystems.Drive;
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.*;
 import static frc.robot.GlobalConstants.Controllers.*;
-import static frc.robot.GlobalConstants.Drive.*;
+import static frc.robot.Subsystems.Drive.DriveConstants.*;
 import static frc.robot.Subsystems.Drive.TunerConstants.kSpeedAt12Volts;
 
 import com.ctre.phoenix6.SignalLogger;
@@ -13,25 +13,22 @@ import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.DriveFeedforwards;
-import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.GlobalConstants;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import org.littletonrobotics.junction.Logger;
-import org.team7525.misc.LocalADStarAK;
 import org.team7525.subsystem.Subsystem;
 
 public class Drive extends Subsystem<DriveStates> {
@@ -105,7 +102,7 @@ public class Drive extends Subsystem<DriveStates> {
 		if (!robotMirrored || DriverStation.isDisabled()) {
 			DriverStation.getAlliance()
 				.ifPresent(allianceColor -> {
-					driveIO.getDrive().setOperatorPerspectiveForward(allianceColor == Alliance.Red ? GlobalConstants.Drive.RED_ALLIANCE_PERSPECTIVE_ROTATION : GlobalConstants.Drive.BLUE_ALLIANCE_PERSPECTIVE_ROTATION);
+					driveIO.getDrive().setOperatorPerspectiveForward(allianceColor == Alliance.Red ? RED_ALLIANCE_PERSPECTIVE_ROTATION : BLUE_ALLIANCE_PERSPECTIVE_ROTATION);
 					robotMirrored = true;
 				});
 		}
@@ -238,7 +235,7 @@ public class Drive extends Subsystem<DriveStates> {
 
 	@Override
 	public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-		switch (GlobalConstants.Drive.SYS_ID_MODE) {
+		switch (SYS_ID_MODE) {
 			case ROTATION:
 				return sysIdRoutineRotation.quasistatic(direction);
 			case TRANSLATION:
@@ -252,7 +249,7 @@ public class Drive extends Subsystem<DriveStates> {
 
 	@Override
 	public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-		switch (GlobalConstants.Drive.SYS_ID_MODE) {
+		switch (SYS_ID_MODE) {
 			case ROTATION:
 				return sysIdRoutineRotation.dynamic(direction);
 			case TRANSLATION:
@@ -287,6 +284,10 @@ public class Drive extends Subsystem<DriveStates> {
 		return driveIO.getDrive().getState().Speeds;
 	}
 
+	public LinearVelocity getVelocity() {
+		return MetersPerSecond.of(Math.hypot(driveIO.getDrive().getState().Speeds.vxMetersPerSecond, driveIO.getDrive().getState().Speeds.vyMetersPerSecond));
+	}
+
 	public void driveAutoAlign(ApplyFieldSpeeds fieldSpeeds, double[] moduleForcesX, double[] moduleForcesY) {
 		driveIO
 			.getDrive()
@@ -310,15 +311,6 @@ public class Drive extends Subsystem<DriveStates> {
 			() -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
 			this // Reference to this subsystem to set requirements
 		);
-
-		// Log Relevant Path Planner Stufff
-		Pathfinding.setPathfinder(new LocalADStarAK());
-		PathPlannerLogging.setLogActivePathCallback(activePath -> {
-			Logger.recordOutput(SUBSYSTEM_NAME + "/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
-		});
-		PathPlannerLogging.setLogTargetPoseCallback(targetPose -> {
-			Logger.recordOutput(SUBSYSTEM_NAME + "/TrajectorySetpoint", targetPose);
-		});
 	}
 
 	public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
