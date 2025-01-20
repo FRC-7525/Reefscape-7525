@@ -87,14 +87,14 @@ public class TippingCalculator {
         return NewtonMeters.of(horizontalForce.in(Newtons) * cgHeight.in(Meters));
     }
 
-    /**
-     * Calculates the restoring torque due to gravity.
-     * 
-     * @return Restoring torque
-     */
-    public Torque calculateRestoringTorque() {
-        return NewtonMeters.of(robotMass.times(GRAVITY).in(Newtons) * cgDistance.in(Meters));
-    }
+	/**
+	 * Calculates the restoring torque due to gravity.
+	 *
+	 * @return Restoring torque
+	 */
+	public Torque calculateRestoringTorque() {
+		return NewtonMeters.of(robotMass.times(GRAVITY).in(Newtons) * cgDistance.in(Meters));
+	}
 
     /**
      * Determines if the robot will tip based on velocity, deceleration, and CG.
