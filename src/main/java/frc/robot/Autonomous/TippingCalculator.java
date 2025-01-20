@@ -120,7 +120,7 @@ public class TippingCalculator {
 
 	/**
 	 * Determines if the robot will tip based on the change in pose of the robot and its
-	 * starting velocity. This method is intended to be used in simulation and assumes the 
+	 * starting velocity. This method is intended to be used in simulation and assumes the
 	 * robot will come to a stop at the ending pose.
 	 *
 	 * @param  endingPose The target pose where the robot needs to stop
@@ -137,7 +137,7 @@ public class TippingCalculator {
 	}
 
 	/**
-	 * Determines if the robot will tip based on a starting and ending velocity in simulation. 
+	 * Determines if the robot will tip based on a starting and ending velocity in simulation.
 	 * This method does not need to directly depend on path planners logging system and can be
 	 * more dynamically used than other functions.
 	 *
@@ -149,7 +149,7 @@ public class TippingCalculator {
 		LinearAcceleration deceleration = endingVelocity.minus(startingVelocity).div(dt);
 		Torque tippingTorque = calculateTippingTorque(deceleration);
 		Torque restoringTorque = calculateRestoringTorque();
-		
+
 		return tippingTorque.gt(restoringTorque);
 	}
 }

@@ -1,5 +1,7 @@
 package frc.robot.Autonomous;
 
+import static frc.robot.Autonomous.AutoConstants.*;
+
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.PathPlannerLogging;
@@ -13,9 +15,6 @@ import frc.robot.GlobalConstants;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Drive.DriveConstants;
 import frc.robot.Subsystems.Elevator.Elevator;
-
-import static frc.robot.Autonomous.AutoConstants.*;
-
 import org.littletonrobotics.junction.Logger;
 
 public class AutoManager {
@@ -27,7 +26,6 @@ public class AutoManager {
 
 	private LinearVelocity cachedVelocity;
 	private int loopCount;
-
 
 	private AutoManager() {
 		this.cachedVelocity = Drive.getInstance().getVelocity();
