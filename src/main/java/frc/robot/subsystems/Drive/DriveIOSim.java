@@ -3,7 +3,8 @@ package frc.robot.Subsystems.Drive;
 import com.ctre.phoenix6.Utils;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
-import frc.robot.GlobalConstants;
+
+import static frc.robot.Subsystems.Drive.DriveConstants.*;
 
 /**
  * This class represents the simulated input/output for the drive subsystem.
@@ -34,6 +35,6 @@ public class DriveIOSim extends DriveIOReal {
 			/* use the measured time delta, get battery voltage from WPILib */
 			getDrive().updateSimState(deltaTime, RobotController.getBatteryVoltage());
 		});
-		simNotifier.startPeriodic(GlobalConstants.Drive.SIM_UPDATE_TIME);
+		simNotifier.startPeriodic(SIM_UPDATE_TIME);
 	}
 }
