@@ -1,6 +1,6 @@
 package frc.robot;
 
-import static edu.wpi.first.units.Units.DegreesPerSecond;
+import static edu.wpi.first.units.Units.*;
 
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
@@ -8,6 +8,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Subsystems.Drive.Drive.SysIdMode;
@@ -15,6 +16,7 @@ import frc.robot.Subsystems.Drive.Drive.SysIdMode;
 public class GlobalConstants {
 
 	public static double SIM_DELTA_TIME = 0.02;
+	public static final LinearAcceleration GRAVITY = MetersPerSecondPerSecond.of(9.81);
 
 	public enum RobotMode {
 		REAL,
