@@ -49,7 +49,9 @@ public class Robot extends LoggedRobot {
 	}
 
 	@Override
-	public void autonomousInit() {}
+	public void autonomousInit() {
+		CommandScheduler.getInstance().schedule(manager.getSelectedAutonomousCommand());
+	}
 
 	@Override
 	public void autonomousPeriodic() {}
