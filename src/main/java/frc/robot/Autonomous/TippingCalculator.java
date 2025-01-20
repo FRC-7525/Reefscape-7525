@@ -17,15 +17,17 @@ public class TippingCalculator {
 	private Distance cgHeight; // Height of the CG from the ground
 	private Distance cgDistance; // Horizontal distance from CG to tipping axis
 
-	/**
-	 * @param mass       Mass of the robot
-	 * @param wheelbase  Wheelbase length
-	 */
-	public TippingCalculator(Mass mass, Distance wheelbase) {
-		this.robotMass = mass;
-		// TODO: Care if or not the CG is at the center
-		this.cgDistance = wheelbase.div(2); // Assume CG is at the center, idrc if its not
-	}
+    /**
+     * @param mass      Mass of the robot
+     * @param wheelbase Wheelbase length
+     */
+    public TippingCalculator(Mass mass, Distance wheelbase) {
+        this.robotMass = mass;
+        // TODO: Care if or not the CG is at the center
+        this.cgDistance = wheelbase.div(2); // Assume CG is at the center, idrc if its not
+        // No division errors pls
+        cgHeight = Meters.of(0.001);
+    }
 
 	/**
 	 * Updates the height of the CG based on dynamic changes (we got an elevator).
