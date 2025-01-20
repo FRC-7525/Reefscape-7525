@@ -51,7 +51,7 @@ public class AutoManager {
 		autoChooser.setDefaultOption("Do Nothing", new PrintCommand("Do Nothing"));
 		autoChooser.addOption("4 Note", new PathPlannerAuto("4 Note Testing"));
 
-		SmartDashboard.putData("Auto Chooser",autoChooser);
+		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
 
 	public static AutoManager getInstance() {
