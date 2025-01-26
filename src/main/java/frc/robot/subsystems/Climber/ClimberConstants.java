@@ -25,13 +25,14 @@ public final class ClimberConstants {
 	public static class Sim {
 
 		public static final int NUM_MOTORS = 1;
-		public static final MomentOfInertia MOTOR_MOI = KilogramSquareMeters.of(0.001); 
+		public static final MomentOfInertia MOTOR_MOI = KilogramSquareMeters.of(0.001);
 		public static final double MOTOR_GEARING = 25;
 
 		public static final PIDConstants PID_CONSTANTS = new PIDConstants(2, 0, 0, 0);
 	}
 
 	public static class Real {
+
 		public static final int CLIMBER_CANID = 18;
 
 		public static final LinearVelocity ZEROING_VELOCITY = MetersPerSecond.of(0.25);
