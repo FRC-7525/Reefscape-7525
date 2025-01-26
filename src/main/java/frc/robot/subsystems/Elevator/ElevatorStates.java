@@ -1,8 +1,7 @@
 package frc.robot.Subsystems.Elevator;
 
-import org.team7525.subsystem.SubsystemStates;
-
 import edu.wpi.first.units.measure.Distance;
+import org.team7525.subsystem.SubsystemStates;
 
 public enum ElevatorStates implements SubsystemStates {
 	L4("L4", ElevatorConstants.L4_HEIGHT),

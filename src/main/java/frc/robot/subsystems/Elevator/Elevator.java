@@ -36,7 +36,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		io.setHeightGoalpoint(getState().getTargetHeight());
 		io.runElevator();
 		io.updateInputs(inputs);
-		
+
 		Logger.processInputs(ElevatorConstants.SUBSYSTEM_NAME, inputs);
 	}
 
