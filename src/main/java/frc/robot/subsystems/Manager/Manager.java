@@ -72,6 +72,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
 		addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
 		addTrigger(ManagerStates.INTAKING_CORALER_AA_OFF, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
+		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
 
 		// Intaking Algae
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
@@ -149,7 +150,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		ledSubsystem.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		if (DRIVER_CONTROLLER.getXButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(6)) {
+		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(6)) {
 			setState(ManagerStates.IDLE);
 		}
 	}

@@ -2,6 +2,8 @@ package frc.robot.Subsystems.Elevator;
 
 import org.littletonrobotics.junction.AutoLog;
 
+import edu.wpi.first.units.measure.Distance;
+
 public interface ElevatorIO {
 	@AutoLog
 	public static class ElevatorIOInputs {
@@ -18,15 +20,11 @@ public interface ElevatorIO {
 		public boolean elevatorZeroed;
 	}
 
-	public void setHeightGoalpoint(double height);
+	public void setHeightGoalpoint(Distance height);
 
 	public void updateInputs(ElevatorIOInputs inputs);
 
 	public void runElevator();
-
-	public void zero();
-
-	public boolean isZeroed();
 
 	public boolean nearTarget();
 }

@@ -71,17 +71,6 @@ public class Drive extends Subsystem<DriveStates> {
 			},
 			DRIVER_CONTROLLER::getStartButtonPressed
 		);
-
-		// Field to relative and whatnot
-		addTrigger(DriveStates.FIELD_RELATIVE, DriveStates.ROBOT_RELATIVE, DRIVER_CONTROLLER::getBackButtonPressed);
-		addTrigger(DriveStates.ROBOT_RELATIVE, DriveStates.FIELD_RELATIVE, DRIVER_CONTROLLER::getBackButtonPressed);
-
-		// Locking Wheels
-		addTrigger(DriveStates.FIELD_RELATIVE, DriveStates.LOCKING_WHEELS_FIELD, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
-		addTrigger(DriveStates.LOCKING_WHEELS_FIELD, DriveStates.FIELD_RELATIVE, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
-
-		addTrigger(DriveStates.ROBOT_RELATIVE, DriveStates.LOCKING_WHEELS_ROBOT, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
-		addTrigger(DriveStates.LOCKING_WHEELS_ROBOT, DriveStates.ROBOT_RELATIVE, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
 	}
 
 	/**
