@@ -61,6 +61,7 @@ public final class ElevatorConstants {
 	}
 
 	public static class Real {
+
 		public static final boolean LEFT_INVERTED = false;
 		public static final NeutralModeValue LEFT_NEUTRAL_MODE = NeutralModeValue.Brake;
 		public static final boolean LEFT_STRATOR_CURRENT_LIMIT_ENABLED = true;
