@@ -20,19 +20,13 @@ public class AutoCommands {
 	public class IntakeCoral extends Command {
 
 		private final Manager manager = Manager.getInstance();
-		private final boolean leftSourceTargeted;
 
-		private IntakeCoral(boolean leftSourceTargeted) {
-			this.leftSourceTargeted = leftSourceTargeted;
-		}
-
-		public static IntakeCoral fromLeftSource(boolean leftSourceTargeted) {
-			return AutoCommands.getInstance().new IntakeCoral(leftSourceTargeted);
+		public static IntakeCoral getCoral() {
+			return AutoCommands.getInstance().new IntakeCoral();
 		}
 
 		@Override
 		public void initialize() {
-			manager.setLeftSourceTargeted(leftSourceTargeted);
 			manager.setState(ManagerStates.INTAKING_CORALER_AA_OFF);
 		}
 

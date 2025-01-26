@@ -6,6 +6,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -43,7 +44,9 @@ public class AutoManager {
 
 			// Logging for tipping
 			if (GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.SIM) {
-				tippingCalculator.updateCGHeight(calculateVerticalCG(Elevator.getInstance().getHeight(), Elevator.getInstance().getHeight().minus(CARRAIGE_ELEVATOR_OFFSET)));
+				Distance cgHeight = calculateVerticalCG(Elevator.getInstance().getHeight());
+				tippingCalculator.updateCGHeight(cgHeight);
+
 				if (activePath.size() > 0) {
 					Logger.recordOutput("Auto/Tipping", tippingCalculator.willTip(activePath.get(activePath.size() - 1), Drive.getInstance().getPose(), Drive.getInstance().getVelocity()));
 				}
@@ -62,8 +65,7 @@ public class AutoManager {
 		NamedCommands.registerCommand("Score L3", AutoCommands.ScoreReef.atLevel(3));
 		NamedCommands.registerCommand("Score L2", AutoCommands.ScoreReef.atLevel(2));
 		NamedCommands.registerCommand("Score L1", AutoCommands.ScoreReef.atLevel(1));
-		NamedCommands.registerCommand("Intake Coral L", AutoCommands.IntakeCoral.fromLeftSource(true));
-		NamedCommands.registerCommand("Intake Coral R", AutoCommands.IntakeCoral.fromLeftSource(false));
+		NamedCommands.registerCommand("Intake Coral", AutoCommands.IntakeCoral.getCoral());
 
 		// Autos
 		autoChooser.setDefaultOption("Do Nothing", new PrintCommand("Do Nothing"));
