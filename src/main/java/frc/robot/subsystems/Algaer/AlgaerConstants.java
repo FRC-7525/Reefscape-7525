@@ -16,7 +16,7 @@ import java.util.function.Supplier;
 public final class AlgaerConstants {
 
 	public static final AngularVelocity INTAKING_SPEED = RotationsPerSecond.of(30);
-	public static final AngularVelocity PROCESSING_SPEED = RotationsPerSecond.of(30); 
+	public static final AngularVelocity PROCESSING_SPEED = RotationsPerSecond.of(30);
 	public static final AngularVelocity IDLE_SPEED = RotationsPerSecond.of(0);
 
 	// TODO: FIND!
@@ -57,7 +57,7 @@ public final class AlgaerConstants {
 		public static final Angle STARTING_PIVOT_ANGLE = Degrees.of(0);
 
 		public static final int NUM_WHEEL_MOTORS = 1;
-		public static final MomentOfInertia WHEEL_MOTOR_MOI = KilogramSquareMeters.of(0.0001); 
+		public static final MomentOfInertia WHEEL_MOTOR_MOI = KilogramSquareMeters.of(0.0001);
 		public static final double WHEEL_MOTOR_GEARING = 3;
 	}
 
