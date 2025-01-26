@@ -84,9 +84,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		rotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Degrees), MAX_HEADING_ANGLE.in(Degrees));
 
 		var targetSpeeds = sample.getChassisSpeeds();
-		targetSpeeds.vxMetersPerSecond += translationController.calculate(pose.getX(), sample.x);
-		targetSpeeds.vyMetersPerSecond += translationController.calculate(pose.getY(), sample.y);
-		targetSpeeds.omegaRadiansPerSecond += rotationController.calculate(pose.getRotation().getRadians(), sample.heading);
+		targetSpeeds.vxMetersPerSecond += repulsionTranslationController.calculate(pose.getX(), sample.x);
+		targetSpeeds.vyMetersPerSecond += repulsionTranslationController.calculate(pose.getY(), sample.y);
+		targetSpeeds.omegaRadiansPerSecond += repulsionRotationController.calculate(pose.getRotation().getRadians(), sample.heading);
 
 		drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond);
 	}

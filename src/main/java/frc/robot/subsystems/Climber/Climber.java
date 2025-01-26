@@ -33,13 +33,9 @@ public class Climber extends Subsystem<ClimberStates> {
 
 	@Override
 	protected void runState() {
-		if (!io.isZeroed()) {
-			io.zero();
-		} else {
-			io.setSetpoint(getState().getTargetHeight());
-		}
-
+		io.setSetpoint(getState().getTargetHeight());
 		io.updateInputs(inputs);
+		
 		Logger.processInputs(ClimberConstants.SUBSYSTEM_NAME, inputs);
 	}
 

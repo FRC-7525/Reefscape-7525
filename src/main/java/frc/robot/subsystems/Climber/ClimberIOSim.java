@@ -23,13 +23,9 @@ public class ClimberIOSim implements ClimberIO {
 
 	private PIDController pidController;
 
-	private double metersPerRotation;
-
 	private double climberSetpoint;
 
 	public ClimberIOSim() {
-		metersPerRotation = METERS_PER_ROTATION.in(Meters);
-
 		climberSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(NUM_MOTORS), MOTOR_MOI.magnitude(), MOTOR_GEARING), DCMotor.getNEO(NUM_MOTORS));
 		pidController = new PIDController(PID_CONSTANTS.kP, PID_CONSTANTS.kI, PID_CONSTANTS.kD);
 		climberSetpoint = 0;
@@ -38,6 +34,7 @@ public class ClimberIOSim implements ClimberIO {
 		climberSparkSim = new SparkSim(dummySpark, DCMotor.getNEO(NUM_MOTORS));
 	}
 
+	@Override
 	public void updateInputs(ClimberIOInputs inputs) {
 		inputs.climberSpeed = climberSim.getAngularVelocityRPM() / 60;
 		inputs.climberPosition = climberSim.getAngularPositionRotations();
@@ -48,6 +45,7 @@ public class ClimberIOSim implements ClimberIO {
 		climberSparkSim.setPosition(climberSim.getAngularPositionRotations());
 	}
 
+	@Override
 	public void setSetpoint(Distance setpoint) {
 		double height = setpoint.in(Meters);
 
@@ -56,19 +54,13 @@ public class ClimberIOSim implements ClimberIO {
 		climberSim.setInputVoltage(voltage);
 	}
 
+	@Override
 	public void stop() {
 		climberSim.setInputVoltage(0);
 	}
 
+	@Override
 	public boolean nearSetpoint() {
 		return (Math.abs(climberSim.getAngularPositionRotations() - climberSetpoint) < POSITION_TOLERANCE.in(Meters));
-	}
-
-	public void zero() {
-		return;
-	}
-
-	public boolean isZeroed() {
-		return true;
 	}
 }
