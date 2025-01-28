@@ -5,57 +5,174 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "LN to CJ"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "LN to CJ"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Transition L4"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "CJ to CIL"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CJ to CIL"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Coral"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "CLI to CI"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CLI to CI"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Transition L4"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "CI to CLI"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CI to CLI"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Coral"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "CIL to CK"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CIL to CK"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Transition L4"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "CK to CIL"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CK to CIL"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Coral"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "CIL to CL"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CIL to CL"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Transition L4"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "CL to CIL"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CL to CIL"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Coral"
+                }
+              }
+            ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "CIL to CA"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CIL to CA"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Transition L4"
+                }
+              }
+            ]
           }
         }
       ]

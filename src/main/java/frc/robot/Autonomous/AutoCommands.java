@@ -62,4 +62,28 @@ public class AutoCommands {
 	}
 
 	public class ProcessAlgae extends Command {}
+
+	public class GoToElevatorLevel extends Command {
+		private final Manager manager = Manager.getInstance();
+		private final int scoringLevel;
+
+		private GoToElevatorLevel(int scoringLevel) {
+			this.scoringLevel = scoringLevel;
+		}
+
+		public static GoToElevatorLevel atLevel(int scoringLevel) {
+			return AutoCommands.getInstance().new GoToElevatorLevel(scoringLevel);
+		}
+
+		@Override
+		public void initialize() {
+			manager.setDriverReefScoringLevel(scoringLevel);
+			manager.setState(ManagerStates.TRANSITIONING_SCORING_REEF);
+		}
+
+		@Override
+		public boolean isFinished() {
+			return manager.getState() == ManagerStates.IDLE;
+		}
+	}
 }
