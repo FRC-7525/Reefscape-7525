@@ -1,5 +1,6 @@
 public enum CANDeviceTypes {
     TALON,
     SPARK,
-    CANCODER
+    CANCODER,
+    PIGEON
 }
