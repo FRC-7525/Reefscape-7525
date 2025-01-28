@@ -9,7 +9,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,19 +21,12 @@ public class ClimberIOReal implements ClimberIO {
 
 	private PIDController pidController;
 
-	private LinearFilter filter;
-
-	private boolean motorZeroed;
-	private double setpoint;
+	private Distance setpoint;
 
 	public ClimberIOReal() {
-		motor = new SparkMax(MOTOR_CANID, MotorType.kBrushless);
+		motor = new SparkMax(Real.CLIMBER_CANID, MotorType.kBrushless);
 		motorEncoder = motor.getEncoder();
-
-		setpoint = 0;
-		motorZeroed = false;
-
-		filter = LinearFilter.movingAverage(CURRENT_FILTER_TAPS);
+		setpoint = Meters.of(0);
 
 		pidController = new PIDController(PID_CONSTANTS.kP, PID_CONSTANTS.kI, PID_CONSTANTS.kD);
 
@@ -48,40 +40,20 @@ public class ClimberIOReal implements ClimberIO {
 		inputs.climberPosition = motorEncoder.getPosition() * METERS_PER_ROTATION.in(Meters);
 		inputs.climberSpeed = (motorEncoder.getVelocity() / 60) * METERS_PER_ROTATION.in(Meters);
 		inputs.climberAngularPosition = Units.rotationsToDegrees(motorEncoder.getPosition());
-		inputs.climberHeightPoint = setpoint;
+		inputs.climberHeightPoint = setpoint.in(Meters);
 	}
 
 	@Override
 	public void setSetpoint(Distance setpoint) {
-		double height = setpoint.in(Meters);
-		this.setpoint = height;
+		this.setpoint = setpoint;
 
-		double voltage = pidController.calculate((motorEncoder.getPosition() * METERS_PER_ROTATION.in(Meters)), height);
+		double voltage = pidController.calculate((motorEncoder.getPosition() * METERS_PER_ROTATION.in(Meters)), setpoint.in(Meters));
 		motor.setVoltage(voltage);
 	}
 
 	@Override
 	public boolean nearSetpoint() {
-		return (Math.abs((motorEncoder.getPosition() * METERS_PER_ROTATION.in(Meters)) - setpoint) < POSITION_TOLERANCE.in(Meters));
-	}
-
-	@Override
-	public void zero() {
-		double zeroingSpeed = -ZEROING_VELOCITY.in(MetersPerSecond);
-
-		if (filter.calculate(motor.getOutputCurrent()) > ZEROING_CURRENT_LIMIT.in(Amps) || motorZeroed) {
-			if (!motorZeroed) motorEncoder.setPosition(0);
-			setpoint = IDLE.in(Meters);
-			zeroingSpeed = pidController.calculate(motorEncoder.getPosition() * METERS_PER_ROTATION.in(Meters), setpoint);
-			motorZeroed = true;
-		}
-
-		motor.setVoltage(zeroingSpeed);
-	}
-
-	@Override
-	public boolean isZeroed() {
-		return motorZeroed;
+		return (Math.abs((motorEncoder.getPosition() * METERS_PER_ROTATION.in(Meters)) - setpoint.in(Meters)) < POSITION_TOLERANCE.in(Meters));
 	}
 
 	@Override

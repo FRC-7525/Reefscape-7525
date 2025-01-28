@@ -19,15 +19,11 @@ public interface ElevatorIO {
 		public boolean elevatorZeroed;
 	}
 
-	public void setHeightGoalpoint(double height);
+	public void setHeightGoalpoint(Distance height);
 
 	public void updateInputs(ElevatorIOInputs inputs);
 
 	public void runElevator();
-
-	public void zero();
-
-	public boolean isZeroed();
 
 	public boolean nearTarget();
 

@@ -12,7 +12,6 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
 
@@ -28,22 +27,16 @@ public class ElevatorIOReal implements ElevatorIO {
 
 	private ProfiledPIDController pidController;
 	private ElevatorFeedforward ffcontroller;
-	private DigitalInput limitSwitch;
 
 	private double leftMotorVoltage;
 	private double rightMotorVoltage;
-	private boolean leftMotorZeroed;
-	private boolean rightMotorZeroed;
 
 	public ElevatorIOReal() {
 		leftMotor = new TalonFX(LEFT_MOTOR_CANID);
 		rightMotor = new TalonFX(RIGHT_MOTOR_CANID);
-		limitSwitch = new DigitalInput(LIMIT_SWITCH_DIO);
 
 		leftMotorVoltage = 0;
 		rightMotorVoltage = 0;
-		leftMotorZeroed = false;
-		rightMotorZeroed = false;
 
 		//Motor configs
 		leftConfigurator = leftMotor.getConfigurator();
@@ -74,11 +67,14 @@ public class ElevatorIOReal implements ElevatorIO {
 		if (ROBOT_MODE == RobotMode.TESTING) {
 			SmartDashboard.putData("Elevator PID controller", pidController);
 		}
+
+		leftMotor.setPosition(Degrees.of(0));
+		rightMotor.setPosition(Degrees.of(0));
 	}
 
 	@Override
-	public void setHeightGoalpoint(double height) {
-		pidController.setGoal(height);
+	public void setHeightGoalpoint(Distance height) {
+		pidController.setGoal(height.in(Meters));
 	}
 
 	@Override
@@ -109,31 +105,5 @@ public class ElevatorIOReal implements ElevatorIO {
 	@Override
 	public boolean nearTarget() {
 		return pidController.atGoal();
-	}
-
-	@Override
-	public void zero() {
-		double leftZeroingSpeed = -ElevatorConstants.ZEROING_VELOCITY.in(MetersPerSecond);
-		double rightZeroingSpeed = -ElevatorConstants.ZEROING_VELOCITY.in(MetersPerSecond);
-
-		if (rightMotor.getStatorCurrent().getValueAsDouble() > ElevatorConstants.ZEROING_CURRENT_LIMIT.in(Amps) || !limitSwitch.get()) {
-			rightZeroingSpeed = 0;
-			if (!rightMotorZeroed) rightMotor.setPosition(0);
-			rightMotorZeroed = true;
-		}
-
-		if (leftMotor.getStatorCurrent().getValueAsDouble() > ElevatorConstants.ZEROING_CURRENT_LIMIT.in(Amps) || !limitSwitch.get()) {
-			leftZeroingSpeed = 0;
-			if (!leftMotorZeroed) leftMotor.setPosition(0);
-			leftMotorZeroed = true;
-		}
-
-		rightMotor.set(rightZeroingSpeed);
-		leftMotor.set(leftZeroingSpeed);
-	}
-
-	@Override
-	public boolean isZeroed() {
-		return leftMotorZeroed && rightMotorZeroed;
 	}
 }

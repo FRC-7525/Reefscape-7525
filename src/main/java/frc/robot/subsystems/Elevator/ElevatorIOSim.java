@@ -73,8 +73,8 @@ public class ElevatorIOSim implements ElevatorIO {
 	}
 
 	@Override
-	public void setHeightGoalpoint(double height) {
-		pidController.setGoal(height);
+	public void setHeightGoalpoint(Distance height) {
+		pidController.setGoal(height.in(Meters));
 	}
 
 	@Override
@@ -86,15 +86,5 @@ public class ElevatorIOSim implements ElevatorIO {
 	@Override
 	public boolean nearTarget() {
 		return pidController.atGoal();
-	}
-
-	@Override
-	public void zero() {
-		zeroed = true;
-	}
-
-	@Override
-	public boolean isZeroed() {
-		return zeroed;
 	}
 }

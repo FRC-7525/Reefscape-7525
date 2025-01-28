@@ -5,8 +5,7 @@ import org.team7525.subsystem.SubsystemStates;
 
 public enum ClimberStates implements SubsystemStates {
 	UP("UP", ClimberConstants.UP),
-	DOWN("DOWN", ClimberConstants.DOWN),
-	IDLE("IDLE", ClimberConstants.IDLE);
+	DOWN("DOWN", ClimberConstants.DOWN);
 
 	ClimberStates(String stateString, Distance targetHeight) {
 		this.targetHeight = targetHeight;
