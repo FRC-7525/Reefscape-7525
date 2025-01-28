@@ -6,6 +6,7 @@ import frc.robot.Subsystems.Algaer.AlgaerStates;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Coraler.CoralerStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
+import frc.robot.Subsystems.Climber.ClimberStates;
 import org.team7525.subsystem.SubsystemStates;
 
 public enum ManagerStates implements SubsystemStates {
@@ -51,7 +52,7 @@ public enum ManagerStates implements SubsystemStates {
 	private CoralerStates coralerState;
 	private AlgaerStates algaerState;
 	private AutoAlignStates autoAlignState;
-	private ClimberState climber;
+	private ClimberStates climberState;
 
 	@Override
 	public String getStateString() {
@@ -70,7 +71,7 @@ public enum ManagerStates implements SubsystemStates {
 		return algaerState;
 	}
 
-	public ClimberState getClimberState() {
+	public ClimberStates getClimberState() {
 		return climberState;
 	}
 
