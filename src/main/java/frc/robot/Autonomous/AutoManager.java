@@ -70,7 +70,7 @@ public class AutoManager {
 		NamedCommands.registerCommand("Transition L3", AutoCommands.ScoreReef.atLevel(3));
 		NamedCommands.registerCommand("Transition L2", AutoCommands.ScoreReef.atLevel(2));
 		NamedCommands.registerCommand("Transition L1", AutoCommands.ScoreReef.atLevel(1));
-		
+
 		NamedCommands.registerCommand("Intake Coral", AutoCommands.IntakeCoral.getCoral());
 
 		// Autos

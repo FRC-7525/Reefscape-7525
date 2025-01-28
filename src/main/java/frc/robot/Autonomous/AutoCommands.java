@@ -64,6 +64,7 @@ public class AutoCommands {
 	public class ProcessAlgae extends Command {}
 
 	public class GoToElevatorLevel extends Command {
+
 		private final Manager manager = Manager.getInstance();
 		private final int scoringLevel;
 

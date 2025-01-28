@@ -12,7 +12,6 @@ public class AutoConstants {
 	public static final Mass ELEVATOR_MASS = Pounds.of(34.445);
 	public static final Mass TOTAL_MASS_LBS = ELEVATOR_MASS.plus(CHASSIS_MASS);
 
-
 	public static final Distance CHASSIS_CG = Inches.of(6.22);
 	public static final Distance BASE_ELEVATOR_CG = Inches.of(17.861);
 
@@ -23,6 +22,6 @@ public class AutoConstants {
 
 		// Calculate the vertical center of gravity
 		Distance zCG = Meters.of((CHASSIS_CG.times(CHASSIS_MASS).plus(elevatorCG.times(ELEVATOR_MASS))).div(TOTAL_MASS_LBS).magnitude());
-		return zCG; 
+		return zCG;
 	}
 }
