@@ -17,9 +17,6 @@ public class TippingCalculator {
 	private Mass robotMass; // Mass of the robot
 	private Distance cgHeight; // Height of the CG from the ground
 	private Distance cgDistance; // Horizontal distance from CG to tipping axis
-	private Mass robotMass; // Mass of the robot
-	private Distance cgHeight; // Height of the CG from the ground
-	private Distance cgDistance; // Horizontal distance from CG to tipping axis
 
 	/**
 	 * @param mass      Mass of the robot
