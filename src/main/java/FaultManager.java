@@ -403,7 +403,7 @@ public class FaultManager {
 	}
 
 	public void addDevice(CANcoder encoder, String name, String busName) {
-		CANDeviceMap.put(encoder.getDeviceID(), new CANDevice(encoder, name, busName));
+		CANDeviceMap.put(encoder.getDeviceID(), new CANDevice(encoder, name));
 	}
 
 	public void addDevice(Pigeon2 pigeon, String name, String busName) {
