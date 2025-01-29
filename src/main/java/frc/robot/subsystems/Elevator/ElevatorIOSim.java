@@ -80,4 +80,19 @@ public class ElevatorIOSim implements ElevatorIO {
 	public boolean nearTarget() {
 		return pidController.atGoal();
 	}
+
+	@Override
+	public void zero() {
+		return;
+	}
+
+	@Override
+	public void resetMotorsZeroed() {
+		return;
+	}
+
+	@Override
+	public boolean motorsZeroed() {
+		return true;
+	}
 }
