@@ -66,10 +66,12 @@ public class AutoManager {
 		NamedCommands.registerCommand("Score L2", AutoCommands.ScoreReef.atLevel(2));
 		NamedCommands.registerCommand("Score L1", AutoCommands.ScoreReef.atLevel(1));
 
-		NamedCommands.registerCommand("Transition L4", AutoCommands.ScoreReef.atLevel(4));
-		NamedCommands.registerCommand("Transition L3", AutoCommands.ScoreReef.atLevel(3));
-		NamedCommands.registerCommand("Transition L2", AutoCommands.ScoreReef.atLevel(2));
-		NamedCommands.registerCommand("Transition L1", AutoCommands.ScoreReef.atLevel(1));
+		NamedCommands.registerCommand("Transition L4", AutoCommands.GoToElevatorLevel.atLevel(4));
+		NamedCommands.registerCommand("Transition L3", AutoCommands.GoToElevatorLevel.atLevel(3));
+		NamedCommands.registerCommand("Transition L2", AutoCommands.GoToElevatorLevel.atLevel(2));
+		NamedCommands.registerCommand("Transition L1", AutoCommands.GoToElevatorLevel.atLevel(1));
+		
+		NamedCommands.registerCommand("Return To Normal", getSelectedCommand());
 
 		NamedCommands.registerCommand("Intake Coral", AutoCommands.IntakeCoral.getCoral());
 

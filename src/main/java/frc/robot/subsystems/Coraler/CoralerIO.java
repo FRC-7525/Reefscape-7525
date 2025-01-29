@@ -14,4 +14,5 @@ public interface CoralerIO {
 	public default void updateInputs(CoralerIOInputs inputs) {}
 
 	public default void setVelocity(AngularVelocity speedPoint) {}
+
 }

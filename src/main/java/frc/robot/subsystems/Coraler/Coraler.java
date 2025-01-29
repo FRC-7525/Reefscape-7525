@@ -34,4 +34,8 @@ public class Coraler extends Subsystem<CoralerStates> {
 		io.setVelocity(getState().getVelocity());
 		Logger.processInputs(SUBSYSTEM_NAME, inputs);
 	}
+
+	public boolean isEmpty() { //TODO ADD AN ACTUAL IMPLEMENTATION. THIS IS JUST FOR AUTO SIM
+		return !(getStateTime() > 0.5);
+	}
 }

@@ -27,7 +27,7 @@ public final class ElevatorConstants {
 	public static final LinearVelocity VELOCITY_TOLERANCE = MetersPerSecond.of(0.1);
 	// TODO: Set to smaller numbers once we have robot (low max vel/acc for testing, real should be around 100)
 	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(148.64);
-	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(100);
+	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(150);
 
 	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(MAX_VELOCITY.in(MetersPerSecond), MAX_ACCELERATION.in(MetersPerSecondPerSecond));
 	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-4);

@@ -1,6 +1,7 @@
 package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Manager.Manager;
 import frc.robot.Subsystems.Manager.ManagerStates;
 
@@ -66,6 +67,7 @@ public class AutoCommands {
 	public class GoToElevatorLevel extends Command {
 
 		private final Manager manager = Manager.getInstance();
+		private final Coraler coraler = Coraler.getInstance();
 		private final int scoringLevel;
 
 		private GoToElevatorLevel(int scoringLevel) {
@@ -84,7 +86,7 @@ public class AutoCommands {
 
 		@Override
 		public boolean isFinished() {
-			return manager.getState() == ManagerStates.IDLE;
+			return manager.getState() == ManagerStates.SCORING_REEF_MANUAL && coraler.isEmpty();
 		}
 	}
 }
