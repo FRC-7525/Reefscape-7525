@@ -1,8 +1,8 @@
 package frc.robot.Subsystems.Algaer;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 import static frc.robot.GlobalConstants.*;
+import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;

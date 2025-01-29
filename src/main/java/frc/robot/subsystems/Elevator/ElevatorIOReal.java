@@ -117,7 +117,7 @@ public class ElevatorIOReal implements ElevatorIO {
 		}
 		leftMotor.set(leftZeroingSpeed);
 	}
-	
+
 	@Override
 	public void resetMotorsZeroed() {
 		leftMotorZeroed = false;

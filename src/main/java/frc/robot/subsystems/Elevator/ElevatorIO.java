@@ -26,7 +26,7 @@ public interface ElevatorIO {
 	public void runElevator();
 
 	public void zero();
-	
+
 	public void resetMotorsZeroed();
 
 	public boolean motorsZeroed();
