@@ -4,14 +4,13 @@ import static frc.robot.Subsystems.Manager.ManagerConstants.*;
 
 import frc.robot.Subsystems.Algaer.AlgaerStates;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
+import frc.robot.Subsystems.Climber.ClimberStates;
 import frc.robot.Subsystems.Coraler.CoralerStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
-import frc.robot.Subsystems.Climber.ClimberStates;
-import org.team7525.subsystem.SubsystemStates;
-
 import frc.robot.Subsystems.LED.LEDStates;
 import frc.robot.Subsystems.Manager.ManagerConstants.AAReefTarget;
 import java.util.function.Supplier;
+import org.team7525.subsystem.SubsystemStates;
 import org.team7525.subsystem.SubsystemStates;
 
 public enum ManagerStates implements SubsystemStates {
@@ -80,14 +79,15 @@ public enum ManagerStates implements SubsystemStates {
 	public AlgaerStates getAlgaerState() {
 		return algaerState;
 	}
+
 	public ClimberStates getClimberState() {
 		return climberState;
 	}
 
 	public AutoAlignStates getAutoAlignState() {
 		return autoAlignState;
-  }
-    
+	}
+
 	public Supplier<AutoAlignStates> getAutoAlignSupplier() {
 		return autoAlignSupplier;
 	}
