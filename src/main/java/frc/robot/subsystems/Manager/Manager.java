@@ -18,11 +18,11 @@ public class Manager extends Subsystem<ManagerStates> {
 	private static Manager instance = new Manager();
 
 	private final Drive drive = Drive.getInstance();
-	private final Elevator elevator = Elevator.getInstance();
-	private final Coraler coraler = Coraler.getInstance();
-	private final Algaer algaer = Algaer.getInstance();
-	private final AutoAlign autoAlign = AutoAlign.getInstance();
-	private final Climber climber = Climber.getInstance();
+	// private final Elevator elevator = Elevator.getInstance();
+	// private final Coraler coraler = Coraler.getInstance();
+	// private final Algaer algaer = Algaer.getInstance();
+	// private final AutoAlign autoAlign = AutoAlign.getInstance();
+	// private final Climber climber = Climber.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -78,7 +78,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(ManagerStates.INTAKING_ALGAE_LOW, ManagerStates.IDLE, DRIVER_CONTROLLER::getBButtonPressed);
 		// Scoring Algae at Processor
 		addTrigger(ManagerStates.IDLE, ManagerStates.GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
-		addTrigger(ManagerStates.GOING_PROCESSOR, ManagerStates.SCORING_PROCESSOR, () -> elevator.nearTarget() && algaer.nearTarget());
+		// addTrigger(ManagerStates.GOING_PROCESSOR, ManagerStates.SCORING_PROCESSOR, () -> elevator.nearTarget() && algaer.nearTarget());
 		addTrigger(ManagerStates.SCORING_PROCESSOR, ManagerStates.IDLE, DRIVER_CONTROLLER::getAButtonPressed);
 
 		// Scoring Reef Manual
@@ -88,8 +88,8 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Scoring Reef Auto Align
 		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> FIGHT_STICK_2.getRawButtonPressed(8));
-		addTrigger(ManagerStates.AUTO_ALIGN_FAR, ManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
-		addTrigger(ManagerStates.AUTO_ALIGN_CLOSE, ManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
+		// addTrigger(ManagerStates.AUTO_ALIGN_FAR, ManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
+		// addTrigger(ManagerStates.AUTO_ALIGN_CLOSE, ManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
 		addTrigger(ManagerStates.SCORING_REEF_AA, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 	}
 
@@ -126,19 +126,19 @@ public class Manager extends Subsystem<ManagerStates> {
 		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State String", getState().getStateString());
 
 		// Set States
-		elevator.setState(getState().getElevatorState());
-		coraler.setState(getState().getCoralerState());
-		algaer.setState(getState().getAlgaerState());
-		autoAlign.setState(getState().getAutoAlignState());
-		climber.setState(getState().getClimberState());
+		// elevator.setState(getState().getElevatorState());
+		// coraler.setState(getState().getCoralerState());
+		// algaer.setState(getState().getAlgaerState());
+		// autoAlign.setState(getState().getAutoAlignState());
+		// climber.setState(getState().getClimberState());
 
 		// Periodics
-		autoAlign.periodic();
+		// autoAlign.periodic();
 		drive.periodic();
-		elevator.periodic();
-		coraler.periodic();
-		algaer.periodic();
-		climber.periodic();
+		// elevator.periodic();
+		// coraler.periodic();
+		// algaer.periodic();
+		// climber.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getXButtonPressed() || FIGHT_STICK_2.getRawButtonPressed(1)) {

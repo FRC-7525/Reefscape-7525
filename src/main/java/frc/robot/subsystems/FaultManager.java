@@ -1,3 +1,6 @@
+package frc.robot.Subsystems;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +27,7 @@ public class FaultManager {
 
 	private Map<String, ArrayList<Integer>> CANDeviceOrder = new HashMap<>();
 
-	private Map<Integer, CANDevice> CANDeviceMap = new HashMap<>();
+	private Map<String, CANDevice> CANDeviceMap = new HashMap<>();
 
 	private ArrayList<MiscDevice> miscDevices = new ArrayList<>();
 
@@ -82,36 +85,32 @@ public class FaultManager {
 		public String deviceName;
 		public String busName;
 
-		public CANDevice(TalonFX talon, String name, String busName) {
+		public CANDevice(TalonFX talon, String name) {
 			super(name);
 
 			this.deviceType = CANDeviceTypes.TALON;
 			this.talon = talon;
-			this.busName = busName;
 		}
 
-		public CANDevice(SparkMax sparkMax, String name, String busName) {
+		public CANDevice(SparkMax sparkMax, String name) {
 			super(name);
 
 			this.deviceType = CANDeviceTypes.SPARK;
 			this.sparkMax = sparkMax;
-			this.busName = busName;
 		}
 
-		public CANDevice(CANcoder canCoder, String name, String busName) {
+		public CANDevice(CANcoder canCoder, String name) {
 			super(name);
 
 			this.deviceType = CANDeviceTypes.CANCODER;
 			this.canCoder = canCoder;
-			this.busName = busName;
 		}
 
-		public CANDevice(Pigeon2 pigeon, String name, String busName) {
+		public CANDevice(Pigeon2 pigeon, String name) {
 			super(name);
 
 			this.deviceType = CANDeviceTypes.PIGEON;
 			this.pigeon = pigeon;
-			this.busName = busName;
 		}
 
 		public TalonFX getTalon() {
@@ -220,7 +219,7 @@ public class FaultManager {
 	private FaultManager() {
 	}
 
-	public FaultManager getInstance() {
+	public static FaultManager getInstance() {
 		if (instance.get() == null) {
 			instance.set(new FaultManager());
 		}
@@ -236,7 +235,7 @@ public class FaultManager {
 		// TODO: JUST REALIZED THIS IMPLEMENTATION DOESNT WORK, MUST CHANGE LATER
 		for (String busName : CANDeviceOrder.keySet()) {
 			for (int id : CANDeviceOrder.get(busName)) {
-				CANDevice device = CANDeviceMap.get(id);
+				CANDevice device = CANDeviceMap.get(busName + " " + id);
 
 				if (device.busName != busName)
 					continue;
@@ -365,7 +364,7 @@ public class FaultManager {
 		// TODO: JUST REALIZED THIS IMPLEMENTATION DOESNT WORK, MUST CHANGE LATER
 		for (String busName : CANDeviceOrder.keySet()) {
 			for (int id : CANDeviceOrder.get(busName)) {
-				CANDevice device = CANDeviceMap.get(id);
+				CANDevice device = CANDeviceMap.get(busName + " " + id);
 
 				if (device.getFault()) {
 					for (String fault : device.faults.keySet()) {
@@ -395,19 +394,19 @@ public class FaultManager {
 
 	// Adding CAN Devices
 	public void addDevice(TalonFX talonFX, String name, String busName) {
-		CANDeviceMap.put(talonFX.getDeviceID(), new CANDevice(talonFX, name, busName));
+		CANDeviceMap.put(busName + " " + talonFX.getDeviceID(), new CANDevice(talonFX, name));
 	}
 
 	public void addDevice(SparkMax sparkMax, String name, String busName) {
-		CANDeviceMap.put(sparkMax.getDeviceId(), new CANDevice(sparkMax, name, busName));
+		CANDeviceMap.put(busName + " " + sparkMax.getDeviceId(), new CANDevice(sparkMax, name));
 	}
 
 	public void addDevice(CANcoder encoder, String name, String busName) {
-		CANDeviceMap.put(encoder.getDeviceID(), new CANDevice(encoder, name));
+		CANDeviceMap.put(busName + " " + encoder.getDeviceID(), new CANDevice(encoder, name));
 	}
 
 	public void addDevice(Pigeon2 pigeon, String name, String busName) {
-		CANDeviceMap.put(pigeon.getDeviceID(), new CANDevice(pigeon, name, busName));
+		CANDeviceMap.put(busName + " " + pigeon.getDeviceID(), new CANDevice(pigeon, name));
 	}
 
 	// Adding Misc Devices
