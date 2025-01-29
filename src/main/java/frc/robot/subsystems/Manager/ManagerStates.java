@@ -9,6 +9,11 @@ import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.Climber.ClimberStates;
 import org.team7525.subsystem.SubsystemStates;
 
+import frc.robot.Subsystems.LED.LEDStates;
+import frc.robot.Subsystems.Manager.ManagerConstants.AAReefTarget;
+import java.util.function.Supplier;
+import org.team7525.subsystem.SubsystemStates;
+
 public enum ManagerStates implements SubsystemStates {
 	IDLE("Idle", ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, ClimberStates.IDLE, AutoAlignStates.OFF),
 	CLIMBING("Climbing", ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, ClimberStates.IDLE, AutoAlignStates.OFF),
@@ -27,40 +32,45 @@ public enum ManagerStates implements SubsystemStates {
 	AUTO_ALIGN_FAR("Aligning Close", ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, ClimberStates.IDLE, REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getOperatorReefScoringLevel(), Manager.getInstance().getScoringReefLeft()))),
 	INTAKING_CORALER(
 		"Intaking at Coral Station",
-		ElevatorStates.IDLE,
+		() -> ElevatorStates.IDLE,
 		CoralerStates.INAKING,
 		AlgaerStates.IDLE,
 		ClimberStates.IDLE,
 		// AutoAlignStates.OFF
-		SOURCE_TARGET_MAP.get(Manager.getInstance().getLeftSourceSelected())
+		() -> SOURCE_TARGET_MAP.get(Manager.getInstance().getLeftSourceSelected()),
+		LEDStates.ORANGE
 	),
 	SCORING_REEF_MANUAL("Scoring Reef", REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, ClimberStates.IDLE, AutoAlignStates.OFF),
 	SCORING_REEF_AA("Scoring Reef", REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, ClimberStates.IDLE, AutoAlignStates.OFF),
 	TRANSITIONING_SCORING_REEF("Transitioning Scoring", REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()), CoralerStates.IDLE, AlgaerStates.IDLE, ClimberStates.IDLE, AutoAlignStates.OFF);
 
-	ManagerStates(String stateString, ElevatorStates elevatorState, CoralerStates coralerState, AlgaerStates algaerState, ClimberStates climberState, AutoAlignStates autoAlignState) {
+	ManagerStates(String stateString, Supplier<ElevatorStates> elevatorStateSupplier, CoralerStates coralerState, AlgaerStates algaerState, Supplier<AutoAlignStates> autoAlignSupplier, LEDStates ledState) {
 		this.stateString = stateString;
-		this.elevatorState = elevatorState;
+		this.elevatorStateSupplier = elevatorStateSupplier;
 		this.coralerState = coralerState;
 		this.algaerState = algaerState;
 		this.climberState = climberState;
 		this.autoAlignState = autoAlignState;
+		this.autoAlignSupplier = autoAlignSupplier;
+		this.ledState = ledState;
 	}
 
 	private String stateString;
-	private ElevatorStates elevatorState;
+	private Supplier<ElevatorStates> elevatorStateSupplier;
 	private CoralerStates coralerState;
 	private AlgaerStates algaerState;
 	private AutoAlignStates autoAlignState;
 	private ClimberStates climberState;
+	private Supplier<AutoAlignStates> autoAlignSupplier;
+	private LEDStates ledState;
 
 	@Override
 	public String getStateString() {
 		return stateString;
 	}
 
-	public ElevatorStates getElevatorState() {
-		return elevatorState;
+	public Supplier<ElevatorStates> getElevatorStateSupplier() {
+		return elevatorStateSupplier;
 	}
 
 	public CoralerStates getCoralerState() {
@@ -70,12 +80,19 @@ public enum ManagerStates implements SubsystemStates {
 	public AlgaerStates getAlgaerState() {
 		return algaerState;
 	}
-
 	public ClimberStates getClimberState() {
 		return climberState;
 	}
 
 	public AutoAlignStates getAutoAlignState() {
 		return autoAlignState;
+  }
+    
+	public Supplier<AutoAlignStates> getAutoAlignSupplier() {
+		return autoAlignSupplier;
+	}
+
+	public LEDStates getLedState() {
+		return ledState;
 	}
 }

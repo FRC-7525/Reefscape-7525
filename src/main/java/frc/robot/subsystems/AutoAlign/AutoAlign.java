@@ -74,9 +74,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		// idk why applied needs to be negative but it works if it is negative 💀
 		// update: it's negative because otto is a bum and can't set up his sim properly
-		double xApplied = -repulsionTranslationController.calculate(drivePose.getX(), targetPose.getX());
-		double yApplied = -repulsionTranslationController.calculate(drivePose.getY(), targetPose.getY());
-		double rotationApplied = repulsionRotationController.calculate(drivePose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
+		double xApplied = -translationController.calculate(drivePose.getX(), targetPose.getX());
+		double yApplied = -translationController.calculate(drivePose.getY(), targetPose.getY());
+		double rotationApplied = rotationController.calculate(drivePose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
 		drive.driveFieldRelative(xApplied, yApplied, rotationApplied);
 	}
 

@@ -24,7 +24,6 @@ public class ClimberIOReal implements ClimberIO {
 
 	private LinearFilter filter;
 
-	private double metersPerRotation;
 	private boolean motorZeroed;
 	private double setpoint;
 
@@ -34,7 +33,6 @@ public class ClimberIOReal implements ClimberIO {
 
 		setpoint = 0;
 		motorZeroed = false;
-		metersPerRotation = METERS_PER_ROTATION.in(Meters);
 
 		filter = LinearFilter.movingAverage(CURRENT_FILTER_TAPS);
 
@@ -47,8 +45,8 @@ public class ClimberIOReal implements ClimberIO {
 
 	@Override
 	public void updateInputs(ClimberIOInputs inputs) {
-		inputs.climberPosition = motorEncoder.getPosition() * metersPerRotation;
-		inputs.climberSpeed = motorEncoder.getVelocity() / 60;
+		inputs.climberPosition = motorEncoder.getPosition() * METERS_PER_ROTATION.in(Meters);
+		inputs.climberSpeed = (motorEncoder.getVelocity() / 60) * METERS_PER_ROTATION.in(Meters);
 		inputs.climberAngularPosition = Units.rotationsToDegrees(motorEncoder.getPosition());
 		inputs.climberHeightPoint = setpoint;
 	}
@@ -58,13 +56,13 @@ public class ClimberIOReal implements ClimberIO {
 		double height = setpoint.in(Meters);
 		this.setpoint = height;
 
-		double voltage = pidController.calculate((motorEncoder.getPosition() * metersPerRotation), height);
+		double voltage = pidController.calculate((motorEncoder.getPosition() * METERS_PER_ROTATION.in(Meters)), height);
 		motor.setVoltage(voltage);
 	}
 
 	@Override
 	public boolean nearSetpoint() {
-		return (Math.abs((motorEncoder.getPosition() * metersPerRotation) - setpoint) < POSITION_TOLERANCE.in(Meters));
+		return (Math.abs((motorEncoder.getPosition() * METERS_PER_ROTATION.in(Meters)) - setpoint) < POSITION_TOLERANCE.in(Meters));
 	}
 
 	@Override
@@ -74,7 +72,7 @@ public class ClimberIOReal implements ClimberIO {
 		if (filter.calculate(motor.getOutputCurrent()) > ZEROING_CURRENT_LIMIT.in(Amps) || motorZeroed) {
 			if (!motorZeroed) motorEncoder.setPosition(0);
 			setpoint = IDLE.in(Meters);
-			zeroingSpeed = pidController.calculate(motorEncoder.getPosition() * metersPerRotation, setpoint);
+			zeroingSpeed = pidController.calculate(motorEncoder.getPosition() * METERS_PER_ROTATION.in(Meters), setpoint);
 			motorZeroed = true;
 		}
 

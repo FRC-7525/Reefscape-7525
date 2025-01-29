@@ -84,10 +84,10 @@ public class ElevatorIOReal implements ElevatorIO {
 
 	@Override
 	public void updateInputs(ElevatorIOInputs inputs) {
-		inputs.currentElevatorHeight = leftMotor.getPosition().getValueAsDouble() * metersPerRotation;
+		inputs.currentElevatorHeight = leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters);
 		inputs.elevatorHeightSetpoint = pidController.getSetpoint().position;
 		inputs.elevatorHeightGoalpoint = pidController.getGoal().position;
-		inputs.elevatorVelocity = leftMotor.getVelocity().getValueAsDouble();
+		inputs.elevatorVelocity = leftMotor.getVelocity().getValueAsDouble() * METERS_PER_ROTATION.in(Meters);
 		inputs.elevatorVelocitySetpoint = pidController.getSetpoint().velocity;
 		inputs.elevatorHeightGoalpoint = pidController.getGoal().velocity;
 		inputs.leftMotorVoltInput = leftMotorVoltage;
@@ -96,8 +96,8 @@ public class ElevatorIOReal implements ElevatorIO {
 
 	@Override
 	public void runElevator() {
-		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * metersPerRotation) + ffcontroller.calculate(pidController.getSetpoint().velocity);
-		rightMotorVoltage = pidController.calculate(rightMotor.getPosition().getValueAsDouble() * metersPerRotation) + ffcontroller.calculate(pidController.getSetpoint().velocity);
+		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
+		rightMotorVoltage = pidController.calculate(rightMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
 		leftMotor.setVoltage(leftMotorVoltage);
 		rightMotor.setVoltage(rightMotorVoltage);
 	}

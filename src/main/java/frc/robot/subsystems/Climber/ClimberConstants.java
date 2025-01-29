@@ -2,8 +2,11 @@ package frc.robot.Subsystems.Climber;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.KilogramSquareMeters;
+import static edu.wpi.first.units.Units.Meter;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Millimeters;
+import static frc.robot.Subsystems.Climber.ClimberConstants.Sim.MOTOR_GEARING;
 
 import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.units.measure.Current;
@@ -24,20 +27,24 @@ public final class ClimberConstants {
 	public static final Distance UP = Meters.of(2.5146);
 	public static final Distance IDLE = Meters.of(0); //TODO: Change these setpoint distances to something that is actually real
 	public static final Distance DOWN = Meters.of(1.54305);
-	public static final Distance METERS_PER_ROTATION = Meters.of(1); // random value lol
+	public static final Distance OUTER_GEAR_DIAMETER = Millimeters.of(35.9);
+	public static final Distance METERS_PER_ROTATION = Meters.of(MOTOR_GEARING * (OUTER_GEAR_DIAMETER.in(Meters) * Math.PI)); // random value lol
 
 	public static class Sim {
 
 		// TODO change all of these values when new robot is done
 		public static final int NUM_MOTORS = 1;
 		public static final MomentOfInertia MOTOR_MOI = KilogramSquareMeters.of(1); //TODO: Get an actual value for htis;
-		public static final double MOTOR_GEARING = 9;
+		public static final double MOTOR_GEARING = 25;
 
 		// TODO Tune once we get new values
 		public static final PIDConstants PID_CONSTANTS = new PIDConstants(2, 0, 0, 0);
 	}
 
 	public static class Real {
+
+		//TODO change CAN ID
+		public static final int CLIMBER_CANID = 18;
 
 		public static final LinearVelocity ZEROING_VELOCITY = MetersPerSecond.of(0.25);
 		public static final Current ZEROING_CURRENT_LIMIT = Amps.of(10.0);
