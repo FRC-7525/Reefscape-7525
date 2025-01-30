@@ -78,6 +78,7 @@ public class AutoManager {
 		// Autos
 		autoChooser.setDefaultOption("Do Nothing", new PrintCommand("Do Nothing"));
 		autoChooser.addOption("4 Note", new PathPlannerAuto("4 Note Testing"));
+		autoChooser.addOption("6 Note", new PathPlannerAuto("6 coral auto (in theory)"));
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
