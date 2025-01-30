@@ -112,7 +112,7 @@ public class TippingCalculator {
 		Torque tippingTorque = calculateTippingTorque(deceleration);
 		Torque restoringTorque = calculateRestoringTorque();
 
-		return tippingTorque.gt(restoringTorque);
+		return Math.abs(tippingTorque.magnitude()) > Math.abs(restoringTorque.magnitude());
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class TippingCalculator {
 		Torque tippingTorque = calculateTippingTorque(deceleration);
 		Torque restoringTorque = calculateRestoringTorque();
 
-		return tippingTorque.gt(restoringTorque);
+		return Math.abs(tippingTorque.magnitude()) > Math.abs(restoringTorque.magnitude());
 	}
 
 	/**
@@ -147,6 +147,6 @@ public class TippingCalculator {
 		Torque tippingTorque = calculateTippingTorque(deceleration);
 		Torque restoringTorque = calculateRestoringTorque();
 
-		return tippingTorque.gt(restoringTorque);
+		return Math.abs(tippingTorque.magnitude()) > Math.abs(restoringTorque.magnitude());
 	}
 }
