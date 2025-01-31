@@ -2,6 +2,9 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -36,6 +39,10 @@ public class GlobalConstants {
 		// NOTE: Set to 0.1 on trash controllers
 		public static final double DEADBAND = 0.01;
 		public static final double TRIGGERS_REGISTER_POINT = 0.5;
+	}
+
+	public static class FaultManagerConstants { 
+		public static final ArrayList<Integer> CANIVORE_DEVICE_ORDER = new ArrayList<Integer>(Arrays.asList(39, 56, 6, 4, 58, 9, 5, 11, 12, 2, 59, 3, 8));
 	}
 
 	public static class Drive {

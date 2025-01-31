@@ -3,6 +3,7 @@ package frc.robot.Subsystems.Manager;
 import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.Subsystems.Manager.ManagerConstants.*;
 
+import frc.robot.Subsystems.FaultManager;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
@@ -25,6 +26,8 @@ public class Manager extends Subsystem<ManagerStates> {
 	// private final AutoAlign autoAlign = AutoAlign.getInstance();
 	// private final Vision vision = Vision.getInstance();
 	// private final LED ledSubsystem = LED.getInstance();
+
+	private final FaultManager faultManager = FaultManager.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -147,6 +150,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		// vision.periodic();
 		drive.periodic();
 		// ledSubsystem.periodic();
+		faultManager.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getXButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(6)) {
