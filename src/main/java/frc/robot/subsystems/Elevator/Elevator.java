@@ -1,10 +1,15 @@
 package frc.robot.Subsystems.Elevator;
 
+import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.SUBSYSTEM_NAME;
 
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
+
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 
 public class Elevator extends Subsystem<ElevatorStates> {
 
@@ -44,6 +49,9 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
 		io.setHeightGoalpoint(getState().getTargetHeight());
 		io.runElevator();
+
+		Logger.recordOutput("Elevator/Carraige Position", new Pose3d(new Translation3d(0, 0, io.getCarraigeHeight().in(Meters)), new Rotation3d()));
+		Logger.recordOutput("Elevator/Stage1 Position", new Pose3d(new Translation3d(0, 0, io.getStageOneHeight().in(Meters)), new Rotation3d()));
 	}
 
 	public boolean nearTarget() {

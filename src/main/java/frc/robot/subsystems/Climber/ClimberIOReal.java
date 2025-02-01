@@ -57,6 +57,11 @@ public class ClimberIOReal implements ClimberIO {
 	}
 
 	@Override
+	public Distance getPosition() {
+		return Meters.of(motorEncoder.getPosition() * METERS_PER_ROTATION.in(Meters));
+	}
+
+	@Override
 	public void stop() {
 		motor.setVoltage(0);
 	}

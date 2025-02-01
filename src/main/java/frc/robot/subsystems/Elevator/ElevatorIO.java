@@ -32,4 +32,8 @@ public interface ElevatorIO {
 	public boolean motorsZeroed();
 
 	public boolean nearTarget();
+
+	public Distance getStageOneHeight();
+
+	public Distance getCarraigeHeight();
 }

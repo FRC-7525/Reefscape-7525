@@ -12,6 +12,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
@@ -126,5 +127,15 @@ public class ElevatorIOReal implements ElevatorIO {
 	@Override
 	public boolean motorsZeroed() {
 		return leftMotorZeroed;
+	}
+
+	@Override
+	public Distance getStageOneHeight() {
+		return Meters.of(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
+	}
+
+	@Override
+	public Distance getCarraigeHeight() {
+		return Meters.of(2*(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)) + Units.inchesToMeters(1));
 	}
 }

@@ -1,10 +1,15 @@
 package frc.robot.Subsystems.Climber;
 
+import static edu.wpi.first.units.Units.Meters;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Climber.ClimberConstants.SUBSYSTEM_NAME;
 
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
+
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 
 public class Climber extends Subsystem<ClimberStates> {
 
@@ -37,6 +42,8 @@ public class Climber extends Subsystem<ClimberStates> {
 		io.updateInputs(inputs);
 
 		Logger.processInputs(ClimberConstants.SUBSYSTEM_NAME, inputs);
+		Logger.recordOutput("Climber/Setpoint", new Pose3d(new Translation3d(0, 0, getState().getTargetHeight().in(Meters)), new Rotation3d()));
+		Logger.recordOutput("Climber/Position", new Pose3d(new Translation3d(0, 0, io.getPosition().in(Meters)), new Rotation3d()));
 	}
 
 	public void stop() {
