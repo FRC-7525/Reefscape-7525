@@ -71,25 +71,22 @@ public class Drive extends Subsystem<DriveStates> {
 
 		// Zero Gyro
 		addRunnableTrigger(
-				() -> {
-					driveIO.zeroGyro();
-				},
-				DRIVER_CONTROLLER::getStartButtonPressed);
+			() -> {
+				driveIO.zeroGyro();
+			},
+			DRIVER_CONTROLLER::getStartButtonPressed
+		);
 
 		// Field to relative and whatnot
 		addTrigger(DriveStates.FIELD_RELATIVE, DriveStates.ROBOT_RELATIVE, DRIVER_CONTROLLER::getBackButtonPressed);
 		addTrigger(DriveStates.ROBOT_RELATIVE, DriveStates.FIELD_RELATIVE, DRIVER_CONTROLLER::getBackButtonPressed);
 
 		// Locking Wheels
-		addTrigger(DriveStates.FIELD_RELATIVE, DriveStates.LOCKING_WHEELS_FIELD,
-				DRIVER_CONTROLLER::getLeftBumperButtonPressed);
-		addTrigger(DriveStates.LOCKING_WHEELS_FIELD, DriveStates.FIELD_RELATIVE,
-				DRIVER_CONTROLLER::getLeftBumperButtonPressed);
+		addTrigger(DriveStates.FIELD_RELATIVE, DriveStates.LOCKING_WHEELS_FIELD, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
+		addTrigger(DriveStates.LOCKING_WHEELS_FIELD, DriveStates.FIELD_RELATIVE, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
 
-		addTrigger(DriveStates.ROBOT_RELATIVE, DriveStates.LOCKING_WHEELS_ROBOT,
-				DRIVER_CONTROLLER::getLeftBumperButtonPressed);
-		addTrigger(DriveStates.LOCKING_WHEELS_ROBOT, DriveStates.ROBOT_RELATIVE,
-				DRIVER_CONTROLLER::getLeftBumperButtonPressed);
+		addTrigger(DriveStates.ROBOT_RELATIVE, DriveStates.LOCKING_WHEELS_ROBOT, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
+		addTrigger(DriveStates.LOCKING_WHEELS_ROBOT, DriveStates.ROBOT_RELATIVE, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
 
 		this.lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
 	}
@@ -114,13 +111,10 @@ public class Drive extends Subsystem<DriveStates> {
 		// Zero on init/when first disabled
 		if (!robotMirrored || DriverStation.isDisabled()) {
 			DriverStation.getAlliance()
-					.ifPresent(allianceColor -> {
-						driveIO.getDrive()
-								.setOperatorPerspectiveForward(allianceColor == Alliance.Red
-										? GlobalConstants.Drive.RED_ALLIANCE_PERSPECTIVE_ROTATION
-										: GlobalConstants.Drive.BLUE_ALLIANCE_PERSPECTIVE_ROTATION);
-						robotMirrored = true;
-					});
+				.ifPresent(allianceColor -> {
+					driveIO.getDrive().setOperatorPerspectiveForward(allianceColor == Alliance.Red ? GlobalConstants.Drive.RED_ALLIANCE_PERSPECTIVE_ROTATION : GlobalConstants.Drive.BLUE_ALLIANCE_PERSPECTIVE_ROTATION);
+					robotMirrored = true;
+				});
 		}
 		logOutputs(driveIO.getDrive().getState());
 
@@ -139,18 +133,12 @@ public class Drive extends Subsystem<DriveStates> {
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Robot Pose", state.Pose);
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Current Time", Utils.getSystemTimeSeconds());
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Chassis Speeds", state.Speeds);
-		Logger.recordOutput(SUBSYSTEM_NAME + "/velocity",
-				Units.metersToFeet(Math.hypot(state.Speeds.vxMetersPerSecond, state.Speeds.vyMetersPerSecond)));
+		Logger.recordOutput(SUBSYSTEM_NAME + "/velocity", Units.metersToFeet(Math.hypot(state.Speeds.vxMetersPerSecond, state.Speeds.vyMetersPerSecond)));
 		Logger.recordOutput(SUBSYSTEM_NAME + "/swerveModuleStates", state.ModuleStates);
 		Logger.recordOutput(SUBSYSTEM_NAME + "/swerveModulePosition", state.ModulePositions);
-		Logger.recordOutput(SUBSYSTEM_NAME + "/Translation Difference",
-				state.Pose.getTranslation().minus(lastPose.getTranslation()));
+		Logger.recordOutput(SUBSYSTEM_NAME + "/Translation Difference", state.Pose.getTranslation().minus(lastPose.getTranslation()));
 		Logger.recordOutput(SUBSYSTEM_NAME + "/State", getState().getStateString());
-		Logger.recordOutput(SUBSYSTEM_NAME + "/Pose Jumped",
-				Math.hypot(state.Pose.getTranslation().minus(lastPose.getTranslation()).getX(),
-						state.Pose.getTranslation().minus(lastPose.getTranslation())
-								.getY()) > (kSpeedAt12Volts.in(MetersPerSecond) * 2
-										* (Utils.getSystemTimeSeconds() - lastTime)));
+		Logger.recordOutput(SUBSYSTEM_NAME + "/Pose Jumped", Math.hypot(state.Pose.getTranslation().minus(lastPose.getTranslation()).getX(), state.Pose.getTranslation().minus(lastPose.getTranslation()).getY()) > (kSpeedAt12Volts.in(MetersPerSecond) * 2 * (Utils.getSystemTimeSeconds() - lastTime)));
 
 		lastPose = state.Pose;
 		lastTime = Utils.getSystemTimeSeconds();
@@ -166,20 +154,13 @@ public class Drive extends Subsystem<DriveStates> {
 	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity, boolean useHeadingCorrection) {
 		double omega = angularVelocity;
 		if (useHeadingCorrection) {
-			if (Math.abs(omega) == 0.0 &&
-					(Math.abs(xVelocity) > DEADBAND ||
-							Math.abs(yVelocity) > DEADBAND)) {
-				omega = headingCorrectionController.calculate(
-						driveIO.getDrive().getState().Pose.getRotation().getRadians(),
-						lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
+			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
+				omega = headingCorrectionController.calculate(driveIO.getDrive().getState().Pose.getRotation().getRadians(), lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
 			} else {
 				lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
 			}
 		}
-		driveIO.setControl(new SwerveRequest.FieldCentric().withDeadband(DEADBAND).withVelocityX(xVelocity)
-				.withVelocityY(yVelocity).withRotationalRate(omega)
-				.withDriveRequestType(SwerveModule.DriveRequestType.Velocity)
-				.withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
+		driveIO.setControl(new SwerveRequest.FieldCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(omega).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
 	}
 
 	/**
@@ -190,19 +171,14 @@ public class Drive extends Subsystem<DriveStates> {
 	 * @param angularVelocity The desired angular velocity.
 	 */
 	public void driveRobotRelative(double xVelocity, double yVelocity, double angularVelocity) {
-		driveIO.setControl(new SwerveRequest.RobotCentric().withDeadband(DEADBAND).withVelocityX(xVelocity)
-				.withVelocityY(yVelocity).withRotationalRate(angularVelocity)
-				.withDriveRequestType(SwerveModule.DriveRequestType.Velocity)
-				.withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
+		driveIO.setControl(new SwerveRequest.RobotCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(angularVelocity).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
 	}
 
 	/**
 	 * Locks the wheels of the robot.
 	 */
 	public void lockWheels() {
-		driveIO.setControl(
-				new SwerveRequest.SwerveDriveBrake().withDriveRequestType(SwerveModule.DriveRequestType.Velocity)
-						.withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
+		driveIO.setControl(new SwerveRequest.SwerveDriveBrake().withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
 	}
 
 	public void addVisionMeasument(Pose2d pose, double timestamp, Matrix<N3, N1> standardDeviaton) {
@@ -224,52 +200,56 @@ public class Drive extends Subsystem<DriveStates> {
 	 * importing the log to SysId.
 	 */
 	private final SysIdRoutine sysIdRoutineRotation = new SysIdRoutine(
-			new SysIdRoutine.Config(
-					/* This is in radians per second², but SysId only supports "volts per second" */
-					Volts.of(Math.PI / 6).per(Second),
-					/* This is in radians per second, but SysId only supports "volts" */
-					Volts.of(Math.PI),
-					null, // Use default timeout (10 s)
-					// Log state with SignalLogger class
-					state -> SignalLogger.writeString("SysIdRotation_State", state.toString())),
-			new SysIdRoutine.Mechanism(
-					output -> {
-						/* output is actually radians per second, but SysId only supports "volts" */
-						driveIO.getDrive().setControl(rotationCharacterization.withRotationalRate(output.in(Volts)));
-						/* also log the requested output for SysId */
-						SignalLogger.writeDouble("Rotational_Rate", output.in(Volts));
-					},
-					null,
-					this));
+		new SysIdRoutine.Config(
+			/* This is in radians per second², but SysId only supports "volts per second" */
+			Volts.of(Math.PI / 6).per(Second),
+			/* This is in radians per second, but SysId only supports "volts" */
+			Volts.of(Math.PI),
+			null, // Use default timeout (10 s)
+			// Log state with SignalLogger class
+			state -> SignalLogger.writeString("SysIdRotation_State", state.toString())
+		),
+		new SysIdRoutine.Mechanism(
+			output -> {
+				/* output is actually radians per second, but SysId only supports "volts" */
+				driveIO.getDrive().setControl(rotationCharacterization.withRotationalRate(output.in(Volts)));
+				/* also log the requested output for SysId */
+				SignalLogger.writeDouble("Rotational_Rate", output.in(Volts));
+			},
+			null,
+			this
+		)
+	);
 
 	/*
 	 * SysId routine for characterizing translation. This is used to find PID gains
 	 * for the drive motors.
 	 */
 	private final SysIdRoutine sysIdRoutineTranslation = new SysIdRoutine(
-			new SysIdRoutine.Config(
-					null, // Use default ramp rate (1 V/s)
-					Volts.of(4), // Reduce dynamic step voltage to 4 V to prevent brownout
-					null, // Use default timeout (10 s)
-					// Log state with SignalLogger class
-					state -> SignalLogger.writeString("SysIdTranslation_State", state.toString())),
-			new SysIdRoutine.Mechanism(
-					output -> driveIO.getDrive().setControl(translationCharacterization.withVolts(output)), null,
-					this));
+		new SysIdRoutine.Config(
+			null, // Use default ramp rate (1 V/s)
+			Volts.of(4), // Reduce dynamic step voltage to 4 V to prevent brownout
+			null, // Use default timeout (10 s)
+			// Log state with SignalLogger class
+			state -> SignalLogger.writeString("SysIdTranslation_State", state.toString())
+		),
+		new SysIdRoutine.Mechanism(output -> driveIO.getDrive().setControl(translationCharacterization.withVolts(output)), null, this)
+	);
 
 	/*
 	 * SysId routine for characterizing steer. This is used to find PID gains for
 	 * the steer motors.
 	 */
 	private final SysIdRoutine sysIdRoutineSteer = new SysIdRoutine(
-			new SysIdRoutine.Config(
-					null, // Use default ramp rate (1 V/s)
-					Volts.of(7), // Use dynamic voltage of 7 V
-					null, // Use default timeout (10 s)
-					// Log state with SignalLogger class
-					state -> SignalLogger.writeString("SysIdSteer_State", state.toString())),
-			new SysIdRoutine.Mechanism(volts -> driveIO.getDrive().setControl(steerCharacterization.withVolts(volts)),
-					null, this));
+		new SysIdRoutine.Config(
+			null, // Use default ramp rate (1 V/s)
+			Volts.of(7), // Use dynamic voltage of 7 V
+			null, // Use default timeout (10 s)
+			// Log state with SignalLogger class
+			state -> SignalLogger.writeString("SysIdSteer_State", state.toString())
+		),
+		new SysIdRoutine.Mechanism(volts -> driveIO.getDrive().setControl(steerCharacterization.withVolts(volts)), null, this)
+	);
 
 	@Override
 	public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -307,10 +287,7 @@ public class Drive extends Subsystem<DriveStates> {
 
 	// Better at driving stuff or sum (I think this makes a meh difference)
 	public void driveRobotRelativeWithFF(ChassisSpeeds speeds, DriveFeedforwards feedforwards) {
-		driveIO.getDrive()
-				.setControl(new SwerveRequest.ApplyRobotSpeeds().withSpeeds(speeds)
-						.withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
-						.withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons()));
+		driveIO.getDrive().setControl(new SwerveRequest.ApplyRobotSpeeds().withSpeeds(speeds).withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons()).withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons()));
 	}
 
 	public Pose2d getPose() {
@@ -327,26 +304,26 @@ public class Drive extends Subsystem<DriveStates> {
 
 	public void driveAutoAlign(ApplyFieldSpeeds fieldSpeeds, double[] moduleForcesX, double[] moduleForcesY) {
 		driveIO
-				.getDrive()
-				.setControl(
-						fieldSpeeds
+			.getDrive()
+			.setControl(
+				fieldSpeeds
 				// .withWheelForceFeedforwardsX(moduleForcesX)
 				// .withWheelForceFeedforwardsY(moduleForcesY)
-				);
+			);
 	}
 
 	public void configurePathPlanner() {
 		AutoBuilder.configure(
-				this::getPose, // Robot pose supplier
-				this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-				this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-				this::driveRobotRelativeWithFF, // Method that will drive the robot given ROBOT
-				// RELATIVE ChassisSpeeds. Also optionally outputs
-				// individual module feedforwards
-				PATH_PLANNER_PID,
-				ROBOT_CONFIG, // The robot configuration
-				() -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
-				this // Reference to this subsystem to set requirements
+			this::getPose, // Robot pose supplier
+			this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+			this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+			this::driveRobotRelativeWithFF, // Method that will drive the robot given ROBOT
+			// RELATIVE ChassisSpeeds. Also optionally outputs
+			// individual module feedforwards
+			PATH_PLANNER_PID,
+			ROBOT_CONFIG, // The robot configuration
+			() -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
+			this // Reference to this subsystem to set requirements
 		);
 
 		// Log Relevant Path Planner Stufff
