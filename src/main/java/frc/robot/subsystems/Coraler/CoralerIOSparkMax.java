@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Coraler;
 
-import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.*;
+import static frc.robot.GlobalConstants.*;
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
 import com.revrobotics.RelativeEncoder;
@@ -8,6 +9,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CoralerIOSparkMax implements CoralerIO {
 
@@ -21,6 +23,10 @@ public class CoralerIOSparkMax implements CoralerIO {
 		velocityEncoder = velocityMotor.getEncoder();
 		wheelController = WHEEL_CONTROLLER.get();
 		speedPoint = 0.0;
+
+		if (ROBOT_MODE == RobotMode.TESTING) {
+			SmartDashboard.putData("Coraler Wheel PID", wheelController);
+		}
 	}
 
 	@Override

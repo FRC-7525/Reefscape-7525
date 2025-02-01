@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Elevator;
 
+import edu.wpi.first.units.measure.Distance;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ElevatorIO {
@@ -18,7 +19,7 @@ public interface ElevatorIO {
 		public boolean elevatorZeroed;
 	}
 
-	public void setHeightGoalpoint(double height);
+	public void setHeightGoalpoint(Distance height);
 
 	public void updateInputs(ElevatorIOInputs inputs);
 
@@ -26,7 +27,9 @@ public interface ElevatorIO {
 
 	public void zero();
 
-	public boolean isZeroed();
+	public void resetMotorsZeroed();
+
+	public boolean motorsZeroed();
 
 	public boolean nearTarget();
 }

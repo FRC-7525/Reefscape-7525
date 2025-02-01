@@ -18,10 +18,6 @@ public interface ClimberIO {
 
 	public void updateInputs(ClimberIOInputs inputs);
 
-	public void zero();
-
-	public boolean isZeroed();
-
 	public boolean nearSetpoint();
 
 	public void setSetpoint(Distance setpoint);
