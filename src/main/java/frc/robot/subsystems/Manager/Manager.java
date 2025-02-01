@@ -19,8 +19,8 @@ public class Manager extends Subsystem<ManagerStates> {
 	// Needed for working code (having it not null on init that is)
 	private static Manager instance = new Manager();
 
-	private final Drive drive = Drive.getInstance();
-	// private final Elevator elevator = Elevator.getInstance();
+	// private final Drive drive = Drive.getInstance();
+	private final Elevator elevator = Elevator.getInstance();
 	// private final Coraler coraler = Coraler.getInstance();
 	// private final Algaer algaer = Algaer.getInstance();
 	// private final AutoAlign autoAlign = AutoAlign.getInstance();
@@ -29,7 +29,7 @@ public class Manager extends Subsystem<ManagerStates> {
 
 	public Boolean leftSourceSelected = false;
 
-	public int driverReefScoringLevel = 1;
+	public int driverReefScoringLevel = 3;
 	public int operatorReefScoringLevel = 1;
 	public int hexagonTargetSide = 1;
 	public boolean scoringReefLeft = false;
@@ -91,9 +91,9 @@ public class Manager extends Subsystem<ManagerStates> {
 		// addTrigger(ManagerStates.SCORING_PROCESSOR, ManagerStates.IDLE, DRIVER_CONTROLLER::getAButtonPressed);
 
 		// Scoring Reef Manual
-		// addTrigger(ManagerStates.IDLE, ManagerStates.TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
-		// addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, DRIVER_CONTROLLER::getYButtonPressed);
-		// addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
+		addTrigger(ManagerStates.IDLE, ManagerStates.TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
+		addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, DRIVER_CONTROLLER::getYButtonPressed);
+		addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 		// Auto Only Transition
 		// addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
 
@@ -153,7 +153,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/Left Pose Selected", scoringReefLeft);
 
 		// Set States, drive and vision are rogue so you don't need to set state
-		// elevator.setState(getState().getElevatorStateSupplier().get());
+		elevator.setState(getState().getElevatorStateSupplier().get());
 		// coraler.setState(getState().getCoralerState());
 		// algaer.setState(getState().getAlgaerState());
 		// autoAlign.setState(getState().getAutoAlignSupplier().get());
@@ -161,11 +161,11 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Periodics
 		// autoAlign.periodic();
-		// elevator.periodic();
+		elevator.periodic();
 		// coraler.periodic();
 		// algaer.periodic();
 		// vision.periodic();
-		drive.periodic();
+		// drive.periodic();
 		// ledSubsystem.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!

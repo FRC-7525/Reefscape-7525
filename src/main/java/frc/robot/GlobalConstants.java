@@ -22,7 +22,7 @@ public class GlobalConstants {
 		REPLAY,
 	}
 
-	public static final RobotMode ROBOT_MODE = "Crash".equals(System.getenv("CI_NAME")) ? RobotMode.SIM : RobotMode.SIM;
+	public static final RobotMode ROBOT_MODE = "Crash".equals(System.getenv("CI_NAME")) ? RobotMode.SIM : RobotMode.REAL;
 
 	public static final double SIMULATION_PERIOD = 0.02;
 

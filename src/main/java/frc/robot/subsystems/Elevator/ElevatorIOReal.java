@@ -5,6 +5,8 @@ import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.Real.*;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.Follower;
@@ -100,6 +102,9 @@ public class ElevatorIOReal implements ElevatorIO {
 		inputs.elevatorHeightGoalpoint = pidController.getGoal().velocity;
 		inputs.leftMotorVoltInput = leftMotorVoltage;
 		inputs.rightMotorVoltInput = rightMotorVoltage;
+
+		Logger.recordOutput("SUBSYSTEM_NAME/Left Encoder pos", leftMotor.getPosition().getValueAsDouble());
+		Logger.recordOutput("SUBSYSTEM_NAME/Right Encoder pos", rightMotor.getPosition().getValueAsDouble());
 	}
 
 	@Override
