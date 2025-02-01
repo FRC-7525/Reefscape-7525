@@ -77,7 +77,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		double xApplied = -translationController.calculate(drivePose.getX(), targetPose.getX());
 		double yApplied = -translationController.calculate(drivePose.getY(), targetPose.getY());
 		double rotationApplied = rotationController.calculate(drivePose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
-		drive.driveFieldRelative(xApplied, yApplied, rotationApplied);
+		drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false);
 	}
 
 	private void repulsorAutoAlign(Pose2d pose, SwerveSample sample) {
@@ -88,7 +88,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		targetSpeeds.vyMetersPerSecond += repulsionTranslationController.calculate(pose.getY(), sample.y);
 		targetSpeeds.omegaRadiansPerSecond += repulsionRotationController.calculate(pose.getRotation().getRadians(), sample.heading);
 
-		drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond);
+		drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
 	}
 
 	private boolean checkForReefCollision() {

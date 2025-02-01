@@ -15,6 +15,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import frc.robot.Subsystems.Algaer.AlgaerConstants.Real;
 
 public class AlgaerIOSim implements AlgaerIO {
 
@@ -91,5 +92,10 @@ public class AlgaerIOSim implements AlgaerIO {
 	@Override
 	public boolean nearTarget() {
 		return ((Math.abs(Units.radiansToDegrees(pivotSim.getAngleRads()) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees)) && (Math.abs(Units.radiansToRotations(wheelMotorSim.getAngularVelocityRadPerSec()) - wheelSpeedSetpoint) < WHEEL_TOLERANCE.in(RotationsPerSecond)));
+	}
+
+	@Override
+	public Angle getAngle() {
+		return Radians.of(pivotSim.getAngleRads());
 	}
 }

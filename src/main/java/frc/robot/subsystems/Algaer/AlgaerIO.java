@@ -23,5 +23,7 @@ public interface AlgaerIO {
 
 	public void setWheelSpeed(AngularVelocity wheelSpeed);
 
+	public Angle getAngle();
+
 	public boolean nearTarget();
 }

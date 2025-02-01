@@ -1,9 +1,13 @@
 package frc.robot.Subsystems.Elevator;
 
+import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.SUBSYSTEM_NAME;
 
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -34,12 +38,21 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
 	@Override
 	protected void runState() {
-		io.setHeightGoalpoint(getState().getTargetHeight());
-		io.runElevator();
 		io.updateInputs(inputs);
 
 		Logger.processInputs(ElevatorConstants.SUBSYSTEM_NAME, inputs);
-		Logger.recordOutput(SUBSYSTEM_NAME + "/state string aaa", getState().getStateString());
+
+
+		if (getState() == ElevatorStates.ZEROING) {
+			io.zero();
+			return;
+		}
+
+		io.setHeightGoalpoint(getState().getTargetHeight());
+		io.runElevator();
+
+		Logger.recordOutput("Elevator/Carraige Position", new Pose3d(new Translation3d(0, 0, io.getCarraigeHeight().in(Meters)), new Rotation3d()));
+		Logger.recordOutput("Elevator/Stage1 Position", new Pose3d(new Translation3d(0, 0, io.getStageOneHeight().in(Meters)), new Rotation3d()));
 	}
 
 	public boolean nearTarget() {
@@ -48,5 +61,12 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
 	public Distance getHeight() {
 		return io.getHeight();
+
+    public boolean motorsZeroed() {
+		return io.motorsZeroed();
+	}
+
+	public void resetMotorsZeroed() {
+		io.resetMotorsZeroed();
 	}
 }

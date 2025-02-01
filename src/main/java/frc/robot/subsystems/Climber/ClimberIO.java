@@ -20,6 +20,8 @@ public interface ClimberIO {
 
 	public boolean nearSetpoint();
 
+	public Distance getPosition();
+
 	public void setSetpoint(Distance setpoint);
 
 	public void stop();

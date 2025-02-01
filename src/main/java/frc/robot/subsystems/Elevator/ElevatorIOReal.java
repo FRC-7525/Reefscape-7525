@@ -7,10 +7,12 @@ import static frc.robot.Subsystems.Elevator.ElevatorConstants.Real.*;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
@@ -31,12 +33,16 @@ public class ElevatorIOReal implements ElevatorIO {
 	private double leftMotorVoltage;
 	private double rightMotorVoltage;
 
+	private boolean leftMotorZeroed;
+
 	public ElevatorIOReal() {
 		leftMotor = new TalonFX(LEFT_MOTOR_CANID);
 		rightMotor = new TalonFX(RIGHT_MOTOR_CANID);
 
 		leftMotorVoltage = 0;
 		rightMotorVoltage = 0;
+
+		leftMotorZeroed = false;
 
 		//Motor configs
 		leftConfigurator = leftMotor.getConfigurator();
@@ -70,6 +76,8 @@ public class ElevatorIOReal implements ElevatorIO {
 
 		leftMotor.setPosition(Degrees.of(0));
 		rightMotor.setPosition(Degrees.of(0));
+
+		rightMotor.setControl(new Follower(LEFT_MOTOR_CANID, false));
 	}
 
 	@Override
@@ -97,13 +105,42 @@ public class ElevatorIOReal implements ElevatorIO {
 	@Override
 	public void runElevator() {
 		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
-		rightMotorVoltage = pidController.calculate(rightMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
 		leftMotor.setVoltage(leftMotorVoltage);
-		rightMotor.setVoltage(rightMotorVoltage);
 	}
 
 	@Override
 	public boolean nearTarget() {
 		return pidController.atGoal();
+	}
+
+	@Override
+	public void zero() {
+		double leftZeroingSpeed = -ElevatorConstants.ZEROING_VELOCITY.in(MetersPerSecond);
+		if (leftMotor.getStatorCurrent().getValueAsDouble() > ElevatorConstants.ZEROING_CURRENT_LIMIT.in(Amps)) {
+			leftZeroingSpeed = 0;
+			if (!leftMotorZeroed) leftMotor.setPosition(0);
+			leftMotorZeroed = true;
+		}
+		leftMotor.set(leftZeroingSpeed);
+	}
+
+	@Override
+	public void resetMotorsZeroed() {
+		leftMotorZeroed = false;
+	}
+
+	@Override
+	public boolean motorsZeroed() {
+		return leftMotorZeroed;
+	}
+
+	@Override
+	public Distance getStageOneHeight() {
+		return Meters.of(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
+	}
+
+	@Override
+	public Distance getCarraigeHeight() {
+		return Meters.of(2 * (leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)) + Units.inchesToMeters(1));
 	}
 }

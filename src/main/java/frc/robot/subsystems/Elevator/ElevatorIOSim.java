@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import frc.robot.GlobalConstants;
@@ -84,5 +85,30 @@ public class ElevatorIOSim implements ElevatorIO {
 	@Override
 	public boolean nearTarget() {
 		return pidController.atGoal();
+	}
+
+	@Override
+	public void zero() {
+		return;
+	}
+
+	@Override
+	public void resetMotorsZeroed() {
+		return;
+	}
+
+	@Override
+	public boolean motorsZeroed() {
+		return true;
+	}
+
+	@Override
+	public Distance getStageOneHeight() {
+		return Meters.of(elevatorSim.getPositionMeters());
+	}
+
+	@Override
+	public Distance getCarraigeHeight() {
+		return Meters.of(elevatorSim.getPositionMeters() * 2 + Units.inchesToMeters(1));
 	}
 }

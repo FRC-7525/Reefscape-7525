@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Algaer;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.GlobalConstants.*;
 import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
 import com.revrobotics.RelativeEncoder;
@@ -12,8 +13,8 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.GlobalConstants;
 import frc.robot.GlobalConstants.RobotMode;
+import frc.robot.Subsystems.Algaer.AlgaerConstants.Real;
 
 public class AlgaerIOReal implements AlgaerIO {
 
@@ -36,6 +37,10 @@ public class AlgaerIOReal implements AlgaerIO {
 		pivotController = PIVOT_CONTROLLER.get();
 		wheelSpeedController = WHEEL_CONTROLLER.get();
 		pivotMotor.getEncoder().setPosition(absoluteEncoder.get() - ABSOLUTE_ENCODER_OFFSET.in(Rotations));
+		if (ROBOT_MODE == RobotMode.TESTING) {
+			SmartDashboard.putData("Algaer Pivot PID", pivotController);
+			SmartDashboard.putData("Algaer Wheel Speed PID", wheelSpeedController);
+		}
 	}
 
 	@Override
@@ -44,11 +49,6 @@ public class AlgaerIOReal implements AlgaerIO {
 		inputs.pivotSetpoint = pivotPositionSetpoint;
 		inputs.wheelSpeed = wheelEncoder.getVelocity() / 60;
 		inputs.wheelSpeedSetpoint = wheelSpeedSetpoint;
-
-		if (GlobalConstants.ROBOT_MODE == RobotMode.TESTING) {
-			SmartDashboard.putData("Algaer Pivot PID", pivotController);
-			SmartDashboard.putData("Algaer Wheel Speed PID", wheelSpeedController);
-		}
 	}
 
 	@Override
@@ -68,5 +68,10 @@ public class AlgaerIOReal implements AlgaerIO {
 	@Override
 	public boolean nearTarget() {
 		return (Math.abs(pivotMotor.getEncoder().getPosition() - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees) && Math.abs(wheelEncoder.getVelocity() / 60 - wheelSpeedSetpoint) < WHEEL_TOLERANCE.in(RotationsPerSecond));
+	}
+
+	@Override
+	public Angle getAngle() {
+		return Rotations.of(pivotMotor.getEncoder().getPosition());
 	}
 }

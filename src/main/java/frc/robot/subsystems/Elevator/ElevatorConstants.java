@@ -47,10 +47,11 @@ public final class ElevatorConstants {
 
 	public static class Sim {
 
-		public static final DCMotor GEARBOX = DCMotor.getKrakenX60Foc(2);
+
+		public static final DCMotor GEARBOX = DCMotor.getKrakenX60(2);
 		public static final double GEARING = 2;
-		public static final Mass CARRIAGE_MASS = Pounds.of(15);
-		public static final Distance DRUM_RADIUS = Inches.of(0.5);
+		public static final Mass CARRIAGE_MASS = Pounds.of(34.544);
+		public static final Distance DRUM_RADIUS = Inches.of(1.751).div(2);
 		public static final Distance MIN_HEIGHT = Inches.of(0);
 		public static final Distance MAX_HEIGHT = Inches.of(24);
 		public static final boolean SIMULATE_GRAVITY = true;

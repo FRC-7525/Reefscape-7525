@@ -25,7 +25,17 @@ public interface ElevatorIO {
 
 	public void runElevator();
 
+	public void zero();
+
+	public void resetMotorsZeroed();
+
+	public boolean motorsZeroed();
+
 	public boolean nearTarget();
 
 	public Distance getHeight();
+
+  public Distance getStageOneHeight();
+
+	public Distance getCarraigeHeight();
 }

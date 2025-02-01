@@ -1,7 +1,11 @@
 package frc.robot.Subsystems.Algaer;
 
+import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -29,6 +33,10 @@ public class Algaer extends Subsystem<AlgaerStates> {
 
 		io.updateInputs(inputs);
 		Logger.processInputs("Algaer", inputs);
+
+		// Pose of mechanism for sim!
+		Logger.recordOutput("Algaer/Setpoint", new Pose3d(Sim.ZEROED_TRANSLATION, new Rotation3d(Degrees.of(0), getState().getPivotSetpoint(), Degrees.of(0))));
+		Logger.recordOutput("Algaer/Position", new Pose3d(Sim.ZEROED_TRANSLATION, new Rotation3d(Degrees.of(0), io.getAngle(), Degrees.of(0))));
 	}
 
 	public boolean nearTarget() {
