@@ -41,7 +41,6 @@ public class ElevatorIOSim implements ElevatorIO {
 		rightMotor = new TalonFX(RIGHT_MOTOR_CANID);
 		leftMotorSim = leftMotor.getSimState();
 		rightMotorSim = rightMotor.getSimState();
-
 	}
 
 	@Override

@@ -97,7 +97,6 @@ public class Manager extends Subsystem<ManagerStates> {
 		// Auto Only Transition
 		// addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
 
-
 		// Scoring Reef Auto Align
 		// addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
 		// addTrigger(ManagerStates.AUTO_ALIGN_FAR, ManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
