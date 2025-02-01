@@ -86,6 +86,11 @@ public class ElevatorIOReal implements ElevatorIO {
 	}
 
 	@Override
+	public Distance getHeight() {
+		return METERS_PER_ROTATION.times(leftMotor.getPosition().getValueAsDouble());
+	}
+
+	@Override
 	public void updateInputs(ElevatorIOInputs inputs) {
 		inputs.currentElevatorHeight = leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters);
 		inputs.elevatorHeightSetpoint = pidController.getSetpoint().position;

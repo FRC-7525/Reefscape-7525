@@ -33,6 +33,8 @@ public interface ElevatorIO {
 
 	public boolean nearTarget();
 
+	public Distance getHeight();
+
 	public Distance getStageOneHeight();
 
 	public Distance getCarraigeHeight();

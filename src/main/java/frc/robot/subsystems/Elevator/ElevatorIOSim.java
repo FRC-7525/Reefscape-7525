@@ -26,7 +26,6 @@ public class ElevatorIOSim implements ElevatorIO {
 
 	private double appliedVoltage;
 	private boolean zeroed;
-	public double metersPerRotation;
 
 	public ElevatorIOSim() {
 		elevatorSim = new ElevatorSim(GEARBOX, GEARING, CARRIAGE_MASS.in(Kilograms), DRUM_RADIUS.in(Meters), MIN_HEIGHT.in(Meters), MAX_HEIGHT.in(Meters), SIMULATE_GRAVITY, STARTING_HEIGHT.in(Meters));
@@ -42,18 +41,22 @@ public class ElevatorIOSim implements ElevatorIO {
 		rightMotor = new TalonFX(RIGHT_MOTOR_CANID);
 		leftMotorSim = leftMotor.getSimState();
 		rightMotorSim = rightMotor.getSimState();
-
-		metersPerRotation = METERS_PER_ROTATION.in(Meters);
 	}
 
+	@Override
+	public Distance getHeight() {
+		return Meters.of(elevatorSim.getPositionMeters());
+	}
+
+	@Override
 	public void updateInputs(ElevatorIOInputs inputs) {
 		elevatorSim.update(GlobalConstants.SIMULATION_PERIOD);
 
-		inputs.currentElevatorHeight = elevatorSim.getPositionMeters() * METERS_PER_ROTATION.in(Meters);
+		inputs.currentElevatorHeight = elevatorSim.getPositionMeters();
 		inputs.elevatorHeightSetpoint = pidController.getSetpoint().position;
 		inputs.elevatorHeightGoalpoint = pidController.getGoal().position;
 
-		inputs.elevatorVelocity = elevatorSim.getVelocityMetersPerSecond() * METERS_PER_ROTATION.in(Meters);
+		inputs.elevatorVelocity = elevatorSim.getVelocityMetersPerSecond();
 		inputs.elevatorVelocitySetpoint = pidController.getSetpoint().velocity;
 		inputs.elevatorVelocityGoalpoint = pidController.getGoal().velocity;
 
@@ -61,10 +64,10 @@ public class ElevatorIOSim implements ElevatorIO {
 		inputs.rightMotorVoltInput = appliedVoltage;
 		inputs.elevatorZeroed = zeroed;
 
-		leftMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters() / METERS_PER_ROTATION.in(Meters));
-		leftMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() / METERS_PER_ROTATION.in(Meters));
-		rightMotorSim.setRawRotorPosition(-elevatorSim.getPositionMeters() / METERS_PER_ROTATION.in(Meters)); // negative bc right is inversed (probably)
-		rightMotorSim.setRotorVelocity(-elevatorSim.getVelocityMetersPerSecond() / METERS_PER_ROTATION.in(Meters));
+		leftMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters());
+		leftMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond());
+		rightMotorSim.setRawRotorPosition(-elevatorSim.getPositionMeters()); // negative bc right is inversed (probably)
+		rightMotorSim.setRotorVelocity(-elevatorSim.getVelocityMetersPerSecond());
 	}
 
 	@Override
@@ -72,8 +75,9 @@ public class ElevatorIOSim implements ElevatorIO {
 		pidController.setGoal(height.in(Meters));
 	}
 
+	@Override
 	public void runElevator() {
-		appliedVoltage = pidController.calculate(elevatorSim.getPositionMeters() * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
+		appliedVoltage = pidController.calculate(elevatorSim.getPositionMeters()) + ffcontroller.calculate(pidController.getSetpoint().velocity);
 		elevatorSim.setInputVoltage(appliedVoltage);
 	}
 
