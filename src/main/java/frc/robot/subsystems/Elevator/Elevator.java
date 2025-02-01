@@ -61,6 +61,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
 	public Distance getHeight() {
 		return io.getHeight();
+	}
 
     public boolean motorsZeroed() {
 		return io.motorsZeroed();
