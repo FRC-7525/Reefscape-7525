@@ -1,14 +1,13 @@
 package frc.robot.Subsystems.Algaer;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
-
-import org.littletonrobotics.junction.Logger;
-import org.team7525.subsystem.Subsystem;
+import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import org.littletonrobotics.junction.Logger;
+import org.team7525.subsystem.Subsystem;
 
 public class Algaer extends Subsystem<AlgaerStates> {
 
