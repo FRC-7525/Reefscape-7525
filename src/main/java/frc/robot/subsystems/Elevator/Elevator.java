@@ -4,10 +4,10 @@ import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.SUBSYSTEM_NAME;
 
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.units.measure.Distance;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -42,7 +42,6 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
 		Logger.processInputs(ElevatorConstants.SUBSYSTEM_NAME, inputs);
 
-
 		if (getState() == ElevatorStates.ZEROING) {
 			io.zero();
 			return;
@@ -63,7 +62,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		return io.getHeight();
 	}
 
-    public boolean motorsZeroed() {
+	public boolean motorsZeroed() {
 		return io.motorsZeroed();
 	}
 

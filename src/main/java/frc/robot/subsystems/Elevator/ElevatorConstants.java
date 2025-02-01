@@ -47,7 +47,6 @@ public final class ElevatorConstants {
 
 	public static class Sim {
 
-
 		public static final DCMotor GEARBOX = DCMotor.getKrakenX60(2);
 		public static final double GEARING = 2;
 		public static final Mass CARRIAGE_MASS = Pounds.of(34.544);

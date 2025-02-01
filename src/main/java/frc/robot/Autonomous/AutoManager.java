@@ -70,7 +70,7 @@ public class AutoManager {
 		NamedCommands.registerCommand("Transition L3", AutoCommands.GoToElevatorLevel.atLevel(3));
 		NamedCommands.registerCommand("Transition L2", AutoCommands.GoToElevatorLevel.atLevel(2));
 		NamedCommands.registerCommand("Transition L1", AutoCommands.GoToElevatorLevel.atLevel(1));
-		
+
 		NamedCommands.registerCommand("Return To Normal", getSelectedCommand());
 
 		NamedCommands.registerCommand("Intake Coral", AutoCommands.IntakeCoral.getCoral());
