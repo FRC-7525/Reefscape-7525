@@ -19,12 +19,12 @@ public class Manager extends Subsystem<ManagerStates> {
 	private static Manager instance = new Manager();
 
 	private final Drive drive = Drive.getInstance();
-	private final Elevator elevator = Elevator.getInstance();
-	private final Coraler coraler = Coraler.getInstance();
-	private final Algaer algaer = Algaer.getInstance();
-	private final AutoAlign autoAlign = AutoAlign.getInstance();
-	private final Vision vision = Vision.getInstance();
-	private final LED ledSubsystem = LED.getInstance();
+	// private final Elevator elevator = Elevator.getInstance();
+	// private final Coraler coraler = Coraler.getInstance();
+	// private final Algaer algaer = Algaer.getInstance();
+	// private final AutoAlign autoAlign = AutoAlign.getInstance();
+	// private final Vision vision = Vision.getInstance();
+	// private final LED ledSubsystem = LED.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -73,7 +73,7 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Intaking at Coral Station
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
-		addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
+		// addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
 		addTrigger(ManagerStates.INTAKING_CORALER_AA_OFF, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
 
@@ -86,7 +86,7 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Scoring Algae at Processor
 		addTrigger(ManagerStates.IDLE, ManagerStates.GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
-		addTrigger(ManagerStates.GOING_PROCESSOR, ManagerStates.SCORING_PROCESSOR, () -> elevator.nearTarget() && algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed());
+		// addTrigger(ManagerStates.GOING_PROCESSOR, ManagerStates.SCORING_PROCESSOR, () -> elevator.nearTarget() && algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed());
 		addTrigger(ManagerStates.SCORING_PROCESSOR, ManagerStates.IDLE, DRIVER_CONTROLLER::getAButtonPressed);
 
 		// Scoring Reef Manual
@@ -96,8 +96,8 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Scoring Reef Auto Align
 		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
-		addTrigger(ManagerStates.AUTO_ALIGN_FAR, ManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
-		addTrigger(ManagerStates.AUTO_ALIGN_CLOSE, ManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
+		// addTrigger(ManagerStates.AUTO_ALIGN_FAR, ManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
+		// addTrigger(ManagerStates.AUTO_ALIGN_CLOSE, ManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
 		addTrigger(ManagerStates.SCORING_REEF_AA, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 
 		// Zero Elevator
@@ -141,20 +141,20 @@ public class Manager extends Subsystem<ManagerStates> {
 		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/Left Pose Selected", scoringReefLeft);
 
 		// Set States, drive and vision are rogue so you don't need to set state
-		elevator.setState(getState().getElevatorStateSupplier().get());
-		coraler.setState(getState().getCoralerState());
-		algaer.setState(getState().getAlgaerState());
-		autoAlign.setState(getState().getAutoAlignSupplier().get());
-		ledSubsystem.setState(getState().getLedState());
+		// elevator.setState(getState().getElevatorStateSupplier().get());
+		// coraler.setState(getState().getCoralerState());
+		// algaer.setState(getState().getAlgaerState());
+		// autoAlign.setState(getState().getAutoAlignSupplier().get());
+		// ledSubsystem.setState(getState().getLedState());
 
 		// Periodics
-		autoAlign.periodic();
-		elevator.periodic();
-		coraler.periodic();
-		algaer.periodic();
-		vision.periodic();
+		// autoAlign.periodic();
+		// elevator.periodic();
+		// coraler.periodic();
+		// algaer.periodic();
+		// vision.periodic();
 		drive.periodic();
-		ledSubsystem.periodic();
+		// ledSubsystem.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(6)) {
