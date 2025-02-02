@@ -36,7 +36,7 @@ public class ElevatorIOSim implements ElevatorIO {
 		pidController.setIZone(PROFILLED_PID_CONSTANTS.iZone);
 
 		ffcontroller = new ElevatorFeedforward(FF_CONSTANTS.kS, FF_CONSTANTS.kG, FF_CONSTANTS.kV, FF_CONSTANTS.kA);
-		pidController.enableContinuousInput(MIN_HEIGHT.in(Meters), MAX_HEIGHT.in(Meters));
+		// pidController.enableContinuousInput(MIN_HEIGHT.in(Meters), MAX_HEIGHT.in(Meters));
 		zeroed = false;
 
 		leftMotor = new TalonFX(LEFT_MOTOR_CANID);
@@ -82,7 +82,7 @@ public class ElevatorIOSim implements ElevatorIO {
 	@Override
 	public void runElevator() {
 		appliedVoltage = pidController.calculate(leftMotor.getPosition().getValue().in(Rotations) * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
-		elevatorSim.setInputVoltage(appliedVoltage);
+		elevatorSim.setInput(appliedVoltage);
 		elevatorSim.update(0.02);
 		Logger.recordOutput("Elevator/applied volts", appliedVoltage);
 		Logger.recordOutput("Elevator/Current Draw", elevatorSim.getCurrentDrawAmps());
@@ -116,6 +116,6 @@ public class ElevatorIOSim implements ElevatorIO {
 
 	@Override
 	public Distance getCarraigeHeight() {
-		return Meters.of(elevatorSim.getPositionMeters() * 2 + Units.inchesToMeters(1));
+		return Meters.of(elevatorSim.getPositionMeters() * 2);
 	}
 }

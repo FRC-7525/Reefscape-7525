@@ -61,7 +61,7 @@ public final class AlgaerConstants {
 		public static final MomentOfInertia WHEEL_MOTOR_MOI = KilogramSquareMeters.of(0.0001);
 		public static final double WHEEL_MOTOR_GEARING = 3;
 
-		public static final Translation3d ZEROED_TRANSLATION = new Translation3d(0, 0.3, 0.355);
+		public static final Translation3d ZEROED_TRANSLATION = new Translation3d(0.3, 0, 0.355);
 	}
 
 	public static final class Real {

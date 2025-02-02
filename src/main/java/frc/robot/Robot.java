@@ -59,6 +59,11 @@ public class Robot extends LoggedRobot {
 	public void autonomousPeriodic() {}
 
 	@Override
+	public void autonomousExit() {
+		CommandScheduler.getInstance().cancelAll();
+	}
+
+	@Override
 	public void teleopInit() {}
 
 	@Override

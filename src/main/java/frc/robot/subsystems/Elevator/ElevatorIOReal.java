@@ -146,6 +146,6 @@ public class ElevatorIOReal implements ElevatorIO {
 
 	@Override
 	public Distance getCarraigeHeight() {
-		return Meters.of(2 * (leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)) + Units.inchesToMeters(1));
+		return Meters.of(2 * (leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)));
 	}
 }
