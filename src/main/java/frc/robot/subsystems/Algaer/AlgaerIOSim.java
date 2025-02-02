@@ -91,7 +91,7 @@ public class AlgaerIOSim implements AlgaerIO {
 
 	@Override
 	public boolean nearTarget() {
-		return ((Math.abs(Units.radiansToDegrees(pivotSim.getAngleRads()) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees)) && (Math.abs(Units.radiansToRotations(wheelMotorSim.getAngularVelocityRadPerSec()) - wheelSpeedSetpoint) < WHEEL_TOLERANCE.in(RotationsPerSecond)));
+		return (Math.abs(Units.radiansToDegrees(pivotSim.getAngleRads()) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees));
 	}
 
 	@Override

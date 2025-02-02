@@ -53,7 +53,6 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		Logger.recordOutput("Elevator/Carraige Height", io.getCarraigeHeight().in(Meters));
 		Logger.recordOutput("Elevator/Stage1 Height", io.getStageOneHeight());
 		Logger.recordOutput("Elevator/State", getState().getStateString());
-		Logger.recordOutput("Elevator/What the fuck is my state", getState().getTargetHeight().in(Inches));
 	}
 
 	public boolean nearTarget() {
@@ -70,5 +69,9 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
 	public void resetMotorsZeroed() {
 		io.resetMotorsZeroed();
+	}
+
+	public Distance getCarraigeHeight() {
+		return io.getCarraigeHeight();
 	}
 }

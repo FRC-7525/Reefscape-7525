@@ -23,9 +23,9 @@ public final class AlgaerConstants {
 	// TODO: FIND!
 	public static final Angle ABSOLUTE_ENCODER_OFFSET = Degrees.of(0);
 
-	public static final Angle INTAKING_PIVOT = Degrees.of(70);
+	public static final Angle INTAKING_PIVOT = Degrees.of(90);
 	public static final Angle PROCESSING_PIVOT = Degrees.of(90);
-	public static final Angle HOLDING_PIVOT = Degrees.of(45);
+	public static final Angle HOLDING_PIVOT = Degrees.of(65);
 	public static final Angle IDLE_PIVOT = Degrees.of(0);
 
 	public static final Angle PIVOT_TOLERANCE = Degrees.of(5);
@@ -34,7 +34,7 @@ public final class AlgaerConstants {
 	public static final Supplier<PIDController> PIVOT_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(0.1, 0, 0);
-			case SIM -> new PIDController(1, 0, 0);
+			case SIM -> new PIDController(0.05, 0, 0.01);
 			case TESTING -> new PIDController(0.1, 0, 0);
 			default -> new PIDController(0, 0, 0);
 		};
@@ -42,7 +42,7 @@ public final class AlgaerConstants {
 	public static final Supplier<PIDController> WHEEL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(0.1, 0, 0);
-			case SIM -> new PIDController(1, 0, 0);
+			case SIM -> new PIDController(0.1, 0, 0);
 			case TESTING -> new PIDController(0.1, 0, 0);
 			default -> new PIDController(0, 0, 0);
 		};
@@ -54,7 +54,7 @@ public final class AlgaerConstants {
 		public static final MomentOfInertia PIVOT_MOI = KilogramSquareMeters.of(0.31654227);
 		public static final Distance PIVOT_ARM_LENGTH = Meters.of(.26199558);
 		public static final Angle MIN_PIVOT_ANGLE = Degrees.of(0);
-		public static final Angle MAX_PIVOT_ANGLE = Degrees.of(70);
+		public static final Angle MAX_PIVOT_ANGLE = Degrees.of(130);
 		public static final Angle STARTING_PIVOT_ANGLE = Degrees.of(0);
 
 		public static final int NUM_WHEEL_MOTORS = 1;

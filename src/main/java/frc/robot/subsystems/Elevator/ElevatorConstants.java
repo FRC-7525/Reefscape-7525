@@ -41,9 +41,9 @@ public final class ElevatorConstants {
 	public static final Distance L3_HEIGHT = Inches.of(12); //mid is all the way down according to nick
 	public static final Distance L2_HEIGHT = Inches.of(5);
 	public static final Distance L1_HEIGHT = Inches.of(0);
-	public static final Distance IDLE_HEIGHT = Meters.of(0);
-	public static final Distance ALGAE_LOW_HEIGHT = Meters.of(1);
-	public static final Distance ALGAE_HIGH_HEIGHT = Meters.of(1);
+	public static final Distance IDLE_HEIGHT = Inches.of(0);
+	public static final Distance ALGAE_LOW_HEIGHT = Inches.of(9);
+	public static final Distance ALGAE_HIGH_HEIGHT = Inches.of(15);
 	public static final Distance ALGAE_PROCESSOR_HEIGHT = Inches.of(0);
 
 	public static final Distance METERS_PER_ROTATION = Meters.of((1 / GEARING) * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right

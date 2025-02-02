@@ -34,7 +34,6 @@ public class ElevatorIOSim implements ElevatorIO {
 		pidController.setIZone(PROFILLED_PID_CONSTANTS.iZone);
 
 		ffcontroller = new ElevatorFeedforward(FF_CONSTANTS.kS, FF_CONSTANTS.kG, FF_CONSTANTS.kV, FF_CONSTANTS.kA);
-		// pidController.enableContinuousInput(MIN_HEIGHT.in(Meters), MAX_HEIGHT.in(Meters));
 		zeroed = false;
 
 		leftMotor = new TalonFX(LEFT_MOTOR_CANID);
@@ -73,8 +72,6 @@ public class ElevatorIOSim implements ElevatorIO {
 	@Override
 	public void setHeightGoalpoint(Distance height) {
 		pidController.setGoal(new State(height.in(Meters), 0));
-		Logger.recordOutput(SUBSYSTEM_NAME + "/GIVEN GOAL", pidController.getGoal().position);
-		Logger.recordOutput(SUBSYSTEM_NAME + "/AllgedGoal", height);
 	}
 
 	@Override
@@ -84,7 +81,6 @@ public class ElevatorIOSim implements ElevatorIO {
 		elevatorSim.update(0.02);
 		Logger.recordOutput("Elevator/applied volts", appliedVoltage);
 		Logger.recordOutput("Elevator/Current Draw", elevatorSim.getCurrentDrawAmps());
-		Logger.recordOutput("elevator pos", elevatorSim.getPositionMeters());
 	}
 
 	@Override

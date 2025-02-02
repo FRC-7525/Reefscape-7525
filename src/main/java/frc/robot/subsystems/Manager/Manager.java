@@ -75,10 +75,10 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Intaking at Coral Station
 
-		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
-		addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
-		addTrigger(ManagerStates.INTAKING_CORALER_AA_OFF, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
-		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
+		// addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
+		// addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
+		// addTrigger(ManagerStates.INTAKING_CORALER_AA_OFF, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
+		// addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
 
 		// Intaking Algae
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
@@ -88,7 +88,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(ManagerStates.INTAKING_ALGAE_LOW, ManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
 
 		// Scoring Algae at Processor
-		addTrigger(ManagerStates.IDLE, ManagerStates.GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
+		addTrigger(ManagerStates.HOLDING_ALGAE, ManagerStates.GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
 		addTrigger(ManagerStates.GOING_PROCESSOR, ManagerStates.SCORING_PROCESSOR, () -> elevator.nearTarget() && algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed());
 		addTrigger(ManagerStates.SCORING_PROCESSOR, ManagerStates.IDLE, DRIVER_CONTROLLER::getAButtonPressed);
 
@@ -97,7 +97,8 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, DRIVER_CONTROLLER::getYButtonPressed);
 		addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 		// Auto Only Transition
-		addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
+		// Yo thien this not bouta work
+		// addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
 
 		// Scoring Reef Auto Align
 		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
