@@ -16,7 +16,6 @@ import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
 import frc.robot.GlobalConstants.RobotMode;
-
 import org.team7525.controlConstants.FFConstants;
 
 public final class ElevatorConstants {
@@ -47,7 +46,7 @@ public final class ElevatorConstants {
 	public static final Distance ALGAE_HIGH_HEIGHT = Meters.of(1);
 	public static final Distance ALGAE_PROCESSOR_HEIGHT = Inches.of(0);
 
-	public static final Distance METERS_PER_ROTATION = Meters.of((1/GEARING) * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right
+	public static final Distance METERS_PER_ROTATION = Meters.of((1 / GEARING) * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right
 
 	public static class Sim {
 
