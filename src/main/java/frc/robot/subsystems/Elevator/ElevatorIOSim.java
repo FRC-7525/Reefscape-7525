@@ -4,8 +4,6 @@ import static edu.wpi.first.units.Units.*;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.*;
 
-import org.littletonrobotics.junction.Logger;
-
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
@@ -14,6 +12,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
+import org.littletonrobotics.junction.Logger;
 
 public class ElevatorIOSim implements ElevatorIO {
 
@@ -30,7 +29,6 @@ public class ElevatorIOSim implements ElevatorIO {
 	private boolean zeroed;
 
 	public ElevatorIOSim() {
-
 		pidController = new ProfiledPIDController(PROFILLED_PID_CONSTANTS.kP, PROFILLED_PID_CONSTANTS.kI, PROFILLED_PID_CONSTANTS.kD, ElevatorConstants.TRAPEZOID_PROFILE_CONSTRAINTS);
 		pidController.setTolerance(ElevatorConstants.POSITION_TOLERANCE.in(Meters), ElevatorConstants.VELOCITY_TOLERANCE.in(MetersPerSecond));
 		pidController.setIZone(PROFILLED_PID_CONSTANTS.iZone);
@@ -64,10 +62,10 @@ public class ElevatorIOSim implements ElevatorIO {
 		inputs.rightMotorVoltInput = appliedVoltage;
 		inputs.elevatorZeroed = zeroed;
 
-		leftMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters()/METERS_PER_ROTATION.in(Meters));
-		leftMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond()/METERS_PER_ROTATION.in(Meters));
-		rightMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters()/METERS_PER_ROTATION.in(Meters));
-		rightMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond()/METERS_PER_ROTATION.in(Meters));
+		leftMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters() / METERS_PER_ROTATION.in(Meters));
+		leftMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() / METERS_PER_ROTATION.in(Meters));
+		rightMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters() / METERS_PER_ROTATION.in(Meters));
+		rightMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() / METERS_PER_ROTATION.in(Meters));
 		leftMotorSim.setSupplyVoltage(appliedVoltage);
 		rightMotorSim.setSupplyVoltage(appliedVoltage);
 	}
