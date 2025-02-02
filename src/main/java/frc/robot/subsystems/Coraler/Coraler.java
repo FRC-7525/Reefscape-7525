@@ -32,6 +32,7 @@ public class Coraler extends Subsystem<CoralerStates> {
 	@Override
 	protected void runState() {
 		io.setVelocity(getState().getVelocity());
+		io.updateInputs(inputs);
 		Logger.processInputs(SUBSYSTEM_NAME, inputs);
 	}
 

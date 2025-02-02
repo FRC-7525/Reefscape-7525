@@ -17,8 +17,8 @@ public class CoralerConstants {
 
 	public static final Supplier<PIDController> WHEEL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new PIDController(1, 0, 0);
-			case SIM -> new PIDController(1, 0, 0);
+			case REAL -> new PIDController(0.05, 0, 0);
+			case SIM -> new PIDController(0.05, 0, 0);
 			case TESTING -> new PIDController(1, 0, 0);
 			default -> new PIDController(1, 0, 0);
 		};

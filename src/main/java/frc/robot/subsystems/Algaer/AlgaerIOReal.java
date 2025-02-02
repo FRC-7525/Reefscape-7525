@@ -32,6 +32,7 @@ public class AlgaerIOReal implements AlgaerIO {
 	public AlgaerIOReal() {
 		wheelMotor = new SparkMax(Real.WHEEL_MOTOR_CANID, MotorType.kBrushless);
 		pivotMotor = new SparkMax(Real.PIVOT_MOTOR_CANID, MotorType.kBrushless);
+		wheelEncoder = wheelMotor.getEncoder();
 		absoluteEncoder = new DutyCycleEncoder(Real.ABSOLUTE_ENCODER_PORT);
 
 		pivotController = PIVOT_CONTROLLER.get();

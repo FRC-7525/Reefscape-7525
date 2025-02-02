@@ -6,6 +6,7 @@ import static frc.robot.Subsystems.Manager.ManagerConstants.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
+import frc.robot.Subsystems.Climber.Climber;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -19,13 +20,14 @@ public class Manager extends Subsystem<ManagerStates> {
 	// Needed for working code (having it not null on init that is)
 	private static Manager instance = new Manager();
 
-	// private final Drive drive = Drive.getInstance();
+	private final Drive drive = Drive.getInstance();
+	private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
-	// private final Coraler coraler = Coraler.getInstance();
-	// private final Algaer algaer = Algaer.getInstance();
-	// private final AutoAlign autoAlign = AutoAlign.getInstance();
-	// private final Vision vision = Vision.getInstance();
-	// private final LED ledSubsystem = LED.getInstance();
+	private final Coraler coraler = Coraler.getInstance();
+	private final Algaer algaer = Algaer.getInstance();
+	private final AutoAlign autoAlign = AutoAlign.getInstance();
+	private final Vision vision = Vision.getInstance();
+	private final LED ledSubsystem = LED.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -154,19 +156,21 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Set States, drive and vision are rogue so you don't need to set state
 		elevator.setState(getState().getElevatorStateSupplier().get());
-		// coraler.setState(getState().getCoralerState());
-		// algaer.setState(getState().getAlgaerState());
-		// autoAlign.setState(getState().getAutoAlignSupplier().get());
-		// ledSubsystem.setState(getState().getLedState());
+		coraler.setState(getState().getCoralerState());
+		algaer.setState(getState().getAlgaerState());
+		autoAlign.setState(getState().getAutoAlignSupplier().get());
+		ledSubsystem.setState(getState().getLedState());
+		// climber.setState(getState().getClimberState());
 
 		// Periodics
-		// autoAlign.periodic();
+		autoAlign.periodic();
 		elevator.periodic();
-		// coraler.periodic();
-		// algaer.periodic();
-		// vision.periodic();
-		// drive.periodic();
-		// ledSubsystem.periodic();
+		coraler.periodic();
+		algaer.periodic();
+		vision.periodic();
+		drive.periodic();
+		ledSubsystem.periodic();
+		climber.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(6)) {
