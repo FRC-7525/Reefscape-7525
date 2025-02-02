@@ -93,17 +93,17 @@ public class ElevatorIOReal implements ElevatorIO {
 
 	@Override
 	public void updateInputs(ElevatorIOInputs inputs) {
-		inputs.currentElevatorHeight = leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters);
+		inputs.currentElevatorHeight = leftMotor.getPosition().getValue().in(Rotations) * METERS_PER_ROTATION.in(Meters);
 		inputs.elevatorHeightSetpoint = pidController.getSetpoint().position;
 		inputs.elevatorHeightGoalpoint = pidController.getGoal().position;
-		inputs.elevatorVelocity = leftMotor.getVelocity().getValueAsDouble() * METERS_PER_ROTATION.in(Meters);
+		inputs.elevatorVelocity = leftMotor.getVelocity().getValue().in(RotationsPerSecond) * METERS_PER_ROTATION.in(Meters);
 		inputs.elevatorVelocitySetpoint = pidController.getSetpoint().velocity;
 		inputs.elevatorHeightGoalpoint = pidController.getGoal().velocity;
 		inputs.leftMotorVoltInput = leftMotorVoltage;
 		inputs.rightMotorVoltInput = rightMotorVoltage;
 
-		Logger.recordOutput("SUBSYSTEM_NAME/Left Encoder pos", leftMotor.getPosition().getValueAsDouble());
-		Logger.recordOutput("SUBSYSTEM_NAME/Right Encoder pos", rightMotor.getPosition().getValueAsDouble());
+		Logger.recordOutput("SUBSYSTEM_NAME/Left Encoder pos", leftMotor.getPosition().getValue().in(Rotations));
+		Logger.recordOutput("SUBSYSTEM_NAME/Right Encoder pos", rightMotor.getPosition().getValue().in(Rotations));
 	}
 
 	@Override
