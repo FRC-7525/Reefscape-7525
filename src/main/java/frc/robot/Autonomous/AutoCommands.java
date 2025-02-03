@@ -39,6 +39,7 @@ public class AutoCommands {
 	}
 
 	public class ScoreReef extends Command {
+
 		private final int scoringLevel;
 
 		private ScoreReef(int scoringLevel) {
@@ -64,6 +65,7 @@ public class AutoCommands {
 	public class ProcessAlgae extends Command {}
 
 	public class GoToElevatorLevel extends Command {
+
 		private final int scoringLevel;
 
 		private GoToElevatorLevel(int scoringLevel) {
