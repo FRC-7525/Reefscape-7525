@@ -15,7 +15,7 @@ public class CoralerConstants {
 
 	public static final double GEARING = 1;
 
-	public static final Supplier<PIDController> WHEEL_CONTROLLER = () ->
+	public static final Supplier<PIDController> VELOCITY_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(0.05, 0, 0);
 			case SIM -> new PIDController(0.05, 0, 0);
@@ -25,12 +25,15 @@ public class CoralerConstants {
 
 	// States
 	public static final AngularVelocity CORALING_VELOCITY = RotationsPerSecond.of(2);
-	public static final AngularVelocity INTAKING_VELOCITY = RotationsPerSecond.of(0);
+	public static final AngularVelocity INTAKING_VELOCITY = RotationsPerSecond.of(1);
+	public static final AngularVelocity CENTERING_VELOCITY = RotationsPerSecond.of(0.5);
 	public static final AngularVelocity IDLE_VELOCITY = RotationsPerSecond.of(0);
 
 	public static class Real {
 
 		public static final int WHEEL_MOTOR_CAN_ID = 1;
+		public static final int GAMEPIECE_CENTERING_DETECTOR_DIO_PORT = 1;
+		public static final int GAMEPIECE_INITIAL_DETECTOR_DIO_PORT = 1;
 	}
 
 	public static class Sim {

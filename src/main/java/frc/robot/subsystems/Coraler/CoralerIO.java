@@ -11,7 +11,12 @@ public interface CoralerIO {
 		public double speedPointRPS;
 	}
 
-	public default void updateInputs(CoralerIOInputs inputs) {}
+	public void updateInputs(CoralerIOInputs inputs);
 
-	public default void setVelocity(AngularVelocity speedPoint) {}
+	public void setVelocity(AngularVelocity speedPoint);
+
+	public boolean firstDetectorTripped();
+	
+	public boolean secondDetectorTripped();
+	
 }
