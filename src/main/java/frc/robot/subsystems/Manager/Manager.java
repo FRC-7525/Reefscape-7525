@@ -16,7 +16,6 @@ import org.team7525.subsystem.Subsystem;
 
 public class Manager extends Subsystem<ManagerStates> {
 
-	// Needed for working code (having it not null on init that is)
 	private static Manager instance = new Manager();
 
 	private final Drive drive = Drive.getInstance();
@@ -37,8 +36,8 @@ public class Manager extends Subsystem<ManagerStates> {
 
 	private Manager() {
 		super("Manager", ManagerStates.IDLE);
-		// Un zero elevators
-		// addRunnableTrigger(elevator::resetMotorsZeroed, () -> DRIVER_CONTROLLER.getBackButtonPressed() && getState() == ManagerStates.IDLE);
+		// Un zero elevators (as in set the boolean to false for zeroed)
+		addRunnableTrigger(elevator::resetMotorsZeroed, () -> DRIVER_CONTROLLER.getBackButtonPressed() && getState() == ManagerStates.IDLE);
 
 		// Toggling which source to AA to
 		addRunnableTrigger(() -> this.leftSourceSelected = true, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
@@ -97,9 +96,6 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(ManagerStates.IDLE, ManagerStates.TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
 		addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, DRIVER_CONTROLLER::getYButtonPressed);
 		addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
-		// Auto Only Transition
-		// Yo thien this not bouta work
-		// addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
 
 		// Scoring Reef Auto Align
 		addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
