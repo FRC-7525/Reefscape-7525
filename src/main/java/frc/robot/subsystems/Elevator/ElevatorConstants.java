@@ -1,7 +1,6 @@
 package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.DRUM_RADIUS;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.GEARING;
 
@@ -15,7 +14,6 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
-import frc.robot.GlobalConstants.RobotMode;
 import org.team7525.controlConstants.FFConstants;
 
 public final class ElevatorConstants {
