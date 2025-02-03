@@ -16,7 +16,6 @@ public interface CoralerIO {
 	public void setVelocity(AngularVelocity speedPoint);
 
 	public boolean firstDetectorTripped();
-	
+
 	public boolean secondDetectorTripped();
-	
 }
