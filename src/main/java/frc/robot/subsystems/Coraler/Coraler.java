@@ -39,7 +39,7 @@ public class Coraler extends Subsystem<CoralerStates> {
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Second Detector Tripped", io.secondDetectorTripped());
 	}
 
-	public boolean isEmpty() { 
+	public boolean isEmpty() {
 		return !io.firstDetectorTripped() && !io.secondDetectorTripped();
 	}
 
