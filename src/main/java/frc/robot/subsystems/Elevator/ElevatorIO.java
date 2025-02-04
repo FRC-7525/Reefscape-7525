@@ -37,5 +37,5 @@ public interface ElevatorIO {
 
 	public Distance getStageOneHeight();
 
-	public Distance getCarraigeHeight();
+	public Distance getCarriageHeight();
 }

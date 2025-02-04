@@ -32,9 +32,6 @@ public class Robot extends LoggedRobot {
 			case TESTING:
 				Logger.addDataReceiver(new NT4Publisher());
 				break;
-			case REPLAY:
-				Logger.addDataReceiver(new NT4Publisher());
-				break;
 		}
 
 		Logger.start();

@@ -108,7 +108,7 @@ public class ElevatorIOSim implements ElevatorIO {
 	}
 
 	@Override
-	public Distance getCarraigeHeight() {
+	public Distance getCarriageHeight() {
 		return Meters.of(elevatorSim.getPositionMeters() * 2);
 	}
 }

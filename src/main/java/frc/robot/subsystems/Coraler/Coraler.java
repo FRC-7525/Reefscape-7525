@@ -18,7 +18,6 @@ public class Coraler extends Subsystem<CoralerStates> {
 			case SIM -> new CoralerIOSim();
 			case REAL -> new CoralerIOTalonFX();
 			case TESTING -> new CoralerIOTalonFX();
-			case REPLAY -> new CoralerIOSim();
 		};
 	}
 

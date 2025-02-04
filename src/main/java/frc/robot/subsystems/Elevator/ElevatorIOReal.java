@@ -67,7 +67,6 @@ public class ElevatorIOReal implements ElevatorIO {
 		pidController = new ProfiledPIDController(PROFILLED_PID_CONSTANTS.kP, PROFILLED_PID_CONSTANTS.kI, PROFILLED_PID_CONSTANTS.kD, ElevatorConstants.TRAPEZOID_PROFILE_CONSTRAINTS);
 		pidController.setTolerance(ElevatorConstants.POSITION_TOLERANCE.in(Meters), ElevatorConstants.VELOCITY_TOLERANCE.in(MetersPerSecond));
 		pidController.setIZone(PROFILLED_PID_CONSTANTS.iZone);
-		pidController.enableContinuousInput(Sim.MIN_HEIGHT.in(Meters), Sim.MAX_HEIGHT.in(Meters));
 
 		ffcontroller = new ElevatorFeedforward(FF_CONSTANTS.kS, FF_CONSTANTS.kG, FF_CONSTANTS.kV, FF_CONSTANTS.kA);
 
@@ -102,13 +101,14 @@ public class ElevatorIOReal implements ElevatorIO {
 		inputs.leftMotorVoltInput = leftMotorVoltage;
 		inputs.rightMotorVoltInput = rightMotorVoltage;
 
-		Logger.recordOutput("Elevator/Left Encoder pos", leftMotor.getPosition().getValue().in(Rotations));
-		Logger.recordOutput("Elevator/Right Encoder pos", rightMotor.getPosition().getValue().in(Rotations));
+		Logger.recordOutput("Elevator/Left Encoder Pos", leftMotor.getPosition().getValue().in(Rotations));
+		Logger.recordOutput("Elevator/Right Encoder Pos", rightMotor.getPosition().getValue().in(Rotations));
 	}
 
 	@Override
 	public void runElevator() {
-		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
+		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
+		//  + ffcontroller.calculate(pidController.getSetpoint().velocity);
 		leftMotor.setVoltage(leftMotorVoltage);
 	}
 
@@ -144,7 +144,7 @@ public class ElevatorIOReal implements ElevatorIO {
 	}
 
 	@Override
-	public Distance getCarraigeHeight() {
+	public Distance getCarriageHeight() {
 		return Meters.of(2 * (leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)));
 	}
 }

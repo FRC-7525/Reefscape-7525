@@ -59,7 +59,6 @@ public class Drive extends Subsystem<DriveStates> {
 			case REAL -> new DriveIOReal();
 			case SIM -> new DriveIOSim();
 			case TESTING -> new DriveIOReal();
-			case REPLAY -> new DriveIOSim();
 		};
 
 		// Setup Path Planner

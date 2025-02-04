@@ -24,7 +24,6 @@ public class Elevator extends Subsystem<ElevatorStates> {
 			case SIM -> new ElevatorIOSim();
 			case REAL -> new ElevatorIOReal();
 			case TESTING -> new ElevatorIOReal();
-			case REPLAY -> new ElevatorIOSim();
 		};
 		inputs = new ElevatorIOInputsAutoLogged();
 	}
@@ -48,9 +47,9 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		io.setHeightGoalpoint(getState().getTargetHeight());
 		io.runElevator();
 
-		Logger.recordOutput("Elevator/Carraige Position", new Pose3d(new Translation3d(0, 0, io.getCarraigeHeight().in(Meters)), new Rotation3d()));
+		Logger.recordOutput("Elevator/Carraige Position", new Pose3d(new Translation3d(0, 0, io.getCarriageHeight().in(Meters)), new Rotation3d()));
 		Logger.recordOutput("Elevator/Stage1 Position", new Pose3d(new Translation3d(0, 0, io.getStageOneHeight().in(Meters)), new Rotation3d()));
-		Logger.recordOutput("Elevator/Carraige Height", io.getCarraigeHeight().in(Meters));
+		Logger.recordOutput("Elevator/Carraige Height", io.getCarriageHeight().in(Meters));
 		Logger.recordOutput("Elevator/Stage1 Height", io.getStageOneHeight());
 		Logger.recordOutput("Elevator/State", getState().getStateString());
 	}
@@ -71,7 +70,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		io.resetMotorsZeroed();
 	}
 
-	public Distance getCarraigeHeight() {
-		return io.getCarraigeHeight();
+	public Distance getCarriageHeight() {
+		return io.getCarriageHeight();
 	}
 }
