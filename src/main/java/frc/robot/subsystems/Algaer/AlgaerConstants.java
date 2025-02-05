@@ -16,12 +16,16 @@ import java.util.function.Supplier;
 
 public final class AlgaerConstants {
 
+	public static final String SUBSYSTEM_NAME = "Algaer";
+
 	public static final AngularVelocity INTAKING_SPEED = RotationsPerSecond.of(30);
 	public static final AngularVelocity PROCESSING_SPEED = RotationsPerSecond.of(30);
 	public static final AngularVelocity IDLE_SPEED = RotationsPerSecond.of(0);
 
 	// TODO: FIND!
 	public static final Angle ABSOLUTE_ENCODER_OFFSET = Degrees.of(0);
+	public static final double ABSOLUTE_ENCODER_GEARING = 2;
+	public static final double OVERALL_GEARING = 5;
 
 	public static final Angle INTAKING_PIVOT = Degrees.of(70);
 	public static final Angle PROCESSING_PIVOT = Degrees.of(90);
@@ -50,7 +54,6 @@ public final class AlgaerConstants {
 	public static final class Sim {
 
 		public static final int NUM_PIVOT_MOTORS = 1;
-		public static final double PIVOT_GEARING = 5;
 		public static final MomentOfInertia PIVOT_MOI = KilogramSquareMeters.of(0.31654227);
 		public static final Distance PIVOT_ARM_LENGTH = Meters.of(.26199558);
 		public static final Angle MIN_PIVOT_ANGLE = Degrees.of(0);
