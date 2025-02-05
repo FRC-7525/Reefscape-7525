@@ -1,8 +1,8 @@
 package frc.robot.Subsystems.LED;
 
-import edu.wpi.first.wpilibj.PWM;
-
 import static frc.robot.Subsystems.LED.LEDConstants.*;
+
+import edu.wpi.first.wpilibj.PWM;
 
 public class LEDIOReal implements LEDIO {
 

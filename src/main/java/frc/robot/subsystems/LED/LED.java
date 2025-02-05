@@ -1,9 +1,8 @@
 package frc.robot.Subsystems.LED;
 
-import frc.robot.GlobalConstants;
-
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.SUBSYSTEM_NAME;
 
+import frc.robot.GlobalConstants;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
