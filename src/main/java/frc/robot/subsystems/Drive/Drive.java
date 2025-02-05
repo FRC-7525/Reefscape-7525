@@ -42,11 +42,9 @@ public class Drive extends Subsystem<DriveStates> {
 	private boolean robotMirrored = false;
 	private Pose2d lastPose = new Pose2d();
 	private double lastTime = 0;
-	private Angle lastHeading;
 	private final SwerveRequest.SysIdSwerveTranslation translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
 	private final SwerveRequest.SysIdSwerveSteerGains steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
 	private final SwerveRequest.SysIdSwerveRotation rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
-	private final PIDController headingCorrectionController = new PIDController(0.1, 0, 0);
 
 	/**
 	 * Constructs a new Drive subsystem with the given DriveIO.
@@ -72,8 +70,6 @@ public class Drive extends Subsystem<DriveStates> {
 			},
 			DRIVER_CONTROLLER::getStartButtonPressed
 		);
-
-		this.lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
 	}
 
 	/**
@@ -136,16 +132,8 @@ public class Drive extends Subsystem<DriveStates> {
 	 * @param yVelocity       The desired y-axis velocity.
 	 * @param angularVelocity The desired angular velocity.
 	 */
-	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity, boolean useHeadingCorrection) {
-		double omega = angularVelocity;
-		if (useHeadingCorrection) {
-			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
-				omega = headingCorrectionController.calculate(driveIO.getDrive().getState().Pose.getRotation().getRadians(), lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
-			} else {
-				lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
-			}
-		}
-		driveIO.setControl(new SwerveRequest.FieldCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(omega).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
+	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity) {
+		driveIO.setControl(new SwerveRequest.FieldCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(angularVelocity).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
 	}
 
 	/**

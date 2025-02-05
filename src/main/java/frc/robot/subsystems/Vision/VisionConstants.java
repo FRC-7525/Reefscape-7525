@@ -11,6 +11,8 @@ import org.team7525.misc.VisionUtil.CameraResolution;
 
 public class VisionConstants {
 
+	public static final String SUBSYSTEM_NAME = "Vision";
+
 	// Robot to cam
 	public static final Translation3d ROBOT_TO_BACK_CAMERA_TRALSLATION = new Translation3d(Units.inchesToMeters(-11.5), Units.inchesToMeters(11.5), Units.inchesToMeters(9));
 	public static final Rotation3d ROBOT_TO_BACK_CAMERA_ROTATION = new Rotation3d(

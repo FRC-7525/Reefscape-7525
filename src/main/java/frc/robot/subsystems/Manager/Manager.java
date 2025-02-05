@@ -20,12 +20,12 @@ public class Manager extends Subsystem<ManagerStates> {
 	private static Manager instance = new Manager();
 
 	private final Drive drive = Drive.getInstance();
-	// private final Elevator elevator = Elevator.getInstance();
-	// private final Coraler coraler = Coraler.getInstance();
-	// private final Algaer algaer = Algaer.getInstance();
-	// private final AutoAlign autoAlign = AutoAlign.getInstance();
+	private final Elevator elevator = Elevator.getInstance();
+	private final Coraler coraler = Coraler.getInstance();
+	private final Algaer algaer = Algaer.getInstance();
+	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	// private final Vision vision = Vision.getInstance();
-	// private final LED ledSubsystem = LED.getInstance();
+	private final LED ledSubsystem = LED.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -153,20 +153,20 @@ public class Manager extends Subsystem<ManagerStates> {
 		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/Left Pose Selected", scoringReefLeft);
 
 		// Set States, drive and vision are rogue so you don't need to set state
-		// elevator.setState(getState().getElevatorStateSupplier().get());
-		// coraler.setState(getState().getCoralerState());
-		// algaer.setState(getState().getAlgaerState());
-		// autoAlign.setState(getState().getAutoAlignSupplier().get());
-		// ledSubsystem.setState(getState().getLedState());
+		elevator.setState(getState().getElevatorStateSupplier().get());
+		coraler.setState(getState().getCoralerState());
+		algaer.setState(getState().getAlgaerState());
+		autoAlign.setState(getState().getAutoAlignSupplier().get());
+		ledSubsystem.setState(getState().getLedState());
 
 		// Periodics
-		// autoAlign.periodic();
-		// elevator.periodic();
-		// coraler.periodic();
-		// algaer.periodic();
+		autoAlign.periodic();
+		elevator.periodic();
+		coraler.periodic();
+		algaer.periodic();
 		// vision.periodic();
 		drive.periodic();
-		// ledSubsystem.periodic();
+		ledSubsystem.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(6)) {

@@ -5,6 +5,7 @@ import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.Optional;
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.team7525.misc.VisionUtil;
 import org.team7525.subsystem.Subsystem;
@@ -16,8 +17,10 @@ public class Vision extends Subsystem<VisionStates> {
 
 	private static Vision instance;
 
+	private final VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
+
 	private Vision() {
-		super("Vision", VisionStates.ON);
+		super(SUBSYSTEM_NAME, VisionStates.ON);
 		this.io = switch (ROBOT_MODE) {
 			case REAL -> new VisionIOReal();
 			case SIM -> new VisionIOSim();
@@ -36,6 +39,9 @@ public class Vision extends Subsystem<VisionStates> {
 
 	@Override
 	public void runState() {
+		Logger.recordOutput(SUBSYSTEM_NAME + "/back cam", ROBOT_TO_BACK_CAMERA);
+		Logger.recordOutput(SUBSYSTEM_NAME + "/front cam", ROBOT_TO_FRONT_CAMERA);
+
 		if (getState().getVisionEnabled()) {
 			io.setStrategy(getState().getStrategy());
 			io.updateRobotPose(drive.getPose());
@@ -50,5 +56,7 @@ public class Vision extends Subsystem<VisionStates> {
 				drive.addVisionMeasurement(backPose.get().estimatedPose.toPose2d(), backPose.get().timestampSeconds, VisionUtil.getEstimationStdDevs(backPose.get(), BACK_RESOLUTION));
 			}
 		}
+		io.updateInputs(inputs);
+		Logger.processInputs(SUBSYSTEM_NAME, inputs);
 	}
 }
