@@ -18,13 +18,13 @@ public class Manager extends Subsystem<ManagerStates> {
 
 	private static Manager instance = new Manager();
 
-	//private final Drive drive = Drive.getInstance();
+	private final Drive drive = Drive.getInstance();
 	// private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
 	// private final Coraler coraler = Coraler.getInstance();
 	// private final Algaer algaer = Algaer.getInstance();
 	// private final AutoAlign autoAlign = AutoAlign.getInstance();
-	// private final Vision vision = Vision.getInstance();
+	private final Vision vision = Vision.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
 
 	public Boolean leftSourceSelected = false;
@@ -165,8 +165,8 @@ public class Manager extends Subsystem<ManagerStates> {
 		elevator.periodic();
 		// coraler.periodic();
 		// algaer.periodic();
-		// vision.periodic();
-		// drive.periodic();
+		 vision.periodic();
+		drive.periodic();
 		ledSubsystem.periodic();
 		// climber.periodic();
 
