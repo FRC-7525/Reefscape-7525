@@ -31,7 +31,7 @@ public class VisionConstants {
 	public static final CameraResolution FRONT_RESOLUTION = CameraResolution.HIGH_RES;
 
 	// Other
-	public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
+	public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = new AprilTagFieldLayout("vendordeps\\2025-reefscape.json");
 
 	public static final int CAMERA_WIDTH = 1200;
 	public static final int CAMERA_HEIGHT = 800;
