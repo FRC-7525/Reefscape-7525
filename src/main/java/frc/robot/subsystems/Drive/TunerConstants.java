@@ -73,9 +73,9 @@ public class TunerConstants {
 	// This may need to be tuned to your individual robot
 	private static final double kCoupleRatio = 3.5714285714285716;
 
-	private static final double kDriveGearRatio = 7.13;
+	public static final double kDriveGearRatio = 7.13;
 	private static final double kSteerGearRatio = 21.428571428571427;
-	private static final Distance kWheelRadius = Inches.of(2);
+	public static final Distance kWheelRadius = Inches.of(2);
 
 	private static final boolean kInvertLeftSide = true;
 	private static final boolean kInvertRightSide = false;
@@ -121,8 +121,8 @@ public class TunerConstants {
 	private static final boolean kFrontLeftSteerMotorInverted = true;
 	private static final boolean kFrontLeftEncoderInverted = false;
 
-	private static final Distance kFrontLeftXPos = Inches.of(11.875);
-	private static final Distance kFrontLeftYPos = Inches.of(11.875);
+	public static final Distance kFrontLeftXPos = Inches.of(11.875);
+	public static final Distance kFrontLeftYPos = Inches.of(11.875);
 
 	// Front Right
 	private static final int kFrontRightDriveMotorId = 58;
