@@ -28,8 +28,8 @@ public final class ElevatorConstants {
 	// TODO: Set to smaller numbers once we have robot (low max vel/acc for testing, real should be around 100)
 	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
 	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(10);
-	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
-	// public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(10);
+	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(34);
+	// public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(50);
 
 	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(MAX_VELOCITY.in(MetersPerSecond), MAX_ACCELERATION.in(MetersPerSecondPerSecond));
 	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-4);
@@ -58,7 +58,8 @@ public final class ElevatorConstants {
 		public static final Distance STARTING_HEIGHT = Inches.of(0);
 
 		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(30, 0, 0, 0);
-		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.61, 3.11, 0.06);
+		// Theoretical kG: 0.4-6, kA should be negligible
+		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0, 13.77, 0);
 	}
 
 	public static class Real {

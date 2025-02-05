@@ -101,12 +101,16 @@ public class ElevatorIOReal implements ElevatorIO {
 		inputs.leftMotorVoltInput = leftMotorVoltage;
 		inputs.rightMotorVoltInput = rightMotorVoltage;
 
-		Logger.recordOutput("Elevator/Left Encoder Pos", leftMotor.getPosition().getValue().in(Rotations));
-		Logger.recordOutput("Elevator/Right Encoder Pos", rightMotor.getPosition().getValue().in(Rotations));
+		// For Tuning Only
+		Logger.recordOutput(SUBSYSTEM_NAME + "/Left Encoder Pos", leftMotor.getPosition().getValue().in(Rotations));
+		Logger.recordOutput(SUBSYSTEM_NAME + "/Right Encoder Pos", rightMotor.getPosition().getValue().in(Rotations));
+		Logger.recordOutput(SUBSYSTEM_NAME + "/Left Motor Stator Current", leftMotor.getStatorCurrent().getValueAsDouble());
+		Logger.recordOutput(SUBSYSTEM_NAME + "/Right Motor Stator Current", rightMotor.getStatorCurrent().getValueAsDouble());
 	}
 
 	@Override
 	public void runElevator() {
+		// TODO: FF is commented out because our theoretical kg values are wrong (were are lighter bc no algaer yet). Should test anyways
 		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
 		//  + ffcontroller.calculate(pidController.getSetpoint().velocity);
 		leftMotor.setVoltage(leftMotorVoltage);
