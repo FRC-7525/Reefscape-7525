@@ -32,7 +32,7 @@ public class AlgaerIOReal implements AlgaerIO {
 
 		pivotController = PIVOT_CONTROLLER.get();
 		wheelSpeedController = WHEEL_CONTROLLER.get();
-		pivotMotor.setPosition(absoluteEncoder.get()/ABSOLUTE_ENCODER_GEARING - ABSOLUTE_ENCODER_OFFSET.in(Rotations));
+		pivotMotor.setPosition(absoluteEncoder.get() / ABSOLUTE_ENCODER_GEARING - ABSOLUTE_ENCODER_OFFSET.in(Rotations));
 		if (ROBOT_MODE == RobotMode.TESTING) {
 			SmartDashboard.putData(SUBSYSTEM_NAME + "/Algaer Pivot PID", pivotController);
 			SmartDashboard.putData(SUBSYSTEM_NAME + "/Algaer Wheel Speed PID", wheelSpeedController);
@@ -41,7 +41,7 @@ public class AlgaerIOReal implements AlgaerIO {
 
 	@Override
 	public void updateInputs(AlgaerIOInputs inputs) {
-		inputs.pivotPosition = Units.rotationsToDegrees(pivotMotor.getPosition().getValue().in(Degree)/OVERALL_GEARING);
+		inputs.pivotPosition = Units.rotationsToDegrees(pivotMotor.getPosition().getValue().in(Degree) / OVERALL_GEARING);
 		inputs.pivotSetpoint = pivotPositionSetpoint;
 		inputs.wheelSpeed = wheelMotor.getVelocity().getValue().in(RotationsPerSecond);
 		inputs.wheelSpeedSetpoint = wheelSpeedSetpoint;
@@ -50,7 +50,7 @@ public class AlgaerIOReal implements AlgaerIO {
 	@Override
 	public void setPivotSetpoint(Angle pivotSetpoint) {
 		this.pivotPositionSetpoint = pivotSetpoint.in(Degrees);
-		double voltage = pivotController.calculate(pivotMotor.getPosition().getValue().in(Degree)/OVERALL_GEARING, pivotSetpoint.in(Degrees));
+		double voltage = pivotController.calculate(pivotMotor.getPosition().getValue().in(Degree) / OVERALL_GEARING, pivotSetpoint.in(Degrees));
 		pivotMotor.setVoltage(voltage);
 	}
 
@@ -68,6 +68,6 @@ public class AlgaerIOReal implements AlgaerIO {
 
 	@Override
 	public Angle getAngle() {
-		return Rotations.of(pivotMotor.getPosition().getValue().in(Degree)/OVERALL_GEARING);
+		return Rotations.of(pivotMotor.getPosition().getValue().in(Degree) / OVERALL_GEARING);
 	}
 }

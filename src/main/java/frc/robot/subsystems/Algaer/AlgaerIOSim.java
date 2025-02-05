@@ -34,16 +34,7 @@ public class AlgaerIOSim implements AlgaerIO {
 	private double pivotPositionSetpoint;
 
 	public AlgaerIOSim() {
-		pivotSim = new SingleJointedArmSim(
-			DCMotor.getNEO(AlgaerConstants.Sim.NUM_PIVOT_MOTORS),
-			OVERALL_GEARING,
-			Sim.PIVOT_MOI.in(KilogramSquareMeters),
-			Sim.PIVOT_ARM_LENGTH.in(Meters),
-			Sim.MIN_PIVOT_ANGLE.in(Radians),
-			Sim.MAX_PIVOT_ANGLE.in(Radians),
-			false,
-			Sim.STARTING_PIVOT_ANGLE.in(Radians)
-		);
+		pivotSim = new SingleJointedArmSim(DCMotor.getNEO(AlgaerConstants.Sim.NUM_PIVOT_MOTORS), OVERALL_GEARING, Sim.PIVOT_MOI.in(KilogramSquareMeters), Sim.PIVOT_ARM_LENGTH.in(Meters), Sim.MIN_PIVOT_ANGLE.in(Radians), Sim.MAX_PIVOT_ANGLE.in(Radians), false, Sim.STARTING_PIVOT_ANGLE.in(Radians));
 
 		wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(AlgaerConstants.Sim.NUM_WHEEL_MOTORS), AlgaerConstants.Sim.WHEEL_MOTOR_MOI.in(KilogramSquareMeters), AlgaerConstants.Sim.WHEEL_MOTOR_GEARING), DCMotor.getKrakenX60(AlgaerConstants.Sim.NUM_WHEEL_MOTORS));
 
@@ -72,8 +63,8 @@ public class AlgaerIOSim implements AlgaerIO {
 		wheelMotorSimState.setRotorVelocity(wheelMotorSim.getAngularVelocity());
 		wheelMotorSimState.setRawRotorPosition(wheelMotorSim.getAngularPosition());
 
-		pivotMotorSimState.setRotorVelocity(RadiansPerSecond.of(pivotSim.getVelocityRadPerSec()/OVERALL_GEARING));
-		pivotMotorSimState.setRawRotorPosition(Radians.of(pivotSim.getAngleRads()/OVERALL_GEARING));
+		pivotMotorSimState.setRotorVelocity(RadiansPerSecond.of(pivotSim.getVelocityRadPerSec() / OVERALL_GEARING));
+		pivotMotorSimState.setRawRotorPosition(Radians.of(pivotSim.getAngleRads() / OVERALL_GEARING));
 	}
 
 	@Override
