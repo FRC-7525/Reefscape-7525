@@ -26,10 +26,10 @@ public final class ElevatorConstants {
 	public static final Distance POSITION_TOLERANCE = Inches.of(0.2);
 	public static final LinearVelocity VELOCITY_TOLERANCE = MetersPerSecond.of(0.1);
 	// TODO: Set to smaller numbers once we have robot (low max vel/acc for testing, real should be around 100)
-	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
-	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(10);
-	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(34);
-	// public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(50);
+	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
+	// public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(10);
+	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(150);
+	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(150);
 
 	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(MAX_VELOCITY.in(MetersPerSecond), MAX_ACCELERATION.in(MetersPerSecondPerSecond));
 	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-4);
@@ -74,7 +74,7 @@ public final class ElevatorConstants {
 		public static final boolean RIGHT_STRATOR_CURRENT_LIMIT_ENABLED = true;
 		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(40);
 
-		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(30, 0, 0, 0);
+		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(40, 0, 0, 0);
 		// The move is prob to keep this at 0 and not bother tuning
 		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.61, 3.11, 0.06);
 	}

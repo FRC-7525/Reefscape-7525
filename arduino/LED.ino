@@ -1,6 +1,6 @@
 #include <Adafruit_NeoPixel.h>
 
-#define PIN 7            // Data pin to first LED
+#define PIN 6            // Data pin to first LED
 #define NUM_LEDS 300      // Number of LEDs in the chain (fake)
 
 Adafruit_NeoPixel strip(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800);
@@ -35,7 +35,7 @@ void setup() {
   strip.begin(); // Initialize the LED strip
   strip.show();  // Initialize all LEDs to 'off'
   
-  pinMode(A4, INPUT);  // Set A0 as input for PWM signal (input from rio)
+  pinMode(A5, INPUT);  // Set A0 as input for PWM signal (input from rio)
   
   Serial.begin(9600);
   Serial.println("RGB LED Controller Started");
@@ -43,7 +43,10 @@ void setup() {
 
 void loop() {
   // Read the PWM pulse width from A0
-  pulseWidth = pulseIn(A4, HIGH);
+  pulseWidth = pulseIn(A5, HIGH);
+  // Serial.println(pulseWidth);
+        setLedColor(LED_STATES[4].color);
+        Serial.print("lala");
   
   if (pulseWidth == previousPulseWidth) {
     // W optimization, if the pulse width hasn't changed, no need to update the LEDs
@@ -55,7 +58,7 @@ void loop() {
   for (int i = 0; i < NUM_STATES; i++) {
     if (pulseWidth >= LED_STATES[i].minPulseWidth && pulseWidth <= LED_STATES[i].maxPulseWidth) {
       // Set all LEDs to the corresponding color for this state
-      setLedColor(LED_STATES[i].color);
+      // setLedColor(LED_STATES[i].color);
       break;
     }
   }
