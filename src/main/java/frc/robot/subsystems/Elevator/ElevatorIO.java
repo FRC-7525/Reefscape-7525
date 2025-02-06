@@ -1,9 +1,8 @@
 package frc.robot.Subsystems.Elevator;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.Distance;
 import org.littletonrobotics.junction.AutoLog;
-
-import com.ctre.phoenix6.hardware.TalonFX;
 
 public interface ElevatorIO {
 	@AutoLog

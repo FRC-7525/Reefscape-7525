@@ -5,33 +5,28 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 public class MusicManager {
 
-    private static MusicManager instance;
+	private static MusicManager instance;
 
-    private final Orchestra orchestra = new Orchestra();
+	private final Orchestra orchestra = new Orchestra();
 
-    private MusicManager() {
-    }
+	private MusicManager() {}
 
-    public static MusicManager getInstance() {
-        if (instance == null) {
-            instance = new MusicManager();
-        }
-        return instance;
-    }
+	public static MusicManager getInstance() {
+		if (instance == null) {
+			instance = new MusicManager();
+		}
+		return instance;
+	}
 
-    public void periodic() {
-        
-    }
+	public void periodic() {}
 
-    private void addMotor(TalonFX motor) {
-        orchestra.addInstrument(motor);
-    }
+	private void addMotor(TalonFX motor) {
+		orchestra.addInstrument(motor);
+	}
 
-    public void removeAllMotors() {
-        orchestra.clearInstruments();
-    }
+	public void removeAllMotors() {
+		orchestra.clearInstruments();
+	}
 
-    public void addAllSubsystemInstruments() {
-        
-    }
+	public void addAllSubsystemInstruments() {}
 }

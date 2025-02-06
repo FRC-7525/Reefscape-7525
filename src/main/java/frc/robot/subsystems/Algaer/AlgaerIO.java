@@ -1,10 +1,9 @@
 package frc.robot.Subsystems.Algaer;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import org.littletonrobotics.junction.AutoLog;
-
-import com.ctre.phoenix6.hardware.TalonFX;
 
 public interface AlgaerIO {
 	@AutoLog
