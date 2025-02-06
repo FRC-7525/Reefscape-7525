@@ -36,7 +36,7 @@ public class Algaer extends Subsystem<AlgaerStates> {
 		Logger.processInputs(SUBSYSTEM_NAME, inputs);
 
 		// Pose of mechanism for sim!
-	  Logger.recordOutput("Algaer/Near Targer", io.nearTarget());
+		Logger.recordOutput("Algaer/Near Targer", io.nearTarget());
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Setpoint", new Pose3d(Sim.ZEROED_TRANSLATION, new Rotation3d(Degrees.of(0), getState().getPivotSetpoint(), Degrees.of(0))));
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Position", new Pose3d(Sim.ZEROED_TRANSLATION, new Rotation3d(Degrees.of(0), io.getAngle(), Degrees.of(0))));
 	}
