@@ -3,9 +3,8 @@ package frc.robot.Subsystems.Coraler;
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
-import com.revrobotics.sim.SparkMaxSim;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -17,33 +16,42 @@ import frc.robot.Subsystems.Coraler.CoralerConstants.Sim;
 public class CoralerIOSim implements CoralerIO {
 
 	private DCMotorSim motorSim;
-	private SparkMaxSim sparkSim;
-	private SparkMax spark;
+	private TalonFXSimState motorSimState;
+	private TalonFX velocityMotor;
 	private PIDController wheelController;
 	private double speedPoint;
 
 	public CoralerIOSim() {
-		motorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(Sim.NUM_MOTORS), Sim.MOTOR_MOI, GEARING), DCMotor.getNEO(Sim.NUM_MOTORS));
-		wheelController = WHEEL_CONTROLLER.get();
-		spark = new SparkMax(Real.WHEEL_MOTOR_CAN_ID, MotorType.kBrushless);
-		sparkSim = new SparkMaxSim(spark, DCMotor.getNEO(Sim.NUM_MOTORS));
+		motorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getFalcon500(Sim.NUM_MOTORS), Sim.MOTOR_MOI, GEARING), DCMotor.getNEO(Sim.NUM_MOTORS));
+		wheelController = VELOCITY_CONTROLLER.get();
+		velocityMotor = new TalonFX(Real.WHEEL_MOTOR_CAN_ID);
+		motorSimState = new TalonFXSimState(velocityMotor);
 		speedPoint = 0.0;
-		sparkSim.enable();
 	}
 
 	@Override
 	public void updateInputs(CoralerIOInputs inputs) {
-		inputs.velocityRPS = sparkSim.getVelocity();
+		inputs.velocityRPS = velocityMotor.getVelocity().getValue().in(RotationsPerSecond);
 		inputs.speedPointRPS = speedPoint;
 
 		motorSim.update(GlobalConstants.SIMULATION_PERIOD);
-		sparkSim.setVelocity(motorSim.getAngularVelocityRPM() / 60);
-		sparkSim.setPosition(motorSim.getAngularPositionRotations());
+		motorSimState.setRotorVelocity(motorSim.getAngularVelocityRPM() / 60);
+		motorSimState.setRawRotorPosition(motorSim.getAngularPositionRotations());
 	}
 
 	@Override
 	public void setVelocity(AngularVelocity speedPoint) {
 		this.speedPoint = speedPoint.in(RotationsPerSecond);
-		motorSim.setInputVoltage(wheelController.calculate(sparkSim.getVelocity(), speedPoint.in(RotationsPerSecond)));
+		motorSim.setInputVoltage(wheelController.calculate(velocityMotor.getVelocity().getValue().in(RotationsPerSecond), speedPoint.in(RotationsPerSecond)));
+	}
+
+	@Override
+	public boolean firstDetectorTripped() {
+		return true;
+	}
+
+	@Override
+	public boolean secondDetectorTripped() {
+		return true;
 	}
 }

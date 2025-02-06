@@ -8,6 +8,7 @@ import org.team7525.subsystem.SubsystemStates;
 public enum CoralerStates implements SubsystemStates {
 	CORALING("Coraling", CORALING_VELOCITY),
 	INAKING("Inaking", INTAKING_VELOCITY),
+	CENTERING("Centering", CENTERING_VELOCITY),
 	IDLE("Stopped", IDLE_VELOCITY);
 
 	private String stateString;

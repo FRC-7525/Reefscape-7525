@@ -8,16 +8,16 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
-import frc.robot.GlobalConstants;
+import org.littletonrobotics.junction.Logger;
 
 public class ElevatorIOSim implements ElevatorIO {
 
 	private ProfiledPIDController pidController;
 	private ElevatorFeedforward ffcontroller;
-	private ElevatorSim elevatorSim;
+	private final ElevatorSim elevatorSim = new ElevatorSim(GEARBOX, GEARING, CARRIAGE_MASS.in(Kilograms), DRUM_RADIUS.in(Meters), MIN_HEIGHT.in(Meters), MAX_HEIGHT.in(Meters), SIMULATE_GRAVITY, 0);
 
 	private TalonFX leftMotor;
 	private TalonFX rightMotor;
@@ -28,8 +28,6 @@ public class ElevatorIOSim implements ElevatorIO {
 	private boolean zeroed;
 
 	public ElevatorIOSim() {
-		elevatorSim = new ElevatorSim(GEARBOX, GEARING, CARRIAGE_MASS.in(Kilograms), DRUM_RADIUS.in(Meters), MIN_HEIGHT.in(Meters), MAX_HEIGHT.in(Meters), SIMULATE_GRAVITY, STARTING_HEIGHT.in(Meters));
-
 		pidController = new ProfiledPIDController(PROFILLED_PID_CONSTANTS.kP, PROFILLED_PID_CONSTANTS.kI, PROFILLED_PID_CONSTANTS.kD, ElevatorConstants.TRAPEZOID_PROFILE_CONSTRAINTS);
 		pidController.setTolerance(ElevatorConstants.POSITION_TOLERANCE.in(Meters), ElevatorConstants.VELOCITY_TOLERANCE.in(MetersPerSecond));
 		pidController.setIZone(PROFILLED_PID_CONSTANTS.iZone);
@@ -50,35 +48,38 @@ public class ElevatorIOSim implements ElevatorIO {
 
 	@Override
 	public void updateInputs(ElevatorIOInputs inputs) {
-		elevatorSim.update(GlobalConstants.SIMULATION_PERIOD);
+		inputs.currentElevatorHeight = leftMotor.getPosition().getValue().in(Rotations) * METERS_PER_ROTATION.in(Meters);
+		inputs.elevatorVelocity = leftMotor.getVelocity().getValue().in(RotationsPerSecond) * METERS_PER_ROTATION.in(Meters);
 
-		inputs.currentElevatorHeight = elevatorSim.getPositionMeters();
+		inputs.elevatorVelocitySetpoint = pidController.getSetpoint().velocity;
+		inputs.elevatorHeightGoalpoint = pidController.getGoal().velocity;
 		inputs.elevatorHeightSetpoint = pidController.getSetpoint().position;
 		inputs.elevatorHeightGoalpoint = pidController.getGoal().position;
-
-		inputs.elevatorVelocity = elevatorSim.getVelocityMetersPerSecond();
-		inputs.elevatorVelocitySetpoint = pidController.getSetpoint().velocity;
-		inputs.elevatorVelocityGoalpoint = pidController.getGoal().velocity;
 
 		inputs.leftMotorVoltInput = appliedVoltage;
 		inputs.rightMotorVoltInput = appliedVoltage;
 		inputs.elevatorZeroed = zeroed;
 
-		leftMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters());
-		leftMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond());
-		rightMotorSim.setRawRotorPosition(-elevatorSim.getPositionMeters()); // negative bc right is inversed (probably)
-		rightMotorSim.setRotorVelocity(-elevatorSim.getVelocityMetersPerSecond());
+		leftMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters() / METERS_PER_ROTATION.in(Meters));
+		leftMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() / METERS_PER_ROTATION.in(Meters));
+		rightMotorSim.setRawRotorPosition(elevatorSim.getPositionMeters() / METERS_PER_ROTATION.in(Meters));
+		rightMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() / METERS_PER_ROTATION.in(Meters));
+		leftMotorSim.setSupplyVoltage(appliedVoltage);
+		rightMotorSim.setSupplyVoltage(appliedVoltage);
 	}
 
 	@Override
 	public void setHeightGoalpoint(Distance height) {
-		pidController.setGoal(height.in(Meters));
+		pidController.setGoal(new State(height.in(Meters), 0));
 	}
 
 	@Override
 	public void runElevator() {
-		appliedVoltage = pidController.calculate(elevatorSim.getPositionMeters()) + ffcontroller.calculate(pidController.getSetpoint().velocity);
-		elevatorSim.setInputVoltage(appliedVoltage);
+		appliedVoltage = pidController.calculate(leftMotor.getPosition().getValue().in(Rotations) * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
+		elevatorSim.setInput(appliedVoltage);
+		elevatorSim.update(0.02);
+		Logger.recordOutput("Elevator/applied volts", appliedVoltage);
+		Logger.recordOutput("Elevator/Current Draw", elevatorSim.getCurrentDrawAmps());
 	}
 
 	@Override
@@ -107,7 +108,7 @@ public class ElevatorIOSim implements ElevatorIO {
 	}
 
 	@Override
-	public Distance getCarraigeHeight() {
-		return Meters.of(elevatorSim.getPositionMeters() * 2 + Units.inchesToMeters(1));
+	public Distance getCarriageHeight() {
+		return Meters.of(elevatorSim.getPositionMeters() * 2);
 	}
 }

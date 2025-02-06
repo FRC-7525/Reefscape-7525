@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.LED;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.SUBSYSTEM_NAME;
+
 import frc.robot.GlobalConstants;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
@@ -11,10 +12,8 @@ public class LED extends Subsystem<LEDStates> {
 	private LEDIO io;
 	private LEDIOInputsAutoLogged inputs;
 
-	// private LEDIOInputsAutoLogged inputs = new LEDIOInputsAutoLogged();
-
 	private LED() {
-		super("LEDs", LEDStates.RED);
+		super(SUBSYSTEM_NAME, LEDStates.RED);
 		io = switch (GlobalConstants.ROBOT_MODE) {
 			case SIM -> new LEDIOSim();
 			case REAL -> new LEDIOReal();
@@ -34,7 +33,7 @@ public class LED extends Subsystem<LEDStates> {
 	@Override
 	public void runState() {
 		io.setPWMState(getState().getSignal());
-		Logger.processInputs("LED", inputs);
-		SmartDashboard.putString("LED State", getState().getStateString());
+		Logger.processInputs(SUBSYSTEM_NAME, inputs);
+		Logger.recordOutput(SUBSYSTEM_NAME + "/State", getState().getStateString());
 	}
 }

@@ -32,9 +32,6 @@ public class Robot extends LoggedRobot {
 			case TESTING:
 				Logger.addDataReceiver(new NT4Publisher());
 				break;
-			case REPLAY:
-				Logger.addDataReceiver(new NT4Publisher());
-				break;
 		}
 
 		Logger.start();
@@ -57,6 +54,11 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void autonomousPeriodic() {}
+
+	@Override
+	public void autonomousExit() {
+		CommandScheduler.getInstance().cancelAll();
+	}
 
 	@Override
 	public void teleopInit() {}

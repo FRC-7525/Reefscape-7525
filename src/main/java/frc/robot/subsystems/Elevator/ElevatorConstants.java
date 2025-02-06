@@ -23,32 +23,33 @@ public final class ElevatorConstants {
 	public static final int LEFT_MOTOR_CANID = 12;
 	public static final int RIGHT_MOTOR_CANID = 13;
 
-	public static final Distance POSITION_TOLERANCE = Inches.of(0.5);
+	public static final Distance POSITION_TOLERANCE = Inches.of(0.2);
 	public static final LinearVelocity VELOCITY_TOLERANCE = MetersPerSecond.of(0.1);
 	// TODO: Set to smaller numbers once we have robot (low max vel/acc for testing, real should be around 100)
-	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(148.64);
+	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
+	// public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(10);
+	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(150);
 	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(150);
 
 	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(MAX_VELOCITY.in(MetersPerSecond), MAX_ACCELERATION.in(MetersPerSecondPerSecond));
 	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-4);
-	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(10.0);
+	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(15.0);
 
-	// TODO: All of these are RANDOM values, once the robot is built GET REAL ONES
 	public static final Distance L4_HEIGHT = Inches.of(24);
 	public static final Distance L3_HEIGHT = Inches.of(12); //mid is all the way down according to nick
 	public static final Distance L2_HEIGHT = Inches.of(5);
 	public static final Distance L1_HEIGHT = Inches.of(0);
-	public static final Distance IDLE_HEIGHT = Meters.of(0);
-	public static final Distance ALGAE_LOW_HEIGHT = Meters.of(1);
-	public static final Distance ALGAE_HIGH_HEIGHT = Meters.of(1);
+	public static final Distance IDLE_HEIGHT = Inches.of(0);
+	public static final Distance ALGAE_LOW_HEIGHT = Inches.of(9);
+	public static final Distance ALGAE_HIGH_HEIGHT = Inches.of(15);
 	public static final Distance ALGAE_PROCESSOR_HEIGHT = Inches.of(0);
 
-	public static final Distance METERS_PER_ROTATION = Meters.of(GEARING * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right
+	public static final Distance METERS_PER_ROTATION = Meters.of((1 / GEARING) * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right
 
 	public static class Sim {
 
 		public static final DCMotor GEARBOX = DCMotor.getKrakenX60(2);
-		public static final double GEARING = 2;
+		public static final double GEARING = 7.75;
 		public static final Mass CARRIAGE_MASS = Pounds.of(34.544);
 		public static final Distance DRUM_RADIUS = Inches.of(1.751).div(2);
 		public static final Distance MIN_HEIGHT = Inches.of(0);
@@ -57,7 +58,8 @@ public final class ElevatorConstants {
 		public static final Distance STARTING_HEIGHT = Inches.of(0);
 
 		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(30, 0, 0, 0);
-		public static final FFConstants FF_CONSTANTS = new FFConstants(0.74, 0.61, 3.11, 0.06);
+		// Theoretical kG: 0.4-6, kA should be negligible
+		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0, 13.77, 0);
 	}
 
 	public static class Real {
@@ -72,7 +74,7 @@ public final class ElevatorConstants {
 		public static final boolean RIGHT_STRATOR_CURRENT_LIMIT_ENABLED = true;
 		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(40);
 
-		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(0.1, 0, 0, 0);
+		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(40, 0, 0, 0);
 		// The move is prob to keep this at 0 and not bother tuning
 		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.61, 3.11, 0.06);
 	}

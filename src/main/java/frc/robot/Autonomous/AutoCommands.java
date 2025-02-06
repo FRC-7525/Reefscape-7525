@@ -2,6 +2,7 @@ package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Coraler.Coraler;
+import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Manager.Manager;
 import frc.robot.Subsystems.Manager.ManagerStates;
 
@@ -39,7 +40,6 @@ public class AutoCommands {
 
 	public class ScoreReef extends Command {
 
-		private final Manager manager = Manager.getInstance();
 		private final int scoringLevel;
 
 		private ScoreReef(int scoringLevel) {
@@ -52,13 +52,13 @@ public class AutoCommands {
 
 		@Override
 		public void initialize() {
-			manager.setDriverReefScoringLevel(scoringLevel);
-			manager.setState(ManagerStates.TRANSITIONING_SCORING_REEF);
+			Manager.getInstance().setDriverReefScoringLevel(scoringLevel);
+			Manager.getInstance().setState(ManagerStates.TRANSITIONING_SCORING_REEF);
 		}
 
 		@Override
 		public boolean isFinished() {
-			return manager.getState() == ManagerStates.IDLE;
+			return Coraler.getInstance().isEmpty();
 		}
 	}
 
@@ -66,8 +66,6 @@ public class AutoCommands {
 
 	public class GoToElevatorLevel extends Command {
 
-		private final Manager manager = Manager.getInstance();
-		private final Coraler coraler = Coraler.getInstance();
 		private final int scoringLevel;
 
 		private GoToElevatorLevel(int scoringLevel) {
@@ -80,13 +78,13 @@ public class AutoCommands {
 
 		@Override
 		public void initialize() {
-			manager.setDriverReefScoringLevel(scoringLevel);
-			manager.setState(ManagerStates.TRANSITIONING_SCORING_REEF);
+			Manager.getInstance().setDriverReefScoringLevel(scoringLevel);
+			Manager.getInstance().setState(ManagerStates.TRANSITIONING_SCORING_REEF);
 		}
 
 		@Override
 		public boolean isFinished() {
-			return manager.getState() == ManagerStates.SCORING_REEF_MANUAL && coraler.isEmpty();
+			return Elevator.getInstance().nearTarget();
 		}
 	}
 }

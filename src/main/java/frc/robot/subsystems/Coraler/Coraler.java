@@ -16,9 +16,8 @@ public class Coraler extends Subsystem<CoralerStates> {
 		super(SUBSYSTEM_NAME, CoralerStates.IDLE);
 		this.io = switch (ROBOT_MODE) {
 			case SIM -> new CoralerIOSim();
-			case REAL -> new CoralerIOSparkMax();
-			case TESTING -> new CoralerIOSparkMax();
-			case REPLAY -> new CoralerIO() {};
+			case REAL -> new CoralerIOTalonFX();
+			case TESTING -> new CoralerIOTalonFX();
 		};
 	}
 
@@ -32,10 +31,22 @@ public class Coraler extends Subsystem<CoralerStates> {
 	@Override
 	protected void runState() {
 		io.setVelocity(getState().getVelocity());
+		io.updateInputs(inputs);
 		Logger.processInputs(SUBSYSTEM_NAME, inputs);
+
+		Logger.recordOutput(SUBSYSTEM_NAME + "/First Detector Tripped", io.firstDetectorTripped());
+		Logger.recordOutput(SUBSYSTEM_NAME + "/Second Detector Tripped", io.secondDetectorTripped());
 	}
 
-	public boolean isEmpty() { //TODO ADD AN ACTUAL IMPLEMENTATION. THIS IS JUST FOR AUTO SIM
-		return !(getStateTime() > 0.5);
+	public boolean isEmpty() {
+		return !io.firstDetectorTripped() && !io.secondDetectorTripped();
+	}
+
+	public boolean justIntookGamepiece() {
+		return io.firstDetectorTripped();
+	}
+
+	public boolean gamepieceCentered() {
+		return io.secondDetectorTripped();
 	}
 }

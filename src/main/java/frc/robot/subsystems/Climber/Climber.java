@@ -23,7 +23,6 @@ public class Climber extends Subsystem<ClimberStates> {
 			case SIM -> new ClimberIOSim();
 			case REAL -> new ClimberIOReal();
 			case TESTING -> new ClimberIOReal();
-			case REPLAY -> new ClimberIOSim();
 		};
 		inputs = new ClimberIOInputsAutoLogged();
 	}
