@@ -17,13 +17,14 @@ public class MusicManager {
 	private final SendableChooser<String> songToPlay = new SendableChooser<>();
 
 	private final String SUBSYSTEM_NAME = "MusicManager";
+    private final String MUSIC_DIR = "music";
 
 	private MusicManager() {
 		playMusic.setDefaultOption(SUBSYSTEM_NAME + "/Music Off", false);
 		playMusic.addOption(SUBSYSTEM_NAME + "/Music On", true);
 
-		songToPlay.setDefaultOption("Thick of It", "song1.chrp");
-		songToPlay.addOption("???", "song2.chrp");
+		songToPlay.setDefaultOption("Thick of It", MUSIC_DIR + "/song1.chrp");
+		songToPlay.addOption("???", MUSIC_DIR + "/song2.chrp");
 	}
 
 	public static MusicManager getInstance() {
