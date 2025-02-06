@@ -2,11 +2,13 @@ package frc.robot.Subsystems.MusicManager;
 
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.hardware.TalonFX;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
+import com.ctre.phoenix6.configs.AudioConfigs;
 
 public class MusicManager {
 
@@ -15,6 +17,8 @@ public class MusicManager {
 	private final Orchestra orchestra = new Orchestra();
 	private final SendableChooser<Boolean> playMusic = new SendableChooser<>();
 	private final SendableChooser<String> songToPlay = new SendableChooser<>();
+	private final AudioConfigs configs = new AudioConfigs();
+
 
 	private final String SUBSYSTEM_NAME = "MusicManager";
 	private final String MUSIC_DIR = "music";
@@ -23,8 +27,9 @@ public class MusicManager {
 		playMusic.setDefaultOption(SUBSYSTEM_NAME + "/Music Off", false);
 		playMusic.addOption(SUBSYSTEM_NAME + "/Music On", true);
 
-		songToPlay.setDefaultOption("Thick of It", MUSIC_DIR + "/song1.chrp");
-		songToPlay.addOption("???", MUSIC_DIR + "/song2.chrp");
+		songToPlay.setDefaultOption("Lalal", MUSIC_DIR + "/output.chrp");
+
+		configs.AllowMusicDurDisable = true;
 	}
 
 	public static MusicManager getInstance() {
