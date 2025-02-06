@@ -3,10 +3,9 @@ package frc.robot.Subsystems.Coraler;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
-
-import com.ctre.phoenix6.hardware.TalonFX;
 
 public class Coraler extends Subsystem<CoralerStates> {
 

@@ -67,6 +67,6 @@ public interface DriveIO {
 	public default void addVisionMeasurement(Pose2d pose, double timestamp, Matrix<N3, N1> standardDeviaton) {}
 
 	public TalonFX[] getDriveMotors();
-	
+
 	public TalonFX[] getSteerMotors();
 }

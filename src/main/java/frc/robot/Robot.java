@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Autonomous.AutoManager;
 import frc.robot.Subsystems.Manager.Manager;
 import frc.robot.Subsystems.MusicManager.MusicManager;
-
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -84,7 +83,7 @@ public class Robot extends LoggedRobot {
 	@Override
 	public void disabledPeriodic() {
 		if (musicManager.playMusicEnabled()) {
-			musicManager.playMusic();	
+			musicManager.playMusic();
 		}
 	}
 
