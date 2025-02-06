@@ -8,6 +8,7 @@ import static frc.robot.Subsystems.Drive.TunerConstants.kSpeedAt12Volts;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -26,10 +27,12 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
+import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -72,6 +75,15 @@ public class Drive extends Subsystem<DriveStates> {
 			DRIVER_CONTROLLER::getStartButtonPressed
 		);
 
+		// Wheel Radius Characterization (no I didn't test it in sim, banks said it works)
+		addRunnableTrigger(
+			() -> {
+				CommandScheduler.getInstance().cancelAll();
+				CommandScheduler.getInstance().schedule(WheelRadiusCharacterization.getInstance().getWheelRadiusCharacterizationCommand(-1, this));
+			},
+			TEST_CONTROLLER::getRightBumperButtonPressed
+		);
+
 		this.lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
 	}
 
@@ -103,7 +115,7 @@ public class Drive extends Subsystem<DriveStates> {
 		logOutputs(driveIO.getDrive().getState());
 
 		// Otherwise it will try to force wheels to stop in auto
-		if (!DriverStation.isAutonomous() && AutoAlign.getInstance().getState() == AutoAlignStates.OFF) {
+		if (!DriverStation.isAutonomous() && AutoAlign.getInstance().getState() == AutoAlignStates.OFF && !WheelRadiusCharacterization.getInstance().isCharacterizationActive()) {
 			getState().driveRobot();
 		}
 	}
@@ -288,6 +300,14 @@ public class Drive extends Subsystem<DriveStates> {
 
 	public LinearVelocity getVelocity() {
 		return MetersPerSecond.of(Math.hypot(driveIO.getDrive().getState().Speeds.vxMetersPerSecond, driveIO.getDrive().getState().Speeds.vyMetersPerSecond));
+	}
+
+	public Pigeon2 getPigeon2() {
+		return driveIO.getDrive().getPigeon2();
+	}
+
+	public TunerSwerveDrivetrain getDriveTrain() {
+		return driveIO.getDrive();
 	}
 
 	public void driveAutoAlign(ApplyFieldSpeeds fieldSpeeds, double[] moduleForcesX, double[] moduleForcesY) {
