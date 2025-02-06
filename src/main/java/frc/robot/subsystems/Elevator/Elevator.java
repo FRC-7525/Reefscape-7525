@@ -11,6 +11,8 @@ import edu.wpi.first.units.measure.Distance;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
 public class Elevator extends Subsystem<ElevatorStates> {
 
 	private static Elevator instance;
@@ -72,5 +74,13 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
 	public Distance getCarriageHeight() {
 		return io.getCarriageHeight();
+	}
+
+	public TalonFX getLeftMotor() {
+		return io.getLeftMotor();
+	}
+
+	public TalonFX getRightMotor() {
+		return io.getRightMotor();
 	}
 }

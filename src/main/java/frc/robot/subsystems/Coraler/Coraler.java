@@ -6,6 +6,8 @@ import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
 public class Coraler extends Subsystem<CoralerStates> {
 
 	private static Coraler instance;
@@ -48,5 +50,9 @@ public class Coraler extends Subsystem<CoralerStates> {
 
 	public boolean gamepieceCentered() {
 		return io.secondDetectorTripped();
+	}
+
+	public TalonFX getMotor() {
+		return io.getMotor();
 	}
 }

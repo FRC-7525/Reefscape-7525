@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Drive;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -64,4 +65,8 @@ public interface DriveIO {
 	 * @param standardDeviaton The standard deviation of the vision measurement.
 	 */
 	public default void addVisionMeasurement(Pose2d pose, double timestamp, Matrix<N3, N1> standardDeviaton) {}
+
+	public TalonFX[] getDriveMotors();
+	
+	public TalonFX[] getSteerMotors();
 }
