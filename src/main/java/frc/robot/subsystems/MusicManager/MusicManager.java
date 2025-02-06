@@ -17,7 +17,7 @@ public class MusicManager {
 	private final SendableChooser<String> songToPlay = new SendableChooser<>();
 
 	private final String SUBSYSTEM_NAME = "MusicManager";
-    private final String MUSIC_DIR = "music";
+	private final String MUSIC_DIR = "music";
 
 	private MusicManager() {
 		playMusic.setDefaultOption(SUBSYSTEM_NAME + "/Music Off", false);
