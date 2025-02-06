@@ -1,14 +1,13 @@
 package frc.robot.Subsystems.MusicManager;
 
 import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
-import com.ctre.phoenix6.configs.AudioConfigs;
 
 public class MusicManager {
 
@@ -18,7 +17,6 @@ public class MusicManager {
 	private final SendableChooser<Boolean> playMusic = new SendableChooser<>();
 	private final SendableChooser<String> songToPlay = new SendableChooser<>();
 	private final AudioConfigs configs = new AudioConfigs();
-
 
 	private final String SUBSYSTEM_NAME = "MusicManager";
 	private final String MUSIC_DIR = "music";
