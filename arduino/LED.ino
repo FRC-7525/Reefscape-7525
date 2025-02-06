@@ -35,18 +35,16 @@ void setup() {
   strip.begin(); // Initialize the LED strip
   strip.show();  // Initialize all LEDs to 'off'
   
-  pinMode(A5, INPUT);  // Set A0 as input for PWM signal (input from rio)
+  pinMode(A5, INPUT);  // Set A5 as input for PWM signal (input from rio)
   
   Serial.begin(9600);
   Serial.println("RGB LED Controller Started");
 }
 
 void loop() {
-  // Read the PWM pulse width from A0
+  // Read the PWM pulse width from A5
   pulseWidth = pulseIn(A5, HIGH);
   // Serial.println(pulseWidth);
-        setLedColor(LED_STATES[4].color);
-        Serial.print("lala");
   
   if (pulseWidth == previousPulseWidth) {
     // W optimization, if the pulse width hasn't changed, no need to update the LEDs
@@ -58,7 +56,7 @@ void loop() {
   for (int i = 0; i < NUM_STATES; i++) {
     if (pulseWidth >= LED_STATES[i].minPulseWidth && pulseWidth <= LED_STATES[i].maxPulseWidth) {
       // Set all LEDs to the corresponding color for this state
-      // setLedColor(LED_STATES[i].color);
+      setLedColor(LED_STATES[i].color);
       break;
     }
   }
