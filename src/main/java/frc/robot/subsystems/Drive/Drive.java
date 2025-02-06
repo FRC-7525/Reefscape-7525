@@ -9,6 +9,7 @@ import static frc.robot.Subsystems.Drive.TunerConstants.kSpeedAt12Volts;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -304,6 +305,14 @@ public class Drive extends Subsystem<DriveStates> {
 
 	public Pigeon2 getPigeon2() {
 		return driveIO.getDrive().getPigeon2();
+	}
+
+	public TalonFX[] getDriveMotors() {
+		return driveIO.getDriveMotors();
+	}
+
+	public TalonFX[] getSteerMotors() {
+		return driveIO.getSteerMotors();
 	}
 
 	public TunerSwerveDrivetrain getDriveTrain() {

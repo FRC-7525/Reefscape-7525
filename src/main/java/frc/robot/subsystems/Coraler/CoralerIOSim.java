@@ -54,4 +54,9 @@ public class CoralerIOSim implements CoralerIO {
 	public boolean secondDetectorTripped() {
 		return true;
 	}
+
+	@Override
+	public TalonFX getMotor() {
+		return velocityMotor;
+	}
 }

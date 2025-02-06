@@ -70,4 +70,14 @@ public class AlgaerIOReal implements AlgaerIO {
 	public Angle getAngle() {
 		return Rotations.of(pivotMotor.getPosition().getValue().in(Degree) / OVERALL_GEARING);
 	}
+
+	@Override
+	public TalonFX getWheelMotor() {
+		return wheelMotor;
+	}
+
+	@Override
+	public TalonFX getPivotMotor() {
+		return pivotMotor;
+	}
 }

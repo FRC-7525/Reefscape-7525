@@ -112,4 +112,14 @@ public class ElevatorIOSim implements ElevatorIO {
 	public Distance getCarriageHeight() {
 		return Meters.of(elevatorSim.getPositionMeters() * 2);
 	}
+
+	@Override
+	public TalonFX getLeftMotor() {
+		return leftMotor;
+	}
+
+	@Override
+	public TalonFX getRightMotor() {
+		return rightMotor;
+	}
 }
