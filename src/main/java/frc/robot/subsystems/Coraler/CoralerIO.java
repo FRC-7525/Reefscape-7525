@@ -3,6 +3,8 @@ package frc.robot.Subsystems.Coraler;
 import edu.wpi.first.units.measure.AngularVelocity;
 import org.littletonrobotics.junction.AutoLog;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
 public interface CoralerIO {
 	@AutoLog
 	class CoralerIOInputs {
@@ -18,4 +20,6 @@ public interface CoralerIO {
 	public boolean firstDetectorTripped();
 
 	public boolean secondDetectorTripped();
+	
+	public TalonFX getMotor();
 }

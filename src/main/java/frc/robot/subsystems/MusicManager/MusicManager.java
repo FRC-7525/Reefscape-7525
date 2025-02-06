@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.MusicManager;
 
 import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 public class MusicManager {
 
@@ -19,6 +20,18 @@ public class MusicManager {
     }
 
     public void periodic() {
+        
+    }
+
+    private void addMotor(TalonFX motor) {
+        orchestra.addInstrument(motor);
+    }
+
+    public void removeAllMotors() {
+        orchestra.clearInstruments();
+    }
+
+    public void addAllSubsystemInstruments() {
         
     }
 }

@@ -51,4 +51,9 @@ public class CoralerIOTalonFX implements CoralerIO {
 	public boolean secondDetectorTripped() {
 		return gamepieceCenteringDetector.get();
 	}
+
+	@Override
+	public TalonFX getMotor() {
+		return velocityMotor;
+	}
 }

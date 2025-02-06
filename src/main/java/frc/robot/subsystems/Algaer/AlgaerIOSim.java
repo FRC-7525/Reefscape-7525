@@ -88,4 +88,14 @@ public class AlgaerIOSim implements AlgaerIO {
 	public Angle getAngle() {
 		return Radians.of(pivotSim.getAngleRads());
 	}
+
+	@Override
+	public TalonFX getWheelMotor() {
+		return wheelMotor;
+	}
+
+	@Override
+	public TalonFX getPivotMotor() {
+		return pivotMotor;
+	}
 }
