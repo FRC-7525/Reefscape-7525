@@ -5,7 +5,7 @@ import sys
 # List of files to excuse (constants and things we didnt make and stuff we wont use)
 excused_files = ["GlobalConstants.java", "Drive.java", "TunerConstants.java", "BuildConstants.java", "LocalADStarAK.java", "VisionUtil.java", "SwerveModule.java", "VisionIOSim.java", "ElevatorConstants.java", "IntakeConstants.java", 
                 "RepulsorFieldPlanner.java", "Force.java", "ManagerConstants.java", "AutoAlignConstants.java", "Manager.java", "AutoAlign.java", "AutoAlignStates.java", "CoralerConstants.java", "AlgaerConstants.java", "VisionConstants.java",
-                "LEDStates.java", "LEDIOSim.java", "LEDIOReal.java"]
+                "LEDStates.java", "LEDIOSim.java", "LEDIOReal.java", "AutoManager.java", "TippingCalculator.java", "WheelRadiusCharacterization.java", "ElevatorIOReal.java", "ElevatorIOSim.java"]
 
 # Not really dirs becasue the full ones didnt work
 excused_dirs = [

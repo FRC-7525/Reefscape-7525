@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.GlobalConstants.SIMULATION_PERIOD;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.*;
 
@@ -77,7 +78,7 @@ public class ElevatorIOSim implements ElevatorIO {
 	public void runElevator() {
 		appliedVoltage = pidController.calculate(leftMotor.getPosition().getValue().in(Rotations) * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
 		elevatorSim.setInput(appliedVoltage);
-		elevatorSim.update(0.02);
+		elevatorSim.update(SIMULATION_PERIOD);
 		Logger.recordOutput("Elevator/applied volts", appliedVoltage);
 		Logger.recordOutput("Elevator/Current Draw", elevatorSim.getCurrentDrawAmps());
 	}
