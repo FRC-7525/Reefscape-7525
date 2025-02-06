@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Drive;
+package frc.robot.Subsystems.Drive;
 
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.Matrix;
@@ -8,7 +8,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import frc.robot.subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
+import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface DriveIO {
@@ -63,9 +63,5 @@ public interface DriveIO {
 	 * @param timestamp The timestamp of the vision measurement.
 	 * @param standardDeviaton The standard deviation of the vision measurement.
 	 */
-	public default void addVisionMeasurement(
-		Pose2d pose,
-		double timestamp,
-		Matrix<N3, N1> standardDeviaton
-	) {}
+	public default void addVisionMeasurement(Pose2d pose, double timestamp, Matrix<N3, N1> standardDeviaton) {}
 }

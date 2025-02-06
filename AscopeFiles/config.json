@@ -1,0 +1,90 @@
+{
+  "name": "Peak",
+  "sourceUrl": "https://cad.onshape.com/documents/2400c60a07622804be1228ed/w/a4476cfa4308fc25e9c0eecb/e/18179cc6071bd85315b57f21",
+  "rotations": [
+    {
+      "axis": "x",
+      "degrees": 90
+    },
+    {
+      "axis": "y",
+      "degrees": 0
+    },
+    {
+      "axis": "z",
+      "degrees": 90
+    }
+  ],
+  "position": [0, 0, 0.0],
+  "cameras": [],
+  "components": [
+    {
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 270
+        },
+        {
+          "axis": "z",
+          "degrees": 90
+        },
+        {
+          "axis": "y",
+          "degrees": 180
+        }
+      ],
+      "zeroedPosition": [-0.3, 0, -0.205]
+    },
+    {
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 0
+        },
+        {
+          "axis": "y",
+          "degrees": 0
+        }
+      ],
+      "zeroedPosition": [0.05, 0.0, 0.0]
+    },
+    {
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
+        },
+        {
+          "axis": "y",
+          "degrees": 0
+        }
+      ],
+      "zeroedPosition": [0, 0.0, -0.24]
+    },
+    {
+      "zeroedRotations": [
+        {
+          "axis": "x",
+          "degrees": 90
+        },
+        {
+          "axis": "z",
+          "degrees": 90
+        },
+        {
+          "axis": "y",
+          "degrees": 0
+        }
+      ],
+      "zeroedPosition": [0, 0, -0.085]
+    }
+  ]
+}
