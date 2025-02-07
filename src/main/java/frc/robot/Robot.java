@@ -14,6 +14,8 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.team7525.misc.CommandsUtil;
 
+import com.pathplanner.lib.commands.FollowPathCommand;
+
 public class Robot extends LoggedRobot {
 
 	private final Manager manager = Manager.getInstance();
@@ -39,6 +41,8 @@ public class Robot extends LoggedRobot {
 		DriverStation.silenceJoystickConnectionWarning(true);
 
 		CommandScheduler.getInstance().unregisterAllSubsystems();
+
+		FollowPathCommand.warmupCommand().schedule();
 	}
 
 	@Override

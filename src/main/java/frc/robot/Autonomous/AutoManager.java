@@ -4,6 +4,7 @@ import static frc.robot.Autonomous.AutoConstants.*;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.units.measure.Distance;
@@ -96,5 +97,9 @@ public class AutoManager {
 		}
 
 		return autoChooser.getSelected();
+	}
+
+	public Command generateAuto(String startingLocation, boolean farOrCloseReef, boolean intakeLeftOrRightSide, String[] coralToScore) {
+		return new PathPlannerAuto("6 coral auto (in theory)");
 	}
 }

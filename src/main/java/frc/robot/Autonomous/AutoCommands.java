@@ -34,7 +34,7 @@ public class AutoCommands {
 
 		@Override
 		public boolean isFinished() {
-			return true;
+			return manager.getState() != ManagerStates.INTAKING_CORALER_AA_OFF;
 		}
 	}
 
