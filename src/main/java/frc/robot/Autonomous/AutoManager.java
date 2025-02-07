@@ -100,6 +100,8 @@ public class AutoManager {
 	}
 
 	public Command generateAuto(String startingLocation, boolean farOrCloseReef, boolean intakeLeftOrRightSide, String[] coralToScore) {
+		
+
 		return new PathPlannerAuto("6 coral auto (in theory)");
 	}
 }
