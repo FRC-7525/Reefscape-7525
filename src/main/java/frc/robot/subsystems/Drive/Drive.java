@@ -72,8 +72,6 @@ public class Drive extends Subsystem<DriveStates> {
 
 	private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeft, frontRight, backLeft, backRight);
 
-	private int cycle = 0;
-
 	/**
 	 * Constructs a new Drive subsystem with the given DriveIO.
 	 *
@@ -176,13 +174,9 @@ public class Drive extends Subsystem<DriveStates> {
 	 * @param angularVelocity The desired angular velocity.
 	 */
 	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity, boolean useHeadingCorrection) {
-		System.out.println("Cycle: " + cycle);
-		cycle++;
 		double omega = angularVelocity;
 
 		previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, new ChassisSpeeds(-xVelocity, -yVelocity, angularVelocity), 0.02);
-		System.out.println(previousSetpoint.moduleStates().length);
-		System.out.println(kinematics.getModules().length);
 		if (useHeadingCorrection) {
 			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
 				omega = headingCorrectionController.calculate(driveIO.getDrive().getState().Pose.getRotation().getRadians(), lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
