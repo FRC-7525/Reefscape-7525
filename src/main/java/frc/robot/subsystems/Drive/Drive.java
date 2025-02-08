@@ -4,6 +4,10 @@ import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.*;
 import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.Subsystems.Drive.DriveConstants.*;
+import static frc.robot.Subsystems.Drive.TunerConstants.BackLeft;
+import static frc.robot.Subsystems.Drive.TunerConstants.BackRight;
+import static frc.robot.Subsystems.Drive.TunerConstants.FrontLeft;
+import static frc.robot.Subsystems.Drive.TunerConstants.FrontRight;
 import static frc.robot.Subsystems.Drive.TunerConstants.kSpeedAt12Volts;
 
 import com.ctre.phoenix6.SignalLogger;
@@ -16,10 +20,17 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.DriveFeedforwards;
+import com.pathplanner.lib.util.swerve.SwerveSetpoint;
+import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
@@ -52,6 +63,16 @@ public class Drive extends Subsystem<DriveStates> {
 	private final SwerveRequest.SysIdSwerveRotation rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
 	private final PIDController headingCorrectionController = new PIDController(0.1, 0, 0);
 
+	private final SwerveSetpointGenerator setpointGenerator;
+	private SwerveSetpoint previousSetpoint;
+
+	private final Translation2d frontLeft = new Translation2d(FrontLeft.LocationX, FrontLeft.LocationY);
+	private final Translation2d frontRight = new Translation2d(FrontRight.LocationX, FrontRight.LocationY);
+	private final Translation2d backLeft = new Translation2d(BackLeft.LocationX, BackLeft.LocationY);
+	private final Translation2d backRight = new Translation2d(BackRight.LocationX, BackRight.LocationY);
+
+	private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeft, frontRight, backLeft, backRight);
+
 	/**
 	 * Constructs a new Drive subsystem with the given DriveIO.
 	 *
@@ -64,6 +85,16 @@ public class Drive extends Subsystem<DriveStates> {
 			case SIM -> new DriveIOSim();
 			case TESTING -> new DriveIOReal();
 		};
+
+		setpointGenerator = new SwerveSetpointGenerator(ROBOT_CONFIG, ANGULAR_VELOCITY_LIMIT);
+
+		// empty state for init
+		previousSetpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[]{
+			new SwerveModuleState(0, new Rotation2d(0)),
+			new SwerveModuleState(0, new Rotation2d(0)),
+			new SwerveModuleState(0, new Rotation2d(0)), 
+			new SwerveModuleState(0, new Rotation2d(0))  
+			}, null);
 
 		// Setup Path Planner
 		configurePathPlanner();
@@ -150,6 +181,8 @@ public class Drive extends Subsystem<DriveStates> {
 	 */
 	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity, boolean useHeadingCorrection) {
 		double omega = angularVelocity;
+
+		previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, new ChassisSpeeds(xVelocity, yVelocity, angularVelocity), 0.02);
 		if (useHeadingCorrection) {
 			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
 				omega = headingCorrectionController.calculate(driveIO.getDrive().getState().Pose.getRotation().getRadians(), lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
@@ -157,7 +190,8 @@ public class Drive extends Subsystem<DriveStates> {
 				lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
 			}
 		}
-		driveIO.setControl(new SwerveRequest.FieldCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(omega).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
+
+		driveIO.setControl(new SwerveRequest.ApplyFieldSpeeds().withSpeeds(kinematics.toChassisSpeeds(previousSetpoint.moduleStates())));
 	}
 
 	/**
@@ -168,7 +202,9 @@ public class Drive extends Subsystem<DriveStates> {
 	 * @param angularVelocity The desired angular velocity.
 	 */
 	public void driveRobotRelative(double xVelocity, double yVelocity, double angularVelocity) {
-		driveIO.setControl(new SwerveRequest.RobotCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(angularVelocity).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
+		previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, new ChassisSpeeds(xVelocity, yVelocity, angularVelocity), 0.02);
+		driveIO.setControl(new SwerveRequest.ApplyRobotSpeeds().withSpeeds(previousSetpoint.robotRelativeSpeeds()));
+		// driveIO.setControl(new SwerveRequest.RobotCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(angularVelocity).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
 	}
 
 	/**
@@ -279,6 +315,7 @@ public class Drive extends Subsystem<DriveStates> {
 	// Path Planner UTIL
 
 	public void driveRobotRelative(ChassisSpeeds speeds) {
+
 		driveRobotRelative(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond);
 	}
 
