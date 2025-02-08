@@ -72,7 +72,8 @@ public class Drive extends Subsystem<DriveStates> {
 
 	private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeft, frontRight, backLeft, backRight);
 
-	private int cycle = 0;	
+	private int cycle = 0;
+
 	/**
 	 * Constructs a new Drive subsystem with the given DriveIO.
 	 *
