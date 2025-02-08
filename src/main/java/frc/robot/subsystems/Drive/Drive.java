@@ -22,7 +22,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
-
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -89,12 +88,7 @@ public class Drive extends Subsystem<DriveStates> {
 		setpointGenerator = new SwerveSetpointGenerator(ROBOT_CONFIG, ANGULAR_VELOCITY_LIMIT);
 
 		// empty state for init
-		previousSetpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[]{
-			new SwerveModuleState(0, new Rotation2d(0)),
-			new SwerveModuleState(0, new Rotation2d(0)),
-			new SwerveModuleState(0, new Rotation2d(0)), 
-			new SwerveModuleState(0, new Rotation2d(0))  
-			}, null);
+		previousSetpoint = new SwerveSetpoint(new ChassisSpeeds(), new SwerveModuleState[] { new SwerveModuleState(0, new Rotation2d(0)), new SwerveModuleState(0, new Rotation2d(0)), new SwerveModuleState(0, new Rotation2d(0)), new SwerveModuleState(0, new Rotation2d(0)) }, null);
 
 		// Setup Path Planner
 		configurePathPlanner();
@@ -315,7 +309,6 @@ public class Drive extends Subsystem<DriveStates> {
 	// Path Planner UTIL
 
 	public void driveRobotRelative(ChassisSpeeds speeds) {
-
 		driveRobotRelative(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond);
 	}
 
