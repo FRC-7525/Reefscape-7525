@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonCamera;
 import org.team7525.misc.Elastic;
 import org.team7525.misc.Elastic.ElasticNotification;
@@ -35,8 +36,11 @@ public class FaultManager {
 		public Map<String, Integer> faults = new HashMap<String, Integer>();
 		public String deviceName;
 
+		public boolean alive;
+
 		public Device(String deviceName) {
 			this.deviceName = deviceName;
+			this.alive = true;
 		}
 
 		public String getDeviceName() {
@@ -56,7 +60,7 @@ public class FaultManager {
 
 		private void removeFault(String fault) {
 			if (faults.get(fault) == null) {
-				throw new Error("This fault does not exist with this device");
+				return;
 			}
 
 			faults.put(fault, faults.get(fault) - 1);
@@ -82,7 +86,6 @@ public class FaultManager {
 		private Pigeon2 pigeon;
 
 		public CANDeviceTypes deviceType;
-		public String deviceName;
 		public String busName;
 
 		public CANDevice(TalonFX talon, String name) {
@@ -153,7 +156,6 @@ public class FaultManager {
 		private PWM pwmDevice;
 
 		public MiscDeviceTypes deviceType;
-		public String deviceName;
 
 		public MiscDevice(DigitalInput digitalInput, String name) {
 			super(name);
@@ -240,8 +242,6 @@ public class FaultManager {
 					case TALON:
 						TalonFX talon = device.getTalon();
 
-						System.out.println("checking");
-
 						device.updateFault("Booting Fault", talon.getFault_BootDuringEnable().getValue());
 						device.updateFault("Bridge Brownout Fault", talon.getFault_BridgeBrownout().getValue());
 						device.updateFault("Device Temp Fault", talon.getFault_DeviceTemp().getValue());
@@ -273,6 +273,8 @@ public class FaultManager {
 						device.updateFault("Undervoltage Fault", talon.getFault_Undervoltage().getValue());
 						device.updateFault("Unstable Supply Voltage", talon.getFault_UnstableSupplyV().getValue());
 
+						device.alive = talon.isAlive();
+
 						break;
 					case SPARK:
 						SparkMax spark = device.getSparkMax();
@@ -287,6 +289,8 @@ public class FaultManager {
 						device.updateFault("Fault Detected", faults.other);
 						device.updateFault("Sensor Fault", faults.sensor);
 
+						device.alive = faults.temperature;
+
 						break;
 					case CANCODER:
 						CANcoder canCoder = device.getCANcoder();
@@ -295,6 +299,8 @@ public class FaultManager {
 						device.updateFault("Booting Fault", canCoder.getFault_BootDuringEnable().getValue());
 						device.updateFault("Hardware Fault", canCoder.getFault_Hardware().getValue());
 						device.updateFault("Undervoltage Fault", canCoder.getFault_Undervoltage().getValue());
+
+						device.alive = canCoder.isConnected();
 
 						break;
 					case PIGEON:
@@ -321,6 +327,8 @@ public class FaultManager {
 								pigeon.getFault_SaturatedMagnetometer().getValue());
 						device.updateFault("Undervoltage Fault", pigeon.getFault_Undervoltage().getValue());
 
+						device.alive = pigeon.isConnected();
+
 						break;
 					default:
 						break;
@@ -340,11 +348,15 @@ public class FaultManager {
 
 						device.updateFault("Connection Fault", dutyCycleEncoder.isConnected());
 
+						device.alive = dutyCycleEncoder.isConnected();
+
 						break;
 					case PHOTONCAMERA:
 						PhotonCamera photonCamera = device.getPhotonCamera();
 
 						device.updateFault("Connection Fault", photonCamera.isConnected());
+
+						device.alive = photonCamera.isConnected();
 
 						break;
 					case PWM:
@@ -364,22 +376,22 @@ public class FaultManager {
 				CANDevice device = CANDeviceMap.get(busName + " " + id);
 
 				if (device.getFault()) {
-					System.out.println("printing");
-
 					for (String fault : device.faults.keySet()) {
-						Elastic.sendAlert(new ElasticNotification(NotificationLevel.ERROR,
-								busName + " " + device.deviceName + " (" + id + ")", fault));
+						Logger.recordOutput("FaultManager/CAN Device Faults/" + busName + "/" + device.deviceName + "(" + id + ")", fault);
 					}
 				}
+				
+				Logger.recordOutput("FaultManager/Alive CAN Devices/" + busName + "/" + device.deviceName + "(" + id + ")", device.alive);
 			}
 		}
 
 		for (MiscDevice device : miscDevices) {
 			if (device.getFault()) {
 				for (String fault : device.faults.keySet()) {
-					Elastic.sendAlert(new ElasticNotification(NotificationLevel.ERROR, device.deviceName, fault));
+					Logger.recordOutput("FaultManager/Misc Device Faults/" + device.deviceName, fault);
 				}
 			}
+			Logger.recordOutput("FaultManager/Alive Misc Devices/" + device.deviceName, device.alive);
 		}
 	}
 
