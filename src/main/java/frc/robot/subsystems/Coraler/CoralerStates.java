@@ -12,9 +12,9 @@ public enum CoralerStates implements SubsystemStates {
 	IDLE("Stopped", IDLE_VELOCITY);
 
 	private String stateString;
-	private AngularVelocity velocity;
+	private double velocity;
 
-	CoralerStates(String stateString, AngularVelocity velocity) {
+	CoralerStates(String stateString, double velocity) {
 		this.stateString = stateString;
 		this.velocity = velocity;
 	}
@@ -24,7 +24,7 @@ public enum CoralerStates implements SubsystemStates {
 		return stateString;
 	}
 
-	public AngularVelocity getVelocity() {
+	public double getVelocity() {
 		return velocity;
 	}
 }

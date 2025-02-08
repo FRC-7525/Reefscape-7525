@@ -21,7 +21,7 @@ public class Manager extends Subsystem<ManagerStates> {
 	// private final Drive drive = Drive.getInstance();
 	// private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
-	// private final Coraler coraler = Coraler.getInstance();
+	private final Coraler coraler = Coraler.getInstance();
 	// private final Algaer algaer = Algaer.getInstance();
 	// private final AutoAlign autoAlign = AutoAlign.getInstance();
 	// private final Vision vision = Vision.getInstance();
@@ -71,14 +71,14 @@ public class Manager extends Subsystem<ManagerStates> {
 		// addTrigger(ManagerStates.IDLE, ManagerStates.CLIMBING, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() > 0.5);
 		// addTrigger(ManagerStates.CLIMBING, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() == 0);
 
-		// // Intaking at Coral Station
-		// // AA
+		// Intaking at Coral Station
+		// AA
 		// addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
 		// addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
-		// // Manual
-		// addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
-		// addTrigger(ManagerStates.INTAKING_CORALER_AA_OFF, ManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.justIntookGamepiece());
-		// addTrigger(ManagerStates.CENTERING_CORALER, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.gamepieceCentered());
+		// Manual
+		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
+		addTrigger(ManagerStates.INTAKING_CORALER_AA_OFF, ManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.justIntookGamepiece() || coraler.currentSenseGamepiece());
+		addTrigger(ManagerStates.CENTERING_CORALER, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.gamepieceCentered() || getStateTime() > .15);
 
 		// // Intaking Algae
 		// addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
@@ -154,7 +154,7 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// Set States, drive and vision are rogue so you don't need to set state
 		elevator.setState(getState().getElevatorStateSupplier().get());
-		// coraler.setState(getState().getCoralerState());
+		coraler.setState(getState().getCoralerState());
 		// algaer.setState(getState().getAlgaerState());
 		// autoAlign.setState(getState().getAutoAlignSupplier().get());
 		ledSubsystem.setState(getState().getLedState());
@@ -163,7 +163,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		// Periodics
 		// autoAlign.periodic();
 		elevator.periodic();
-		// coraler.periodic();
+		coraler.periodic();
 		// algaer.periodic();
 		//  vision.periodic();
 		// drive.periodic();

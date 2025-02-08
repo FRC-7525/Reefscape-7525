@@ -1,9 +1,14 @@
 package frc.robot.Subsystems.Coraler;
 
+import static edu.wpi.first.units.Units.Seconds;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
+
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -12,6 +17,7 @@ public class Coraler extends Subsystem<CoralerStates> {
 	private static Coraler instance;
 	private final CoralerIO io;
 	private final CoralerIOInputsAutoLogged inputs = new CoralerIOInputsAutoLogged();
+	private final Debouncer debouncer;
 
 	private Coraler() {
 		super(SUBSYSTEM_NAME, CoralerStates.IDLE);
@@ -20,6 +26,8 @@ public class Coraler extends Subsystem<CoralerStates> {
 			case REAL -> new CoralerIOTalonFX();
 			case TESTING -> new CoralerIOTalonFX();
 		};
+
+		debouncer = new Debouncer(DEBOUNCE_TIME.in(Seconds), DebounceType.kRising);
 	}
 
 	public static Coraler getInstance() {
@@ -37,6 +45,7 @@ public class Coraler extends Subsystem<CoralerStates> {
 
 		Logger.recordOutput(SUBSYSTEM_NAME + "/First Detector Tripped", io.firstDetectorTripped());
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Second Detector Tripped", io.secondDetectorTripped());
+		Logger.recordOutput(SUBSYSTEM_NAME + "/Stator Current", io.getMotor().getStatorCurrent().getValueAsDouble());
 	}
 
 	public boolean isEmpty() {
@@ -49,6 +58,10 @@ public class Coraler extends Subsystem<CoralerStates> {
 
 	public boolean gamepieceCentered() {
 		return io.secondDetectorTripped();
+	}
+
+	public boolean currentSenseGamepiece() {
+		return debouncer.calculate(io.currentLimitReached());
 	}
 
 	public TalonFX getMotor() {

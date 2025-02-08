@@ -40,9 +40,8 @@ public class CoralerIOSim implements CoralerIO {
 	}
 
 	@Override
-	public void setVelocity(AngularVelocity speedPoint) {
-		this.speedPoint = speedPoint.in(RotationsPerSecond);
-		motorSim.setInputVoltage(wheelController.calculate(velocityMotor.getVelocity().getValue().in(RotationsPerSecond), speedPoint.in(RotationsPerSecond)));
+	public void setVelocity(double speedPoint) {
+		motorSim.setInputVoltage(speedPoint);
 	}
 
 	@Override
@@ -58,5 +57,10 @@ public class CoralerIOSim implements CoralerIO {
 	@Override
 	public TalonFX getMotor() {
 		return velocityMotor;
+	}
+
+	@Override
+	public boolean currentLimitReached() {
+		return false;
 	}
 }

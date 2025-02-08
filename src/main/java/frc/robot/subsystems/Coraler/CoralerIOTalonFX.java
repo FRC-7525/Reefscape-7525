@@ -4,8 +4,12 @@ import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.*;
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,6 +24,8 @@ public class CoralerIOTalonFX implements CoralerIO {
 
 	public CoralerIOTalonFX() {
 		velocityMotor = new TalonFX(Real.WHEEL_MOTOR_CAN_ID);
+		velocityMotor.setNeutralMode(NeutralModeValue.Brake);
+
 		velocityController = VELOCITY_CONTROLLER.get();
 		gamePieceInitialIntakeDetector = new DigitalInput(Real.GAMEPIECE_INITIAL_DETECTOR_DIO_PORT);
 		gamepieceCenteringDetector = new DigitalInput(Real.GAMEPIECE_CENTERING_DETECTOR_DIO_PORT);
@@ -37,23 +43,31 @@ public class CoralerIOTalonFX implements CoralerIO {
 	}
 
 	@Override
-	public void setVelocity(AngularVelocity speedPoint) {
-		this.speedPoint = speedPoint.in(RotationsPerSecond);
-		velocityMotor.setVoltage(velocityController.calculate(velocityMotor.getVelocity().getValue().in(RotationsPerSecond), speedPoint.in(RotationsPerSecond)));
+	public void setVelocity(double speedPoint) {
+		velocityMotor.set(speedPoint);
 	}
 
 	@Override
 	public boolean firstDetectorTripped() {
-		return gamePieceInitialIntakeDetector.get();
+		//TODO: Change back when beam break is acquired
+		return false;
+		// return gamePieceInitialIntakeDetector.get();
 	}
 
 	@Override
 	public boolean secondDetectorTripped() {
-		return gamepieceCenteringDetector.get();
+		//TODO: Change back when beam break is acquired
+		return false;
+		// return gamepieceCenteringDetector.get();
 	}
 
 	@Override
 	public TalonFX getMotor() {
 		return velocityMotor;
+	}
+
+	@Override
+	public boolean currentLimitReached() {
+		return velocityMotor.getStatorCurrent().getValueAsDouble() > 30;
 	}
 }
