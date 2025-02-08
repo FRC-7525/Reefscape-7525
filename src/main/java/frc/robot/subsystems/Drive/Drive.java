@@ -182,7 +182,7 @@ public class Drive extends Subsystem<DriveStates> {
 	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity, boolean useHeadingCorrection) {
 		double omega = angularVelocity;
 
-		previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, new ChassisSpeeds(xVelocity, yVelocity, angularVelocity), 0.02);
+		previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, new ChassisSpeeds(-xVelocity, -yVelocity, angularVelocity), 0.02);
 		if (useHeadingCorrection) {
 			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
 				omega = headingCorrectionController.calculate(driveIO.getDrive().getState().Pose.getRotation().getRadians(), lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
