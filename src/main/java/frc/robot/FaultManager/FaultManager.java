@@ -138,6 +138,7 @@ public class FaultManager {
 	}
 
 	public class MiscDevice extends Device {
+
 		private DutyCycleEncoder dutyCycleEncoder;
 		private PhotonCamera photonCamera;
 
@@ -355,5 +356,4 @@ public class FaultManager {
 	public void addDevice(PhotonCamera photonCamera, String name) {
 		miscDevices.add(new MiscDevice(photonCamera, name));
 	}
-
 }
