@@ -7,6 +7,8 @@ import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import frc.robot.GlobalConstants;
+
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -46,6 +48,9 @@ public class Coraler extends Subsystem<CoralerStates> {
 	}
 
 	public boolean currentSenseGamepiece() {
+		// if (GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.SIM) {
+		// 	return getStateTime();
+		// }
 		return debouncer.calculate(io.currentLimitReached());
 	}
 
@@ -54,6 +59,6 @@ public class Coraler extends Subsystem<CoralerStates> {
 	}
 
 	public double getStateTime() {
-		return getStateTime();
+		return super.getStateTime();
 	}
 }
