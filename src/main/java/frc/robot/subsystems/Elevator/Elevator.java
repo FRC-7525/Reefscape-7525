@@ -53,6 +53,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		Logger.recordOutput("Elevator/Carraige Height", io.getCarriageHeight().in(Meters));
 		Logger.recordOutput("Elevator/Stage1 Height", io.getStageOneHeight());
 		Logger.recordOutput("Elevator/State", getState().getStateString());
+		Logger.recordOutput("Elevator/Near Setpoint", io.nearTarget());
 	}
 
 	public boolean nearTarget() {
