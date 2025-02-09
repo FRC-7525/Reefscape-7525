@@ -16,6 +16,7 @@ public class MusicManager {
 	private final Orchestra orchestra = new Orchestra();
 	private final SendableChooser<Boolean> playMusic = new SendableChooser<>();
 	private final SendableChooser<String> songToPlay = new SendableChooser<>();
+	private final AudioConfigs configs = new AudioConfigs();
 
 	private final String SUBSYSTEM_NAME = "MusicManager";
 	private final String MUSIC_DIR = "music";
@@ -23,13 +24,12 @@ public class MusicManager {
 	private final AudioConfigs audioConfigs = new AudioConfigs();
 
 	private Boolean hasInstruments;
-
+  
 	private MusicManager() {
 		playMusic.setDefaultOption(SUBSYSTEM_NAME + "/Music Off", false);
 		playMusic.addOption(SUBSYSTEM_NAME + "/Music On", true);
 
 		songToPlay.setDefaultOption("Lalal", MUSIC_DIR + "/output.chrp");
-		
 		hasInstruments = false;
 		audioConfigs.AllowMusicDurDisable = true;
 	}
