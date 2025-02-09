@@ -8,6 +8,7 @@ import frc.robot.GlobalConstants;
 import java.util.function.Supplier;
 
 public class CoralerConstants {
+
 	public static final String SUBSYSTEM_NAME = "Coraler";
 
 	public static final double GEARING = 1;
