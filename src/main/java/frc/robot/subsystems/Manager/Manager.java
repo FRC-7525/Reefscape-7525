@@ -3,13 +3,12 @@ package frc.robot.Subsystems.Manager;
 import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.Subsystems.Manager.ManagerConstants.*;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.LED.LED;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
-
-import edu.wpi.first.wpilibj.DriverStation;
 
 public class Manager extends Subsystem<ManagerStates> {
 
@@ -95,7 +94,6 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 		// Auto
 		addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
-
 		// // Scoring Reef Auto Align
 		// addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
 		// addTrigger(ManagerStates.AUTO_ALIGN_FAR, ManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
