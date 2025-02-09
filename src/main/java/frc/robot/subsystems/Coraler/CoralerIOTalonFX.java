@@ -4,21 +4,15 @@ import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.*;
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
-import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CoralerIOTalonFX implements CoralerIO {
 
 	private final TalonFX velocityMotor;
 	private final PIDController velocityController;
-	private final DigitalInput gamePieceInitialIntakeDetector;
-	private final DigitalInput gamepieceCenteringDetector;
 	private double speedPoint;
 
 	public CoralerIOTalonFX() {
@@ -26,8 +20,6 @@ public class CoralerIOTalonFX implements CoralerIO {
 		velocityMotor.setNeutralMode(NeutralModeValue.Brake);
 
 		velocityController = VELOCITY_CONTROLLER.get();
-		gamePieceInitialIntakeDetector = new DigitalInput(Real.GAMEPIECE_INITIAL_DETECTOR_DIO_PORT);
-		gamepieceCenteringDetector = new DigitalInput(Real.GAMEPIECE_CENTERING_DETECTOR_DIO_PORT);
 		speedPoint = 0.0;
 
 		if (ROBOT_MODE == RobotMode.TESTING) {
@@ -47,26 +39,12 @@ public class CoralerIOTalonFX implements CoralerIO {
 	}
 
 	@Override
-	public boolean firstDetectorTripped() {
-		//TODO: Change back when beam break is acquired
-		return false;
-		// return gamePieceInitialIntakeDetector.get();
-	}
-
-	@Override
-	public boolean secondDetectorTripped() {
-		//TODO: Change back when beam break is acquired
-		return false;
-		// return gamepieceCenteringDetector.get();
-	}
-
-	@Override
 	public TalonFX getMotor() {
 		return velocityMotor;
 	}
 
 	@Override
 	public boolean currentLimitReached() {
-		return velocityMotor.getStatorCurrent().getValueAsDouble() > 30;
+		return velocityMotor.getStatorCurrent().getValue().in(Amp) > STATOR_CURRENT_SENSING_LIMIT;
 	}
 }

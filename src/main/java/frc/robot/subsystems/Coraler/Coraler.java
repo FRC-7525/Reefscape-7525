@@ -41,21 +41,8 @@ public class Coraler extends Subsystem<CoralerStates> {
 		io.updateInputs(inputs);
 		Logger.processInputs(SUBSYSTEM_NAME, inputs);
 
-		Logger.recordOutput(SUBSYSTEM_NAME + "/First Detector Tripped", io.firstDetectorTripped());
-		Logger.recordOutput(SUBSYSTEM_NAME + "/Second Detector Tripped", io.secondDetectorTripped());
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Stator Current", io.getMotor().getStatorCurrent().getValueAsDouble());
-	}
-
-	public boolean isEmpty() {
-		return !io.firstDetectorTripped() && !io.secondDetectorTripped();
-	}
-
-	public boolean justIntookGamepiece() {
-		return io.firstDetectorTripped();
-	}
-
-	public boolean gamepieceCentered() {
-		return io.secondDetectorTripped();
+		Logger.recordOutput(SUBSYSTEM_NAME + "/Current Sensed?", this.currentSenseGamepiece());
 	}
 
 	public boolean currentSenseGamepiece() {
@@ -64,5 +51,9 @@ public class Coraler extends Subsystem<CoralerStates> {
 
 	public TalonFX getMotor() {
 		return io.getMotor();
+	}
+
+	public double getStateTime() {
+		return getStateTime();
 	}
 }

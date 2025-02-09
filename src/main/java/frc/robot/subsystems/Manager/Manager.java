@@ -3,16 +3,13 @@ package frc.robot.Subsystems.Manager;
 import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.Subsystems.Manager.ManagerConstants.*;
 
-import frc.robot.Subsystems.Algaer.Algaer;
-import frc.robot.Subsystems.AutoAlign.AutoAlign;
-import frc.robot.Subsystems.Climber.Climber;
 import frc.robot.Subsystems.Coraler.Coraler;
-import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.LED.LED;
-import frc.robot.Subsystems.Vision.Vision;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
+
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class Manager extends Subsystem<ManagerStates> {
 
@@ -77,8 +74,8 @@ public class Manager extends Subsystem<ManagerStates> {
 		// addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
 		// Manual
 		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
-		addTrigger(ManagerStates.INTAKING_CORALER_AA_OFF, ManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.justIntookGamepiece() || coraler.currentSenseGamepiece());
-		addTrigger(ManagerStates.CENTERING_CORALER, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.gamepieceCentered() || getStateTime() > .15);
+		addTrigger(ManagerStates.INTAKING_CORALER_AA_OFF, ManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.currentSenseGamepiece());
+		addTrigger(ManagerStates.CENTERING_CORALER, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || getStateTime() > CORAL_CENTERING_TIME);
 
 		// // Intaking Algae
 		// addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
@@ -96,6 +93,9 @@ public class Manager extends Subsystem<ManagerStates> {
 		addTrigger(ManagerStates.IDLE, ManagerStates.TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
 		addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, DRIVER_CONTROLLER::getYButtonPressed);
 		addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
+		// Auto
+		addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
+
 		// // Scoring Reef Auto Align
 		// addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
 		// addTrigger(ManagerStates.AUTO_ALIGN_FAR, ManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);

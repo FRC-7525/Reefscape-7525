@@ -2,7 +2,6 @@ package frc.robot.Subsystems.Coraler;
 
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
-import edu.wpi.first.units.measure.AngularVelocity;
 import org.team7525.subsystem.SubsystemStates;
 
 public enum CoralerStates implements SubsystemStates {

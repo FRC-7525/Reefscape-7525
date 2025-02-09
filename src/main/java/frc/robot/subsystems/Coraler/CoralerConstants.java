@@ -1,18 +1,13 @@
 package frc.robot.Subsystems.Coraler;
 
-import static edu.wpi.first.units.Units.RotationsPerSecond;
-import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Time;
 import frc.robot.GlobalConstants;
 import java.util.function.Supplier;
 
 public class CoralerConstants {
-
-	// TODO: CHANGE CONSTANTS ONCE MECH CADS THE ROBOT
-
 	public static final String SUBSYSTEM_NAME = "Coraler";
 
 	public static final double GEARING = 1;
@@ -33,16 +28,17 @@ public class CoralerConstants {
 	public static final double CENTERING_VELOCITY = 0.2;
 	public static final double IDLE_VELOCITY = 0;
 
+	public static final double STATOR_CURRENT_SENSING_LIMIT = 30;
+
 	public static class Real {
 
 		public static final int WHEEL_MOTOR_CAN_ID = 20;
-		public static final int GAMEPIECE_CENTERING_DETECTOR_DIO_PORT = 1;
-		public static final int GAMEPIECE_INITIAL_DETECTOR_DIO_PORT = 2;
 	}
 
 	public static class Sim {
 
 		public static final int NUM_MOTORS = 1;
 		public static final double MOTOR_MOI = 0.00001;
+		public static final Time INTAKE_TIME = Seconds.of(0.3);
 	}
 }
