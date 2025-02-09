@@ -151,4 +151,14 @@ public class ElevatorIOReal implements ElevatorIO {
 	public Distance getCarriageHeight() {
 		return Meters.of(2 * (leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)));
 	}
+
+	@Override
+	public TalonFX getLeftMotor() {
+		return leftMotor;
+	}
+
+	@Override
+	public TalonFX getRightMotor() {
+		return rightMotor;
+	}
 }

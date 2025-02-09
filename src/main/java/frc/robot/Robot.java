@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Autonomous.AutoManager;
 import frc.robot.Subsystems.Manager.Manager;
+import frc.robot.Subsystems.MusicManager.MusicManager;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -19,6 +20,7 @@ public class Robot extends LoggedRobot {
 
 	private final Manager manager = Manager.getInstance();
 	private final AutoManager autoManager = AutoManager.getInstance();
+	private final MusicManager musicManager = MusicManager.getInstance();
 
 	@Override
 	public void robotInit() {
@@ -53,6 +55,8 @@ public class Robot extends LoggedRobot {
 	@Override
 	public void autonomousInit() {
 		CommandScheduler.getInstance().schedule(autoManager.getSelectedCommand());
+		musicManager.stopMusic();
+		musicManager.removeAllMotors();
 	}
 
 	@Override
@@ -64,16 +68,27 @@ public class Robot extends LoggedRobot {
 	}
 
 	@Override
-	public void teleopInit() {}
+	public void teleopInit() {
+		musicManager.stopMusic();
+		musicManager.removeAllMotors();
+	}
 
 	@Override
 	public void teleopPeriodic() {}
 
 	@Override
-	public void disabledInit() {}
+	public void disabledInit() {
+		if (musicManager.playMusicEnabled()) {
+			musicManager.addAllSubsystemInstruments();
+		}
+	}
 
 	@Override
-	public void disabledPeriodic() {}
+	public void disabledPeriodic() {
+		if (musicManager.playMusicEnabled()) {
+			musicManager.playMusic();
+		}
+	}
 
 	@Override
 	public void testInit() {}

@@ -1,5 +1,6 @@
 package frc.robot.Subsystems.Algaer;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import org.littletonrobotics.junction.AutoLog;
@@ -26,4 +27,8 @@ public interface AlgaerIO {
 	public Angle getAngle();
 
 	public boolean nearTarget();
+
+	public TalonFX getWheelMotor();
+
+	public TalonFX getPivotMotor();
 }

@@ -1,7 +1,6 @@
 package frc.robot.Autonomous;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Manager.Manager;
 import frc.robot.Subsystems.Manager.ManagerStates;
@@ -58,7 +57,7 @@ public class AutoCommands {
 
 		@Override
 		public boolean isFinished() {
-			return Coraler.getInstance().isEmpty();
+			return Manager.getInstance().getState() == ManagerStates.IDLE;
 		}
 	}
 

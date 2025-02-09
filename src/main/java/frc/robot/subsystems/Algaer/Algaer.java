@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import org.littletonrobotics.junction.Logger;
@@ -48,5 +49,13 @@ public class Algaer extends Subsystem<AlgaerStates> {
 			instance = new Algaer();
 		}
 		return instance;
+	}
+
+	public TalonFX getWheelMotor() {
+		return io.getWheelMotor();
+	}
+
+	public TalonFX getPivotMotor() {
+		return io.getPivotMotor();
 	}
 }
