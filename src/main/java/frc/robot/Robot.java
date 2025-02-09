@@ -83,15 +83,16 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void disabledInit() {
-		if (musicManager.playMusicEnabled()) {
-			musicManager.addAllSubsystemInstruments();
-		}
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		if (musicManager.playMusicEnabled()) {
 			musicManager.playMusic();
+		}
+
+		if (!musicManager.hasInstruments() && musicManager.playMusicEnabled()) {
+			musicManager.addAllSubsystemInstruments();
 		}
 	}
 
