@@ -7,11 +7,12 @@ package frc.robot;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Autonomous.AutoManager;
+import frc.robot.AutoManager.AutoManager;
+import frc.robot.FaultManager.FaultManager;
 import frc.robot.GlobalConstants.FaultManagerConstants;
-import frc.robot.Subsystems.FaultManager;
-import frc.robot.Subsystems.Manager.Manager;
-import frc.robot.Subsystems.MusicManager.MusicManager;
+import frc.robot.MusicManager.MusicManager;
+import frc.robot.SubsystemManager.SubsystemManager;
+
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -20,7 +21,7 @@ import org.team7525.misc.CommandsUtil;
 
 public class Robot extends LoggedRobot {
 
-	private final Manager manager = Manager.getInstance();
+	private final SubsystemManager manager = SubsystemManager.getInstance();
 	private final AutoManager autoManager = AutoManager.getInstance();
 	private final MusicManager musicManager = MusicManager.getInstance();
 

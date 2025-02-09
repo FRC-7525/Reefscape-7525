@@ -1,4 +1,4 @@
-package frc.robot.Subsystems;
+package frc.robot.FaultManager;
 
 public enum MiscDeviceTypes {
 	DIGITALINPUT,

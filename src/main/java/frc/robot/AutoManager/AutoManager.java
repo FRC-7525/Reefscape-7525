@@ -1,6 +1,4 @@
-package frc.robot.Autonomous;
-
-import static frc.robot.Autonomous.AutoConstants.*;
+package frc.robot.AutoManager;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -16,6 +14,9 @@ import frc.robot.GlobalConstants;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Drive.DriveConstants;
 import frc.robot.Subsystems.Elevator.Elevator;
+
+import static frc.robot.AutoManager.AutoConstants.*;
+
 import org.littletonrobotics.junction.Logger;
 
 public class AutoManager {

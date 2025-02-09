@@ -1,23 +1,20 @@
-package frc.robot.Subsystems;
+package frc.robot.FaultManager;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkBase.Faults;
 import com.revrobotics.spark.SparkMax;
-import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PWM;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonCamera;
-import org.team7525.misc.Elastic;
-import org.team7525.misc.Elastic.ElasticNotification;
-import org.team7525.misc.Elastic.ElasticNotification.NotificationLevel;
 
 public class FaultManager {
 
@@ -335,7 +332,7 @@ public class FaultManager {
 						break;
 					case PWM:
 						PWM pwm = device.getPWM();
-
+						
 						break;
 					default:
 						break;
