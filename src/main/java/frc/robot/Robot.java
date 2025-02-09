@@ -23,6 +23,7 @@ public class Robot extends LoggedRobot {
 	private final SubsystemManager manager = SubsystemManager.getInstance();
 	private final AutoManager autoManager = AutoManager.getInstance();
 	private final MusicManager musicManager = MusicManager.getInstance();
+	private final FaultManager faultManager = FaultManager.getInstance();
 
 	@Override
 	public void robotInit() {
@@ -53,6 +54,7 @@ public class Robot extends LoggedRobot {
 	public void robotPeriodic() {
 		CommandScheduler.getInstance().run();
 		manager.periodic();
+		faultManager.periodic();
 	}
 
 	@Override
@@ -94,7 +96,10 @@ public class Robot extends LoggedRobot {
 	}
 
 	@Override
-	public void testInit() {}
+	public void testInit() {
+		musicManager.stopMusic();
+		musicManager.removeAllMotors();
+	}
 
 	@Override
 	public void testPeriodic() {}

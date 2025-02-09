@@ -4,7 +4,6 @@ import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.FaultManager.FaultManager;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -17,7 +16,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private static SubsystemManager instance = new SubsystemManager();
 
 	private final Drive drive = Drive.getInstance();
-	private final FaultManager faultManager = FaultManager.getInstance();
 	// private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
@@ -154,7 +152,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Driver Reef Level", driverReefScoringLevel);
 
 		// Set States, drive and vision are rogue so you don't need to set state
-		faultManager.periodic();
 		elevator.setState(getState().getElevatorStateSupplier().get());
 		coraler.setState(getState().getCoralerState());
 		// algaer.setState(getState().getAlgaerState());
