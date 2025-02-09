@@ -4,7 +4,6 @@ import static frc.robot.Autonomous.AutoConstants.*;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.units.measure.Distance;
@@ -72,13 +71,26 @@ public class AutoManager {
 		NamedCommands.registerCommand("Transition L2", AutoCommands.GoToElevatorLevel.atLevel(2));
 		NamedCommands.registerCommand("Transition L1", AutoCommands.GoToElevatorLevel.atLevel(1));
 
-		NamedCommands.registerCommand("Return To Normal", getSelectedCommand());
+		NamedCommands.registerCommand("Return To Idle", AutoCommands.ReturnToIdle.get());
 
 		NamedCommands.registerCommand("Intake Coral", AutoCommands.IntakeCoral.getCoral());
 
 		// Autos
+
+		// Misc
 		autoChooser.setDefaultOption("Do Nothing", new PrintCommand("Do Nothing"));
+
+		// 1 Coral
+
+		// 2 Coral
+
+		// 3 Coral
+
+		// 4 Coral
 		autoChooser.addOption("4 Note", new PathPlannerAuto("4 Note Testing"));
+		// 5 Coral
+
+		// 6 Coral
 		autoChooser.addOption("6 Note", new PathPlannerAuto("6 coral auto (in theory)"));
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
@@ -97,9 +109,5 @@ public class AutoManager {
 		}
 
 		return autoChooser.getSelected();
-	}
-
-	public Command generateAuto(String startingLocation, boolean farOrCloseReef, boolean intakeLeftOrRightSide, String[] coralToScore) {
-		return new PathPlannerAuto("6 coral auto (in theory)");
 	}
 }

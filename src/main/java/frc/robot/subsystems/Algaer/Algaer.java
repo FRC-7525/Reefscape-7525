@@ -6,8 +6,6 @@ import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Translation3d;
-import frc.robot.Subsystems.Elevator.Elevator;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 

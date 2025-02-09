@@ -30,7 +30,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CJ to CIL"
+                  "pathName": "CJ to CILL"
                 }
               },
               {
@@ -49,7 +49,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CLI to CI"
+                  "pathName": "CILL to CI"
                 }
               },
               {
@@ -68,7 +68,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CI to CLI"
+                  "pathName": "CI to CILL"
                 }
               },
               {
@@ -87,7 +87,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CIL to CK"
+                  "pathName": "CILL to CK"
                 }
               },
               {
@@ -106,7 +106,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CK to CIL"
+                  "pathName": "CK to CILL"
                 }
               },
               {
@@ -125,7 +125,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CIL to CL"
+                  "pathName": "CILL to CL"
                 }
               },
               {
@@ -144,7 +144,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CL to CIL"
+                  "pathName": "CL to CILL"
                 }
               },
               {
@@ -163,7 +163,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CIL to CA"
+                  "pathName": "CILL to CA"
                 }
               },
               {
@@ -179,6 +179,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "6 Coral",
   "choreoAuto": false
 }
