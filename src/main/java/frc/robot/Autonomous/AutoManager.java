@@ -92,12 +92,15 @@ public class AutoManager {
 
 		// 4 Coral
 		autoChooser.addOption("C4 | UN1 | I, J, K, L", new PathPlannerAuto("C4, UN1, {I, J, K, L}"));
+		autoChooser.addOption("C4 | BN1 | C, D, E, F", new PathPlannerAuto("C4, BN1, { C, D, E, F}"));
 
 		// 5 Coral
 		autoChooser.addOption("C5 | UN1 | A, I, J, K, L", new PathPlannerAuto("C5, UN1, {A, I, J, K, L}"));
+		autoChooser.addOption("C5 | BN1 | B, C, D, E, F", new PathPlannerAuto("C5, BN1, { B, C, D, E, F}"));
 
 		// 6 Coral
 		autoChooser.addOption("C6 | UN1 | A, B, I, J, K, L", new PathPlannerAuto("C6, UN1, {A, B, I, J, K, L}"));
+		autoChooser.addOption("C6 | BN1 | A, B, C, D, E, F", new PathPlannerAuto("C6, BN1, {A, B, C, D, E, F}"));
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}

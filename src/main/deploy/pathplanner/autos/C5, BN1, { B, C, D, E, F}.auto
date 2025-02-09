@@ -11,7 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "UN1 to CI"
+                  "pathName": "BN1 to CF"
                 }
               },
               {
@@ -36,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CI to CILL"
+                  "pathName": "CF to CIRR"
                 }
               },
               {
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CILL to CJ"
+                  "pathName": "CIRR to CE"
                 }
               },
               {
@@ -80,7 +80,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CJ to CILL"
+                  "pathName": "CE to CIRR"
                 }
               },
               {
@@ -99,7 +99,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CILL to CK"
+                  "pathName": "CIRR to CD"
                 }
               },
               {
@@ -124,7 +124,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CK to CILL"
+                  "pathName": "CD to CIRR"
                 }
               },
               {
@@ -143,7 +143,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CILL to CL"
+                  "pathName": "CIRR to CC"
                 }
               },
               {
@@ -168,7 +168,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CL to CILL"
+                  "pathName": "CC to CIRR"
                 }
               },
               {
@@ -187,7 +187,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CILL to CA"
+                  "pathName": "CIRR to CB"
                 }
               },
               {
@@ -212,7 +212,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "CA to CILL"
+                  "pathName": "CB to CIRR"
                 }
               },
               {
@@ -222,37 +222,12 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CILL to CB"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Transition L4"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Score L4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "6 Coral",
+  "folder": "5 Coral",
   "choreoAuto": false
 }
