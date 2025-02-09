@@ -1,6 +1,6 @@
-package frc.robot.Autonomous;
+package frc.robot.AutoManager;
 
-import static frc.robot.Autonomous.AutoConstants.*;
+import static frc.robot.AutoManager.AutoConstants.*;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;

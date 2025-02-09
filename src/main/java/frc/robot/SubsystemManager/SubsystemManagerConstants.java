@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Manager;
+package frc.robot.SubsystemManager;
 
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public final class ManagerConstants {
+public final class SubsystemManagerConstants {
 
 	public static final String SUBSYSTEM_NAME = "Manager";
 

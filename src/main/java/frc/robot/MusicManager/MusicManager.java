@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.MusicManager;
+package frc.robot.MusicManager;
 
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.AudioConfigs;

@@ -1,7 +1,7 @@
-package frc.robot.Subsystems.Manager;
+package frc.robot.SubsystemManager;
 
 import static frc.robot.GlobalConstants.Controllers.*;
-import static frc.robot.Subsystems.Manager.ManagerConstants.*;
+import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Subsystems.Coraler.Coraler;
@@ -11,9 +11,9 @@ import frc.robot.Subsystems.LED.LED;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
-public class Manager extends Subsystem<ManagerStates> {
+public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
-	private static Manager instance = new Manager();
+	private static SubsystemManager instance = new SubsystemManager();
 
 	private final Drive drive = Drive.getInstance();
 	// private final Climber climber = Climber.getInstance();
@@ -31,10 +31,10 @@ public class Manager extends Subsystem<ManagerStates> {
 	public int hexagonTargetSide = 1;
 	public boolean scoringReefLeft = false;
 
-	private Manager() {
-		super("Manager", ManagerStates.IDLE);
+	private SubsystemManager() {
+		super("Manager", SubsystemManagerStates.IDLE);
 		// Un zero elevators (as in set the boolean to false for zeroed)
-		addRunnableTrigger(elevator::resetMotorsZeroed, () -> DRIVER_CONTROLLER.getBackButtonPressed() && getState() == ManagerStates.IDLE);
+		addRunnableTrigger(elevator::resetMotorsZeroed, () -> DRIVER_CONTROLLER.getBackButtonPressed() && getState() == SubsystemManagerStates.IDLE);
 
 		// // Toggling which source to AA to
 		// addRunnableTrigger(() -> this.leftSourceSelected = true, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
@@ -73,9 +73,9 @@ public class Manager extends Subsystem<ManagerStates> {
 		// addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
 		// addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
 		// Manual
-		addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
-		addTrigger(ManagerStates.INTAKING_CORALER_AA_OFF, ManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.currentSenseGamepiece());
-		addTrigger(ManagerStates.CENTERING_CORALER, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || getStateTime() > CORAL_CENTERING_TIME);
+		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
+		addTrigger(SubsystemManagerStates.INTAKING_CORALER_AA_OFF, SubsystemManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.currentSenseGamepiece());
+		addTrigger(SubsystemManagerStates.CENTERING_CORALER, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || getStateTime() > CORAL_CENTERING_TIME);
 
 		// // Intaking Algae
 		// addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
@@ -90,11 +90,11 @@ public class Manager extends Subsystem<ManagerStates> {
 		// addTrigger(ManagerStates.SCORING_PROCESSOR, ManagerStates.IDLE, DRIVER_CONTROLLER::getAButtonPressed);
 
 		// Scoring Reef Manual
-		addTrigger(ManagerStates.IDLE, ManagerStates.TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
-		addTrigger(ManagerStates.TRANSITIONING_SCORING_REEF, ManagerStates.SCORING_REEF_MANUAL, DRIVER_CONTROLLER::getYButtonPressed);
-		addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
+		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
+		addTrigger(SubsystemManagerStates.TRANSITIONING_SCORING_REEF, SubsystemManagerStates.SCORING_REEF_MANUAL, DRIVER_CONTROLLER::getYButtonPressed);
+		addTrigger(SubsystemManagerStates.SCORING_REEF_MANUAL, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 		// Auto
-		addTrigger(ManagerStates.SCORING_REEF_MANUAL, ManagerStates.IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
+		addTrigger(SubsystemManagerStates.SCORING_REEF_MANUAL, SubsystemManagerStates.IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		// // Scoring Reef Auto Align
 		// addTrigger(ManagerStates.IDLE, ManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
 		// addTrigger(ManagerStates.AUTO_ALIGN_FAR, ManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
@@ -106,9 +106,9 @@ public class Manager extends Subsystem<ManagerStates> {
 		// addTrigger(ManagerStates.ZEROING_ELEVATOR, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getBackButtonPressed() || elevator.motorsZeroed());
 	}
 
-	public static Manager getInstance() {
+	public static SubsystemManager getInstance() {
 		if (instance == null) {
-			instance = new Manager();
+			instance = new SubsystemManager();
 		}
 		return instance;
 	}
@@ -144,12 +144,12 @@ public class Manager extends Subsystem<ManagerStates> {
 
 	@Override
 	public void runState() {
-		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
-		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/State String", getState().getStateString());
-		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/Selected Reef Side", hexagonTargetSide);
-		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/Selected Reef Level", operatorReefScoringLevel);
-		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/Left Pose Selected", scoringReefLeft);
-		Logger.recordOutput(ManagerConstants.SUBSYSTEM_NAME + "/Driver Reef Level", driverReefScoringLevel);
+		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
+		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/State String", getState().getStateString());
+		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Selected Reef Side", hexagonTargetSide);
+		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Selected Reef Level", operatorReefScoringLevel);
+		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Left Pose Selected", scoringReefLeft);
+		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Driver Reef Level", driverReefScoringLevel);
 
 		// Set States, drive and vision are rogue so you don't need to set state
 		elevator.setState(getState().getElevatorStateSupplier().get());
@@ -171,7 +171,7 @@ public class Manager extends Subsystem<ManagerStates> {
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(6)) {
-			setState(ManagerStates.IDLE);
+			setState(SubsystemManagerStates.IDLE);
 		}
 	}
 }

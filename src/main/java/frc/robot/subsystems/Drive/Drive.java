@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.FaultManager.FaultManager;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
@@ -40,6 +41,8 @@ import org.team7525.subsystem.Subsystem;
 public class Drive extends Subsystem<DriveStates> {
 
 	private static Drive instance;
+
+	private FaultManager faultManager = FaultManager.getInstance();
 
 	private DriveIO driveIO;
 	private DriveIOInputsAutoLogged inputs = new DriveIOInputsAutoLogged();
@@ -67,6 +70,21 @@ public class Drive extends Subsystem<DriveStates> {
 
 		// Setup Path Planner
 		configurePathPlanner();
+
+		//Add Devices to Fault Manager
+		faultManager.addDevice(driveIO.getDrive().getPigeon2(), "Pigeon 2", "CANivore");
+		faultManager.addDevice(driveIO.getDrive().getModule(0).getDriveMotor(), "Front Left Drive Kraken", "CANivore");
+		faultManager.addDevice(driveIO.getDrive().getModule(0).getSteerMotor(), "Front Left Turn Falcon", "CANivore");
+		faultManager.addDevice(driveIO.getDrive().getModule(0).getEncoder(), "Front Left CANcoder", "CANivore");
+		faultManager.addDevice(driveIO.getDrive().getModule(1).getDriveMotor(), "Front Right Drive Kraken", "CANivore");
+		faultManager.addDevice(driveIO.getDrive().getModule(1).getSteerMotor(), "Front Right Turn Falcon", "CANivore");
+		faultManager.addDevice(driveIO.getDrive().getModule(1).getEncoder(), "Front Right CANcoder", "CANivore");
+		faultManager.addDevice(driveIO.getDrive().getModule(2).getDriveMotor(), "Back Left Drive Kraken", "CANivore");
+		faultManager.addDevice(driveIO.getDrive().getModule(2).getSteerMotor(), "Back Left Turn Falcon", "CANivore");
+		faultManager.addDevice(driveIO.getDrive().getModule(2).getEncoder(), "Back Left CANcoder", "CANivore");
+		faultManager.addDevice(driveIO.getDrive().getModule(3).getDriveMotor(), "Back Right Drive Kraken", "CANivore");
+		faultManager.addDevice(driveIO.getDrive().getModule(3).getSteerMotor(), "Back Right Turn Falcon", "CANivore");
+		faultManager.addDevice(driveIO.getDrive().getModule(3).getEncoder(), "Back Right CANcoder", "CANivore");
 
 		// Zero Gyro
 		addRunnableTrigger(

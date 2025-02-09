@@ -1,4 +1,4 @@
-package frc.robot.Autonomous;
+package frc.robot.AutoManager;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.*;

@@ -1,9 +1,9 @@
-package frc.robot.Autonomous;
+package frc.robot.AutoManager;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.SubsystemManager.SubsystemManager;
+import frc.robot.SubsystemManager.SubsystemManagerStates;
 import frc.robot.Subsystems.Elevator.Elevator;
-import frc.robot.Subsystems.Manager.Manager;
-import frc.robot.Subsystems.Manager.ManagerStates;
 
 public class AutoCommands {
 
@@ -20,7 +20,7 @@ public class AutoCommands {
 
 	public class IntakeCoral extends Command {
 
-		private final Manager manager = Manager.getInstance();
+		private final SubsystemManager manager = SubsystemManager.getInstance();
 
 		public static IntakeCoral getCoral() {
 			return AutoCommands.getInstance().new IntakeCoral();
@@ -28,12 +28,12 @@ public class AutoCommands {
 
 		@Override
 		public void initialize() {
-			manager.setState(ManagerStates.INTAKING_CORALER_AA_OFF);
+			manager.setState(SubsystemManagerStates.INTAKING_CORALER_AA_OFF);
 		}
 
 		@Override
 		public boolean isFinished() {
-			return manager.getState() != ManagerStates.INTAKING_CORALER_AA_OFF;
+			return manager.getState() != SubsystemManagerStates.INTAKING_CORALER_AA_OFF;
 		}
 	}
 
@@ -51,13 +51,13 @@ public class AutoCommands {
 
 		@Override
 		public void initialize() {
-			Manager.getInstance().setDriverReefScoringLevel(scoringLevel);
-			Manager.getInstance().setState(ManagerStates.SCORING_REEF_MANUAL);
+			SubsystemManager.getInstance().setDriverReefScoringLevel(scoringLevel);
+			SubsystemManager.getInstance().setState(SubsystemManagerStates.SCORING_REEF_MANUAL);
 		}
 
 		@Override
 		public boolean isFinished() {
-			return Manager.getInstance().getState() == ManagerStates.IDLE;
+			return SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE;
 		}
 	}
 
@@ -77,8 +77,8 @@ public class AutoCommands {
 
 		@Override
 		public void initialize() {
-			Manager.getInstance().setDriverReefScoringLevel(scoringLevel);
-			Manager.getInstance().setState(ManagerStates.TRANSITIONING_SCORING_REEF);
+			SubsystemManager.getInstance().setDriverReefScoringLevel(scoringLevel);
+			SubsystemManager.getInstance().setState(SubsystemManagerStates.TRANSITIONING_SCORING_REEF);
 		}
 
 		@Override
@@ -89,7 +89,7 @@ public class AutoCommands {
 
 	public class ReturnToIdle extends Command {
 
-		private final Manager manager = Manager.getInstance();
+		private final SubsystemManager manager = SubsystemManager.getInstance();
 
 		public static ReturnToIdle get() {
 			return AutoCommands.getInstance().new ReturnToIdle();
@@ -97,12 +97,12 @@ public class AutoCommands {
 
 		@Override
 		public void initialize() {
-			manager.setState(ManagerStates.IDLE);
+			manager.setState(SubsystemManagerStates.IDLE);
 		}
 
 		@Override
 		public boolean isFinished() {
-			return manager.getState() == ManagerStates.IDLE;
+			return manager.getState() == SubsystemManagerStates.IDLE;
 		}
 	}
 }
