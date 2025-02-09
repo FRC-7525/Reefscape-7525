@@ -37,7 +37,7 @@ public class CoralerIOSim implements CoralerIO {
 
 	@Override
 	public void setVelocity(double speedPoint) {
-		motorSim.setInputVoltage(speedPoint * 12);
+		motorSim.setInputVoltage(speedPoint * SET_TO_VOLTS_CF);
 	}
 
 	@Override

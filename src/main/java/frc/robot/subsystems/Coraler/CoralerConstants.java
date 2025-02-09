@@ -14,6 +14,8 @@ public class CoralerConstants {
 
 	public static final Time DEBOUNCE_TIME = Seconds.of(0.05);
 
+	public static final double SET_TO_VOLTS_CF = 12;
+
 	public static final Supplier<PIDController> VELOCITY_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(1, 0, 0);
