@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Autonomous.AutoManager;
@@ -41,6 +42,8 @@ public class Robot extends LoggedRobot {
 		DriverStation.silenceJoystickConnectionWarning(true);
 
 		CommandScheduler.getInstance().unregisterAllSubsystems();
+
+		FollowPathCommand.warmupCommand().schedule();
 	}
 
 	@Override

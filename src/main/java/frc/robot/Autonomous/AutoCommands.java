@@ -33,7 +33,7 @@ public class AutoCommands {
 
 		@Override
 		public boolean isFinished() {
-			return manager.getState() == ManagerStates.IDLE;
+			return manager.getState() != ManagerStates.INTAKING_CORALER_AA_OFF;
 		}
 	}
 
@@ -84,6 +84,25 @@ public class AutoCommands {
 		@Override
 		public boolean isFinished() {
 			return Elevator.getInstance().nearTarget();
+		}
+	}
+
+	public class ReturnToIdle extends Command {
+
+		private final Manager manager = Manager.getInstance();
+
+		public static ReturnToIdle get() {
+			return AutoCommands.getInstance().new ReturnToIdle();
+		}
+
+		@Override
+		public void initialize() {
+			manager.setState(ManagerStates.IDLE);
+		}
+
+		@Override
+		public boolean isFinished() {
+			return manager.getState() == ManagerStates.IDLE;
 		}
 	}
 }

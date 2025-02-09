@@ -5,6 +5,7 @@ import static edu.wpi.first.units.Units.*;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.Time;
+import java.util.HashMap;
 
 public class AutoConstants {
 
@@ -23,5 +24,30 @@ public class AutoConstants {
 		// Calculate the vertical center of gravity
 		Distance zCG = Meters.of((CHASSIS_CG.times(CHASSIS_MASS).plus(elevatorCG.times(ELEVATOR_MASS))).div(TOTAL_MASS_LBS).magnitude());
 		return zCG;
+	}
+
+	public static class AutoPaths {
+
+		public static class PathType {
+
+			String startingLocation;
+			String endingLocation;
+
+			private PathType(String startingLocation, String endingLocation) {
+				this.startingLocation = startingLocation;
+				this.endingLocation = endingLocation;
+			}
+
+			public PathType from(String startingLocation, String endingLocation) {
+				return new PathType(startingLocation, endingLocation);
+			}
+		}
+
+		public static class IntakingCoral {
+
+			HashMap<String, String> pathFiles = new HashMap<String, String>();
+		}
+
+		public static class ScoringReef {}
 	}
 }

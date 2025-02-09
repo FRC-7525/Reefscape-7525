@@ -71,14 +71,36 @@ public class AutoManager {
 		NamedCommands.registerCommand("Transition L2", AutoCommands.GoToElevatorLevel.atLevel(2));
 		NamedCommands.registerCommand("Transition L1", AutoCommands.GoToElevatorLevel.atLevel(1));
 
-		NamedCommands.registerCommand("Return To Normal", getSelectedCommand());
+		NamedCommands.registerCommand("Return To Idle", AutoCommands.ReturnToIdle.get());
 
 		NamedCommands.registerCommand("Intake Coral", AutoCommands.IntakeCoral.getCoral());
 
 		// Autos
+
+		// Misc
 		autoChooser.setDefaultOption("Do Nothing", new PrintCommand("Do Nothing"));
-		autoChooser.addOption("4 Note", new PathPlannerAuto("4 Note Testing"));
-		autoChooser.addOption("6 Note", new PathPlannerAuto("6 coral auto (in theory)"));
+		autoChooser.addOption("Cross Line", new PathPlannerAuto("Cross Line"));
+		autoChooser.addOption("PID Tuning", new PathPlannerAuto("PID Tuning"));
+
+		// 1 Coral
+		autoChooser.addOption("C1 | BN1 | G", new PathPlannerAuto("C1, BN1, G"));
+		autoChooser.addOption("C1 | UN1 | H", new PathPlannerAuto("C1, UN1, H"));
+
+		// 2 Coral
+
+		// 3 Coral
+
+		// 4 Coral
+		autoChooser.addOption("C4 | UN1 | I, J, K, L", new PathPlannerAuto("C4, UN1, {I, J, K, L}"));
+		autoChooser.addOption("C4 | BN1 | C, D, E, F", new PathPlannerAuto("C4, BN1, { C, D, E, F}"));
+
+		// 5 Coral
+		autoChooser.addOption("C5 | UN1 | A, I, J, K, L", new PathPlannerAuto("C5, UN1, {A, I, J, K, L}"));
+		autoChooser.addOption("C5 | BN1 | B, C, D, E, F", new PathPlannerAuto("C5, BN1, { B, C, D, E, F}"));
+
+		// 6 Coral
+		autoChooser.addOption("C6 | UN1 | A, B, I, J, K, L", new PathPlannerAuto("C6, UN1, {A, B, I, J, K, L}"));
+		autoChooser.addOption("C6 | BN1 | A, B, C, D, E, F", new PathPlannerAuto("C6, BN1, {A, B, C, D, E, F}"));
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
