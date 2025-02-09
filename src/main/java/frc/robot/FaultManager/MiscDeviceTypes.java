@@ -1,8 +1,6 @@
 package frc.robot.FaultManager;
 
 public enum MiscDeviceTypes {
-	DIGITALINPUT,
-	DUTYCYCLEENCODER,
-	PHOTONCAMERA,
-	PWM,
+	DUTY_CYCLE_ENCODER,
+	PHOTON_CAMERA
 }

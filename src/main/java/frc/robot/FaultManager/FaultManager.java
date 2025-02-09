@@ -5,9 +5,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkBase.Faults;
 import com.revrobotics.spark.SparkMax;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.PWM;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -140,48 +138,25 @@ public class FaultManager {
 	}
 
 	public class MiscDevice extends Device {
-
-		private DigitalInput digitalInput;
 		private DutyCycleEncoder dutyCycleEncoder;
 		private PhotonCamera photonCamera;
-		private PWM pwmDevice;
 
 		public MiscDeviceTypes deviceType;
 
-		public MiscDevice(DigitalInput digitalInput, String name) {
-			super(name);
-			this.deviceType = MiscDeviceTypes.DIGITALINPUT;
-			this.digitalInput = digitalInput;
-		}
-
 		public MiscDevice(DutyCycleEncoder dutyCycleEncoder, String name) {
 			super(name);
-			this.deviceType = MiscDeviceTypes.DUTYCYCLEENCODER;
+			this.deviceType = MiscDeviceTypes.DUTY_CYCLE_ENCODER;
 			this.dutyCycleEncoder = dutyCycleEncoder;
 		}
 
 		public MiscDevice(PhotonCamera photonCamera, String name) {
 			super(name);
-			this.deviceType = MiscDeviceTypes.PHOTONCAMERA;
+			this.deviceType = MiscDeviceTypes.PHOTON_CAMERA;
 			this.photonCamera = photonCamera;
 		}
 
-		public MiscDevice(PWM pwm, String name) {
-			super(name);
-			this.deviceType = MiscDeviceTypes.PWM;
-			this.pwmDevice = pwm;
-		}
-
-		public DigitalInput getDigitalInput() {
-			if (deviceType != MiscDeviceTypes.DIGITALINPUT) {
-				throw new Error("This device is not a Digital Input");
-			}
-
-			return this.digitalInput;
-		}
-
 		public PhotonCamera getPhotonCamera() {
-			if (deviceType != MiscDeviceTypes.PHOTONCAMERA) {
+			if (deviceType != MiscDeviceTypes.PHOTON_CAMERA) {
 				throw new Error("This device is not a Photon Camera");
 			}
 
@@ -189,19 +164,11 @@ public class FaultManager {
 		}
 
 		public DutyCycleEncoder getDutyCycleEncoder() {
-			if (deviceType != MiscDeviceTypes.DUTYCYCLEENCODER) {
+			if (deviceType != MiscDeviceTypes.DUTY_CYCLE_ENCODER) {
 				throw new Error("This device is not a Duty Cycle Encoder");
 			}
 
 			return this.dutyCycleEncoder;
-		}
-
-		public PWM getPWM() {
-			if (deviceType != MiscDeviceTypes.PWM) {
-				throw new Error("This device is not a PWM");
-			}
-
-			return this.pwmDevice;
 		}
 	}
 
@@ -305,15 +272,9 @@ public class FaultManager {
 				}
 			}
 
-			// TODO: I have no clue what faults to put here
 			for (MiscDevice device : miscDevices) {
 				switch (device.deviceType) {
-					case DIGITALINPUT:
-						DigitalInput dio = device.getDigitalInput();
-						// TODO: IDK WHAT FAULTS TO PUT HERE
-
-						break;
-					case DUTYCYCLEENCODER:
+					case DUTY_CYCLE_ENCODER:
 						DutyCycleEncoder dutyCycleEncoder = device.getDutyCycleEncoder();
 
 						device.updateFault("Connection Fault", dutyCycleEncoder.isConnected());
@@ -321,16 +282,12 @@ public class FaultManager {
 						device.alive = dutyCycleEncoder.isConnected();
 
 						break;
-					case PHOTONCAMERA:
+					case PHOTON_CAMERA:
 						PhotonCamera photonCamera = device.getPhotonCamera();
 
 						device.updateFault("Connection Fault", photonCamera.isConnected());
 
 						device.alive = photonCamera.isConnected();
-
-						break;
-					case PWM:
-						PWM pwm = device.getPWM();
 
 						break;
 					default:
@@ -391,10 +348,6 @@ public class FaultManager {
 	}
 
 	// Adding Misc Devices
-	public void addDevice(DigitalInput digitalInput, String name) {
-		miscDevices.add(new MiscDevice(digitalInput, name));
-	}
-
 	public void addDevice(DutyCycleEncoder dutyCycleEncoder, String name) {
 		miscDevices.add(new MiscDevice(dutyCycleEncoder, name));
 	}
@@ -403,7 +356,4 @@ public class FaultManager {
 		miscDevices.add(new MiscDevice(photonCamera, name));
 	}
 
-	public void addDevice(PWM pwm, String name) {
-		miscDevices.add(new MiscDevice(pwm, name));
-	}
 }
