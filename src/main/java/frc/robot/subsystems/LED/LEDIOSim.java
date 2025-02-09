@@ -1,11 +1,13 @@
 package frc.robot.Subsystems.LED;
 
+import static frc.robot.Subsystems.LED.LEDConstants.*;
+
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.simulation.PWMSim;
 
 public class LEDIOSim implements LEDIO {
 
-	private final PWM led = new PWM(0);
+	private final PWM led = new PWM(LED_PWM_PORT);
 	private final PWMSim ledSim = new PWMSim(led);
 	private int setSpeed = -99;
 

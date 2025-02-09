@@ -4,9 +4,8 @@ import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.SIMULATION_PERIOD;
 import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
-import com.revrobotics.sim.SparkMaxSim;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -15,17 +14,18 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
+import frc.robot.Subsystems.Algaer.AlgaerConstants.Real;
 
 public class AlgaerIOSim implements AlgaerIO {
 
 	private SingleJointedArmSim pivotSim;
 
 	private DCMotorSim wheelMotorSim;
-	private SparkMax dummyWheelSpark;
-	private SparkMax dummyPivotSpark;
+	private TalonFX wheelMotor;
+	private TalonFX pivotMotor;
 
-	private SparkMaxSim wheelSparkSim;
-	private SparkMaxSim pivotSparkSim;
+	private TalonFXSimState wheelMotorSimState;
+	private TalonFXSimState pivotMotorSimState;
 
 	private PIDController pivotController;
 	private PIDController wheelSpeedController;
@@ -34,23 +34,14 @@ public class AlgaerIOSim implements AlgaerIO {
 	private double pivotPositionSetpoint;
 
 	public AlgaerIOSim() {
-		pivotSim = new SingleJointedArmSim(
-			DCMotor.getNEO(AlgaerConstants.Sim.NUM_PIVOT_MOTORS),
-			AlgaerConstants.Sim.PIVOT_GEARING,
-			AlgaerConstants.Sim.PIVOT_MOI.in(KilogramSquareMeters),
-			AlgaerConstants.Sim.PIVOT_ARM_LENGTH.in(Meters),
-			AlgaerConstants.Sim.MIN_PIVOT_ANGLE.in(Radians),
-			AlgaerConstants.Sim.MAX_PIVOT_ANGLE.in(Radians),
-			false,
-			AlgaerConstants.Sim.STARTING_PIVOT_ANGLE.in(Radians)
-		);
+		pivotSim = new SingleJointedArmSim(DCMotor.getNEO(AlgaerConstants.Sim.NUM_PIVOT_MOTORS), OVERALL_GEARING, Sim.PIVOT_MOI.in(KilogramSquareMeters), Sim.PIVOT_ARM_LENGTH.in(Meters), Sim.MIN_PIVOT_ANGLE.in(Radians), Sim.MAX_PIVOT_ANGLE.in(Radians), false, Sim.STARTING_PIVOT_ANGLE.in(Radians));
 
-		wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS), AlgaerConstants.Sim.WHEEL_MOTOR_MOI.in(KilogramSquareMeters), AlgaerConstants.Sim.WHEEL_MOTOR_GEARING), DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS));
+		wheelMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getKrakenX60(AlgaerConstants.Sim.NUM_WHEEL_MOTORS), AlgaerConstants.Sim.WHEEL_MOTOR_MOI.in(KilogramSquareMeters), AlgaerConstants.Sim.WHEEL_MOTOR_GEARING), DCMotor.getKrakenX60(AlgaerConstants.Sim.NUM_WHEEL_MOTORS));
 
-		dummyWheelSpark = new SparkMax(Real.WHEEL_MOTOR_CANID, MotorType.kBrushless);
-		dummyPivotSpark = new SparkMax(Real.PIVOT_MOTOR_CANID, MotorType.kBrushless);
-		wheelSparkSim = new SparkMaxSim(dummyWheelSpark, DCMotor.getNEO(AlgaerConstants.Sim.NUM_WHEEL_MOTORS));
-		pivotSparkSim = new SparkMaxSim(dummyPivotSpark, DCMotor.getNEO(AlgaerConstants.Sim.NUM_PIVOT_MOTORS));
+		wheelMotor = new TalonFX(Real.WHEEL_MOTOR_CANID);
+		pivotMotor = new TalonFX(Real.PIVOT_MOTOR_CANID);
+		wheelMotorSimState = new TalonFXSimState(wheelMotor);
+		pivotMotorSimState = new TalonFXSimState(pivotMotor);
 
 		pivotController = PIVOT_CONTROLLER.get();
 		wheelSpeedController = WHEEL_CONTROLLER.get();
@@ -69,11 +60,11 @@ public class AlgaerIOSim implements AlgaerIO {
 		input.pivotPosition = Units.radiansToDegrees(pivotSim.getAngleRads());
 		input.pivotSetpoint = pivotPositionSetpoint;
 
-		wheelSparkSim.setVelocity(wheelMotorSim.getAngularVelocityRPM() / 60);
-		wheelSparkSim.setPosition(wheelMotorSim.getAngularPositionRotations());
+		wheelMotorSimState.setRotorVelocity(wheelMotorSim.getAngularVelocity());
+		wheelMotorSimState.setRawRotorPosition(wheelMotorSim.getAngularPosition());
 
-		pivotSparkSim.setVelocity(Units.radiansToRotations(pivotSim.getVelocityRadPerSec()));
-		pivotSparkSim.setPosition(Units.radiansToRotations(pivotSim.getAngleRads()));
+		pivotMotorSimState.setRotorVelocity(RadiansPerSecond.of(pivotSim.getVelocityRadPerSec() / OVERALL_GEARING));
+		pivotMotorSimState.setRawRotorPosition(Radians.of(pivotSim.getAngleRads() / OVERALL_GEARING));
 	}
 
 	@Override
@@ -90,6 +81,21 @@ public class AlgaerIOSim implements AlgaerIO {
 
 	@Override
 	public boolean nearTarget() {
-		return ((Math.abs(Units.radiansToDegrees(pivotSim.getAngleRads()) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees)) && (Math.abs(Units.radiansToRotations(wheelMotorSim.getAngularVelocityRadPerSec()) - wheelSpeedSetpoint) < WHEEL_TOLERANCE.in(RotationsPerSecond)));
+		return (Math.abs(Units.radiansToDegrees(pivotSim.getAngleRads()) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees));
+	}
+
+	@Override
+	public Angle getAngle() {
+		return Radians.of(pivotSim.getAngleRads());
+	}
+
+	@Override
+	public TalonFX getWheelMotor() {
+		return wheelMotor;
+	}
+
+	@Override
+	public TalonFX getPivotMotor() {
+		return pivotMotor;
 	}
 }

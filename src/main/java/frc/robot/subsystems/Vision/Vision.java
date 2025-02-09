@@ -22,7 +22,6 @@ public class Vision extends Subsystem<VisionStates> {
 			case REAL -> new VisionIOReal();
 			case SIM -> new VisionIOSim();
 			case TESTING -> new VisionIO() {};
-			case REPLAY -> new VisionIOSim();
 		};
 		this.drive = Drive.getInstance();
 	}

@@ -9,8 +9,7 @@ public enum LEDStates implements SubsystemStates {
 	PURPLE("Purple", 2000),
 	BLUE("Blue", 2500),
 	YELLOW("Yellow", 3000),
-	WHITE("White", 3500),
-	OFF("Off", 3800);
+	WHITE("White", 3500);
 
 	private int pwmSignal;
 	private String stateString;

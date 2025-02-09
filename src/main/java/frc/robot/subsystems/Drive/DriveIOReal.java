@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Drive;
 
 import static frc.robot.Subsystems.Drive.TunerConstants.*;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -68,5 +69,31 @@ public class DriveIOReal implements DriveIO {
 	@Override
 	public void addVisionMeasurement(Pose2d pose, double timestamp, Matrix<N3, N1> standardDeviaton) {
 		drivetrain.addVisionMeasurement(pose, timestamp, standardDeviaton);
+	}
+
+	/**
+	 * Gets the drive motors for the SwerveDrivetrain.
+	 * @return An array of TalonFX objects representing the drive motors.
+	 */
+	@Override
+	public TalonFX[] getDriveMotors() {
+		TalonFX[] motors = new TalonFX[drivetrain.getModules().length];
+		for (int i = 0; i < drivetrain.getModules().length; i++) {
+			motors[i] = drivetrain.getModules()[i].getDriveMotor();
+		}
+		return motors;
+	}
+
+	/**
+	 * Gets the steer motors for the SwerveDrivetrain.
+	 * @return An array of TalonFX objects representing the steer motors.
+	 */
+	@Override
+	public TalonFX[] getSteerMotors() {
+		TalonFX[] motors = new TalonFX[drivetrain.getModules().length];
+		for (int i = 0; i < drivetrain.getModules().length; i++) {
+			motors[i] = drivetrain.getModules()[i].getSteerMotor();
+		}
+		return motors;
 	}
 }

@@ -3,36 +3,40 @@ package frc.robot.Subsystems.Drive;
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.*;
 import static frc.robot.GlobalConstants.Controllers.*;
-import static frc.robot.GlobalConstants.Drive.*;
+import static frc.robot.Subsystems.Drive.DriveConstants.*;
 import static frc.robot.Subsystems.Drive.TunerConstants.kSpeedAt12Volts;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.DriveFeedforwards;
-import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.GlobalConstants;
 import frc.robot.Subsystems.FaultManager;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
+import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 import org.littletonrobotics.junction.Logger;
-import org.team7525.misc.LocalADStarAK;
 import org.team7525.subsystem.Subsystem;
 
 public class Drive extends Subsystem<DriveStates> {
@@ -46,9 +50,11 @@ public class Drive extends Subsystem<DriveStates> {
 	private boolean robotMirrored = false;
 	private Pose2d lastPose = new Pose2d();
 	private double lastTime = 0;
+	private Angle lastHeading;
 	private final SwerveRequest.SysIdSwerveTranslation translationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
 	private final SwerveRequest.SysIdSwerveSteerGains steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
 	private final SwerveRequest.SysIdSwerveRotation rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
+	private final PIDController headingCorrectionController = new PIDController(0.1, 0, 0);
 
 	/**
 	 * Constructs a new Drive subsystem with the given DriveIO.
@@ -61,7 +67,6 @@ public class Drive extends Subsystem<DriveStates> {
 			case REAL -> new DriveIOReal();
 			case SIM -> new DriveIOSim();
 			case TESTING -> new DriveIOReal();
-			case REPLAY -> new DriveIOSim();
 		};
 
 		// Setup Path Planner
@@ -90,16 +95,16 @@ public class Drive extends Subsystem<DriveStates> {
 			DRIVER_CONTROLLER::getStartButtonPressed
 		);
 
-		// Field to relative and whatnot
-		addTrigger(DriveStates.FIELD_RELATIVE, DriveStates.ROBOT_RELATIVE, DRIVER_CONTROLLER::getBackButtonPressed);
-		addTrigger(DriveStates.ROBOT_RELATIVE, DriveStates.FIELD_RELATIVE, DRIVER_CONTROLLER::getBackButtonPressed);
+		// Wheel Radius Characterization (no I didn't test it in sim, banks said it works)
+		addRunnableTrigger(
+			() -> {
+				CommandScheduler.getInstance().cancelAll();
+				CommandScheduler.getInstance().schedule(WheelRadiusCharacterization.getInstance().getWheelRadiusCharacterizationCommand(-1, this));
+			},
+			TEST_CONTROLLER::getRightBumperButtonPressed
+		);
 
-		// Locking Wheels
-		addTrigger(DriveStates.FIELD_RELATIVE, DriveStates.LOCKING_WHEELS_FIELD, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
-		addTrigger(DriveStates.LOCKING_WHEELS_FIELD, DriveStates.FIELD_RELATIVE, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
-
-		addTrigger(DriveStates.ROBOT_RELATIVE, DriveStates.LOCKING_WHEELS_ROBOT, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
-		addTrigger(DriveStates.LOCKING_WHEELS_ROBOT, DriveStates.ROBOT_RELATIVE, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
+		this.lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
 	}
 
 	/**
@@ -123,14 +128,14 @@ public class Drive extends Subsystem<DriveStates> {
 		if (!robotMirrored || DriverStation.isDisabled()) {
 			DriverStation.getAlliance()
 				.ifPresent(allianceColor -> {
-					driveIO.getDrive().setOperatorPerspectiveForward(allianceColor == Alliance.Red ? GlobalConstants.Drive.RED_ALLIANCE_PERSPECTIVE_ROTATION : GlobalConstants.Drive.BLUE_ALLIANCE_PERSPECTIVE_ROTATION);
+					driveIO.getDrive().setOperatorPerspectiveForward(allianceColor == Alliance.Red ? RED_ALLIANCE_PERSPECTIVE_ROTATION : BLUE_ALLIANCE_PERSPECTIVE_ROTATION);
 					robotMirrored = true;
 				});
 		}
 		logOutputs(driveIO.getDrive().getState());
 
 		// Otherwise it will try to force wheels to stop in auto
-		if (!DriverStation.isAutonomous() && AutoAlign.getInstance().getState() == AutoAlignStates.OFF) {
+		if (!DriverStation.isAutonomous() && AutoAlign.getInstance().getState() == AutoAlignStates.OFF && !WheelRadiusCharacterization.getInstance().isCharacterizationActive()) {
 			getState().driveRobot();
 		}
 	}
@@ -162,8 +167,16 @@ public class Drive extends Subsystem<DriveStates> {
 	 * @param yVelocity       The desired y-axis velocity.
 	 * @param angularVelocity The desired angular velocity.
 	 */
-	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity) {
-		driveIO.setControl(new SwerveRequest.FieldCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(angularVelocity).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
+	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity, boolean useHeadingCorrection) {
+		double omega = angularVelocity;
+		if (useHeadingCorrection) {
+			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
+				omega = headingCorrectionController.calculate(driveIO.getDrive().getState().Pose.getRotation().getRadians(), lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
+			} else {
+				lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
+			}
+		}
+		driveIO.setControl(new SwerveRequest.FieldCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(omega).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
 	}
 
 	/**
@@ -256,7 +269,7 @@ public class Drive extends Subsystem<DriveStates> {
 
 	@Override
 	public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-		switch (GlobalConstants.Drive.SYS_ID_MODE) {
+		switch (SYS_ID_MODE) {
 			case ROTATION:
 				return sysIdRoutineRotation.quasistatic(direction);
 			case TRANSLATION:
@@ -270,7 +283,7 @@ public class Drive extends Subsystem<DriveStates> {
 
 	@Override
 	public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-		switch (GlobalConstants.Drive.SYS_ID_MODE) {
+		switch (SYS_ID_MODE) {
 			case ROTATION:
 				return sysIdRoutineRotation.dynamic(direction);
 			case TRANSLATION:
@@ -305,6 +318,26 @@ public class Drive extends Subsystem<DriveStates> {
 		return driveIO.getDrive().getState().Speeds;
 	}
 
+	public LinearVelocity getVelocity() {
+		return MetersPerSecond.of(Math.hypot(driveIO.getDrive().getState().Speeds.vxMetersPerSecond, driveIO.getDrive().getState().Speeds.vyMetersPerSecond));
+	}
+
+	public Pigeon2 getPigeon2() {
+		return driveIO.getDrive().getPigeon2();
+	}
+
+	public TalonFX[] getDriveMotors() {
+		return driveIO.getDriveMotors();
+	}
+
+	public TalonFX[] getSteerMotors() {
+		return driveIO.getSteerMotors();
+	}
+
+	public TunerSwerveDrivetrain getDriveTrain() {
+		return driveIO.getDrive();
+	}
+
 	public void driveAutoAlign(ApplyFieldSpeeds fieldSpeeds, double[] moduleForcesX, double[] moduleForcesY) {
 		driveIO
 			.getDrive()
@@ -328,15 +361,6 @@ public class Drive extends Subsystem<DriveStates> {
 			() -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
 			this // Reference to this subsystem to set requirements
 		);
-
-		// Log Relevant Path Planner Stufff
-		Pathfinding.setPathfinder(new LocalADStarAK());
-		PathPlannerLogging.setLogActivePathCallback(activePath -> {
-			Logger.recordOutput(SUBSYSTEM_NAME + "/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
-		});
-		PathPlannerLogging.setLogTargetPoseCallback(targetPose -> {
-			Logger.recordOutput(SUBSYSTEM_NAME + "/TrajectorySetpoint", targetPose);
-		});
 	}
 
 	public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {

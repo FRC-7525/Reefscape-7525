@@ -4,6 +4,7 @@ import static frc.robot.Subsystems.Manager.ManagerConstants.*;
 
 import frc.robot.Subsystems.Algaer.AlgaerStates;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
+import frc.robot.Subsystems.Climber.ClimberStates;
 import frc.robot.Subsystems.Coraler.CoralerStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.LED.LEDStates;
@@ -12,22 +13,23 @@ import java.util.function.Supplier;
 import org.team7525.subsystem.SubsystemStates;
 
 public enum ManagerStates implements SubsystemStates {
-	IDLE("Idle", () -> ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.OFF),
-	CLIMBING("Climbing", () -> ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.WHITE),
-	INTAKING_ALGAE_LOW("Intaking Algae Low", () -> ElevatorStates.ALGAE_LOW, CoralerStates.IDLE, AlgaerStates.INTAKING, () -> AutoAlignStates.OFF, LEDStates.BLUE),
-	INTAKING_ALGAE_HIGH("Intaking Algae High", () -> ElevatorStates.ALGAE_HIGH, CoralerStates.IDLE, AlgaerStates.INTAKING, () -> AutoAlignStates.OFF, LEDStates.BLUE),
-	GOING_PROCESSOR("Going to Processor", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.GOING_TO_SHOOT, () -> AutoAlignStates.OFF, LEDStates.GREEN),
-	SCORING_PROCESSOR("Scoring at Processor", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.SHOOTING, () -> AutoAlignStates.OFF, LEDStates.GREEN),
-	HOLDING_ALGAE("Holding Algae", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.HOLDING_ALGAE, () -> AutoAlignStates.OFF, LEDStates.GREEN),
+	IDLE("Idle", () -> ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.GREEN, ClimberStates.DOWN),
+	CLIMBING("Climbing", () -> ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.WHITE, ClimberStates.UP),
+	INTAKING_ALGAE_LOW("Intaking Algae Low", () -> ElevatorStates.ALGAE_LOW, CoralerStates.IDLE, AlgaerStates.INTAKING, () -> AutoAlignStates.OFF, LEDStates.BLUE, ClimberStates.DOWN),
+	INTAKING_ALGAE_HIGH("Intaking Algae High", () -> ElevatorStates.ALGAE_HIGH, CoralerStates.IDLE, AlgaerStates.INTAKING, () -> AutoAlignStates.OFF, LEDStates.BLUE, ClimberStates.DOWN),
+	GOING_PROCESSOR("Going to Processor", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.GOING_TO_PROCESS, () -> AutoAlignStates.OFF, LEDStates.GREEN, ClimberStates.DOWN),
+	SCORING_PROCESSOR("Scoring at Processor", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.PROCESSING, () -> AutoAlignStates.OFF, LEDStates.GREEN, ClimberStates.DOWN),
+	HOLDING_ALGAE("Holding Algae", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.HOLDING_ALGAE, () -> AutoAlignStates.OFF, LEDStates.GREEN, ClimberStates.DOWN),
 	AUTO_ALIGN_CLOSE(
 		"Aligning Close",
 		() -> REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()),
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
 		() -> REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getHexagonTargetSide(), Manager.getInstance().getScoringReefLeft())),
-		LEDStates.PURPLE
+		LEDStates.PURPLE,
+		ClimberStates.DOWN
 	),
-	AUTO_ALIGN_FAR("Aligning Close", () -> ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, () -> REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getHexagonTargetSide(), Manager.getInstance().getScoringReefLeft())), LEDStates.PURPLE),
+	AUTO_ALIGN_FAR("Aligning Close", () -> ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, () -> REEF_TARGET_MAP.get(AAReefTarget.of(Manager.getInstance().getHexagonTargetSide(), Manager.getInstance().getScoringReefLeft())), LEDStates.PURPLE, ClimberStates.DOWN),
 	INTAKING_CORALER(
 		"Intaking at Coral Station",
 		() -> ElevatorStates.IDLE,
@@ -35,20 +37,24 @@ public enum ManagerStates implements SubsystemStates {
 		AlgaerStates.IDLE,
 		// AutoAlignStates.OFF
 		() -> SOURCE_TARGET_MAP.get(Manager.getInstance().getLeftSourceSelected()),
-		LEDStates.ORANGE
+		LEDStates.ORANGE,
+		ClimberStates.DOWN
 	),
-	INTAKING_CORALER_AA_OFF("Intaking Coral Station with Driver Control", () -> ElevatorStates.IDLE, CoralerStates.INAKING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.ORANGE),
-	SCORING_REEF_MANUAL("Scoring Reef", () -> REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.PURPLE),
-	SCORING_REEF_AA("Scoring Reef", () -> REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.PURPLE),
-	TRANSITIONING_SCORING_REEF("Transitioning Scoring", () -> REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()), CoralerStates.IDLE, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.PURPLE);
+	INTAKING_CORALER_AA_OFF("Intaking Coral Station with Driver Control", () -> ElevatorStates.IDLE, CoralerStates.INAKING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.BLUE, ClimberStates.DOWN),
+	CENTERING_CORALER("Centering Coral", () -> ElevatorStates.IDLE, CoralerStates.CENTERING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.BLUE, ClimberStates.DOWN),
+	SCORING_REEF_MANUAL("Scoring Reef", () -> REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.PURPLE, ClimberStates.DOWN),
+	SCORING_REEF_AA("Scoring Reef AA", () -> REEF_SCORING_LEVELS.get(Manager.getInstance().getOperatorReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.PURPLE, ClimberStates.DOWN),
+	TRANSITIONING_SCORING_REEF("Transitioning Scoring", () -> REEF_SCORING_LEVELS.get(Manager.getInstance().getDriverReefScoringLevel()), CoralerStates.IDLE, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.PURPLE, ClimberStates.DOWN),
+	ZEROING_ELEVATOR("Zeroing Elevator", () -> ElevatorStates.ZEROING, CoralerStates.IDLE, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.RED, ClimberStates.DOWN);
 
-	ManagerStates(String stateString, Supplier<ElevatorStates> elevatorStateSupplier, CoralerStates coralerState, AlgaerStates algaerState, Supplier<AutoAlignStates> autoAlignSupplier, LEDStates ledState) {
+	ManagerStates(String stateString, Supplier<ElevatorStates> elevatorStateSupplier, CoralerStates coralerState, AlgaerStates algaerState, Supplier<AutoAlignStates> autoAlignSupplier, LEDStates ledState, ClimberStates climberState) {
 		this.stateString = stateString;
 		this.elevatorStateSupplier = elevatorStateSupplier;
 		this.coralerState = coralerState;
 		this.algaerState = algaerState;
 		this.autoAlignSupplier = autoAlignSupplier;
 		this.ledState = ledState;
+		this.climberState = climberState;
 	}
 
 	private String stateString;
@@ -57,6 +63,7 @@ public enum ManagerStates implements SubsystemStates {
 	private AlgaerStates algaerState;
 	private Supplier<AutoAlignStates> autoAlignSupplier;
 	private LEDStates ledState;
+	private ClimberStates climberState;
 
 	@Override
 	public String getStateString() {
@@ -81,5 +88,9 @@ public enum ManagerStates implements SubsystemStates {
 
 	public LEDStates getLedState() {
 		return ledState;
+	}
+
+	public ClimberStates getClimberState() {
+		return climberState;
 	}
 }
