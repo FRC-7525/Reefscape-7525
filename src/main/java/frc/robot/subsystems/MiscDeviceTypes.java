@@ -1,7 +1,8 @@
 package frc.robot.Subsystems;
+
 public enum MiscDeviceTypes {
-    DIGITALINPUT,
-    DUTYCYCLEENCODER,
-    PHOTONCAMERA,
-    PWM
+	DIGITALINPUT,
+	DUTYCYCLEENCODER,
+	PHOTONCAMERA,
+	PWM,
 }

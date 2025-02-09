@@ -1,29 +1,26 @@
 package frc.robot.Subsystems;
 
-
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.spark.SparkBase.Faults;
+import com.revrobotics.spark.SparkMax;
+import edu.wpi.first.hal.DriverStationJNI;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.PWM;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
-
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonCamera;
 import org.team7525.misc.Elastic;
 import org.team7525.misc.Elastic.ElasticNotification;
 import org.team7525.misc.Elastic.ElasticNotification.NotificationLevel;
 
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.ctre.phoenix6.hardware.Pigeon2;
-import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.Faults;
-
-import edu.wpi.first.hal.DriverStationJNI;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.PWM;
-
 public class FaultManager {
+
 	public static AtomicReference<FaultManager> instance = new AtomicReference<>();
 
 	private Map<String, ArrayList<Integer>> CANDeviceOrder = new HashMap<>();
@@ -33,6 +30,7 @@ public class FaultManager {
 	private ArrayList<MiscDevice> miscDevices = new ArrayList<>();
 
 	public class Device {
+
 		public Map<String, Integer> faults = new HashMap<String, Integer>();
 		public String deviceName;
 
@@ -54,8 +52,7 @@ public class FaultManager {
 		private void addFault(String fault) {
 			if (faults.get(fault) == null) {
 				faults.put(fault, 1);
-			} else
-				faults.put(fault, faults.get(fault) + 1);
+			} else faults.put(fault, faults.get(fault) + 1);
 		}
 
 		private void removeFault(String fault) {
@@ -80,6 +77,7 @@ public class FaultManager {
 	}
 
 	public class CANDevice extends Device {
+
 		private TalonFX talon;
 		private SparkMax sparkMax;
 		private CANcoder canCoder;
@@ -90,28 +88,24 @@ public class FaultManager {
 
 		public CANDevice(TalonFX talon, String name) {
 			super(name);
-
 			this.deviceType = CANDeviceTypes.TALON;
 			this.talon = talon;
 		}
 
 		public CANDevice(SparkMax sparkMax, String name) {
 			super(name);
-
 			this.deviceType = CANDeviceTypes.SPARK;
 			this.sparkMax = sparkMax;
 		}
 
 		public CANDevice(CANcoder canCoder, String name) {
 			super(name);
-
 			this.deviceType = CANDeviceTypes.CANCODER;
 			this.canCoder = canCoder;
 		}
 
 		public CANDevice(Pigeon2 pigeon, String name) {
 			super(name);
-
 			this.deviceType = CANDeviceTypes.PIGEON;
 			this.pigeon = pigeon;
 		}
@@ -150,6 +144,7 @@ public class FaultManager {
 	}
 
 	public class MiscDevice extends Device {
+
 		private DigitalInput digitalInput;
 		private DutyCycleEncoder dutyCycleEncoder;
 		private PhotonCamera photonCamera;
@@ -159,28 +154,24 @@ public class FaultManager {
 
 		public MiscDevice(DigitalInput digitalInput, String name) {
 			super(name);
-
 			this.deviceType = MiscDeviceTypes.DIGITALINPUT;
 			this.digitalInput = digitalInput;
 		}
 
 		public MiscDevice(DutyCycleEncoder dutyCycleEncoder, String name) {
 			super(name);
-
 			this.deviceType = MiscDeviceTypes.DUTYCYCLEENCODER;
 			this.dutyCycleEncoder = dutyCycleEncoder;
 		}
 
 		public MiscDevice(PhotonCamera photonCamera, String name) {
 			super(name);
-
 			this.deviceType = MiscDeviceTypes.PHOTONCAMERA;
 			this.photonCamera = photonCamera;
 		}
 
 		public MiscDevice(PWM pwm, String name) {
 			super(name);
-
 			this.deviceType = MiscDeviceTypes.PWM;
 			this.pwmDevice = pwm;
 		}
@@ -218,8 +209,7 @@ public class FaultManager {
 		}
 	}
 
-	private FaultManager() {
-	}
+	private FaultManager() {}
 
 	public static FaultManager getInstance() {
 		if (instance.get() == null) {
@@ -249,27 +239,19 @@ public class FaultManager {
 						device.updateFault("Forward Soft Limit Asserted", talon.getFault_ForwardSoftLimit().getValue());
 						device.updateFault("Synchronization Fault", talon.getFault_FusedSensorOutOfSync().getValue());
 						device.updateFault("Hardware Fault", talon.getFault_Hardware().getValue());
-						device.updateFault("Differential Talon Missing",
-								talon.getFault_MissingDifferentialFX().getValue());
-						device.updateFault("Hard Limit Switch Missing",
-								talon.getFault_MissingHardLimitRemote().getValue());
-						device.updateFault("Soft Limit Switch Missing",
-								talon.getFault_MissingSoftLimitRemote().getValue());
+						device.updateFault("Differential Talon Missing", talon.getFault_MissingDifferentialFX().getValue());
+						device.updateFault("Hard Limit Switch Missing", talon.getFault_MissingHardLimitRemote().getValue());
+						device.updateFault("Soft Limit Switch Missing", talon.getFault_MissingSoftLimitRemote().getValue());
 						device.updateFault("Oversupply Voltage Fault", talon.getFault_OverSupplyV().getValue());
 						device.updateFault("Processor Temp Fault", talon.getFault_ProcTemp().getValue());
 						device.updateFault("Remote Sensor Fault", talon.getFault_RemoteSensorDataInvalid().getValue());
-						device.updateFault("Position Sensor Overflow Fault",
-								talon.getFault_RemoteSensorPosOverflow().getValue());
+						device.updateFault("Position Sensor Overflow Fault", talon.getFault_RemoteSensorPosOverflow().getValue());
 						device.updateFault("Remote Sensor Reset", talon.getFault_RemoteSensorReset().getValue());
-						device.updateFault("Reverse Hard Limit Switch Asserted",
-								talon.getFault_ReverseHardLimit().getValue());
-						device.updateFault("Reverse Soft Limit Switch Asserted",
-								talon.getFault_ReverseSoftLimit().getValue());
+						device.updateFault("Reverse Hard Limit Switch Asserted", talon.getFault_ReverseHardLimit().getValue());
+						device.updateFault("Reverse Soft Limit Switch Asserted", talon.getFault_ReverseSoftLimit().getValue());
 						device.updateFault("Static Brake Disabled", talon.getFault_StaticBrakeDisabled().getValue());
-						device.updateFault("Stator Current Limit Occurred",
-								talon.getFault_StatorCurrLimit().getValue());
-						device.updateFault("Supply Current Limit Occurred",
-								talon.getFault_SupplyCurrLimit().getValue());
+						device.updateFault("Stator Current Limit Occurred", talon.getFault_StatorCurrLimit().getValue());
+						device.updateFault("Supply Current Limit Occurred", talon.getFault_SupplyCurrLimit().getValue());
 						device.updateFault("Undervoltage Fault", talon.getFault_Undervoltage().getValue());
 						device.updateFault("Unstable Supply Voltage", talon.getFault_UnstableSupplyV().getValue());
 
@@ -307,24 +289,16 @@ public class FaultManager {
 						Pigeon2 pigeon = device.getPigeon();
 
 						device.updateFault("Booting Fault", pigeon.getFault_BootDuringEnable().getValue());
-						device.updateFault("Motion Detected Before Bootup",
-								pigeon.getFault_BootIntoMotion().getValue());
-						device.updateFault("Accelerometer Boot-Up Fault",
-								pigeon.getFault_BootupAccelerometer().getValue());
+						device.updateFault("Motion Detected Before Bootup", pigeon.getFault_BootIntoMotion().getValue());
+						device.updateFault("Accelerometer Boot-Up Fault", pigeon.getFault_BootupAccelerometer().getValue());
 						device.updateFault("Gyroscope Boot-Up Fault", pigeon.getFault_BootupGyroscope().getValue());
-						device.updateFault("Magnetometer Boot-Up Fault",
-								pigeon.getFault_BootupMagnetometer().getValue());
-						device.updateFault("Data Acquisition was Slower Than Usual",
-								pigeon.getFault_DataAcquiredLate().getValue());
+						device.updateFault("Magnetometer Boot-Up Fault", pigeon.getFault_BootupMagnetometer().getValue());
+						device.updateFault("Data Acquisition was Slower Than Usual", pigeon.getFault_DataAcquiredLate().getValue());
 						device.updateFault("Hardware Fault", pigeon.getFault_Hardware().getValue());
-						device.updateFault("Motion Stack Loop Time was Slower Than Expected",
-								pigeon.getFault_LoopTimeSlow().getValue());
-						device.updateFault("Accelerometer Values are Saturated",
-								pigeon.getFault_SaturatedAccelerometer().getValue());
-						device.updateFault("Gyroscope Values are Saturated",
-								pigeon.getFault_SaturatedGyroscope().getValue());
-						device.updateFault("Magnetometer Values are Saturated",
-								pigeon.getFault_SaturatedMagnetometer().getValue());
+						device.updateFault("Motion Stack Loop Time was Slower Than Expected", pigeon.getFault_LoopTimeSlow().getValue());
+						device.updateFault("Accelerometer Values are Saturated", pigeon.getFault_SaturatedAccelerometer().getValue());
+						device.updateFault("Gyroscope Values are Saturated", pigeon.getFault_SaturatedGyroscope().getValue());
+						device.updateFault("Magnetometer Values are Saturated", pigeon.getFault_SaturatedMagnetometer().getValue());
 						device.updateFault("Undervoltage Fault", pigeon.getFault_Undervoltage().getValue());
 
 						device.alive = pigeon.isConnected();
@@ -380,7 +354,7 @@ public class FaultManager {
 						Logger.recordOutput("FaultManager/CAN Device Faults/" + busName + "/" + device.deviceName + "(" + id + ")", fault);
 					}
 				}
-				
+
 				Logger.recordOutput("FaultManager/Alive CAN Devices/" + busName + "/" + device.deviceName + "(" + id + ")", device.alive);
 			}
 		}
