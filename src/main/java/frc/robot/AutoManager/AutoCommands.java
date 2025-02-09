@@ -1,9 +1,9 @@
 package frc.robot.AutoManager;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.SubsystemManager.SubsystemManagerStates;
+import frc.robot.Subsystems.Elevator.Elevator;
 
 public class AutoCommands {
 

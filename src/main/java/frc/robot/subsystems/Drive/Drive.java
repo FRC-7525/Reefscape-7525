@@ -35,7 +35,6 @@ import frc.robot.FaultManager.FaultManager;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
-
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 

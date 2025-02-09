@@ -1,5 +1,7 @@
 package frc.robot.SubsystemManager;
 
+import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
+
 import frc.robot.SubsystemManager.SubsystemManagerConstants.AAReefTarget;
 import frc.robot.Subsystems.Algaer.AlgaerStates;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
@@ -7,9 +9,6 @@ import frc.robot.Subsystems.Climber.ClimberStates;
 import frc.robot.Subsystems.Coraler.CoralerStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.LED.LEDStates;
-
-import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
-
 import java.util.function.Supplier;
 import org.team7525.subsystem.SubsystemStates;
 

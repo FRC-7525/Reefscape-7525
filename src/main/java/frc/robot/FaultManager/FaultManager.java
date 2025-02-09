@@ -8,7 +8,6 @@ import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.PWM;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -332,7 +331,7 @@ public class FaultManager {
 						break;
 					case PWM:
 						PWM pwm = device.getPWM();
-						
+
 						break;
 					default:
 						break;
