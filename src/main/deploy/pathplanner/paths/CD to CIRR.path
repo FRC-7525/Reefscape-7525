@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6923041256841382,
-        "y": 2.9927002745446054
+        "x": 3.946,
+        "y": 2.864
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.164814516198144,
-        "y": 3.5366244461651104
+        "x": 3.483,
+        "y": 2.472499999999999
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.444,
-        "y": 0.769
+        "x": 1.62,
+        "y": 0.651
       },
       "prevControl": {
-        "x": 1.1930658448175573,
-        "y": 0.5345657714483883
+        "x": 2.066,
+        "y": 1.0314999999999994
       },
       "nextControl": null,
       "isLocked": false,
@@ -41,8 +41,8 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -125.00000000000001
+    "velocity": 0.0,
+    "rotation": 54.0
   },
   "reversed": false,
   "folder": "Right Source Intake",
