@@ -48,9 +48,6 @@ public class Coraler extends Subsystem<CoralerStates> {
 	}
 
 	public boolean currentSenseGamepiece() {
-		// if (GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.SIM) {
-		// 	return getStateTime();
-		// }
 		return debouncer.calculate(io.currentLimitReached());
 	}
 
