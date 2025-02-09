@@ -5,6 +5,7 @@ import static frc.robot.Subsystems.Manager.ManagerConstants.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Subsystems.Coraler.Coraler;
+import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.LED.LED;
 import org.littletonrobotics.junction.Logger;
@@ -14,7 +15,7 @@ public class Manager extends Subsystem<ManagerStates> {
 
 	private static Manager instance = new Manager();
 
-	// private final Drive drive = Drive.getInstance();
+	private final Drive drive = Drive.getInstance();
 	// private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
@@ -164,7 +165,7 @@ public class Manager extends Subsystem<ManagerStates> {
 		coraler.periodic();
 		// algaer.periodic();
 		//  vision.periodic();
-		// drive.periodic();
+		drive.periodic();
 		ledSubsystem.periodic();
 		// climber.periodic();
 

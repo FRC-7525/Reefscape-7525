@@ -67,6 +67,8 @@ public class ElevatorIOSim implements ElevatorIO {
 		rightMotorSim.setRotorVelocity(elevatorSim.getVelocityMetersPerSecond() / METERS_PER_ROTATION.in(Meters));
 		leftMotorSim.setSupplyVoltage(appliedVoltage);
 		rightMotorSim.setSupplyVoltage(appliedVoltage);
+
+		pidController.setTolerance(POSITION_TOLERANCE_SIM.in(Meters), VELOCITY_TOLERANCE_SIM.in(MetersPerSecond));
 	}
 
 	@Override

@@ -52,7 +52,7 @@ public class AutoCommands {
 		@Override
 		public void initialize() {
 			Manager.getInstance().setDriverReefScoringLevel(scoringLevel);
-			Manager.getInstance().setState(ManagerStates.TRANSITIONING_SCORING_REEF);
+			Manager.getInstance().setState(ManagerStates.SCORING_REEF_MANUAL);
 		}
 
 		@Override
