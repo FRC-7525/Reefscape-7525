@@ -82,8 +82,7 @@ public class Robot extends LoggedRobot {
 	public void teleopPeriodic() {}
 
 	@Override
-	public void disabledInit() {
-	}
+	public void disabledInit() {}
 
 	@Override
 	public void disabledPeriodic() {

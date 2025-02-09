@@ -24,7 +24,7 @@ public class MusicManager {
 	private final AudioConfigs audioConfigs = new AudioConfigs();
 
 	private Boolean hasInstruments;
-  
+
 	private MusicManager() {
 		playMusic.setDefaultOption(SUBSYSTEM_NAME + "/Music Off", false);
 		playMusic.addOption(SUBSYSTEM_NAME + "/Music On", true);
@@ -69,7 +69,7 @@ public class MusicManager {
 		Elevator.getInstance().getLeftMotor().getConfigurator().apply(audioConfigs);
 		orchestra.addInstrument(Elevator.getInstance().getRightMotor());
 		Elevator.getInstance().getRightMotor().getConfigurator().apply(audioConfigs);
-		
+
 		for (TalonFX motor : Drive.getInstance().getDriveMotors()) {
 			orchestra.addInstrument(motor);
 			motor.getConfigurator().apply(audioConfigs);
