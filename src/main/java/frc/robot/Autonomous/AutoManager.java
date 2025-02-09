@@ -79,19 +79,25 @@ public class AutoManager {
 
 		// Misc
 		autoChooser.setDefaultOption("Do Nothing", new PrintCommand("Do Nothing"));
+		autoChooser.addOption("Cross Line", new PathPlannerAuto("Cross Line"));
+		autoChooser.addOption("PID Tuning", new PathPlannerAuto("PID Tuning"));
 
 		// 1 Coral
+		autoChooser.addOption("C1 | BN1 | G", new PathPlannerAuto("C1, BN1, G"));
+		autoChooser.addOption("C1 | UN1 | H", new PathPlannerAuto("C1, UN1, H"));
 
 		// 2 Coral
 
 		// 3 Coral
 
 		// 4 Coral
-		autoChooser.addOption("4 Note", new PathPlannerAuto("4 Note Testing"));
+		autoChooser.addOption("C4 | UN1 | I, J, K, L", new PathPlannerAuto("C4, UN1, {I, J, K, L}"));
+
 		// 5 Coral
+		autoChooser.addOption("C5 | UN1 | A, I, J, K, L", new PathPlannerAuto("C5, UN1, {A, I, J, K, L}"));
 
 		// 6 Coral
-		autoChooser.addOption("6 Note", new PathPlannerAuto("6 coral auto (in theory)"));
+		autoChooser.addOption("C6 | UN1 | A, B, I, J, K, L", new PathPlannerAuto("C6, UN1, {A, B, I, J, K, L}"));
 
 		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}

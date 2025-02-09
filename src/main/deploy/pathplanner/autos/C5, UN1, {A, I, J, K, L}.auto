@@ -11,45 +11,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": null
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Transition L4"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CJ to CILL"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake Coral"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CILL to CI"
+                  "pathName": "UN1 to CI"
                 }
               },
               {
@@ -69,6 +31,44 @@
                 "type": "path",
                 "data": {
                   "pathName": "CI to CILL"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Coral"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CILL to CJ"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Transition L4"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "CJ to CILL"
                 }
               },
               {
@@ -193,30 +193,11 @@
               }
             ]
           }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "CILL to CB"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Transition L4"
-                }
-              }
-            ]
-          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "6 Coral",
+  "folder": "5 Coral",
   "choreoAuto": false
 }
