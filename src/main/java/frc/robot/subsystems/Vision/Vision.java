@@ -5,9 +5,13 @@ import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.Optional;
+
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.team7525.misc.VisionUtil;
 import org.team7525.subsystem.Subsystem;
+
+import edu.wpi.first.math.geometry.Pose2d;
 
 public class Vision extends Subsystem<VisionStates> {
 
@@ -15,6 +19,8 @@ public class Vision extends Subsystem<VisionStates> {
 	private Drive drive;
 
 	private static Vision instance;
+
+	private final VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
 
 	private Vision() {
 		super("Vision", VisionStates.ON);
@@ -35,6 +41,9 @@ public class Vision extends Subsystem<VisionStates> {
 
 	@Override
 	public void runState() {
+		io.updateInputs(inputs);
+		Logger.processInputs("Vision", inputs);
+
 		if (getState().getVisionEnabled()) {
 			io.setStrategy(getState().getStrategy());
 			io.updateRobotPose(drive.getPose());
@@ -42,12 +51,22 @@ public class Vision extends Subsystem<VisionStates> {
 			Optional<EstimatedRobotPose> frontPose = io.getFrontPoseEstimation();
 			if (frontPose.isPresent()) {
 				drive.addVisionMeasurement(frontPose.get().estimatedPose.toPose2d(), frontPose.get().timestampSeconds, VisionUtil.getEstimationStdDevs(frontPose.get(), FRONT_RESOLUTION));
+				Logger.recordOutput("Vision/FrontPose", frontPose.get().estimatedPose.toPose2d());
 			}
 
 			Optional<EstimatedRobotPose> backPose = io.getBackPoseEstimation();
 			if (backPose.isPresent()) {
 				drive.addVisionMeasurement(backPose.get().estimatedPose.toPose2d(), backPose.get().timestampSeconds, VisionUtil.getEstimationStdDevs(backPose.get(), BACK_RESOLUTION));
+				Logger.recordOutput("Vision/BackPose", backPose.get().estimatedPose.toPose2d());
 			}
 		}
+	}
+
+	public Pose2d getFrontVisionPose() {
+		return inputs.frontVisionPose;
+	}
+
+	public Pose2d getBackVisionPose() {
+		return inputs.backVisionPose;
 	}
 }

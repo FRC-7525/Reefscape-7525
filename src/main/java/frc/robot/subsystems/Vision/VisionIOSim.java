@@ -85,10 +85,14 @@ public class VisionIOSim implements VisionIO {
 		inputs.hasFrontVision = frontDebouncer.calculate(frontPose.isPresent());
 		inputs.backCameraConnected = backCamera.getCamera().isConnected();
 		inputs.frontCameraConnected = frontCamera.getCamera().isConnected();
-		inputs.backTargetCount = backPose.get().targetsUsed.size();
-		inputs.frontTargetCount = frontPose.get().targetsUsed.size();
-		if (inputs.hasBackVision) inputs.backVisionPose = backPose.get().estimatedPose.toPose2d();
-		if (inputs.hasFrontVision) inputs.frontVisionPose = frontPose.get().estimatedPose.toPose2d();
+		if (backPose.isPresent()) {
+			inputs.backVisionPose = backPose.get().estimatedPose.toPose2d();
+			inputs.backTargetCount = backPose.get().targetsUsed.size();
+		}
+		if (frontPose.isPresent()) {
+			inputs.frontVisionPose = frontPose.get().estimatedPose.toPose2d();
+			inputs.frontTargetCount = frontPose.get().targetsUsed.size();
+		}
 	}
 
 	@Override
