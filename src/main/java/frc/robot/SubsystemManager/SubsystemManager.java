@@ -48,7 +48,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 3, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD);
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 4, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
 
-		// Toggling which level to score at (auto align)
+		// // Toggling which level to score at (auto align)
 		addRunnableTrigger(() -> this.operatorReefScoringLevel = 1, () -> OPERATOR_CONTROLLER.getRawButtonPressed(1));
 		addRunnableTrigger(() -> this.operatorReefScoringLevel = 2, () -> OPERATOR_CONTROLLER.getRawButtonPressed(3));
 		addRunnableTrigger(() -> this.operatorReefScoringLevel = 3, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4));
@@ -162,7 +162,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// climber.setState(getState().getClimberState());
 
 		// Periodics
-		// autoAlign.periodic();
+		autoAlign.periodic();
 		elevator.periodic();
 		coraler.periodic();
 		// algaer.periodic();
