@@ -1,0 +1,76 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "window": {
+        "visible": false
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/AdvantageKit/RealOutputs/Alerts": "Alerts",
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Alerts": "Alerts",
+      "/SmartDashboard/Auto Chooser": "String Chooser",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d"
+    },
+    "windows": {
+      "/SmartDashboard/Auto Chooser": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Field": {
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875
+      },
+      "/SmartDashboard/VisionSystemSim-Vision/Sim Field": {
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "SmartDashboard": {
+        "VisionSystemSim-Vision": {
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "visible": true
+  },
+  "Plot": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "backgroundColor": [
+            0.10000000149011612,
+            0.10000000149011612,
+            0.10000000149011612,
+            1.0
+          ],
+          "height": 338
+        }
+      ],
+      "window": {
+        "visible": false
+      }
+    }
+  }
+}
