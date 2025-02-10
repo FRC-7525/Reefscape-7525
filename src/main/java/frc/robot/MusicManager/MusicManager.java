@@ -21,13 +21,17 @@ public class MusicManager {
 	private final String SUBSYSTEM_NAME = "MusicManager";
 	private final String MUSIC_DIR = "music";
 
+	private final AudioConfigs audioConfigs = new AudioConfigs();
+
+	private Boolean hasInstruments;
+
 	private MusicManager() {
 		playMusic.setDefaultOption(SUBSYSTEM_NAME + "/Music Off", false);
 		playMusic.addOption(SUBSYSTEM_NAME + "/Music On", true);
 
 		songToPlay.setDefaultOption("Lalal", MUSIC_DIR + "/output.chrp");
-
-		configs.AllowMusicDurDisable = true;
+		hasInstruments = false;
+		audioConfigs.AllowMusicDurDisable = true;
 	}
 
 	public static MusicManager getInstance() {
@@ -49,20 +53,30 @@ public class MusicManager {
 	}
 
 	public void removeAllMotors() {
+		hasInstruments = false;
 		orchestra.clearInstruments();
 	}
 
 	public void addAllSubsystemInstruments() {
+		hasInstruments = true;
 		orchestra.addInstrument(Algaer.getInstance().getWheelMotor());
+		Algaer.getInstance().getWheelMotor().getConfigurator().apply(audioConfigs);
 		orchestra.addInstrument(Algaer.getInstance().getPivotMotor());
+		Algaer.getInstance().getPivotMotor().getConfigurator().apply(audioConfigs);
 		orchestra.addInstrument(Coraler.getInstance().getMotor());
+		Coraler.getInstance().getMotor().getConfigurator().apply(audioConfigs);
 		orchestra.addInstrument(Elevator.getInstance().getLeftMotor());
+		Elevator.getInstance().getLeftMotor().getConfigurator().apply(audioConfigs);
 		orchestra.addInstrument(Elevator.getInstance().getRightMotor());
+		Elevator.getInstance().getRightMotor().getConfigurator().apply(audioConfigs);
+
 		for (TalonFX motor : Drive.getInstance().getDriveMotors()) {
 			orchestra.addInstrument(motor);
+			motor.getConfigurator().apply(audioConfigs);
 		}
 		for (TalonFX motor : Drive.getInstance().getSteerMotors()) {
 			orchestra.addInstrument(motor);
+			motor.getConfigurator().apply(audioConfigs);
 		}
 	}
 
@@ -72,5 +86,9 @@ public class MusicManager {
 
 	public void stopMusic() {
 		orchestra.stop();
+	}
+
+	public boolean hasInstruments() {
+		return hasInstruments;
 	}
 }
