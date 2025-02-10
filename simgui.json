@@ -51,9 +51,12 @@
     "transitory": {
       "AdvantageKit": {
         "RealOutputs": {
-          "Drive": {
+          "Vision": {
             "open": true
           },
+          "open": true
+        },
+        "Vision": {
           "open": true
         },
         "open": true
