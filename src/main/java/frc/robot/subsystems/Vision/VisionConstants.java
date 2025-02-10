@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -31,17 +32,7 @@ public class VisionConstants {
 	public static final CameraResolution FRONT_RESOLUTION = CameraResolution.HIGH_RES;
 
 	// Other
-	public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT;
-
-	static {
-		AprilTagFieldLayout layout = null;
-		try {
-			layout = new AprilTagFieldLayout("src\\main\\java\\frc\\robot\\Subsystems\\Vision\\2025-reefscape.json");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		APRIL_TAG_FIELD_LAYOUT = layout;
-	}
+	public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);;
 
 	public static final int CAMERA_WIDTH = 1200;
 	public static final int CAMERA_HEIGHT = 800;
