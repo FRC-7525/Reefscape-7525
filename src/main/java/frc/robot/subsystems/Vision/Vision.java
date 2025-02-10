@@ -3,15 +3,13 @@ package frc.robot.Subsystems.Vision;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.Optional;
-
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.team7525.misc.VisionUtil;
 import org.team7525.subsystem.Subsystem;
-
-import edu.wpi.first.math.geometry.Pose2d;
 
 public class Vision extends Subsystem<VisionStates> {
 
