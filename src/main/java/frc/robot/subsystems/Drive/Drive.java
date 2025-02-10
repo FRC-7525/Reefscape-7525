@@ -27,6 +27,8 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -54,6 +56,7 @@ public class Drive extends Subsystem<DriveStates> {
 	private final SwerveRequest.SysIdSwerveSteerGains steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
 	private final SwerveRequest.SysIdSwerveRotation rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
 	private final PIDController headingCorrectionController = new PIDController(0.1, 0, 0);
+	private final Field2d field = new Field2d();
 
 	/**
 	 * Constructs a new Drive subsystem with the given DriveIO.
@@ -154,6 +157,8 @@ public class Drive extends Subsystem<DriveStates> {
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Translation Difference", state.Pose.getTranslation().minus(lastPose.getTranslation()));
 		Logger.recordOutput(SUBSYSTEM_NAME + "/State", getState().getStateString());
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Pose Jumped", Math.hypot(state.Pose.getTranslation().minus(lastPose.getTranslation()).getX(), state.Pose.getTranslation().minus(lastPose.getTranslation()).getY()) > (kSpeedAt12Volts.in(MetersPerSecond) * 2 * (Utils.getSystemTimeSeconds() - lastTime)));
+		field.setRobotPose(lastPose);
+		SmartDashboard.putData(field);
 
 		lastPose = state.Pose;
 		lastTime = Utils.getSystemTimeSeconds();
