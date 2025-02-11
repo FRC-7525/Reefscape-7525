@@ -20,6 +20,9 @@ public class Vision extends Subsystem<VisionStates> {
 
 	private final VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
 
+	private Pose2d lastFrontVisionPose = new Pose2d();
+	private Pose2d lastBackVisionPose = new Pose2d();
+
 	private Vision() {
 		super("Vision", VisionStates.ON);
 		this.io = switch (ROBOT_MODE) {
@@ -58,13 +61,5 @@ public class Vision extends Subsystem<VisionStates> {
 				Logger.recordOutput("Vision/BackPose", backPose.get().estimatedPose.toPose2d());
 			}
 		}
-	}
-
-	public Pose2d getFrontVisionPose() {
-		return inputs.frontVisionPose;
-	}
-
-	public Pose2d getBackVisionPose() {
-		return inputs.backVisionPose;
 	}
 }
