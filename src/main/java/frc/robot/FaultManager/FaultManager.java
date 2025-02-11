@@ -309,7 +309,7 @@ public class FaultManager {
 					}
 				}
 
-				System.out.println(device.alive);
+				// System.out.println(device.alive);
 				Logger.recordOutput("FaultManager/Alive CAN Devices/" + busName + "/" + device.deviceName + "(" + id + ")", device.alive);
 			}
 		}
