@@ -46,7 +46,7 @@
     "transitory": {
       "AdvantageKit": {
         "RealOutputs": {
-          "Drive": {
+          "AutoAlign": {
             "open": true
           },
           "Manager": {

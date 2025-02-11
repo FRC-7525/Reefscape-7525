@@ -4,11 +4,17 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
+import static frc.robot.GlobalConstants.ROBOT_MODE;
 
 import choreo.trajectory.SwerveSample;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Subsystems.Drive.Drive;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.autoAlign.RepulsorFieldPlanner;
@@ -28,11 +34,15 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	private Pose2d targetPose;
 	private Pose2d reefPose = REEF_POSE;
+	private boolean isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 	private Pose2d interpolatedPose;
 	private double interpolatedDistanceFromReef;
 	private boolean repulsorActivated;
 
-	private AutoAlign() {
+	private double xApplied = 0;
+	private double yApplied = 0;
+
+	private AutoAlign() { // TODO ADD FIELD MIRRORING. IF RED MULTIPLE BY -1 ELSE USE REGULAR
 		super("AutoAlign", AutoAlignStates.OFF);
 		// PID Config
 		this.translationController = TRANSLATIONAL_CONTROLLER.get();
@@ -51,10 +61,20 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	@Override
 	protected void runState() {
 		logOutput();
+		if (ROBOT_MODE == RobotMode.SIM) {
+			reefPose = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
+			isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
+		}
 
 		if (getState() == AutoAlignStates.OFF) return;
 
 		targetPose = getState().getTargetPose();
+		if (!readyForClose()) {
+			Translation2d temp = reefPose.getTranslation().minus(drive.getPose().getTranslation());
+			targetPose = new Pose2d(targetPose.getTranslation(), 
+                Rotation2d.fromRadians(Math.atan2(temp.getY(), temp.getX())));
+		}
+		
 
 		// if there is no collision, it will go to braindead AA, or use repulsor to
 		// avoid the collision
@@ -74,8 +94,10 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		// idk why applied needs to be negative but it works if it is negative 💀
 		// update: it's negative because otto is a bum and can't set up his sim properly
-		double xApplied = -translationController.calculate(drivePose.getX(), targetPose.getX());
-		double yApplied = -translationController.calculate(drivePose.getY(), targetPose.getY());
+
+		xApplied = -translationController.calculate(drivePose.getX(), targetPose.getX());
+		yApplied = -translationController.calculate(drivePose.getY(), targetPose.getY());
+
 		double rotationApplied = rotationController.calculate(drivePose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
 		drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false);
 	}
@@ -84,10 +106,12 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		rotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Degrees), MAX_HEADING_ANGLE.in(Degrees));
 
 		var targetSpeeds = sample.getChassisSpeeds();
-		targetSpeeds.vxMetersPerSecond += repulsionTranslationController.calculate(pose.getX(), sample.x);
-		targetSpeeds.vyMetersPerSecond += repulsionTranslationController.calculate(pose.getY(), sample.y);
-		targetSpeeds.omegaRadiansPerSecond += repulsionRotationController.calculate(pose.getRotation().getRadians(), sample.heading);
+			targetSpeeds.vxMetersPerSecond += repulsionTranslationController.calculate(pose.getX(), sample.x);
+			targetSpeeds.vyMetersPerSecond += repulsionTranslationController.calculate(pose.getY(), sample.y);
+			targetSpeeds.omegaRadiansPerSecond += repulsionRotationController.calculate(pose.getRotation().getRadians(), sample.heading);
 
+		Logger.recordOutput("TESTING VX", targetSpeeds.vxMetersPerSecond);
+		Logger.recordOutput("TESTING VY", targetSpeeds.vyMetersPerSecond);
 		drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
 	}
 

@@ -4,6 +4,7 @@ import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
@@ -152,6 +153,11 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Selected Reef Level", operatorReefScoringLevel);
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Left Pose Selected", scoringReefLeft);
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Driver Reef Level", driverReefScoringLevel);
+		if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+			Logger.recordOutput(SUBSYSTEM_NAME + "/ALLIANCE COLOR", "RED");
+		} else {
+			Logger.recordOutput(SUBSYSTEM_NAME + "/ALLIANCE COLOR", "BLUE");
+		}
 
 		// Set States, drive and vision are rogue so you don't need to set state
 		elevator.setState(getState().getElevatorStateSupplier().get());
