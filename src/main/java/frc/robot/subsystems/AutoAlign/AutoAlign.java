@@ -4,6 +4,10 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 
 import choreo.trajectory.SwerveSample;
@@ -20,12 +24,14 @@ import org.littletonrobotics.junction.Logger;
 import org.team7525.autoAlign.RepulsorFieldPlanner;
 import org.team7525.subsystem.Subsystem;
 
+import com.google.errorprone.annotations.Var;
+
 public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	private static AutoAlign instance;
 
 	private final Drive drive = Drive.getInstance();
-	private final RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner();
+	private final RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner(new ArrayList<>(), new ArrayList());
 
 	private PIDController translationController;
 	private PIDController rotationController;
@@ -95,11 +101,12 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		// idk why applied needs to be negative but it works if it is negative 💀
 		// update: it's negative because otto is a bum and can't set up his sim properly
 
-		xApplied = -translationController.calculate(drivePose.getX(), targetPose.getX());
-		yApplied = -translationController.calculate(drivePose.getY(), targetPose.getY());
+		xApplied = translationController.calculate(drivePose.getX(), targetPose.getX());
+		yApplied = translationController.calculate(drivePose.getY(), targetPose.getY());
 
 		double rotationApplied = rotationController.calculate(drivePose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
-		drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false);
+		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false);
+		else drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false);
 	}
 
 	private void repulsorAutoAlign(Pose2d pose, SwerveSample sample) {
@@ -112,7 +119,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		Logger.recordOutput("TESTING VX", targetSpeeds.vxMetersPerSecond);
 		Logger.recordOutput("TESTING VY", targetSpeeds.vyMetersPerSecond);
-		drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
+		if (isRedAlliance) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
+		else drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
 	}
 
 	private boolean checkForReefCollision() {
