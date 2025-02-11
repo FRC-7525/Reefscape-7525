@@ -5,6 +5,7 @@ import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
@@ -22,7 +23,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	// private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
-	// private final Algaer algaer = Algaer.getInstance();
+	private final Algaer algaer = Algaer.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
@@ -68,29 +69,29 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addRunnableTrigger(() -> this.scoringReefLeft = false, () -> OPERATOR_CONTROLLER.getRawAxis(0) < -AXIS_RECOGNITION_POINT);
 
 		// // Climbing
-		// addTrigger(ManagerStates.IDLE, ManagerStates.CLIMBING, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() > 0.5);
-		// addTrigger(ManagerStates.CLIMBING, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() == 0);
+		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.CLIMBING, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() > 0.5);
+		addTrigger(SubsystemManagerStates.CLIMBING, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() == 0);
 
 		// Intaking at Coral Station
 		// AA
-		// addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
-		// addTrigger(ManagerStates.INTAKING_CORALER, ManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
+		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
+		addTrigger(SubsystemManagerStates.INTAKING_CORALER, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
 		// Manual
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
 		addTrigger(SubsystemManagerStates.INTAKING_CORALER_AA_OFF, SubsystemManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.currentSenseGamepiece());
 		addTrigger(SubsystemManagerStates.CENTERING_CORALER, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || getStateTime() > CORAL_CENTERING_TIME);
 
 		// // Intaking Algae
-		// addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
-		// addTrigger(ManagerStates.INTAKING_ALGAE_HIGH, ManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
-		// addTrigger(ManagerStates.INTAKING_ALGAE_LOW, ManagerStates.INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
-		// addTrigger(ManagerStates.INTAKING_ALGAE_HIGH, ManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
-		// addTrigger(ManagerStates.INTAKING_ALGAE_LOW, ManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
+		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_LOW, SubsystemManagerStates.INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_LOW, SubsystemManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
 
 		// // Scoring Algae at Processor
-		// addTrigger(ManagerStates.HOLDING_ALGAE, ManagerStates.GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
-		// addTrigger(ManagerStates.GOING_PROCESSOR, ManagerStates.SCORING_PROCESSOR, () -> elevator.nearTarget() && algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed());
-		// addTrigger(ManagerStates.SCORING_PROCESSOR, ManagerStates.IDLE, DRIVER_CONTROLLER::getAButtonPressed);
+		addTrigger(SubsystemManagerStates.HOLDING_ALGAE, SubsystemManagerStates.GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
+		addTrigger(SubsystemManagerStates.GOING_PROCESSOR, SubsystemManagerStates.SCORING_PROCESSOR, () -> elevator.nearTarget() && algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed());
+		addTrigger(SubsystemManagerStates.SCORING_PROCESSOR, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getAButtonPressed);
 
 		// Scoring Reef Manual
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
@@ -105,8 +106,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(SubsystemManagerStates.SCORING_REEF_AA, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 
 		// // Zero Elevator
-		// addTrigger(ManagerStates.IDLE, ManagerStates.ZEROING_ELEVATOR, () -> DRIVER_CONTROLLER.getBackButtonPressed());
-		// addTrigger(ManagerStates.ZEROING_ELEVATOR, ManagerStates.IDLE, () -> DRIVER_CONTROLLER.getBackButtonPressed() || elevator.motorsZeroed());
+		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.ZEROING_ELEVATOR, () -> DRIVER_CONTROLLER.getBackButtonPressed());
+		addTrigger(SubsystemManagerStates.ZEROING_ELEVATOR, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getBackButtonPressed() || elevator.motorsZeroed());
 	}
 
 	public static SubsystemManager getInstance() {
