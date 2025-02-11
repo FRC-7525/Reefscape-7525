@@ -219,7 +219,7 @@ public class FaultManager {
 						device.updateFault("Undervoltage Fault", talon.getFault_Undervoltage().getValue());
 						device.updateFault("Unstable Supply Voltage", talon.getFault_UnstableSupplyV().getValue());
 
-						device.alive = talon.isAlive();
+						device.alive = talon.isConnected();
 
 						break;
 					case SPARK:
@@ -309,6 +309,7 @@ public class FaultManager {
 					}
 				}
 
+				System.out.println(device.alive);
 				Logger.recordOutput("FaultManager/Alive CAN Devices/" + busName + "/" + device.deviceName + "(" + id + ")", device.alive);
 			}
 		}
