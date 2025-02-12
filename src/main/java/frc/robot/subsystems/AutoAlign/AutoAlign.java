@@ -3,11 +3,10 @@ package frc.robot.Subsystems.AutoAlign;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Radians;
 import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 
 import choreo.trajectory.SwerveSample;
@@ -47,7 +46,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private double xApplied = 0;
 	private double yApplied = 0;
 
-	private AutoAlign() { // TODO ADD FIELD MIRRORING. IF RED MULTIPLE BY -1 ELSE USE REGULAR
+	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
 		// PID Config
 		this.translationController = TRANSLATIONAL_CONTROLLER.get();
@@ -111,7 +110,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	private void repulsorAutoAlign(Pose2d pose, SwerveSample sample) {
-		rotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Degrees), MAX_HEADING_ANGLE.in(Degrees));
+		repulsionRotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Radians), MAX_HEADING_ANGLE.in(Radians));
 
 		var targetSpeeds = sample.getChassisSpeeds();
 			targetSpeeds.vxMetersPerSecond += repulsionTranslationController.calculate(pose.getX(), sample.x);

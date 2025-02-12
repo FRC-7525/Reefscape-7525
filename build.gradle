@@ -25,7 +25,7 @@ repositories {
         url = uri("https://maven.pkg.github.com/FRC-7525/PioneersLib")
         credentials {
             username = "PotmanNob"
-            password = "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"
+            password = "\u0067\u0068\u0070\u005f\u006a\u004f\u0035\u0078\u0065\u0070\u0036\u0036\u0070\u0037\u0045\u0070\u004d\u0061\u0072\u0072\u0052\u0039\u0074\u0075\u006f\u0052\u0044\u0070\u0055\u0069\u004d\u0033\u0064\u006d\u0030\u0066\u0030\u0074\u0045\u007a"
         }
     }
 

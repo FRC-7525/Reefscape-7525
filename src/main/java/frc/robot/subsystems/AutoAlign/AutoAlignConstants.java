@@ -1,8 +1,6 @@
 package frc.robot.Subsystems.AutoAlign;
 
 import static edu.wpi.first.units.Units.*;
-import static org.team7525.autoAlign.RepulsorFieldPlanner.*;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,8 +15,10 @@ import frc.robot.GlobalConstants;
 import java.util.List;
 import java.util.function.Supplier;
 
-import org.team7525.autoAlign.RepulsorFieldPlanner;
-import org.team7525.autoAlign.RepulsorFieldPlannerConstants;
+import org.team7525.autoAlign.RepulsorFieldPlanner.GuidedObstacle;
+import org.team7525.autoAlign.RepulsorFieldPlanner.HorizontalObstacle;
+import org.team7525.autoAlign.RepulsorFieldPlanner.Obstacle;
+import org.team7525.autoAlign.RepulsorFieldPlanner.VerticalObstacle;
 
 
 public final class AutoAlignConstants {
@@ -35,9 +35,10 @@ public final class AutoAlignConstants {
 	public static final double DISTANCE_ERROR_MARGIN = .05;
 	public static final double ANGLE_ERROR_MARGIN = .1;
 
-	static {
-		System.out.println(DriverStation.getAlliance().isPresent());
-	}
+	public static final double GOAL_STRENGTH = 0.65;
+	static final double FIELD_LENGTH = 16.42;
+	static final double FIELD_WIDTH = 8.16;
+
 	public static final Pose2d REEF_POSE = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
 
 	// TODO tune these
@@ -65,14 +66,14 @@ public final class AutoAlignConstants {
 	public static final Supplier<PIDController> REPULSOR_ROTATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(1, 0, 0);
-			case SIM -> new PIDController(10, 0, 0);
+			case SIM -> new PIDController(1, 0, 0);
 			default -> new PIDController(1, 0, 0);
 		};
 
 	public static final class obstacles {
 		 public static final List<Obstacle> FIELD_OBSTACLES = List.of(
-		    new GuidedObstacle(new Translation2d(4.49, 4), 1, true, 0.5),
-		    new GuidedObstacle(new Translation2d(13.08, 4), 1, true, 0.5)
+		    new GuidedObstacle(new Translation2d(4.49, 4), 1, true, 0.8),
+		    new GuidedObstacle(new Translation2d(13.08, 4), 1, true, 0.8)
 	    );
 
 	    public static final List<Obstacle> WALLS = List.of(
