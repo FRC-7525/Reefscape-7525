@@ -24,7 +24,7 @@ import org.team7525.autoAlign.RepulsorFieldPlanner.VerticalObstacle;
 public final class AutoAlignConstants {
 
 	public static final Distance ROBOT_RADIUS = Meters.of(0.7);
-	public static final Distance REEF_HITBOX = Meters.of(0.5);
+	public static final Distance REEF_HITBOX = Meters.of(0.55);
 
 	public static final Angle MIN_HEADING_ANGLE = Degrees.of(-180);
 	public static final Angle MAX_HEADING_ANGLE = Degrees.of(180);
@@ -66,8 +66,8 @@ public final class AutoAlignConstants {
 	public static final Supplier<PIDController> REPULSOR_ROTATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(1, 0, 0);
-			case SIM -> new PIDController(1, 0, 0);
-			default -> new PIDController(1, 0, 0);
+			case SIM -> new PIDController(20, 0, 0);
+			default -> new PIDController(10, 0, 0);
 		};
 
 	public static final class obstacles {
