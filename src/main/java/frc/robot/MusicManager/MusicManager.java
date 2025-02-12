@@ -30,7 +30,7 @@ public class MusicManager {
 
 		songToPlay.setDefaultOption("Lalal", MUSIC_DIR + "/output.chrp");
 		hasInstruments = false;
-		
+
 		audioConfigs.AllowMusicDurDisable = true;
 	}
 
