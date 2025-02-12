@@ -20,11 +20,12 @@ repositories {
 	mavenCentral()
 
     // Team lib heheheheheh
+    // Yeah we're commiting a PAT to the repo, but it's a read-only token
     maven {
         url = uri("https://maven.pkg.github.com/FRC-7525/PioneersLib")
         credentials {
-            username = "Mechanical-Advantage-Bot"
-            password = "\u0067\u0068\u0070\u005f\u006e\u0056\u0051\u006a\u0055\u004f\u004c\u0061\u0079\u0066\u006e\u0078\u006e\u0037\u0051\u0049\u0054\u0042\u0032\u004c\u004a\u006d\u0055\u0070\u0073\u0031\u006d\u0037\u004c\u005a\u0030\u0076\u0062\u0070\u0063\u0051"
+            username = "PotmanNob"
+            password = "\u0067\u0068\u0070\u005f\u004c\u0074\u0030\u0038\u0067\u004e\u0030\u0033\u006b\u006a\u0054\u0045\u0039\u0054\u0059\u005a\u006c\u0067\u0079\u0037\u0061\u0031\u0078\u0078\u0032\u0071\u0071\u0041\u007a\u0055\u0034\u0031\u0035\u0066\u0051\u0064"
         }
     }
 
@@ -102,7 +103,7 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // Team Lib CHANGE WHEN U UPDATE!!!!!!!!!!!!!
-    implementation 'com.github.FRC-7525:pioneerslib:1.0.10'
+    implementation 'com.github.FRC-7525:pioneerslib:1.0.17'
 
     // AKIT
     def akitJson = new groovy.json.JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)
