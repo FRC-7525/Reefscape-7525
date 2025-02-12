@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.AutoAlign;
 
 import static edu.wpi.first.units.Units.*;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -11,15 +12,12 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.GlobalConstants;
-
 import java.util.List;
 import java.util.function.Supplier;
-
 import org.team7525.autoAlign.RepulsorFieldPlanner.GuidedObstacle;
 import org.team7525.autoAlign.RepulsorFieldPlanner.HorizontalObstacle;
 import org.team7525.autoAlign.RepulsorFieldPlanner.Obstacle;
 import org.team7525.autoAlign.RepulsorFieldPlanner.VerticalObstacle;
-
 
 public final class AutoAlignConstants {
 
@@ -71,18 +69,16 @@ public final class AutoAlignConstants {
 		};
 
 	public static final class obstacles {
-		 public static final List<Obstacle> FIELD_OBSTACLES = List.of(
-		    new GuidedObstacle(new Translation2d(4.49, 4), 1, true, 0.8),
-		    new GuidedObstacle(new Translation2d(13.08, 4), 1, true, 0.8)
-	    );
 
-	    public static final List<Obstacle> WALLS = List.of(
-	    	new HorizontalObstacle(0.0, 0.5, true),
-	    	new HorizontalObstacle(FIELD_WIDTH, 0.5, false),
-	    	new VerticalObstacle(0.0, 0.5, true),
-	    	new VerticalObstacle(FIELD_LENGTH, 0.5, false),
-	    	new VerticalObstacle(7.55, 0.5, false),
-	    	new VerticalObstacle(10, 0.5, true)
-	    );
+		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 1, true, 0.8), new GuidedObstacle(new Translation2d(13.08, 4), 1, true, 0.8));
+
+		public static final List<Obstacle> WALLS = List.of(
+			new HorizontalObstacle(0.0, 0.5, true),
+			new HorizontalObstacle(FIELD_WIDTH, 0.5, false),
+			new VerticalObstacle(0.0, 0.5, true),
+			new VerticalObstacle(FIELD_LENGTH, 0.5, false),
+			new VerticalObstacle(7.55, 0.5, false),
+			new VerticalObstacle(10, 0.5, true)
+		);
 	}
 }

@@ -4,10 +4,8 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Radians;
-import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
-
-import java.util.ArrayList;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
 
 import choreo.trajectory.SwerveSample;
 import edu.wpi.first.math.MathUtil;
@@ -19,10 +17,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Subsystems.Drive.Drive;
+import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.autoAlign.RepulsorFieldPlanner;
 import org.team7525.subsystem.Subsystem;
-
 
 public class AutoAlign extends Subsystem<AutoAlignStates> {
 
@@ -77,10 +75,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		targetPose = getState().getTargetPose();
 		if (!readyForClose()) {
 			Translation2d temp = reefPose.getTranslation().minus(drive.getPose().getTranslation());
-			targetPose = new Pose2d(targetPose.getTranslation(), 
-                Rotation2d.fromRadians(Math.atan2(temp.getY(), temp.getX())));
+			targetPose = new Pose2d(targetPose.getTranslation(), Rotation2d.fromRadians(Math.atan2(temp.getY(), temp.getX())));
 		}
-		
 
 		// if there is no collision, it will go to braindead AA, or use repulsor to
 		// avoid the collision
@@ -113,9 +109,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		repulsionRotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Radians), MAX_HEADING_ANGLE.in(Radians));
 
 		var targetSpeeds = sample.getChassisSpeeds();
-			targetSpeeds.vxMetersPerSecond += repulsionTranslationController.calculate(pose.getX(), sample.x);
-			targetSpeeds.vyMetersPerSecond += repulsionTranslationController.calculate(pose.getY(), sample.y);
-			targetSpeeds.omegaRadiansPerSecond += repulsionRotationController.calculate(pose.getRotation().getRadians(), sample.heading);
+		targetSpeeds.vxMetersPerSecond += repulsionTranslationController.calculate(pose.getX(), sample.x);
+		targetSpeeds.vyMetersPerSecond += repulsionTranslationController.calculate(pose.getY(), sample.y);
+		targetSpeeds.omegaRadiansPerSecond += repulsionRotationController.calculate(pose.getRotation().getRadians(), sample.heading);
 
 		Logger.recordOutput("TESTING VX", targetSpeeds.vxMetersPerSecond);
 		Logger.recordOutput("TESTING VY", targetSpeeds.vyMetersPerSecond);
