@@ -16,7 +16,6 @@ public class MusicManager {
 	private final Orchestra orchestra = new Orchestra();
 	private final SendableChooser<Boolean> playMusic = new SendableChooser<>();
 	private final SendableChooser<String> songToPlay = new SendableChooser<>();
-	private final AudioConfigs configs = new AudioConfigs();
 
 	private final String SUBSYSTEM_NAME = "MusicManager";
 	private final String MUSIC_DIR = "music";
@@ -31,6 +30,7 @@ public class MusicManager {
 
 		songToPlay.setDefaultOption("Lalal", MUSIC_DIR + "/output.chrp");
 		hasInstruments = false;
+
 		audioConfigs.AllowMusicDurDisable = true;
 	}
 
@@ -50,6 +50,7 @@ public class MusicManager {
 
 	public void addMotor(TalonFX motor) {
 		orchestra.addInstrument(motor);
+		motor.getConfigurator().apply(audioConfigs);
 	}
 
 	public void removeAllMotors() {
