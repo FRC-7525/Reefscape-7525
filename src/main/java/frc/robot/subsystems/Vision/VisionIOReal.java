@@ -1,81 +1,31 @@
-package frc.robot.Subsystems.Vision;
+package frc.robot.subsystems.VisionIOReal;
 
-import static frc.robot.Subsystems.Vision.VisionConstants.*;
-
-import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.math.filter.Debouncer.DebounceType;
-import edu.wpi.first.math.geometry.Pose2d;
-import java.util.Optional;
-import org.photonvision.EstimatedRobotPose;
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import edu.wpi.first.math.geometry.Pose3d;
 
 public class VisionIOReal implements VisionIO {
+  private final CameraPoseEstimator[] poseEstimators;
 
-	private PhotonCamera backCamera;
-	private PhotonCamera frontCamera;
-	private PhotonPoseEstimator backEstimator;
-	private PhotonPoseEstimator frontEstimator;
-	private Debouncer backDebouncer;
-	private Debouncer frontDebouncer;
+  private Pose3d[] poseArray;
+  private double[] timestampArray;
+  private double[] visionStdArray;
+  private double[] latencyArray;
 
-	public VisionIOReal() {
-		backCamera = new PhotonCamera("Back Camera");
-		frontCamera = new PhotonCamera("Front Camera");
+  public VisionIOReal(CameraPoseEstimator[] poseEstimators) {
+    this.poseEstimators = poseEstimators;
 
-		frontEstimator = new PhotonPoseEstimator(frontCamera, APRIL_TAG_FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, ROBOT_TO_FRONT_CAMERA);
-		backEstimator = new CameraPoseEstimator(backCamera, APRIL_TAG_FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, ROBOT_TO_BACK_CAMERA);
-		backDebouncer = new Debouncer(CAMERA_DEBOUNCE_TIME, DebounceType.kFalling);
-		frontDebouncer = new Debouncer(CAMERA_DEBOUNCE_TIME, DebounceType.kFalling);
-	}
+    poseArray = new Pose3d[poseEstimators.length];
+    timestampArray = new double[poseEstimators.length];
+    visionStdArray = new double[poseEstimators.length * 3];
+    latencyArray = new double[poseEstimators.length];
+  }
 
-	@Override
-	public void updateInputs(VisionIOInputs inputs) {
-		Optional<EstimatedRobotPose> backPose = getBackPoseEstimation();
-		Optional<EstimatedRobotPose> frontPose = getFrontPoseEstimation();
-
-		inputs.hasBackVision = backDebouncer.calculate(backPose.isPresent());
-		inputs.hasFrontVision = frontDebouncer.calculate(frontPose.isPresent());
-		inputs.backCameraConnected = backCamera.isConnected();
-		inputs.frontCameraConnected = frontCamera.isConnected();
-		inputs.backTargetCount = backPose.get().targetsUsed.size();
-		inputs.frontTargetCount = frontPose.get().targetsUsed.size();
-		if (inputs.hasBackVision) inputs.backVisionPose = backPose.get().estimatedPose.toPose2d();
-		if (inputs.hasFrontVision) inputs.frontVisionPose = frontPose.get().estimatedPose.toPose2d();
-	}
-
-	@Override
-	public void updateRobotPose(Pose2d pose) {
-		// U dont need robot pose for real life
-		return;
-	}
-
-	@Override
-	public void setStrategy(PoseStrategy strategy) {
-		if (strategy != frontEstimator.getPrimaryStrategy()) {
-			frontEstimator.setPrimaryStrategy(strategy);
-			backEstimator.setPrimaryStrategy(strategy);
-		}
-	}
-
-	// Not just returning a pose3d bc timestamps needed for main pose estimation &
-	// easier to handle optional logic in vision.java
-	@Override
-	public Optional<EstimatedRobotPose> getBackPoseEstimation() {
-		Optional<EstimatedRobotPose> pose = Optional.empty();
-		for (var change : backCamera.getAllUnreadResults()) {
-			pose = backEstimator.update(change);
-		}
-		return pose;
-	}
-
-	@Override
-	public Optional<EstimatedRobotPose> getFrontPoseEstimation() {
-		Optional<EstimatedRobotPose> pose = Optional.empty();
-		for (var change : frontCamera.getAllUnreadResults()) {
-			pose = frontEstimator.update(change);
-		}
-		return pose;
-	}
+  @Override
+  public void updateInputs(VisionIOInputs inputs) {
+    getEstimatedPoseUpdates(
+        poseEstimators, poseArray, timestampArray, visionStdArray, latencyArray);
+    inputs.visionPoses = poseArray;
+    inputs.timestamps = timestampArray;
+    inputs.visionStdDevs = visionStdArray;
+    inputs.latency = latencyArray;
+  }
 }

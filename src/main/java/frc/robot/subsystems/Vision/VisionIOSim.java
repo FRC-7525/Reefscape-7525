@@ -1,131 +1,111 @@
-package frc.robot.Subsystems.Vision;
+package frc.robot.Subsystems.VisionIOSim;
 
-import static frc.robot.Subsystems.Vision.VisionConstants.*;
-
-import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
-import java.util.Optional;
-import org.photonvision.EstimatedRobotPose;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import static frc.robot.Subsystems.Vision.VisionConstants.*;
+import frc.robot.Constants.AprilTagConstants;
+import frc.robot.Constants.AprilTagConstants.CameraResolution;
+import frc.robot.Constants.AprilTagConstants.DoryCameras;
 import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
 
 public class VisionIOSim implements VisionIO {
+  private final VisionSystemSim visionSim;
 
-	private VisionSystemSim visionSim;
-	private SimCameraProperties backCameraProperties;
-	private SimCameraProperties frontCameraProperties;
-	private PhotonCameraSim backCamera;
-	private PhotonCameraSim frontCamera;
-	private PhotonPoseEstimator backEstimator;
-	private PhotonPoseEstimator frontEstimator;
-	private Debouncer backDebouncer;
-	private Debouncer frontDebouncer;
-	private Pose2d robotPose;
+  // Camera simulators
+  private PhotonCameraSim frontLeftSim;
+  private PhotonCameraSim frontRightSim;
+  private PhotonCameraSim backLeftSim;
+  private PhotonCameraSim backRightSim;
 
-	public VisionIOSim() {
-		visionSim = new VisionSystemSim("Vision");
-		backCameraProperties = new SimCameraProperties();
-		frontCameraProperties = new SimCameraProperties();
+  // Pose estimators
+  private CameraPoseEstimator frontLeftPose;
+  private CameraPoseEstimator frontRightPose;
+  private CameraPoseEstimator backLeftPose;
+  private CameraPoseEstimator backRightPose;
 
-		// TODO: Tune to accurate values & put in constants ig
-		// A 640 x 480 camera with a 100 degree diagonal FOV.
-		backCameraProperties.setCalibration(CAMERA_WIDTH, CAMERA_HEIGHT, CAMERA_ROTATION);
-		frontCameraProperties.setCalibration(CAMERA_WIDTH, CAMERA_HEIGHT, CAMERA_ROTATION);
+  private CameraPoseEstimator[] poseEstimators;
 
-		// Approximate detection noise with average and standard deviation error in
-		// pixels.
-		backCameraProperties.setCalibError(CALIB_ERROR_AVG, CALIB_ERROR_STD_DEV);
-		frontCameraProperties.setCalibError(CALIB_ERROR_AVG, CALIB_ERROR_STD_DEV);
-		// Set the camera image capture framerate (Note: this is limited by robot loop
-		// rate).
-		backCameraProperties.setFPS(CAMERA_FPS);
-		frontCameraProperties.setFPS(CAMERA_FPS);
-		// The average and standard deviation in milliseconds of image data latency.
-		backCameraProperties.setAvgLatencyMs(AVG_LATENCY_MS);
-		backCameraProperties.setLatencyStdDevMs(LATENCY_STD_DEV_MS);
-		frontCameraProperties.setAvgLatencyMs(AVG_LATENCY_MS);
-		frontCameraProperties.setLatencyStdDevMs(LATENCY_STD_DEV_MS);
+  private Pose3d[] poseArray = new Pose3d[4];
+  private double[] timestampArray = new double[4];
+  private double[] visionStdArray = new double[4 * 3];
+  private double[] latencyArray;
 
-		backCamera = new PhotonCameraSim(new PhotonCamera("Back Camera"), backCameraProperties);
-		frontCamera = new PhotonCameraSim(new PhotonCamera("Front Camera"), frontCameraProperties);
+  public AprilTagVisionIOSim() {
+    PhotonCamera frontLeft = new PhotonCamera(DoryCameras.frontLeftName);
+    PhotonCamera frontRight = new PhotonCamera(DoryCameras.frontRightName);
+    PhotonCamera backLeft = new PhotonCamera(DoryCameras.backLeftName);
+    PhotonCamera backRight = new PhotonCamera(DoryCameras.backRightName);
 
-		visionSim.addAprilTags(APRIL_TAG_FIELD_LAYOUT);
-		visionSim.addCamera(backCamera, ROBOT_TO_BACK_CAMERA);
-		visionSim.addCamera(frontCamera, ROBOT_TO_FRONT_CAMERA);
+    frontLeftPose =
+        new CameraPoseEstimator(
+            frontLeft,
+            DoryCameras.frontLeftFromRobot,
+            AprilTagConstants.poseStrategy,
+            CameraResolution.HIGH_RES);
+    frontRightPose =
+        new CameraPoseEstimator(
+            frontRight,
+            DoryCameras.frontRightFromRobot,
+            AprilTagConstants.poseStrategy,
+            CameraResolution.HIGH_RES);
+    backLeftPose =
+        new CameraPoseEstimator(
+            backLeft,
+            DoryCameras.backLeftFromRobot,
+            AprilTagConstants.poseStrategy,
+            CameraResolution.HIGH_RES);
+    backRightPose =
+        new CameraPoseEstimator(
+            backRight,
+            DoryCameras.backRightFromRobot,
+            AprilTagConstants.poseStrategy,
+            CameraResolution.HIGH_RES);
 
-		// Puts a camera stream onto nt4
-		frontCamera.enableRawStream(true);
-		frontCamera.enableProcessedStream(true);
-		backCamera.enableRawStream(true);
-		backCamera.enableProcessedStream(true);
-		// Disable this if ur laptop is bad (makes the camera stream easy to
-		// understanda)
-		frontCamera.enableDrawWireframe(true);
-		backCamera.enableDrawWireframe(true);
+    this.poseEstimators =
+        new CameraPoseEstimator[] {frontLeftPose, frontRightPose, backLeftPose, backRightPose};
 
-		robotPose = new Pose2d();
-		// Pose estimators :/
-		frontEstimator = new PhotonPoseEstimator(APRIL_TAG_FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, ROBOT_TO_FRONT_CAMERA);
-		backEstimator = new PhotonPoseEstimator(APRIL_TAG_FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, ROBOT_TO_BACK_CAMERA);
-		backDebouncer = new Debouncer(CAMERA_DEBOUNCE_TIME, DebounceType.kFalling);
-		frontDebouncer = new Debouncer(CAMERA_DEBOUNCE_TIME, DebounceType.kFalling);
-	}
+    visionSim = new VisionSystemSim("main");
+    visionSim.addAprilTags(AprilTagConstants.aprilTagFieldLayout);
 
-	@Override
-	public void updateInputs(VisionIOInputs inputs) {
-		Optional<EstimatedRobotPose> backPose = getBackPoseEstimation();
-		Optional<EstimatedRobotPose> frontPose = getFrontPoseEstimation();
+    SimCameraProperties cameraProps = new SimCameraProperties(); // Corresponds to high-res cameras
+    cameraProps.setCalibration(1600, 1200, Rotation2d.fromDegrees(75));
+    cameraProps.setCalibError(0.25, 0.10);
+    cameraProps.setFPS(15);
+    cameraProps.setAvgLatencyMs(50);
+    cameraProps.setLatencyStdDevMs(15);
 
-		inputs.hasBackVision = backDebouncer.calculate(backPose.isPresent());
-		inputs.hasFrontVision = frontDebouncer.calculate(frontPose.isPresent());
-		inputs.backCameraConnected = backCamera.getCamera().isConnected();
-		inputs.frontCameraConnected = frontCamera.getCamera().isConnected();
-		if (backPose.isPresent()) {
-			inputs.backVisionPose = backPose.get().estimatedPose.toPose2d();
-			inputs.backTargetCount = backPose.get().targetsUsed.size();
-		}
-		if (frontPose.isPresent()) {
-			inputs.frontVisionPose = frontPose.get().estimatedPose.toPose2d();
-			inputs.frontTargetCount = frontPose.get().targetsUsed.size();
-		}
-	}
+    frontLeftSim = new PhotonCameraSim(frontLeft, cameraProps);
+    frontRightSim = new PhotonCameraSim(frontRight, cameraProps);
+    backLeftSim = new PhotonCameraSim(backLeft, cameraProps);
+    backRightSim = new PhotonCameraSim(backRight, cameraProps);
 
-	@Override
-	public void updateRobotPose(Pose2d pose) {
-		robotPose = pose;
-		visionSim.update(robotPose);
-	}
+    visionSim.addCamera(frontLeftSim, DoryCameras.frontLeftFromRobot);
+    visionSim.addCamera(frontRightSim, DoryCameras.frontRightFromRobot);
+    visionSim.addCamera(backLeftSim, DoryCameras.backLeftFromRobot);
+    visionSim.addCamera(backRightSim, DoryCameras.backRightFromRobot);
 
-	@Override
-	public void setStrategy(PoseStrategy strategy) {
-		if (strategy != frontEstimator.getPrimaryStrategy()) {
-			frontEstimator.setPrimaryStrategy(strategy);
-			backEstimator.setPrimaryStrategy(strategy);
-		}
-	}
+    frontLeftSim.enableDrawWireframe(true);
+    frontRightSim.enableDrawWireframe(true);
+    backLeftSim.enableDrawWireframe(true);
+    backRightSim.enableDrawWireframe(true);
+  }
 
-	// Not just returning a pose3d bc timestamps needed for main pose estimation &
-	// easier to handle optional logic in vision.java
-	@Override
-	public Optional<EstimatedRobotPose> getBackPoseEstimation() {
-		Optional<EstimatedRobotPose> pose = Optional.empty();
-		for (var change : backCamera.getCamera().getAllUnreadResults()) {
-			pose = backEstimator.update(change);
-		}
-		return pose;
-	}
+  @Override
+  public void updateInputs(AprilTagVisionIOInputs inputs) {
+    getEstimatedPoseUpdates(
+        poseEstimators, poseArray, timestampArray, visionStdArray, latencyArray);
+    inputs.visionPoses = poseArray;
+    inputs.timestamps = timestampArray;
+    inputs.visionStdDevs = visionStdArray;
+    inputs.latency = latencyArray;
+  }
 
-	@Override
-	public Optional<EstimatedRobotPose> getFrontPoseEstimation() {
-		Optional<EstimatedRobotPose> pose = Optional.empty();
-		for (var change : frontCamera.getCamera().getAllUnreadResults()) {
-			pose = frontEstimator.update(change);
-		}
-		return pose;
-	}
+  @Override
+  public void updatePose(Pose2d pose) {
+    visionSim.update(pose);
+  }
 }
