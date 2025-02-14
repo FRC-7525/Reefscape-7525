@@ -25,9 +25,10 @@ public class DriveConstants {
 
 	public static final AngularVelocity ANGULAR_VELOCITY_LIMIT = AngularVelocity.ofBaseUnits(180, DegreesPerSecond);
 
-	public static final LinearAcceleration MAX_LINEAR_DECELERATION = MetersPerSecondPerSecond.of(4);
+	public static final LinearAcceleration MAX_LINEAR_DECELERATION = MetersPerSecondPerSecond.of(8);
+	public static final LinearAcceleration MAX_LINEAR_STOPPING_ACCELERATION = MetersPerSecondPerSecond.of(3);
+
 	public static final LinearVelocity TIPPING_LIMITER_THRESHOLD = MetersPerSecond.of(3);
-	public static final Angle TIPPING_LIMITER_ANGLE_THRESHOLD = Degrees.of(90);
 
 	// Change to change the sysID test that gets run for drive
 	public static final SysIdMode SYS_ID_MODE = SysIdMode.STEER;

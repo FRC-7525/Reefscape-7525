@@ -61,6 +61,9 @@ public class Drive extends Subsystem<DriveStates> {
 	private final SlewRateLimiter xTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_DECELERATION.in(MetersPerSecondPerSecond));
 	private final SlewRateLimiter yTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_DECELERATION.in(MetersPerSecondPerSecond));
 
+	private final SlewRateLimiter xStoppingTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_STOPPING_ACCELERATION.in(MetersPerSecondPerSecond));
+	private final SlewRateLimiter yStoppingTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_STOPPING_ACCELERATION.in(MetersPerSecondPerSecond));
+
 	/**
 	 * Constructs a new Drive subsystem with the given DriveIO.
 	 *
@@ -194,17 +197,16 @@ public class Drive extends Subsystem<DriveStates> {
 			double currentVelocity = Drive.getInstance().getVelocity().in(MetersPerSecond);
 			double targetVelocity = Math.hypot(xVelocity, yVelocity);
 
+			// Like yknow when it tips but like it be tipping mad when u stop, yeah this stops it
 			if (Math.abs(currentVelocity) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond) && Math.abs(targetVelocity) <= 0.5) { 
-				// Apply slew rate limiter when slowing down within the 0.5-0 m/s range or soon switching from positive to negative
-				// TODO: Tune this ig, idc as long as it doesent tip
 				Angle angle = Radians.of(Math.atan2(yVelocity, xVelocity));
-				antiTipX = xTranslationLimiter.calculate(targetVelocity * Math.sin(angle.in(Radians)));
-				antiTipY = yTranslationLimiter.calculate(targetVelocity * Math.cos(angle.in(Radians)));
+				antiTipX = xStoppingTranslationLimiter.calculate(targetVelocity * Math.sin(angle.in(Radians)));
+				antiTipY = yStoppingTranslationLimiter.calculate(targetVelocity * Math.cos(angle.in(Radians)));
 				Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", true);
 			} else {
 				// When ur tryna anti tip but you wouldn't tip anyways
-				antiTipX = xVelocity;
-				antiTipY = yVelocity;
+				antiTipX = xTranslationLimiter.calculate(xVelocity);
+				antiTipY = yTranslationLimiter.calculate(yVelocity);
 				Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", false);
 			}
 		}
