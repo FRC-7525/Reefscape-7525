@@ -298,7 +298,7 @@ public class Drive extends Subsystem<DriveStates> {
 			default:
 				return new PrintCommand("Invalid SysId mode (Dynamic)");
 		}
-	}	
+	}
 
 	// Path Planner UTIL
 
