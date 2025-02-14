@@ -1,10 +1,11 @@
 package frc.robot.Subsystems.AprilTagVision;
 
+import static frc.robot.Subsystems.AprilTagVision.VisionConstants.*;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.Subsystems.AprilTagVision.VisionConstants.CameraResolution;
-import static frc.robot.Subsystems.AprilTagVision.VisionConstants.*;
 import frc.robot.Subsystems.Vision.VisionConstants.CameraResolution;
 import org.photonvision.PhotonCamera;
 import org.photonvision.simulation.PhotonCameraSim;

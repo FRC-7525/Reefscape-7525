@@ -1,6 +1,8 @@
 package frc.robot.Subsystems.AprilTagVision;
 
 import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.Subsystems.AprilTagVision.VisionConstants.*;
 import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
 import edu.wpi.first.math.Matrix;
@@ -15,7 +17,6 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.GlobalConstants;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Subsystems.AprilTagVision.VisionConstants.CameraResolution;
-
 import frc.robot.Subsystems.Vision.VisionConstants.CameraResolution;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
@@ -26,9 +27,6 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
-
-import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.Subsystems.AprilTagVision.VisionConstants.*;
 
 public interface AprilTagVisionIO {
 	@AutoLog
