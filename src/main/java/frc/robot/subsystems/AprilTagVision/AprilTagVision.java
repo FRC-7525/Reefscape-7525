@@ -13,6 +13,7 @@ import static org.littletonrobotics.junction.Logger.getTimestamp;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.Subsystems.AprilTagVision.AprilTagVisionIO.CameraPoseEstimator;
 import frc.robot.Subsystems.AprilTagVision.AprilTagVisionIOInputsAutoLogged;
@@ -75,32 +76,25 @@ public class AprilTagVision {
 		io.updateInputs(aprilTagVisionInputs);
 		Logger.processInputs("AprilTagVision", aprilTagVisionInputs);
 
-		for (int i = 0; i < aprilTagVisionInputs.timestamps.length; i++) {
-			if ( // Bounds check the estimated robot pose is actually on the field
-				aprilTagVisionInputs.timestamps[i] >= 1.0 &&
-				Math.abs(aprilTagVisionInputs.visionPoses[i].getZ()) < 1.0 &&
-				aprilTagVisionInputs.visionPoses[i].getX() > 0 &&
-				aprilTagVisionInputs.visionPoses[i].getX() < APRIL_TAG_FIELD_LAYOUT.getFieldLength() &&
-				aprilTagVisionInputs.visionPoses[i].getY() > 0 &&
-				aprilTagVisionInputs.visionPoses[i].getY() < APRIL_TAG_FIELD_LAYOUT.getFieldWidth() &&
-				aprilTagVisionInputs.visionPoses[i].getRotation().getX() < 0.2 &&
-				aprilTagVisionInputs.visionPoses[i].getRotation().getY() < 0.2
-			) {
+		int i = 0;
+		for (Pose3d visionPose : aprilTagVisionInputs.visionPoses) {
+			if (visionPose != null && visionPose.getRotation().getY() < 0.2) { 
 				if (aprilTagVisionInputs.timestamps[i] > (getTimestamp() / 1.0e6)) {
 					aprilTagVisionInputs.timestamps[i] = (getTimestamp() / 1.0e6) - aprilTagVisionInputs.latency[i];
 				}
 
-				Logger.recordOutput("Vision/AprilTagPose" + i, aprilTagVisionInputs.visionPoses[i].toPose2d());
+				Logger.recordOutput("Vision/AprilTagPose" + i, visionPose.toPose2d());
 				Logger.recordOutput("Vision/AprilTagStdDevs" + i, Arrays.copyOfRange(aprilTagVisionInputs.visionStdDevs, 3 * i, 3 * i + 3));
 				Logger.recordOutput("Vision/AprilTagTimestamps" + i, aprilTagVisionInputs.timestamps[i]);
 
 				if (useVision) {
-					Drive.getInstance().addVisionMeasurement(aprilTagVisionInputs.visionPoses[i].toPose2d(), aprilTagVisionInputs.timestamps[i], VecBuilder.fill(aprilTagVisionInputs.visionStdDevs[3 * i], aprilTagVisionInputs.visionStdDevs[3 * i + 1], aprilTagVisionInputs.visionStdDevs[3 * i + 2]));
+					Drive.getInstance().addVisionMeasurement(visionPose.toPose2d(), aprilTagVisionInputs.timestamps[i], VecBuilder.fill(aprilTagVisionInputs.visionStdDevs[3 * i], aprilTagVisionInputs.visionStdDevs[3 * i + 1], aprilTagVisionInputs.visionStdDevs[3 * i + 2]));
 				}
 			} else {
 				Logger.recordOutput("Vision/AprilTagPose" + i, new Pose2d());
 				Logger.recordOutput("Vision/AprilTagStdDevs" + i, new double[] { 0.0, 0.0, 0.0 });
 			}
+			i++;
 		}
 	}
 }
