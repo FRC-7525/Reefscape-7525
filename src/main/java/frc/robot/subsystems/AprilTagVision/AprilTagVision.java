@@ -78,7 +78,7 @@ public class AprilTagVision {
 
 		int i = 0;
 		for (Pose3d visionPose : aprilTagVisionInputs.visionPoses) {
-			if (visionPose != null && visionPose.getRotation().getY() < 0.2) { 
+			if (visionPose != null && visionPose.getRotation().getY() < 0.2) {
 				if (aprilTagVisionInputs.timestamps[i] > (getTimestamp() / 1.0e6)) {
 					aprilTagVisionInputs.timestamps[i] = (getTimestamp() / 1.0e6) - aprilTagVisionInputs.latency[i];
 				}
