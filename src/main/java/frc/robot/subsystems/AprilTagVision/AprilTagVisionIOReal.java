@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Vision;
+package frc.robot.Subsystems.AprilTagVision;
 
 import edu.wpi.first.math.geometry.Pose3d;
 

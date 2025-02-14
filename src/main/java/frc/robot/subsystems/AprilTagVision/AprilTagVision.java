@@ -1,13 +1,13 @@
-package frc.robot.Subsystems.Vision;
+package frc.robot.Subsystems.AprilTagVision;
 
 import static edu.wpi.first.units.Units.Radians;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.Subsystems.Vision.VisionConstants.APRIL_TAG_FIELD_LAYOUT;
-import static frc.robot.Subsystems.Vision.VisionConstants.BACK_CAMERA_NAME;
-import static frc.robot.Subsystems.Vision.VisionConstants.FRONT_CAMERA_NAME;
-import static frc.robot.Subsystems.Vision.VisionConstants.POSE_STRATEGY;
-import static frc.robot.Subsystems.Vision.VisionConstants.ROBOT_TO_BACK_CAMERA;
-import static frc.robot.Subsystems.Vision.VisionConstants.ROBOT_TO_FRONT_CAMERA;
+import static frc.robot.Subsystems.AprilTagVision.VisionConstants.APRIL_TAG_FIELD_LAYOUT;
+import static frc.robot.Subsystems.AprilTagVision.VisionConstants.BACK_CAMERA_NAME;
+import static frc.robot.Subsystems.AprilTagVision.VisionConstants.FRONT_CAMERA_NAME;
+import static frc.robot.Subsystems.AprilTagVision.VisionConstants.POSE_STRATEGY;
+import static frc.robot.Subsystems.AprilTagVision.VisionConstants.ROBOT_TO_BACK_CAMERA;
+import static frc.robot.Subsystems.AprilTagVision.VisionConstants.ROBOT_TO_FRONT_CAMERA;
 import static org.littletonrobotics.junction.Logger.getTimestamp;
 
 import edu.wpi.first.math.VecBuilder;
@@ -15,9 +15,10 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Subsystems.AprilTagVision.AprilTagVisionIO.CameraPoseEstimator;
+import frc.robot.Subsystems.AprilTagVision.VisionConstants.CameraResolution;
 import frc.robot.Subsystems.Drive.Drive;
-import frc.robot.Subsystems.Vision.AprilTagVisionIO.CameraPoseEstimator;
-import frc.robot.Subsystems.Vision.VisionConstants.CameraResolution;
+import frc.robot.Subsystems.Vision.AprilTagVisionIOInputsAutoLogged;
 
 import java.util.Arrays;
 import org.littletonrobotics.junction.AutoLogOutput;
