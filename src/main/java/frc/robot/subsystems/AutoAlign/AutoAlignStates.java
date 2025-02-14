@@ -13,13 +13,13 @@ public enum AutoAlignStates implements SubsystemStates {
 	// TODO: Have real states and tune distance for close AA
 	OFF("OFF, No Aligning!", PosePair.of(new Pose2d(1, 1, new Rotation2d()), new Pose2d(2, 1, new Rotation2d())), Meters.of(0.0)),
 
-	L1("Driving to Reef Left 1", PosePair.of(new Pose2d(14.348, 3.81, Rotation2d.fromDegrees(180)), new Pose2d(3.2, 4.247, Rotation2d.fromDegrees(0))), Meters.of(1.5)),
+	L1("Driving to Reef Left 1", PosePair.of(new Pose2d(14.348, 3.81, Rotation2d.fromDegrees(180)), new Pose2d(3.2, 4.247, Rotation2d.fromDegrees(0))), Meters.of(.5)),
 
 	R1("Driving to Reef Right 1", PosePair.of(new Pose2d(14.345, 4.130, Rotation2d.fromDegrees(180)), new Pose2d(3.2, 3.923, Rotation2d.fromDegrees(0))), Meters.of(1.5)),
 
 	L2("Driving to Reef Left 2", PosePair.of(new Pose2d(5.026, 13.892, Rotation2d.fromDegrees(240)), new Pose2d(3.658, 3.028, Rotation2d.fromDegrees(60))), Meters.of(1.5)),
 
-	R2("Driving to Reef Right 2", PosePair.of(new Pose2d(13.612, 5.191, Rotation2d.fromDegrees(240)), new Pose2d(2.864, 3.946, Rotation2d.fromDegrees(60))), Meters.of(1.5)),
+	R2("Driving to Reef Right 2", PosePair.of(new Pose2d(14.612, 5.191, Rotation2d.fromDegrees(240)), new Pose2d(2.864, 3.946, Rotation2d.fromDegrees(60))), Meters.of(1.5)),
 
 	L3("Driving to Reef Left 3", PosePair.of(new Pose2d(12.605, 5.243, Rotation2d.fromDegrees(300)), new Pose2d(4.934, 2.802, Rotation2d.fromDegrees(120))), Meters.of(1.5)),
 

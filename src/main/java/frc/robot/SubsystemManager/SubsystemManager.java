@@ -3,10 +3,13 @@ package frc.robot.SubsystemManager;
 import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
+import java.util.ArrayList;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.SubsystemManager.SubsystemManagerConstants.AAReefTarget;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
+import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -34,6 +37,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public int operatorReefScoringLevel = 1;
 	public int hexagonTargetSide = 1;
 	public boolean scoringReefLeft = false;
+
+	private ArrayList<AutoAlignStates> autoAlignQueue = new ArrayList<AutoAlignStates>();
+
 
 	private SubsystemManager() {
 		super("Manager", SubsystemManagerStates.IDLE);
@@ -100,10 +106,13 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Auto
 		addTrigger(SubsystemManagerStates.SCORING_REEF_MANUAL, SubsystemManagerStates.IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		// Scoring Reef Auto Align
-		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
+
+		addRunnableTrigger(() -> autoAlignQueue.add(REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()))), () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
+		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.AUTO_ALIGN_FAR, () -> !autoAlignQueue.isEmpty());
 		addTrigger(SubsystemManagerStates.AUTO_ALIGN_FAR, SubsystemManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
 		addTrigger(SubsystemManagerStates.AUTO_ALIGN_CLOSE, SubsystemManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
-		addTrigger(SubsystemManagerStates.SCORING_REEF_AA, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
+		// addTrigger(SubsystemManagerStates.SCORING_REEF_AA, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
+		addRunnableTrigger(() -> {autoAlignQueue.remove(0); setState(SubsystemManagerStates.IDLE);}, () -> (getState() == SubsystemManagerStates.SCORING_REEF_AA && DRIVER_CONTROLLER.getYButtonPressed()));
 
 		// // Zero Elevator
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.ZEROING_ELEVATOR, () -> DRIVER_CONTROLLER.getBackButtonPressed());
@@ -146,8 +155,13 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		this.leftSourceSelected = leftSourceTargeted;
 	}
 
+	public AutoAlignStates getNextInQueue() {
+		return autoAlignQueue.get(0);
+	}
+
 	@Override
 	public void runState() {
+		System.out.println(autoAlignQueue.toString());
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/State String", getState().getStateString());
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Selected Reef Side", hexagonTargetSide);

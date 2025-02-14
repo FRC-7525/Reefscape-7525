@@ -4,6 +4,11 @@
       "window": {
         "visible": false
       }
+    },
+    "RoboRIO": {
+      "window": {
+        "visible": true
+      }
     }
   },
   "NTProvider": {
@@ -45,13 +50,16 @@
   "NetworkTables": {
     "transitory": {
       "AdvantageKit": {
-        "RealOutputs": {
-          "Vision": {
-            "open": true
-          },
+        "Coraler": {
           "open": true
         },
-        "Vision": {
+        "RealOutputs": {
+          "AutoAlign": {
+            "open": true
+          },
+          "Manager": {
+            "open": true
+          },
           "open": true
         },
         "open": true
