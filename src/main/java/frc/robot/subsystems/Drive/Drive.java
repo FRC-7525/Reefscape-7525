@@ -179,22 +179,20 @@ public class Drive extends Subsystem<DriveStates> {
 		double omega = angularVelocity;
 		if (useHeadingCorrection) {
 			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
-				omega = headingCorrectionController.calculate(
-					driveIO.getDrive().getState().Pose.getRotation().getRadians(),
-					lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
+				omega = headingCorrectionController.calculate(driveIO.getDrive().getState().Pose.getRotation().getRadians(), lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
 			} else {
 				lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
 			}
 		}
-	
+
 		double antiTipX = xVelocity;
 		double antiTipY = yVelocity;
-	
+
 		if (useDecelerationLimit) {
 			double currentVelocity = Drive.getInstance().getVelocity().in(MetersPerSecond);
 			double targetVelocity = Math.hypot(xVelocity, yVelocity);
 
-			if (Math.abs(currentVelocity) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond) && Math.abs(targetVelocity) <= 0.5) { 
+			if (Math.abs(currentVelocity) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond) && Math.abs(targetVelocity) <= 0.5) {
 				// Apply slew rate limiter when slowing down within the 0.5-0 m/s range or soon switching from positive to negative
 				// TODO: Tune this ig, idc as long as it doesent tip
 				Angle angle = Radians.of(Math.atan2(yVelocity, xVelocity));
@@ -208,7 +206,7 @@ public class Drive extends Subsystem<DriveStates> {
 				Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", false);
 			}
 		}
-	
+
 		driveIO.setControl(
 			new SwerveRequest.FieldCentric()
 				.withDeadband(DEADBAND)
