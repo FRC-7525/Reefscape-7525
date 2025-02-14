@@ -18,6 +18,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
@@ -37,7 +38,6 @@ import frc.robot.FaultManager.FaultManager;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
-import frc.robot.Subsystems.Vision.Vision;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -58,6 +58,8 @@ public class Drive extends Subsystem<DriveStates> {
 	private final SwerveRequest.SysIdSwerveRotation rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
 	private final PIDController headingCorrectionController = new PIDController(0.1, 0, 0);
 	private final Field2d field = new Field2d();
+	private final SlewRateLimiter  xTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_DECELERATION.in(MetersPerSecondPerSecond));
+	private final SlewRateLimiter  yTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_DECELERATION.in(MetersPerSecondPerSecond));
 
 	/**
 	 * Constructs a new Drive subsystem with the given DriveIO.
@@ -171,8 +173,9 @@ public class Drive extends Subsystem<DriveStates> {
 	 * @param xVelocity       The desired x-axis velocity.
 	 * @param yVelocity       The desired y-axis velocity.
 	 * @param angularVelocity The desired angular velocity.
+	 * @param useHeadingCorrection Whether to use the heading correction controller.
 	 */
-	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity, boolean useHeadingCorrection) {
+	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity, boolean useHeadingCorrection, boolean useDecelerationLimit) {
 		double omega = angularVelocity;
 		if (useHeadingCorrection) {
 			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
@@ -181,7 +184,26 @@ public class Drive extends Subsystem<DriveStates> {
 				lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
 			}
 		}
-		driveIO.setControl(new SwerveRequest.FieldCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(omega).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
+		double antiTipX = 0;
+		double antiTipY = 0;
+
+		double xVelocityMult = xVelocity > 0 ? 1 : -1;
+		double yVelocityMult = yVelocity > 0 ? 1 : -1;
+		
+
+		if (useDecelerationLimit) {
+			LinearVelocity hypot = MetersPerSecond.of(Math.hypot(xVelocity, yVelocity));
+			Angle angle = Radians.of(Math.atan2(xVelocity, yVelocity));
+			if (Math.abs(hypot.in(MetersPerSecond)) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond)) {
+				antiTipX = xTranslationLimiter.calculate(hypot.in(MetersPerSecond) * Math.sin(angle.in(Radians))) * xVelocityMult;
+				antiTipY = yTranslationLimiter.calculate(hypot.in(MetersPerSecond) * Math.cos(angle.in(Radians))) * yVelocityMult;
+			} else {
+				antiTipX = xVelocity;
+				antiTipY = yVelocity;
+			}
+		}
+
+		driveIO.setControl(new SwerveRequest.FieldCentric().withDeadband(DEADBAND).withVelocityX(useDecelerationLimit ? xVelocity : antiTipX).withVelocityY(useDecelerationLimit ? yVelocity : antiTipY).withRotationalRate(omega).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
 	}
 
 	/**

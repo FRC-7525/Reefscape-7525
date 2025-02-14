@@ -101,8 +101,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		yApplied = translationController.calculate(drivePose.getY(), targetPose.getY());
 
 		double rotationApplied = rotationController.calculate(drivePose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
-		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false);
-		else drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false);
+		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false, false);
+		else drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false, false);
 	}
 
 	private void repulsorAutoAlign(Pose2d pose, SwerveSample sample) {
@@ -115,8 +115,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		Logger.recordOutput("TESTING VX", targetSpeeds.vxMetersPerSecond);
 		Logger.recordOutput("TESTING VY", targetSpeeds.vyMetersPerSecond);
-		if (isRedAlliance) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
-		else drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
+		if (isRedAlliance) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
+		else drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
 	}
 
 	private boolean checkForReefCollision() {

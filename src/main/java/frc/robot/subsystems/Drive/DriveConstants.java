@@ -10,6 +10,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
+import edu.wpi.first.units.measure.LinearVelocity;
 import frc.robot.Subsystems.Drive.Drive.SysIdMode;
 
 public class DriveConstants {
@@ -19,9 +20,12 @@ public class DriveConstants {
 	public static final Distance WHEEL_BASE = Meters.of(0.5);
 
 	// TODO: Change based on PP constants
-	public static final LinearAcceleration MAX_LINEAR_ACCELERATION = MetersPerSecondPerSecond.of(5.8);
+	public static final LinearAcceleration MAX_LINEAR_ACCELERATION = MetersPerSecondPerSecond.of(11.7);
 
 	public static final AngularVelocity ANGULAR_VELOCITY_LIMIT = AngularVelocity.ofBaseUnits(180, DegreesPerSecond);
+	
+	public static final LinearAcceleration MAX_LINEAR_DECELERATION = MetersPerSecondPerSecond.of(4);
+	public static final LinearVelocity TIPPING_LIMITER_THRESHOLD = MetersPerSecond.of(3);
 
 	// Change to change the sysID test that gets run for drive
 	public static final SysIdMode SYS_ID_MODE = SysIdMode.STEER;
