@@ -12,8 +12,11 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Constants.AprilTagConstants.CameraResolution;
-import frc.robot.Constants.Mode;
+import frc.robot.GlobalConstants.RobotMode;
+
+import static frc.robot.GlobalConstants.ROBOT_MODE;
+
+
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +26,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.team7525.misc.VisionUtil.CameraResolution;
 
 public interface VisionIO {
   @AutoLog
@@ -132,9 +136,8 @@ public interface VisionIO {
             Matrix<N3, N1> stdDevs =
                 getEstimationStdDevs(estimatedRobotPose, poseEstimators[index].resolution);
             System.arraycopy(stdDevs.getData(), 0, visionStdArray, index * 3, 3);
-            if (currentMode
-                == Mode
-                    .SIM) { // Don't update latency if in sim. It doesn't work for some reason. TODO
+            if (RobotMode.SIM == ROBOT_MODE) {
+                // Don't update latency if in sim. It doesn't work for some reason. TODO
               // fix that
               return; // Note this is in a lambda. Essentially equivalent to saying continue.
             }
@@ -152,7 +155,7 @@ public interface VisionIO {
             timestampArray[index] = 0.0;
             Matrix<N3, N1> stdDevs = VecBuilder.fill(Double.NaN, Double.NaN, Double.NaN);
             System.arraycopy(stdDevs.getData(), 0, visionStdArray, index * 3, 3);
-            if (currentMode == Mode.SIM) {
+            if (RobotMode.SIM == ROBOT_MODE) {
               return;
             } // Don't update latency if in sim.
             latencyArray[index] = 0.0;
