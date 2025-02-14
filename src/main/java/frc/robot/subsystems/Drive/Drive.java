@@ -182,17 +182,15 @@ public class Drive extends Subsystem<DriveStates> {
 		double omega = angularVelocity;
 		if (useHeadingCorrection) {
 			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
-				omega = headingCorrectionController.calculate(
-					driveIO.getDrive().getState().Pose.getRotation().getRadians(),
-					lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
+				omega = headingCorrectionController.calculate(driveIO.getDrive().getState().Pose.getRotation().getRadians(), lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
 			} else {
 				lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
 			}
 		}
-	
+
 		double antiTipX = xVelocity;
 		double antiTipY = yVelocity;
-	
+
 		if (useDecelerationLimit) {
 			double currentVelocity = Drive.getInstance().getVelocity().in(MetersPerSecond);
 			double targetVelocity = Math.hypot(xVelocity, yVelocity);
@@ -210,7 +208,7 @@ public class Drive extends Subsystem<DriveStates> {
 				Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", false);
 			}
 		}
-	
+
 		driveIO.setControl(
 			new SwerveRequest.FieldCentric()
 				.withDeadband(DEADBAND)
