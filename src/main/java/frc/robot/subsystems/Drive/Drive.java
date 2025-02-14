@@ -179,34 +179,41 @@ public class Drive extends Subsystem<DriveStates> {
 		double omega = angularVelocity;
 		if (useHeadingCorrection) {
 			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
-				omega = headingCorrectionController.calculate(driveIO.getDrive().getState().Pose.getRotation().getRadians(), lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
+				omega = headingCorrectionController.calculate(
+					driveIO.getDrive().getState().Pose.getRotation().getRadians(),
+					lastHeading.in(Radians)) * 0.1 * ANGULAR_VELOCITY_LIMIT.in(RadiansPerSecond);
 			} else {
 				lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
 			}
 		}
-		double antiTipX = 0;
-		double antiTipY = 0;
-
-		double xVelocityMult = xVelocity > 0 ? 1 : -1;
-		double yVelocityMult = yVelocity > 0 ? 1 : -1;
-
+	
+		double antiTipX = xVelocity;
+		double antiTipY = yVelocity;
+	
 		if (useDecelerationLimit) {
-			LinearVelocity hypot = MetersPerSecond.of(Math.hypot(xVelocity, yVelocity));
-			Angle angle = Radians.of(Math.atan2(xVelocity, yVelocity));
-			if (Math.abs(hypot.in(MetersPerSecond)) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond)) {
-				antiTipX = xTranslationLimiter.calculate(hypot.in(MetersPerSecond) * Math.sin(angle.in(Radians))) * xVelocityMult;
-				antiTipY = yTranslationLimiter.calculate(hypot.in(MetersPerSecond) * Math.cos(angle.in(Radians))) * yVelocityMult;
+			double currentVelocity = Drive.getInstance().getVelocity().in(MetersPerSecond);
+			double targetVelocity = Math.hypot(xVelocity, yVelocity);
+
+			if (Math.abs(currentVelocity) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond) && Math.abs(targetVelocity) <= 0.5) { 
+				// Apply slew rate limiter when slowing down within the 0.5-0 m/s range or soon switching from positive to negative
+				// TODO: Tune this ig, idc as long as it doesent tip
+				Angle angle = Radians.of(Math.atan2(yVelocity, xVelocity));
+				antiTipX = xTranslationLimiter.calculate(targetVelocity * Math.sin(angle.in(Radians)));
+				antiTipY = yTranslationLimiter.calculate(targetVelocity * Math.cos(angle.in(Radians)));
+				Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", true);
 			} else {
+				// When ur tryna anti tip but you wouldn't tip anyways
 				antiTipX = xVelocity;
 				antiTipY = yVelocity;
+				Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", false);
 			}
 		}
-
+	
 		driveIO.setControl(
 			new SwerveRequest.FieldCentric()
 				.withDeadband(DEADBAND)
-				.withVelocityX(useDecelerationLimit ? xVelocity : antiTipX)
-				.withVelocityY(useDecelerationLimit ? yVelocity : antiTipY)
+				.withVelocityX(useDecelerationLimit ? antiTipX : xVelocity)
+				.withVelocityY(useDecelerationLimit ? antiTipY : yVelocity)
 				.withRotationalRate(omega)
 				.withDriveRequestType(SwerveModule.DriveRequestType.Velocity)
 				.withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo)
@@ -354,6 +361,14 @@ public class Drive extends Subsystem<DriveStates> {
 
 	public LinearVelocity getVelocity() {
 		return MetersPerSecond.of(Math.hypot(driveIO.getDrive().getState().Speeds.vxMetersPerSecond, driveIO.getDrive().getState().Speeds.vyMetersPerSecond));
+	}
+
+	private double getXVelocity() {
+		return driveIO.getDrive().getState().Speeds.vxMetersPerSecond;
+	}
+
+	private double getYVelocity() {
+		return driveIO.getDrive().getState().Speeds.vyMetersPerSecond;
 	}
 
 	public Pigeon2 getPigeon2() {
