@@ -14,17 +14,16 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.AprilTagVision.AprilTagVisionIO.CameraPoseEstimator;
 import frc.robot.Subsystems.AprilTagVision.VisionConstants.CameraResolution;
 import frc.robot.Subsystems.Drive.Drive;
-import frc.robot.Subsystems.Vision.AprilTagVisionIOInputsAutoLogged;
+import frc.robot.Subsystems.AprilTagVision.AprilTagVisionIOInputsAutoLogged;
 import java.util.Arrays;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonCamera;
 
-public class AprilTagVision extends SubsystemBase {
+public class AprilTagVision {
 
 	AprilTagVisionIO io;
 	private final AprilTagVisionIOInputsAutoLogged aprilTagVisionInputs = new AprilTagVisionIOInputsAutoLogged();
@@ -72,7 +71,6 @@ public class AprilTagVision extends SubsystemBase {
 		io.updatePose(new Pose2d(1.06, 2.50, new Rotation2d(Radians.convertFrom(-114.0, Radians))));
 	}
 
-	@Override
 	public void periodic() {
 		io.updateInputs(aprilTagVisionInputs);
 		Logger.processInputs("AprilTagVision", aprilTagVisionInputs);

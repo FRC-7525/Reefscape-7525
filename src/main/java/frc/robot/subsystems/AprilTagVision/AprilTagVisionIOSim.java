@@ -5,7 +5,6 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.Subsystems.AprilTagVision.VisionConstants.CameraResolution;
 import static frc.robot.Subsystems.AprilTagVision.VisionConstants.*;
-import frc.robot.Subsystems.Vision.VisionConstants.CameraResolution;
 import org.photonvision.PhotonCamera;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
@@ -43,7 +42,7 @@ public class AprilTagVisionIOSim implements AprilTagVisionIO {
 		visionSim.addAprilTags(APRIL_TAG_FIELD_LAYOUT);
 
 		SimCameraProperties cameraProps = new SimCameraProperties(); // Corresponds to high-res cameras
-		cameraProps.setCalibration(1600, 1200, Rotation2d.fromDegrees(75));
+		cameraProps.setCalibration(1600, 1200, Rotation2d.fromDegrees(81.65));
 		cameraProps.setCalibError(0.25, 0.10);
 		cameraProps.setFPS(15);
 		cameraProps.setAvgLatencyMs(50);
