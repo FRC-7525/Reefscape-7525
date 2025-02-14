@@ -26,8 +26,8 @@ public class VisionConstants {
 	public static final Matrix<N3, N1> normalMultiTagStdDev = VecBuilder.fill(0.5, 0.5, Double.MAX_VALUE);
 
 	// Robot to card
-	public static final String BACK_CAMERA_NAME = "Back Left Camera";
-	public static final String FRONT_CAMERA_NAME = "Front Right Camera";
+	public static final String BACK_CAMERA_NAME = "Back Camera";
+	public static final String FRONT_CAMERA_NAME = "Front Camera";
 
 	public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 

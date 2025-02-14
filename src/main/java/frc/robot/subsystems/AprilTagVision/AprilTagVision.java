@@ -74,7 +74,9 @@ public class AprilTagVision {
 
 	public void periodic() {
 		io.updateInputs(aprilTagVisionInputs);
-		Logger.processInputs("AprilTagVision", aprilTagVisionInputs);
+		Logger.processInputs("Vision", aprilTagVisionInputs);
+		Logger.recordOutput("Vision/Front Camera Pose", null);
+		Logger.recordOutput("Vision/Back Camera Pose", null);
 
 		int i = 0;
 		for (Pose3d visionPose : aprilTagVisionInputs.visionPoses) {
