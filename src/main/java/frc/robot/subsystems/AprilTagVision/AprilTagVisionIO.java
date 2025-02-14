@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.AprilTagVision;
 
 import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.Subsystems.AprilTagVision.VisionConstants.*;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
@@ -23,8 +24,6 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
-
-import static frc.robot.Subsystems.AprilTagVision.VisionConstants.*;
 
 public interface AprilTagVisionIO {
 	@AutoLog
