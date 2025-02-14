@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -10,29 +11,24 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.math.Matrix;
-
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 public class VisionConstants {
+
 	public static enum CameraResolution {
 		HIGH_RES,
-		NORMAL
+		NORMAL,
 	}
 
-	public static final Matrix<N3, N1> highResSingleTagStdDev =
-        VecBuilder.fill(0.4, 0.4, Double.MAX_VALUE);
-    public static final Matrix<N3, N1> normalSingleTagStdDev =
-        VecBuilder.fill(0.8, 0.8, Double.MAX_VALUE);
-    public static final Matrix<N3, N1> highResMultiTagStdDev = VecBuilder.fill(0.2, 0.2, 3);
-    public static final Matrix<N3, N1> normalMultiTagStdDev =
-        VecBuilder.fill(0.5, 0.5, Double.MAX_VALUE);
-  
+	public static final Matrix<N3, N1> highResSingleTagStdDev = VecBuilder.fill(0.4, 0.4, Double.MAX_VALUE);
+	public static final Matrix<N3, N1> normalSingleTagStdDev = VecBuilder.fill(0.8, 0.8, Double.MAX_VALUE);
+	public static final Matrix<N3, N1> highResMultiTagStdDev = VecBuilder.fill(0.2, 0.2, 3);
+	public static final Matrix<N3, N1> normalMultiTagStdDev = VecBuilder.fill(0.5, 0.5, Double.MAX_VALUE);
 
 	// Robot to card
 	public static final String BACK_CAMERA_NAME = "Back Left Camera";
 	public static final String FRONT_CAMERA_NAME = "Front Right Camera";
-	
+
 	public static final PoseStrategy POSE_STRATEGY = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
 	public static final Translation3d ROBOT_TO_BACK_CAMERA_TRALSLATION = new Translation3d(Units.inchesToMeters(-11.697), Units.inchesToMeters(11.81), Units.inchesToMeters(8.859));
