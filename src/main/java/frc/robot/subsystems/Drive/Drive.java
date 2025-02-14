@@ -58,8 +58,8 @@ public class Drive extends Subsystem<DriveStates> {
 	private final SwerveRequest.SysIdSwerveRotation rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
 	private final PIDController headingCorrectionController = new PIDController(0.1, 0, 0);
 	private final Field2d field = new Field2d();
-	private final SlewRateLimiter  xTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_DECELERATION.in(MetersPerSecondPerSecond));
-	private final SlewRateLimiter  yTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_DECELERATION.in(MetersPerSecondPerSecond));
+	private final SlewRateLimiter xTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_DECELERATION.in(MetersPerSecondPerSecond));
+	private final SlewRateLimiter yTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_DECELERATION.in(MetersPerSecondPerSecond));
 
 	/**
 	 * Constructs a new Drive subsystem with the given DriveIO.
@@ -189,7 +189,6 @@ public class Drive extends Subsystem<DriveStates> {
 
 		double xVelocityMult = xVelocity > 0 ? 1 : -1;
 		double yVelocityMult = yVelocity > 0 ? 1 : -1;
-		
 
 		if (useDecelerationLimit) {
 			LinearVelocity hypot = MetersPerSecond.of(Math.hypot(xVelocity, yVelocity));
@@ -203,7 +202,15 @@ public class Drive extends Subsystem<DriveStates> {
 			}
 		}
 
-		driveIO.setControl(new SwerveRequest.FieldCentric().withDeadband(DEADBAND).withVelocityX(useDecelerationLimit ? xVelocity : antiTipX).withVelocityY(useDecelerationLimit ? yVelocity : antiTipY).withRotationalRate(omega).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
+		driveIO.setControl(
+			new SwerveRequest.FieldCentric()
+				.withDeadband(DEADBAND)
+				.withVelocityX(useDecelerationLimit ? xVelocity : antiTipX)
+				.withVelocityY(useDecelerationLimit ? yVelocity : antiTipY)
+				.withRotationalRate(omega)
+				.withDriveRequestType(SwerveModule.DriveRequestType.Velocity)
+				.withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo)
+		);
 	}
 
 	/**
