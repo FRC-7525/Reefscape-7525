@@ -196,7 +196,7 @@ public class Drive extends Subsystem<DriveStates> {
 			double targetVelocity = Math.hypot(xVelocity, yVelocity);
 
 			// Like yknow when it tips but like it be tipping mad when u stop, yeah this stops it
-			if (Math.abs(currentVelocity) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond) && Math.abs(targetVelocity) <= 0.5) { 
+			if (Math.abs(currentVelocity) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond) && Math.abs(targetVelocity) <= 0.5) {
 				Angle angle = Radians.of(Math.atan2(yVelocity, xVelocity));
 				antiTipX = xStoppingTranslationLimiter.calculate(targetVelocity * Math.sin(angle.in(Radians)));
 				antiTipY = yStoppingTranslationLimiter.calculate(targetVelocity * Math.cos(angle.in(Radians)));
