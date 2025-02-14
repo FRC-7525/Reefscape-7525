@@ -26,6 +26,8 @@ public interface VisionIO {
 
 	public default void setStrategy(PoseStrategy strategy) {}
 
+	public default void update() {}
+
 	public default Optional<EstimatedRobotPose> getFrontPoseEstimation() {
 		return Optional.empty();
 	}

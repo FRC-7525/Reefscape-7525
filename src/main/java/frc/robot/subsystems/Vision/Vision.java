@@ -42,6 +42,7 @@ public class Vision extends Subsystem<VisionStates> {
 
 	@Override
 	public void runState() {
+		io.update();
 		io.updateInputs(inputs);
 		Logger.processInputs("Vision", inputs);
 

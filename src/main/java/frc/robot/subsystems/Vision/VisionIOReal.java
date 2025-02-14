@@ -5,11 +5,15 @@ import static frc.robot.Subsystems.Vision.VisionConstants.*;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
+
+import java.util.AbstractMap.SimpleEntry;
+import java.util.List;
 import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 public class VisionIOReal implements VisionIO {
 
@@ -59,6 +63,22 @@ public class VisionIOReal implements VisionIO {
 			backEstimator.setPrimaryStrategy(strategy);
 		}
 	}
+
+	@Override
+	public void update() {
+      List<PhotonPipelineResult> frontResults = frontCamera.getAllUnreadResults();
+	  List<PhotonPipelineResult> backResults = backCamera.getAllUnreadResults();
+
+
+		for (PhotonPipelineResult result : frontResults) {
+			frontEstimator.update(result);
+		}
+
+		for (PhotonPipelineResult result : backResults) {
+			backEstimator.update(result);
+		}
+	}
+    
 
 	// Not just returning a pose3d bc timestamps needed for main pose estimation &
 	// easier to handle optional logic in vision.java
