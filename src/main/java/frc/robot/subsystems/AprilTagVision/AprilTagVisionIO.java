@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.GlobalConstants;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Subsystems.AprilTagVision.VisionConstants.CameraResolution;
-
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Optional;
