@@ -7,12 +7,17 @@ import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CoralerIOTalonFX implements CoralerIO {
 
 	private final TalonFX velocityMotor;
 	private final PIDController velocityController;
+	private final DigitalInput gamepieceSensor = new DigitalInput(GAMEPIECE_SENSOR_DIO_PORT);
+	private final Debouncer gamepieceDebouncer = new Debouncer(GAMEPIECE_DEBOUNCE_TIME.in(Seconds), DebounceType.kBoth);
 	private double speedPoint;
 
 	public CoralerIOTalonFX() {
@@ -46,5 +51,10 @@ public class CoralerIOTalonFX implements CoralerIO {
 	@Override
 	public boolean currentLimitReached() {
 		return velocityMotor.getStatorCurrent().getValue().in(Amp) > STATOR_CURRENT_SENSING_LIMIT;
+	}
+
+	@Override
+	public boolean hasGamepiece() {
+		return gamepieceDebouncer.calculate(gamepieceSensor.get());
 	}
 }

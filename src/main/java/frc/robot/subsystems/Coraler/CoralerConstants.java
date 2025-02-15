@@ -33,6 +33,11 @@ public class CoralerConstants {
 
 	public static final double STATOR_CURRENT_SENSING_LIMIT = 30;
 
+	public static final int GAMEPIECE_SENSOR_DIO_PORT = 5;
+	public static final Time GAMEPIECE_DEBOUNCE_TIME = Seconds.of(0.05);
+
+	public static final boolean USE_CURRENT_SENSING = true;
+
 	public static class Real {
 
 		public static final int WHEEL_MOTOR_CAN_ID = 20;

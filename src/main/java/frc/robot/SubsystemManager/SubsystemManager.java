@@ -13,6 +13,7 @@ import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.LED.LED;
+import frc.robot.Subsystems.Passthrough.Passthrough;
 import frc.robot.Subsystems.Vision.Vision;
 import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
@@ -30,6 +31,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
+	private final Passthrough passthrough = Passthrough.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -83,8 +85,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(SubsystemManagerStates.INTAKING_CORALER, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
 		// Manual
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
-		addTrigger(SubsystemManagerStates.INTAKING_CORALER_AA_OFF, SubsystemManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.currentSenseGamepiece());
-		addTrigger(SubsystemManagerStates.CENTERING_CORALER, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || getStateTime() > CORAL_CENTERING_TIME);
+		addTrigger(SubsystemManagerStates.INTAKING_CORALER_AA_OFF, SubsystemManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || passthrough.hasGamepiece());
+		addTrigger(SubsystemManagerStates.CENTERING_CORALER, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamePiece());
 
 		// // Intaking Algae
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
@@ -185,6 +187,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// algaer.setState(getState().getAlgaerState());
 		autoAlign.setState(getState().getAutoAlignSupplier().get());
 		ledSubsystem.setState(getState().getLedState());
+		passthrough.setState(getState().getPassthroughState());
 		// climber.setState(getState().getClimberState());
 
 		// Periodics
@@ -195,6 +198,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		vision.periodic();
 		drive.periodic();
 		ledSubsystem.periodic();
+		passthrough.periodic();
 		// climber.periodic();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
