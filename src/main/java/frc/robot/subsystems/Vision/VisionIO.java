@@ -1,36 +1,36 @@
 package frc.robot.Subsystems.Vision;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import java.util.Optional;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import org.littletonrobotics.junction.AutoLog;
-import org.photonvision.EstimatedRobotPose;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 public interface VisionIO {
-	@AutoLog
-	public class VisionIOInputs {
+  @AutoLog
+  public static class VisionIOInputs {
+    public boolean connected = false;
+    public TargetObservation latestTargetObservation =
+        new TargetObservation(new Rotation2d(), new Rotation2d());
+    public PoseObservation[] poseObservations = new PoseObservation[0];
+    public int[] tagIds = new int[0];
+  }
 
-		Pose2d backVisionPose;
-		Pose2d frontVisionPose;
-		boolean hasBackVision = false;
-		boolean hasFrontVision = false;
-		boolean backCameraConnected = false;
-		boolean frontCameraConnected = false;
-		int backTargetCount = 0;
-		int frontTargetCount = 0;
-	}
+  /** Represents the angle to a simple target, not used for pose estimation. */
+  public static record TargetObservation(Rotation2d tx, Rotation2d ty) {}
 
-	public default void updateInputs(VisionIOInputs inputs) {}
+  /** Represents a robot pose sample used for pose estimation. */
+  public static record PoseObservation(
+      double timestamp,
+      Pose3d pose,
+      double ambiguity,
+      int tagCount,
+      double averageTagDistance,
+      PoseObservationType type) {}
 
-	public default void updateRobotPose(Pose2d robotPose) {}
+  public static enum PoseObservationType {
+    MEGATAG_1,
+    MEGATAG_2,
+    PHOTONVISION
+  }
 
-	public default void setStrategy(PoseStrategy strategy) {}
-
-	public default Optional<EstimatedRobotPose> getFrontPoseEstimation() {
-		return Optional.empty();
-	}
-
-	public default Optional<EstimatedRobotPose> getBackPoseEstimation() {
-		return Optional.empty();
-	}
+  public default void updateInputs(VisionIOInputs inputs) {}
 }

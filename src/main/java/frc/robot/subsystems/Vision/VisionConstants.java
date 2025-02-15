@@ -11,6 +11,10 @@ import org.team7525.misc.VisionUtil.CameraResolution;
 
 public class VisionConstants {
 
+	// Front is cam 0, back is cam 1 in nt
+	public static final String FRONT_RIGHT_CAMERA_NAME = "Front Camera";
+	public static final String BACK_LEFT_CAMERA_NAME = "Back Camera";
+
 	// Robot to cam
 	public static final Translation3d ROBOT_TO_BACK_CAMERA_TRALSLATION = new Translation3d(Units.inchesToMeters(-11.697), Units.inchesToMeters(11.81), Units.inchesToMeters(8.859));
 	public static final Rotation3d ROBOT_TO_BACK_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-15), Math.toRadians(180));
@@ -31,10 +35,34 @@ public class VisionConstants {
 
 	public static final int CAMERA_WIDTH = 1200;
 	public static final int CAMERA_HEIGHT = 800;
-	public static final Rotation2d CAMERA_ROTATION = Rotation2d.fromDegrees(84.47);
+	public static final Rotation2d CAMERA_FOV = Rotation2d.fromDegrees(84.47);
 	public static final double CALIB_ERROR_AVG = 0.25;
 	public static final double CALIB_ERROR_STD_DEV = 0.08;
 	public static final int CAMERA_FPS = 40;
 	public static final int AVG_LATENCY_MS = 40;
 	public static final int LATENCY_STD_DEV_MS = 10;
+
+	// AKIT TEMPLATE STUFF
+
+	 // Basic filtering thresholds
+	 public static final double maxAmbiguity = 0.3;
+	 public static final double maxZError = 0.75;
+   
+	 // Standard deviation baselines, for 1 meter distance and 1 tag
+	 // (Adjusted automatically based on distance and # of tags)
+	 public static final double linearStdDevBaseline = 0.02; // Meters
+	 public static final double angularStdDevBaseline = 0.06; // Radians
+   
+	 // Standard deviation multipliers for each camera
+	 // (Adjust to trust some cameras more than others)
+	 public static final double[] cameraStdDevFactors =
+		 new double[] {
+		   1.0, // Camera 0
+		   1.0 // Camera 1
+		 };
+   
+	 // Multipliers to apply for MegaTag 2 observations
+	 public static final double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
+	 public static final double angularStdDevMegatag2Factor =
+		 Double.POSITIVE_INFINITY; // No rotation data available
 }
