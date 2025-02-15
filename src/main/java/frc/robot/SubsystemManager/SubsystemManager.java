@@ -166,7 +166,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 	@Override
 	public void runState() {
-		System.out.println(autoAlignQueue.toString());
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/State String", getState().getStateString());
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Selected Reef Side", hexagonTargetSide);

@@ -113,8 +113,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		targetSpeeds.vyMetersPerSecond += repulsionTranslationController.calculate(pose.getY(), sample.y);
 		targetSpeeds.omegaRadiansPerSecond += repulsionRotationController.calculate(pose.getRotation().getRadians(), sample.heading);
 
-		Logger.recordOutput("TESTING VX", targetSpeeds.vxMetersPerSecond);
-		Logger.recordOutput("TESTING VY", targetSpeeds.vyMetersPerSecond);
 		if (isRedAlliance) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
 		else drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
 	}
@@ -150,9 +148,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	public boolean nearTarget() {
-		Logger.recordOutput("distance from target", drive.getPose().getTranslation().getDistance(targetPose.getTranslation()));
-		Logger.recordOutput("rotation from target", Math.abs(repulsionRotationController.getError()));
-		Logger.recordOutput("rotation from target 2", Math.abs(rotationController.getError()));
 		return (drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getError()) < ANGLE_ERROR_MARGIN));
 	}
 
