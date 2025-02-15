@@ -14,6 +14,8 @@ import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.LED.LED;
 import frc.robot.Subsystems.Vision.Vision;
+import frc.robot.Subsystems.Vision.Vision2;
+
 import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
@@ -28,7 +30,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private final Coraler coraler = Coraler.getInstance();
 	// private final Algaer algaer = Algaer.getInstance();
 	// private final AutoAlign autoAlign = AutoAlign.getInstance();
-	private final Vision vision = Vision.getInstance();
+	private final Vision2 vision = new Vision2();
 	private final LED ledSubsystem = LED.getInstance();
 
 	public Boolean leftSourceSelected = false;
@@ -192,10 +194,20 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		elevator.periodic();
 		coraler.periodic();
 		// algaer.periodic();
-		vision.periodic();
 		drive.periodic();
 		ledSubsystem.periodic();
 		// climber.periodic();
+
+		var visionEst = vision.getEstimatedGlobalPose();
+        visionEst.ifPresent(
+                est -> {
+                    // Change our trust in the measurement based on the tags we can see
+                    var estStdDevs = vision.getEstimationStdDevs();
+
+                    drive.addVisionMeasurement(
+                            est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+					Logger.recordOutput("Manager/Vision Estmate Added", true);
+                });
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(6)) {

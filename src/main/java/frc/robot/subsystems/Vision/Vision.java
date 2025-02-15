@@ -15,6 +15,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 import org.team7525.misc.VisionUtil;
 import org.team7525.subsystem.Subsystem;
 
@@ -34,19 +35,21 @@ public class Vision extends Subsystem<VisionStates> {
 
 	public Optional<EstimatedRobotPose> getBackPoseEstimation() {
 		Optional<EstimatedRobotPose> pose = Optional.empty();
-		for (var change : backCamera.getAllUnreadResults()) {
+		for (PhotonPipelineResult change : backCamera.getAllUnreadResults()) {
 			pose = backEstimator.update(change);
+			// System.out.print(change);
+			// System.out.print(pose);
 		}
 		return pose;
 	}
 
-	public Optional<EstimatedRobotPose> getFrontPoseEstimation() {
-		Optional<EstimatedRobotPose> pose = Optional.empty();
-		for (var change : frontCamera.getAllUnreadResults()) {
-			pose = frontEstimator.update(change);
-		}
-		return pose;
-	}
+	// public Optional<EstimatedRobotPose> getFrontPoseEstimation() {
+	// 	Optional<EstimatedRobotPose> pose = Optional.empty();
+	// 	for (PhotonPipelineResult change : frontCamera.getAllUnreadResults()) {
+	// 		pose = frontEstimator.update(change);
+	// 	}
+	// 	return pose;
+	// }
 
 	private Vision() {
 		super("Vision", VisionStates.ON);
@@ -63,18 +66,18 @@ public class Vision extends Subsystem<VisionStates> {
 	@Override
 	public void runState() {
 		Optional<EstimatedRobotPose> backPose = getBackPoseEstimation();
-		Optional<EstimatedRobotPose> frontPose = getFrontPoseEstimation();
+		// Optional<EstimatedRobotPose> frontPose = getFrontPoseEstimation();
 
 		Logger.recordOutput("Vision/BackCamConnected", backCamera.isConnected());
 		Logger.recordOutput("Vision/FrontCamConnected",frontCamera.isConnected());
 		Logger.recordOutput("Vision/state", getState().getStateString());
-		if (frontPose.isPresent()) {
+		if (backPose.isPresent()) {
 			Logger.recordOutput("Vision/BackPose",backPose.get().estimatedPose.toPose2d()); 
 			Logger.recordOutput("Vision/FrontTargets", 		backPose.get().targetsUsed.size());
 		}
-		if (backPose.isPresent()) { 
-			Logger.recordOutput("Vision/FrontPose", frontPose.get().estimatedPose.toPose2d());
-			Logger.recordOutput("Vision/BackTargets", frontPose.get().targetsUsed.size());
-		}
+		// if (frontPose.isPresent()) { 
+		// 	Logger.recordOutput("Vision/FrontPose", frontPose.get().estimatedPose.toPose2d());
+		// 	Logger.recordOutput("Vision/BackTargets", frontPose.get().targetsUsed.size());
+		// }
 	}
 }
