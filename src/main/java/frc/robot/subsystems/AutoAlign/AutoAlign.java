@@ -151,7 +151,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	public boolean nearTarget() {
 		Logger.recordOutput("distance from target", drive.getPose().getTranslation().getDistance(targetPose.getTranslation()));
-		return (drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < DISTANCE_ERROR_MARGIN && Math.abs(drive.getPose().getRotation().getDegrees() - targetPose.getRotation().getDegrees()) < ANGLE_ERROR_MARGIN);
+		Logger.recordOutput("rotation from target", Math.abs(repulsionRotationController.getError()));
+		Logger.recordOutput("rotation from target 2", Math.abs(rotationController.getError()));
+		return (drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getError()) < ANGLE_ERROR_MARGIN));
 	}
 
 	public boolean readyForClose() {
