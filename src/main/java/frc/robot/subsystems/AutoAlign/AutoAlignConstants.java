@@ -30,7 +30,7 @@ public final class AutoAlignConstants {
 	// TODO update max speed once robot is built
 	public static final LinearVelocity MAX_SPEED = FeetPerSecond.of(15);
 	public static final boolean USE_GOAL = true;
-	public static final double DISTANCE_ERROR_MARGIN = .05;
+	public static final double DISTANCE_ERROR_MARGIN = .1;
 	public static final double ANGLE_ERROR_MARGIN = .1;
 
 	public static final double GOAL_STRENGTH = 0.65;
@@ -50,7 +50,7 @@ public final class AutoAlignConstants {
 	public static final Supplier<PIDController> ROTATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(1, 0, 0);
-			case SIM -> new PIDController(.5, 0, 0);
+			case SIM -> new PIDController(.3, 0, 0);
 			default -> new PIDController(1, 0, 0);
 		};
 
@@ -70,7 +70,9 @@ public final class AutoAlignConstants {
 
 	public static final class obstacles {
 
-		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 1, true, 0.8), new GuidedObstacle(new Translation2d(13.08, 4), 1, true, 0.8));
+		public static final List<Obstacle> FIELD_OBSTACLES = List.of(
+			new GuidedObstacle(new Translation2d(4.49, 4), 2, true, 0.5),
+			new GuidedObstacle(new Translation2d(13.08, 4), 2, true, 0.5));
 
 		public static final List<Obstacle> WALLS = List.of(
 			new HorizontalObstacle(0.0, 0.5, true),
