@@ -44,25 +44,23 @@ public class VisionConstants {
 
 	// AKIT TEMPLATE STUFF
 
-	 // Basic filtering thresholds
-	 public static final double maxAmbiguity = 0.3;
-	 public static final double maxZError = 0.75;
-   
-	 // Standard deviation baselines, for 1 meter distance and 1 tag
-	 // (Adjusted automatically based on distance and # of tags)
-	 public static final double linearStdDevBaseline = 0.02; // Meters
-	 public static final double angularStdDevBaseline = 0.06; // Radians
-   
-	 // Standard deviation multipliers for each camera
-	 // (Adjust to trust some cameras more than others)
-	 public static final double[] cameraStdDevFactors =
-		 new double[] {
-		   1.0, // Camera 0
-		   1.0 // Camera 1
-		 };
-   
-	 // Multipliers to apply for MegaTag 2 observations
-	 public static final double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
-	 public static final double angularStdDevMegatag2Factor =
-		 Double.POSITIVE_INFINITY; // No rotation data available
+	// Basic filtering thresholds
+	public static final double maxAmbiguity = 0.3;
+	public static final double maxZError = 0.75;
+
+	// Standard deviation baselines, for 1 meter distance and 1 tag
+	// (Adjusted automatically based on distance and # of tags)
+	public static final double linearStdDevBaseline = 0.02; // Meters
+	public static final double angularStdDevBaseline = 0.06; // Radians
+
+	// Standard deviation multipliers for each camera
+	// (Adjust to trust some cameras more than others)
+	public static final double[] cameraStdDevFactors = new double[] {
+		1.0, // Camera 0
+		1.0, // Camera 1
+	};
+
+	// Multipliers to apply for MegaTag 2 observations
+	public static final double linearStdDevMegatag2Factor = 0.5; // More stable than full 3D solve
+	public static final double angularStdDevMegatag2Factor = Double.POSITIVE_INFINITY; // No rotation data available
 }
