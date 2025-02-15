@@ -33,11 +33,7 @@ public class Vision extends SubsystemBase {
 		if (instance == null) {
 			instance = new Vision(
 				Drive.getInstance()::addVisionMeasument,
-				switch (ROBOT_MODE) {
-					case REAL -> new VisionIO[] { new VisionIOPhotonVision(FRONT_RIGHT_CAMERA_NAME, ROBOT_TO_FRONT_CAMERA), new VisionIOPhotonVision(BACK_LEFT_CAMERA_NAME, ROBOT_TO_BACK_CAMERA) };
-					case SIM -> new VisionIO[] { new VisionIOPhotonVisionSim(FRONT_RIGHT_CAMERA_NAME, ROBOT_TO_FRONT_CAMERA, Drive.getInstance()::getPose), new VisionIOPhotonVisionSim(BACK_LEFT_CAMERA_NAME, ROBOT_TO_BACK_CAMERA, Drive.getInstance()::getPose) };
-					case TESTING -> new VisionIO[] { new VisionIOPhotonVision(FRONT_RIGHT_CAMERA_NAME, ROBOT_TO_FRONT_CAMERA), new VisionIOPhotonVision(BACK_LEFT_CAMERA_NAME, ROBOT_TO_BACK_CAMERA) };
-				}
+				VISION_IOs
 			);
 		}
 		return instance;
@@ -108,13 +104,13 @@ public class Vision extends SubsystemBase {
 				boolean rejectPose =
 					observation.tagCount() == 0 || // Must have at least one tag
 					(observation.tagCount() == 1 && observation.ambiguity() > maxAmbiguity) || // Cannot be high ambiguity
-					Math.abs(observation.pose().getZ()) > maxZError || // Must have realistic Z coordinate
+					// Math.abs(observation.pose().getZ()) > maxZError || // Must have realistic Z coordinate
 					// Must be within the field boundaries
-					observation.pose().getX() <
-					0.0 ||
-					observation.pose().getX() > APRIL_TAG_FIELD_LAYOUT.getFieldLength() ||
-					observation.pose().getY() < 0.0 ||
-					observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth();
+					// observation.pose().getX() <
+					// 0.0 ||
+					// observation.pose().getX() > APRIL_TAG_FIELD_LAYOUT.getFieldLength() ||
+					// observation.pose().getY() < 0.0 ||
+					// observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth();
 
 				// Add pose to log
 				robotPoses.add(observation.pose());
