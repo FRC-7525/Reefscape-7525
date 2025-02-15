@@ -42,12 +42,12 @@ public class Coraler extends Subsystem<CoralerStates> {
 		Logger.processInputs(SUBSYSTEM_NAME, inputs);
 
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Stator Current", io.getMotor().getStatorCurrent().getValueAsDouble());
-		Logger.recordOutput(SUBSYSTEM_NAME + "/Current Sensed?", this.currentSenseGamepiece());
+		Logger.recordOutput(SUBSYSTEM_NAME + "/Has Gamepiece?", this.hasGamePiece());
 	}
 
-	public boolean currentSenseGamepiece() {
-		return debouncer.calculate(io.currentLimitReached());
-	}
+	public boolean hasGamePiece() {
+		return debouncer.calculate(io.currentLimitReached()) && USE_CURRENT_SENSING || io.hasGamepiece();
+	} 
 
 	public TalonFX getMotor() {
 		return io.getMotor();

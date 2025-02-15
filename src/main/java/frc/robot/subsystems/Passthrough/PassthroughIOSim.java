@@ -1,34 +1,35 @@
-package frc.robot.Subsystems.Coraler;
+package frc.robot.Subsystems.Passthrough;
 
+import static frc.robot.Subsystems.Passthrough.PassthroughConstants.*;
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
+
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.GlobalConstants;
+import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Coraler.CoralerConstants.Sim;
 
-public class CoralerIOSim implements CoralerIO {
-
+public class PassthroughIOSim implements PassthroughIO {
 	private DCMotorSim motorSim;
 	private TalonFXSimState motorSimState;
 	private TalonFX velocityMotor;
 	private double speedPoint;
 
-	public CoralerIOSim() {
-		motorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getFalcon500(Sim.NUM_MOTORS), Sim.MOTOR_MOI, GEARING), DCMotor.getNEO(Sim.NUM_MOTORS));
-		velocityMotor = new TalonFX(Real.WHEEL_MOTOR_CAN_ID);
+	public PassthroughIOSim() {
+		motorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(1), 0.0001, 1), DCMotor.getNEO(1));
+		velocityMotor = new TalonFX(VELOCITY_MOTOR_CAN_ID);
 		motorSimState = new TalonFXSimState(velocityMotor);
 		speedPoint = 0.0;
 	}
 
 	@Override
-	public void updateInputs(CoralerIOInputs inputs) {
+	public void updateInputs(PassthroughIOInputs inputs) {
 		inputs.velocityRPS = velocityMotor.getVelocity().getValue().in(RotationsPerSecond);
-		inputs.speedPointRPS = speedPoint;
+		inputs.speedPoint = speedPoint;
 
 		motorSim.update(GlobalConstants.SIMULATION_PERIOD);
 		motorSimState.setRotorVelocity(motorSim.getAngularVelocityRPM() / 60);
@@ -37,21 +38,17 @@ public class CoralerIOSim implements CoralerIO {
 
 	@Override
 	public void setVelocity(double speedPoint) {
-		motorSim.setInputVoltage(speedPoint * SET_TO_VOLTS_CF);
+		motorSim.setInputVoltage(speedPoint * 12);
+        this.speedPoint = speedPoint;
 	}
 
-	@Override
-	public TalonFX getMotor() {
-		return velocityMotor;
+    @Override
+	public boolean hasGamepiece() {
+		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds);
 	}
 
 	@Override
 	public boolean currentLimitReached() {
-		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds);
-	}
-
-	@Override
-	public boolean hasGamepiece() {
-		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds);
+		return Coraler.getInstance().getStateTime() > SIM_INTAKE_TIME.in(Seconds);
 	}
 }
