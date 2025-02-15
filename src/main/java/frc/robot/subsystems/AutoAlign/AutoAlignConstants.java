@@ -70,9 +70,7 @@ public final class AutoAlignConstants {
 
 	public static final class obstacles {
 
-		public static final List<Obstacle> FIELD_OBSTACLES = List.of(
-			new GuidedObstacle(new Translation2d(4.49, 4), 2, true, 0.5),
-			new GuidedObstacle(new Translation2d(13.08, 4), 2, true, 0.5));
+		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 2, true, 0.5), new GuidedObstacle(new Translation2d(13.08, 4), 2, true, 0.5));
 
 		public static final List<Obstacle> WALLS = List.of(
 			new HorizontalObstacle(0.0, 0.5, true),
