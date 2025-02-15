@@ -1,11 +1,10 @@
 package frc.robot.Subsystems.Passthrough;
 
-import static frc.robot.Subsystems.Passthrough.PassthroughConstants.*;
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.Subsystems.Passthrough.PassthroughConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
-
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
@@ -14,6 +13,7 @@ import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Coraler.CoralerConstants.Sim;
 
 public class PassthroughIOSim implements PassthroughIO {
+
 	private DCMotorSim motorSim;
 	private TalonFXSimState motorSimState;
 	private TalonFX velocityMotor;
@@ -39,10 +39,10 @@ public class PassthroughIOSim implements PassthroughIO {
 	@Override
 	public void setVelocity(double speedPoint) {
 		motorSim.setInputVoltage(speedPoint * 12);
-        this.speedPoint = speedPoint;
+		this.speedPoint = speedPoint;
 	}
 
-    @Override
+	@Override
 	public boolean hasGamepiece() {
 		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds);
 	}

@@ -8,36 +8,35 @@ import org.team7525.subsystem.Subsystem;
 
 public class Passthrough extends Subsystem<PassthroughStates> {
 
-    private static Passthrough instance;
+	private static Passthrough instance;
 
-    private PassthroughIO passthroughIO;
-    private final PassthroughIOInputsAutoLogged inputs = new PassthroughIOInputsAutoLogged();
+	private PassthroughIO passthroughIO;
+	private final PassthroughIOInputsAutoLogged inputs = new PassthroughIOInputsAutoLogged();
 
-    private Passthrough() {
-        super(SUBSYSTEM_NAME, PassthroughStates.IDLE);
-        passthroughIO = 
-         switch (ROBOT_MODE) {
+	private Passthrough() {
+		super(SUBSYSTEM_NAME, PassthroughStates.IDLE);
+		passthroughIO = switch (ROBOT_MODE) {
 			case SIM -> new PassthroughIOSim();
 			case REAL -> new PassthroughIOSparkMax();
 			case TESTING -> new PassthroughIOSparkMax();
 		};
-    }
+	}
 
-    public static Passthrough getInstance() {
-        if (instance == null) {
-            instance = new Passthrough();
-        }
-        return instance;
-    }
+	public static Passthrough getInstance() {
+		if (instance == null) {
+			instance = new Passthrough();
+		}
+		return instance;
+	}
 
-    @Override
-    protected void runState() {
-        passthroughIO.updateInputs(new PassthroughIO.PassthroughIOInputs());
-        Logger.processInputs(SUBSYSTEM_NAME, inputs);
-        passthroughIO.setVelocity(getState().getSpeedPoint());
-    }
+	@Override
+	protected void runState() {
+		passthroughIO.updateInputs(new PassthroughIO.PassthroughIOInputs());
+		Logger.processInputs(SUBSYSTEM_NAME, inputs);
+		passthroughIO.setVelocity(getState().getSpeedPoint());
+	}
 
-    public boolean hasGamepiece() {
-        return passthroughIO.hasGamepiece() || (passthroughIO.currentLimitReached() && USE_CURRENT_SENSING);
-    }
+	public boolean hasGamepiece() {
+		return passthroughIO.hasGamepiece() || (passthroughIO.currentLimitReached() && USE_CURRENT_SENSING);
+	}
 }

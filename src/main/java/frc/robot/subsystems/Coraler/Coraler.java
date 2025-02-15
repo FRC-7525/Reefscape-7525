@@ -46,8 +46,8 @@ public class Coraler extends Subsystem<CoralerStates> {
 	}
 
 	public boolean hasGamePiece() {
-		return debouncer.calculate(io.currentLimitReached()) && USE_CURRENT_SENSING || io.hasGamepiece();
-	} 
+		return (debouncer.calculate(io.currentLimitReached()) && USE_CURRENT_SENSING) || io.hasGamepiece();
+	}
 
 	public TalonFX getMotor() {
 		return io.getMotor();
