@@ -3,7 +3,6 @@ package frc.robot.SubsystemManager;
 import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
-import java.util.ArrayList;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.SubsystemManager.SubsystemManagerConstants.AAReefTarget;
@@ -15,6 +14,7 @@ import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.LED.LED;
 import frc.robot.Subsystems.Vision.Vision;
+import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -39,7 +39,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public boolean scoringReefLeft = false;
 
 	private ArrayList<AutoAlignStates> autoAlignQueue = new ArrayList<AutoAlignStates>();
-
 
 	private SubsystemManager() {
 		super("Manager", SubsystemManagerStates.IDLE);
@@ -112,7 +111,13 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(SubsystemManagerStates.AUTO_ALIGN_FAR, SubsystemManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
 		addTrigger(SubsystemManagerStates.AUTO_ALIGN_CLOSE, SubsystemManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
 		// addTrigger(SubsystemManagerStates.SCORING_REEF_AA, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
-		addRunnableTrigger(() -> {autoAlignQueue.remove(0); setState(SubsystemManagerStates.IDLE);}, () -> (getState() == SubsystemManagerStates.SCORING_REEF_AA && (getStateTime() > 0.5 || DRIVER_CONTROLLER.getYButtonPressed())));
+		addRunnableTrigger(
+			() -> {
+				autoAlignQueue.remove(0);
+				setState(SubsystemManagerStates.IDLE);
+			},
+			() -> (getState() == SubsystemManagerStates.SCORING_REEF_AA && (getStateTime() > 0.5 || DRIVER_CONTROLLER.getYButtonPressed()))
+		);
 
 		// // Zero Elevator
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.ZEROING_ELEVATOR, () -> DRIVER_CONTROLLER.getBackButtonPressed());
