@@ -172,6 +172,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Selected Reef Level", operatorReefScoringLevel);
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Left Pose Selected", scoringReefLeft);
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Driver Reef Level", driverReefScoringLevel);
+		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/AA Queue", autoAlignQueue.toString());
 		if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
 			Logger.recordOutput(SUBSYSTEM_NAME + "/ALLIANCE COLOR", "RED");
 		} else {
