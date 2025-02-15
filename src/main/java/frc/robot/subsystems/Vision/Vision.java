@@ -3,35 +3,27 @@ package frc.robot.Subsystems.Vision;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.Subsystems.Drive.Drive;
+import frc.robot.Subsystems.Vision.VisionIO.VisionIOInputs;
+
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.team7525.misc.VisionUtil;
 import org.team7525.subsystem.Subsystem;
 
 public class Vision extends Subsystem<VisionStates> {
-
-	private VisionIO io;
-	private Drive drive;
-
 	private static Vision instance;
-
-	private final VisionIOInputsAutoLogged inputs = new VisionIOInputsAutoLogged();
-
-	private Pose2d lastFrontVisionPose = new Pose2d();
-	private Pose2d lastBackVisionPose = new Pose2d();
-
-	private Vision() {
-		super("Vision", VisionStates.ON);
-		this.io = switch (ROBOT_MODE) {
-			case REAL -> new VisionIOReal();
-			case SIM -> new VisionIOSim();
-			case TESTING -> new VisionIO() {};
-		};
-		this.drive = Drive.getInstance();
-	}
+	private PhotonCamera backCamera;
+	private PhotonCamera frontCamera;
+	private PhotonPoseEstimator backEstimator;
+	private PhotonPoseEstimator frontEstimator;
 
 	public static Vision getInstance() {
 		if (instance == null) {
@@ -40,26 +32,49 @@ public class Vision extends Subsystem<VisionStates> {
 		return instance;
 	}
 
+	public Optional<EstimatedRobotPose> getBackPoseEstimation() {
+		Optional<EstimatedRobotPose> pose = Optional.empty();
+		for (var change : backCamera.getAllUnreadResults()) {
+			pose = backEstimator.update(change);
+		}
+		return pose;
+	}
+
+	public Optional<EstimatedRobotPose> getFrontPoseEstimation() {
+		Optional<EstimatedRobotPose> pose = Optional.empty();
+		for (var change : frontCamera.getAllUnreadResults()) {
+			pose = frontEstimator.update(change);
+		}
+		return pose;
+	}
+
+	private Vision() {
+		super("Vision", VisionStates.ON);
+		backCamera = new PhotonCamera("Back Camera");
+		frontCamera = new PhotonCamera("Front Camera");
+
+		// Pose estimators :/
+		frontEstimator = new PhotonPoseEstimator(APRIL_TAG_FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, ROBOT_TO_FRONT_CAMERA);
+		backEstimator = new PhotonPoseEstimator(APRIL_TAG_FIELD_LAYOUT, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, ROBOT_TO_BACK_CAMERA);
+	}
+
+	
+
 	@Override
 	public void runState() {
-		io.updateInputs(inputs);
-		Logger.processInputs("Vision", inputs);
+		Optional<EstimatedRobotPose> backPose = getBackPoseEstimation();
+		Optional<EstimatedRobotPose> frontPose = getFrontPoseEstimation();
 
-		if (getState().getVisionEnabled()) {
-			io.setStrategy(getState().getStrategy());
-			io.updateRobotPose(drive.getPose());
-
-			Optional<EstimatedRobotPose> frontPose = io.getFrontPoseEstimation();
-			if (frontPose.isPresent()) {
-				drive.addVisionMeasurement(frontPose.get().estimatedPose.toPose2d(), frontPose.get().timestampSeconds, VisionUtil.getEstimationStdDevs(frontPose.get(), FRONT_RESOLUTION));
-				Logger.recordOutput("Vision/FrontPose", frontPose.get().estimatedPose.toPose2d());
-			}
-
-			Optional<EstimatedRobotPose> backPose = io.getBackPoseEstimation();
-			if (backPose.isPresent()) {
-				drive.addVisionMeasurement(backPose.get().estimatedPose.toPose2d(), backPose.get().timestampSeconds, VisionUtil.getEstimationStdDevs(backPose.get(), BACK_RESOLUTION));
-				Logger.recordOutput("Vision/BackPose", backPose.get().estimatedPose.toPose2d());
-			}
+		Logger.recordOutput("Vision/BackCamConnected", backCamera.isConnected());
+		Logger.recordOutput("Vision/FrontCamConnected",frontCamera.isConnected());
+		Logger.recordOutput("Vision/state", getState().getStateString());
+		if (frontPose.isPresent()) {
+			Logger.recordOutput("Vision/BackPose",backPose.get().estimatedPose.toPose2d()); 
+			Logger.recordOutput("Vision/FrontTargets", 		backPose.get().targetsUsed.size());
+		}
+		if (backPose.isPresent()) { 
+			Logger.recordOutput("Vision/FrontPose", frontPose.get().estimatedPose.toPose2d());
+			Logger.recordOutput("Vision/BackTargets", frontPose.get().targetsUsed.size());
 		}
 	}
 }
