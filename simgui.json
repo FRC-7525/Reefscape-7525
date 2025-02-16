@@ -69,9 +69,6 @@
         "Coraler": {
           "open": true
         },
-        "RealOutputs": {
-          "open": true
-        },
         "open": true
       },
       "SmartDashboard": {
@@ -83,6 +80,21 @@
         "open": true,
         "robot main": {
           "Manager": {
+            "open": true
+          },
+          "RobotPeriodic": {
+            "Manager": {
+              "open": true
+            },
+            "SubsystemManager": {
+              "open": true
+            },
+            "open": true
+          },
+          "SubsystemManager": {
+            "Manager": {
+              "open": true
+            },
             "open": true
           },
           "open": true
