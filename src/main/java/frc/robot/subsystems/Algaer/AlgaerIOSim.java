@@ -6,12 +6,13 @@ import static frc.robot.Subsystems.Algaer.AlgaerConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import frc.robot.Subsystems.Algaer.AlgaerConstants.Real;
@@ -28,7 +29,6 @@ public class AlgaerIOSim implements AlgaerIO {
 	private TalonFXSimState pivotMotorSimState;
 
 	private PIDController pivotController;
-	private PIDController wheelSpeedController;
 
 	private double wheelSpeedSetpoint;
 	private double pivotPositionSetpoint;
@@ -44,7 +44,6 @@ public class AlgaerIOSim implements AlgaerIO {
 		pivotMotorSimState = new TalonFXSimState(pivotMotor);
 
 		pivotController = PIVOT_CONTROLLER.get();
-		wheelSpeedController = WHEEL_CONTROLLER.get();
 
 		wheelSpeedSetpoint = 0;
 		pivotPositionSetpoint = 0;
@@ -74,9 +73,9 @@ public class AlgaerIOSim implements AlgaerIO {
 	}
 
 	@Override
-	public void setWheelSpeed(AngularVelocity wheelSpeedSetpoint) {
-		this.wheelSpeedSetpoint = wheelSpeedSetpoint.in(RotationsPerSecond);
-		wheelMotorSim.setInputVoltage(wheelSpeedController.calculate(Units.radiansToRotations(wheelMotorSim.getAngularVelocityRadPerSec()), wheelSpeedSetpoint.in(RotationsPerSecond)));
+	public void setWheelSpeed(double wheelSpeedSetpoint) {
+		this.wheelSpeedSetpoint = wheelSpeedSetpoint;
+		wheelMotorSim.setInputVoltage(wheelSpeedSetpoint * 12);
 	}
 
 	@Override
@@ -94,8 +93,7 @@ public class AlgaerIOSim implements AlgaerIO {
 		return wheelMotor;
 	}
 
-	@Override
-	public TalonFX getPivotMotor() {
-		return pivotMotor;
+	public SparkMax getPivotMotor() {
+		return new SparkMax(1, MotorType.kBrushless);
 	}
 }

@@ -54,8 +54,4 @@ public class Algaer extends Subsystem<AlgaerStates> {
 	public TalonFX getWheelMotor() {
 		return io.getWheelMotor();
 	}
-
-	public TalonFX getPivotMotor() {
-		return io.getPivotMotor();
-	}
 }

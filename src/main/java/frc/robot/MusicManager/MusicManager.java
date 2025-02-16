@@ -62,8 +62,6 @@ public class MusicManager {
 		hasInstruments = true;
 		orchestra.addInstrument(Algaer.getInstance().getWheelMotor());
 		Algaer.getInstance().getWheelMotor().getConfigurator().apply(audioConfigs);
-		orchestra.addInstrument(Algaer.getInstance().getPivotMotor());
-		Algaer.getInstance().getPivotMotor().getConfigurator().apply(audioConfigs);
 		orchestra.addInstrument(Coraler.getInstance().getMotor());
 		Coraler.getInstance().getMotor().getConfigurator().apply(audioConfigs);
 		orchestra.addInstrument(Elevator.getInstance().getLeftMotor());
