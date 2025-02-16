@@ -1,8 +1,9 @@
 package frc.robot.Subsystems.Algaer;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.spark.SparkMax;
+
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.AngularVelocity;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface AlgaerIO {
@@ -22,7 +23,7 @@ public interface AlgaerIO {
 
 	public void setPivotSetpoint(Angle pivotSetpoint);
 
-	public void setWheelSpeed(AngularVelocity wheelSpeed);
+	public void setWheelSpeed(double wheelSpeed);
 
 	public Angle getAngle();
 
@@ -30,5 +31,5 @@ public interface AlgaerIO {
 
 	public TalonFX getWheelMotor();
 
-	public TalonFX getPivotMotor();
+	public SparkMax getPivotMotor();
 }

@@ -35,9 +35,9 @@ public final class ElevatorConstants {
 	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-4);
 	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(15.0);
 
-	public static final Distance L4_HEIGHT = Inches.of(24.56);
-	public static final Distance L3_HEIGHT = Inches.of(12); //mid is all the way down according to nick
-	public static final Distance L2_HEIGHT = Inches.of(5);
+	public static final Distance L4_HEIGHT = Inches.of(24.5);
+	public static final Distance L3_HEIGHT = Inches.of(13.5); 
+	public static final Distance L2_HEIGHT = Inches.of(6.5);
 	public static final Distance L1_HEIGHT = Inches.of(0);
 	public static final Distance IDLE_HEIGHT = Inches.of(0);
 	public static final Distance ALGAE_LOW_HEIGHT = Inches.of(9);
