@@ -34,9 +34,9 @@ public class Vision extends SubsystemBase {
 			instance = new Vision(
 				Drive.getInstance()::addVisionMeasument,
 				switch (ROBOT_MODE) {
-					case REAL -> new VisionIO[] { new VisionIOPhotonVision(FRONT_RIGHT_CAMERA_NAME, ROBOT_TO_FRONT_CAMERA), new VisionIOPhotonVision(BACK_LEFT_CAMERA_NAME, ROBOT_TO_BACK_CAMERA) };
-					case SIM -> new VisionIO[] { new VisionIOPhotonVisionSim(FRONT_RIGHT_CAMERA_NAME, ROBOT_TO_FRONT_CAMERA, Drive.getInstance()::getPose), new VisionIOPhotonVisionSim(BACK_LEFT_CAMERA_NAME, ROBOT_TO_BACK_CAMERA, Drive.getInstance()::getPose) };
-					case TESTING -> new VisionIO[] { new VisionIOPhotonVision(FRONT_RIGHT_CAMERA_NAME, ROBOT_TO_FRONT_CAMERA), new VisionIOPhotonVision(BACK_LEFT_CAMERA_NAME, ROBOT_TO_BACK_CAMERA) };
+					case REAL -> new VisionIO[] { new VisionIOPhotonVision(FRONT_LEFT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA), new VisionIOPhotonVision(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_RIGHT_CAMERA), new VisionIOPhotonVision(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA), new VisionIOPhotonVision(BACK_RIGHT_CAM_NAME, ROBOT_TO_BACK_RIGHT_CAMERA) };
+					case SIM -> new VisionIO[] { new VisionIOPhotonVisionSim(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_RIGHT_CAMERA, Drive.getInstance()::getPose), new VisionIOPhotonVisionSim(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA, Drive.getInstance()::getPose) };
+					case TESTING -> new VisionIO[] { new VisionIOPhotonVision(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA), new VisionIOPhotonVision(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA) };
 				}
 			);
 		}
