@@ -14,8 +14,10 @@ import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.LED.LED;
 import frc.robot.Subsystems.Vision.Vision;
+
 import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
+import org.team7525.misc.Tracer;
 import org.team7525.subsystem.Subsystem;
 
 public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
@@ -188,14 +190,14 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// climber.setState(getState().getClimberState());
 
 		// Periodics
-		autoAlign.periodic();
-		elevator.periodic();
-		coraler.periodic();
-		// algaer.periodic();
-		vision.periodic();
-		drive.periodic();
-		ledSubsystem.periodic();
-		// climber.periodic();
+		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
+		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
+		Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
+		Tracer.traceFunc("VisionPeriodic", vision::periodic);
+		// Tracer.traceFunc("AlgaerPeriodic", algaer::periodic);
+		Tracer.traceFunc("DrivePeriodic", drive::periodic);
+		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
+		// Tracer.traceFunc("ClimberPeriodic", climber::periodic);
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(6)) {

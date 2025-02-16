@@ -69,16 +69,34 @@
         "Coraler": {
           "open": true
         },
-        "RealOutputs": {
-          "Manager": {
-            "open": true
-          },
-          "open": true
-        },
         "open": true
       },
       "SmartDashboard": {
         "VisionSystemSim-Vision": {
+          "open": true
+        }
+      },
+      "Tracer": {
+        "open": true,
+        "robot main": {
+          "Manager": {
+            "open": true
+          },
+          "RobotPeriodic": {
+            "Manager": {
+              "open": true
+            },
+            "SubsystemManager": {
+              "open": true
+            },
+            "open": true
+          },
+          "SubsystemManager": {
+            "Manager": {
+              "open": true
+            },
+            "open": true
+          },
           "open": true
         }
       }
