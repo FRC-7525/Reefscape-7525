@@ -16,6 +16,8 @@ public final class AprilTagConstants {
 
 	public static final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
 
+	public static final String SUBSYSTEM_NAME = "AprilTagVision";
+	
 	public static PoseStrategy poseStrategy = PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR;
 
 	public static enum CameraResolution {

@@ -80,16 +80,16 @@ public class AprilTagVision extends SubsystemBase {
 					aprilTagVisionInputs.timestamps[i] = (getTimestamp() / 1.0e6) - aprilTagVisionInputs.latency[i];
 				}
 
-				Logger.recordOutput("Drive/AprilTagPose" + i, aprilTagVisionInputs.visionPoses[i].toPose2d());
-				Logger.recordOutput("Drive/AprilTagStdDevs" + i, Arrays.copyOfRange(aprilTagVisionInputs.visionStdDevs, 3 * i, 3 * i + 3));
-				Logger.recordOutput("Drive/AprilTagTimestamps" + i, aprilTagVisionInputs.timestamps[i]);
+				Logger.recordOutput(SUBSYSTEM_NAME + "/AprilTagPose" + i, aprilTagVisionInputs.visionPoses[i].toPose2d());
+				Logger.recordOutput(SUBSYSTEM_NAME + "/AprilTagStdDevs" + i, Arrays.copyOfRange(aprilTagVisionInputs.visionStdDevs, 3 * i, 3 * i + 3));
+				Logger.recordOutput(SUBSYSTEM_NAME + "/AprilTagTimestamps" + i, aprilTagVisionInputs.timestamps[i]);
 
 				if (useVision) {
 					Drive.getInstance().addVisionMeasurement(aprilTagVisionInputs.visionPoses[i].toPose2d(), aprilTagVisionInputs.timestamps[i], VecBuilder.fill(aprilTagVisionInputs.visionStdDevs[3 * i], aprilTagVisionInputs.visionStdDevs[3 * i + 1], aprilTagVisionInputs.visionStdDevs[3 * i + 2]));
 				}
 			} else {
-				Logger.recordOutput("Drive/AprilTagPose" + i, new Pose2d());
-				Logger.recordOutput("Drive/AprilTagStdDevs" + i, new double[] { 0.0, 0.0, 0.0 });
+				Logger.recordOutput(SUBSYSTEM_NAME + "/AprilTagPose" + i, new Pose2d());
+				Logger.recordOutput(SUBSYSTEM_NAME + "/AprilTagStdDevs" + i, new double[] { 0.0, 0.0, 0.0 });
 			}
 		}
 	}
