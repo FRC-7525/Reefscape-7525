@@ -70,15 +70,21 @@
           "open": true
         },
         "RealOutputs": {
-          "Manager": {
-            "open": true
-          },
           "open": true
         },
         "open": true
       },
       "SmartDashboard": {
         "VisionSystemSim-Vision": {
+          "open": true
+        }
+      },
+      "Tracer": {
+        "open": true,
+        "robot main": {
+          "Manager": {
+            "open": true
+          },
           "open": true
         }
       }
