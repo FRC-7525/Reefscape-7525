@@ -12,8 +12,8 @@ import org.team7525.misc.VisionUtil.CameraResolution;
 public class VisionConstants {
 
 	// Front is cam 0, back is cam 1 in nt
-	public static final String FRONT_RIGHT_CAMERA_NAME = "Front Camera";
-	public static final String BACK_LEFT_CAMERA_NAME = "Back Camera";
+	public static final String FRONT_RIGHT_CAMERA_NAME = "Front Right Camera";
+	public static final String BACK_LEFT_CAMERA_NAME = "Back Left Camera";
 
 	// Robot to cam
 	public static final Translation3d ROBOT_TO_BACK_CAMERA_TRALSLATION = new Translation3d(Units.inchesToMeters(11.697), Units.inchesToMeters(11.81), Units.inchesToMeters(8.859));

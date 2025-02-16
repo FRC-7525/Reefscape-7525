@@ -24,7 +24,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
 	private final Algaer algaer = Algaer.getInstance();
-	private final AutoAlign autoAlign = AutoAlign.getInstance();
+	// private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
 
@@ -75,7 +75,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Intaking at Coral Station
 		// AA
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
-		addTrigger(SubsystemManagerStates.INTAKING_CORALER, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
+		// addTrigger(SubsystemManagerStates.INTAKING_CORALER, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
 		// Manual
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
 		addTrigger(SubsystemManagerStates.INTAKING_CORALER_AA_OFF, SubsystemManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.currentSenseGamepiece());
@@ -101,8 +101,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(SubsystemManagerStates.SCORING_REEF_MANUAL, SubsystemManagerStates.IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		// Scoring Reef Auto Align
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
-		addTrigger(SubsystemManagerStates.AUTO_ALIGN_FAR, SubsystemManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
-		addTrigger(SubsystemManagerStates.AUTO_ALIGN_CLOSE, SubsystemManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
+		// addTrigger(SubsystemManagerStates.AUTO_ALIGN_FAR, SubsystemManag2erStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
+		// addTrigger(SubsystemManagerStates.AUTO_ALIGN_CLOSE, SubsystemManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
 		addTrigger(SubsystemManagerStates.SCORING_REEF_AA, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 
 		// // Zero Elevator
@@ -164,12 +164,12 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		elevator.setState(getState().getElevatorStateSupplier().get());
 		coraler.setState(getState().getCoralerState());
 		// algaer.setState(getState().getAlgaerState());
-		autoAlign.setState(getState().getAutoAlignSupplier().get());
+		// autoAlign.setState(getState().getAutoAlignSupplier().get());
 		ledSubsystem.setState(getState().getLedState());
 		// climber.setState(getState().getClimberState());
 
 		// Periodics
-		autoAlign.periodic();
+		// autoAlign.periodic();
 		elevator.periodic();
 		coraler.periodic();
 		// algaer.periodic();
