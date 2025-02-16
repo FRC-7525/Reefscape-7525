@@ -1,10 +1,13 @@
 package frc.robot.SubsystemManager;
 
+import static frc.robot.GlobalConstants.FIELD;
 import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.SubsystemManager.SubsystemManagerConstants.AAReefTarget;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
@@ -37,8 +40,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public int operatorReefScoringLevel = 1;
 	public int hexagonTargetSide = 1;
 	public boolean scoringReefLeft = false;
-
 	private ArrayList<AutoAlignStates> autoAlignQueue = new ArrayList<AutoAlignStates>();
+
+	private final FieldObject2d selectedAAPose = FIELD.getObject("Selected AA Pose");
 
 	private SubsystemManager() {
 		super("Manager", SubsystemManagerStates.IDLE);
@@ -201,5 +205,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(6)) {
 			setState(SubsystemManagerStates.IDLE);
 		}
+
+		selectedAAPose.setPose(REEF_TARGET_MAP.get(AAReefTarget.of(hexagonTargetSide, scoringReefLeft)).getTargetPose());
+		SmartDashboard.putData(FIELD);
 	}
 }
