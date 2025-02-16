@@ -25,9 +25,9 @@ public final class AlgaerConstants {
 	// TODO: FIND!
 	public static final double OVERALL_GEARING = 50;
 
-	public static final Angle INTAKING_PIVOT = Degrees.of(90);
-	public static final Angle PROCESSING_PIVOT = Degrees.of(90);
-	public static final Angle HOLDING_PIVOT = Degrees.of(65);
+	public static final Angle INTAKING_PIVOT = Degrees.of(-90);
+	public static final Angle PROCESSING_PIVOT = Degrees.of(-90);
+	public static final Angle HOLDING_PIVOT = Degrees.of(-65);
 	public static final Angle IDLE_PIVOT = Degrees.of(0);
 
 	public static final Angle PIVOT_TOLERANCE = Degrees.of(3);
@@ -59,7 +59,7 @@ public final class AlgaerConstants {
 
 	public static final class Real {
 
-		public static final int WHEEL_MOTOR_CANID = 4; //TODO: Get actual CAN IDs
-		public static final int PIVOT_MOTOR_CANID = 29;
+		public static final int WHEEL_MOTOR_CANID = 29; 
+		public static final int PIVOT_MOTOR_CANID = 4;
 	}
 }
