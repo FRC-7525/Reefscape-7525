@@ -42,8 +42,10 @@ public class AprilTagVision extends SubsystemBase {
 	 */
 	public AprilTagVision() {
 		CameraPoseEstimator[] visionPoseEstimators = new CameraPoseEstimator[] {
-			new CameraPoseEstimator(new PhotonCamera(FRONT_CAM_NAME), ROBOT_TO_FRONT_CAMERA, AprilTagConstants.poseStrategy, CameraResolution.HIGH_RES),
-			new CameraPoseEstimator(new PhotonCamera(BACK_CAM_NAME), ROBOT_TO_BACK_CAMERA, AprilTagConstants.poseStrategy, CameraResolution.HIGH_RES),
+			new CameraPoseEstimator(new PhotonCamera(FRONT_LEFT_CAM_NAME), ROBOT_TO_FRONT_LEFT_CAMERA, AprilTagConstants.poseStrategy, CameraResolution.HIGH_RES),
+			new CameraPoseEstimator(new PhotonCamera(FRONT_RIGHT_CAM_NAME), ROBOT_TO_FRONT_RIGHT_CAMERA, AprilTagConstants.poseStrategy, CameraResolution.HIGH_RES),
+			new CameraPoseEstimator(new PhotonCamera(BACK_LEFT_CAM_NAME), ROBOT_TO_BACK_LEFT_CAMERA, AprilTagConstants.poseStrategy, CameraResolution.HIGH_RES),
+			new CameraPoseEstimator(new PhotonCamera(BACK_RIGHT_CAM_NAME), ROBOT_TO_BACK_RIGHT_CAMERA, AprilTagConstants.poseStrategy, CameraResolution.HIGH_RES),
 		};
 
 		switch (ROBOT_MODE) {

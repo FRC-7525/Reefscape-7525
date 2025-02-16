@@ -15,12 +15,16 @@ public class AprilTagVisionIOSim implements AprilTagVisionIO {
 	private final VisionSystemSim visionSim;
 
 	// Camera simulators
+	private PhotonCameraSim frontLeftSim;
 	private PhotonCameraSim frontRightSim;
 	private PhotonCameraSim backLeftSim;
+	private PhotonCameraSim backRightSim;
 
 	// Pose estimators
+	private CameraPoseEstimator frontLeftPose;
 	private CameraPoseEstimator frontRightPose;
 	private CameraPoseEstimator backLeftPose;
+	private CameraPoseEstimator backRightPose;
 
 	private CameraPoseEstimator[] poseEstimators;
 
@@ -30,12 +34,16 @@ public class AprilTagVisionIOSim implements AprilTagVisionIO {
 	private double[] latencyArray;
 
 	public AprilTagVisionIOSim() {
-		PhotonCamera frontRight = new PhotonCamera(FRONT_CAM_NAME);
-		PhotonCamera backLeft = new PhotonCamera(BACK_CAM_NAME);
+		PhotonCamera frontLeft = new PhotonCamera(FRONT_LEFT_CAM_NAME);
+		PhotonCamera frontRight = new PhotonCamera(FRONT_RIGHT_CAM_NAME);
+		PhotonCamera backLeft = new PhotonCamera(BACK_LEFT_CAM_NAME);
+		PhotonCamera backRight = new PhotonCamera(BACK_RIGHT_CAM_NAME);
 
-		frontRightPose = new CameraPoseEstimator(frontRight, ROBOT_TO_FRONT_CAMERA, AprilTagConstants.poseStrategy, CameraResolution.HIGH_RES);
-		backLeftPose = new CameraPoseEstimator(backLeft, ROBOT_TO_BACK_CAMERA, AprilTagConstants.poseStrategy, CameraResolution.HIGH_RES);
-		this.poseEstimators = new CameraPoseEstimator[] { frontRightPose, backLeftPose };
+		frontLeftPose = new CameraPoseEstimator(frontLeft, ROBOT_TO_FRONT_LEFT_CAMERA, AprilTagConstants.poseStrategy, CameraResolution.HIGH_RES);
+		frontRightPose = new CameraPoseEstimator(frontRight, ROBOT_TO_FRONT_RIGHT_CAMERA, AprilTagConstants.poseStrategy, CameraResolution.HIGH_RES);
+		backLeftPose = new CameraPoseEstimator(backLeft, ROBOT_TO_BACK_LEFT_CAMERA, AprilTagConstants.poseStrategy, CameraResolution.HIGH_RES);
+		backRightPose = new CameraPoseEstimator(backRight, ROBOT_TO_BACK_RIGHT_CAMERA, AprilTagConstants.poseStrategy, CameraResolution.HIGH_RES);
+		this.poseEstimators = new CameraPoseEstimator[] { frontLeftPose, frontRightPose, backLeftPose, backRightPose };
 
 		poseArray = new Pose3d[poseEstimators.length];
 		timestampArray = new double[poseEstimators.length];
@@ -52,14 +60,20 @@ public class AprilTagVisionIOSim implements AprilTagVisionIO {
 		cameraProps.setAvgLatencyMs(50);
 		cameraProps.setLatencyStdDevMs(15);
 
+		frontLeftSim = new PhotonCameraSim(frontLeft, cameraProps);
 		frontRightSim = new PhotonCameraSim(frontRight, cameraProps);
 		backLeftSim = new PhotonCameraSim(backLeft, cameraProps);
+		backRightSim = new PhotonCameraSim(backRight, cameraProps);
 
-		visionSim.addCamera(frontRightSim, ROBOT_TO_FRONT_CAMERA);
-		visionSim.addCamera(backLeftSim, ROBOT_TO_BACK_CAMERA);
+		visionSim.addCamera(frontLeftSim, ROBOT_TO_FRONT_LEFT_CAMERA);
+		visionSim.addCamera(frontRightSim, ROBOT_TO_FRONT_RIGHT_CAMERA);
+		visionSim.addCamera(backLeftSim, ROBOT_TO_BACK_LEFT_CAMERA);
+		visionSim.addCamera(backRightSim, ROBOT_TO_BACK_RIGHT_CAMERA);
 
+		frontLeftSim.enableDrawWireframe(true);
 		frontRightSim.enableDrawWireframe(true);
 		backLeftSim.enableDrawWireframe(true);
+		backRightSim.enableDrawWireframe(true);
 	}
 
 	@Override
