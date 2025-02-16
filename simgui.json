@@ -4,6 +4,11 @@
       "window": {
         "visible": false
       }
+    },
+    "RoboRIO": {
+      "window": {
+        "visible": true
+      }
     }
   },
   "NTProvider": {
@@ -29,12 +34,28 @@
         }
       },
       "/SmartDashboard/VisionSystemSim-Vision/Sim Field": {
+        "Robot": {
+          "style": "Box/Image"
+        },
+        "apriltag": {
+          "arrows": false,
+          "style": "Hidden"
+        },
         "bottom": 1638,
         "builtin": "2025 Reefscape",
+        "cameras": {
+          "arrows": false,
+          "style": "Hidden"
+        },
         "height": 8.051901817321777,
         "left": 534,
         "right": 3466,
         "top": 291,
+        "visibleTargetPoses": {
+          "arrows": false,
+          "selectable": false,
+          "style": "Hidden"
+        },
         "width": 17.54825210571289,
         "window": {
           "visible": true
@@ -45,6 +66,9 @@
   "NetworkTables": {
     "transitory": {
       "AdvantageKit": {
+        "Coraler": {
+          "open": true
+        },
         "RealOutputs": {
           "Drive": {
             "open": true
@@ -52,9 +76,6 @@
           "Vision": {
             "open": true
           },
-          "open": true
-        },
-        "Vision": {
           "open": true
         },
         "open": true
