@@ -22,7 +22,6 @@ import org.littletonrobotics.junction.Logger;
 public class Vision extends SubsystemBase {
 
 	// Akit my savior
-	private final VisionConsumer consumer;
 	private final VisionIO[] io;
 	private final VisionIOInputsAutoLogged[] inputs;
 	private final Alert[] disconnectedAlerts;
@@ -32,7 +31,6 @@ public class Vision extends SubsystemBase {
 	public static Vision getInstance() {
 		if (instance == null) {
 			instance = new Vision(
-				Drive.getInstance()::addVisionMeasument,
 				switch (ROBOT_MODE) {
 					case REAL -> new VisionIO[] { new VisionIOPhotonVision(FRONT_LEFT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA), new VisionIOPhotonVision(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_RIGHT_CAMERA), new VisionIOPhotonVision(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA), new VisionIOPhotonVision(BACK_RIGHT_CAM_NAME, ROBOT_TO_BACK_RIGHT_CAMERA) };
 					case SIM -> new VisionIO[] { new VisionIOPhotonVisionSim(FRONT_LEFT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA, Drive.getInstance()::getPose), new VisionIOPhotonVisionSim(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_RIGHT_CAMERA, Drive.getInstance()::getPose), new VisionIOPhotonVisionSim(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA, Drive.getInstance()::getPose), new VisionIOPhotonVisionSim(BACK_RIGHT_CAM_NAME, ROBOT_TO_BACK_RIGHT_CAMERA, Drive.getInstance()::getPose) };
@@ -42,9 +40,8 @@ public class Vision extends SubsystemBase {
 		}
 		return instance;
 	}
-
-	private Vision(VisionConsumer consumer, VisionIO... io) {
-		this.consumer = consumer;
+	
+	private Vision(VisionIO... io) {
 		this.io = io;
 
 		// Initialize inputs
@@ -149,7 +146,7 @@ public class Vision extends SubsystemBase {
 				}
 
 				// Send vision observation
-				consumer.accept(observation.pose().toPose2d(), observation.timestamp(), VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
+				Drive.getInstance().addVisionMeasurement(observation.pose().toPose2d(), observation.timestamp(), VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
 			}
 
 			// Log camera datadata
@@ -169,10 +166,5 @@ public class Vision extends SubsystemBase {
 		Logger.recordOutput("Vision/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[allRobotPoses.size()]));
 		Logger.recordOutput("Vision/Summary/RobotPosesAccepted", allRobotPosesAccepted.toArray(new Pose3d[allRobotPosesAccepted.size()]));
 		Logger.recordOutput("Vision/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
-	}
-
-	@FunctionalInterface
-	public static interface VisionConsumer {
-		public void accept(Pose2d visionRobotPoseMeters, double timestampSeconds, Matrix<N3, N1> visionMeasurementStdDevs);
 	}
 }
