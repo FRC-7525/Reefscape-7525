@@ -45,8 +45,8 @@ public class AlgaerIOReal implements AlgaerIO {
 
 	@Override
 	public void setPivotSetpoint(Angle pivotSetpoint) {
-		this.pivotPositionSetpoint = pivotSetpoint.in(Degrees);
-		double voltage = pivotController.calculate(pivotMotor.getEncoder().getPosition() / OVERALL_GEARING, pivotSetpoint.in(Degrees));
+		this.pivotPositionSetpoint = pivotSetpoint.in(Degrees);		
+		double voltage = pivotController.calculate(Units.rotationsToDegrees(pivotMotor.getEncoder().getPosition() / OVERALL_GEARING), pivotSetpoint.in(Degrees));
 		pivotMotor.setVoltage(voltage);
 	}
 
@@ -58,7 +58,9 @@ public class AlgaerIOReal implements AlgaerIO {
 
 	@Override
 	public boolean nearTarget() {
-		return (Math.abs(pivotMotor.getEncoder().getPosition() - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees) && Math.abs(wheelMotor.getVelocity().getValue().in(RotationsPerSecond) - wheelSpeedSetpoint) < WHEEL_TOLERANCE.in(RotationsPerSecond));
+		System.out.println(Units.rotationsToDegrees(pivotMotor.getEncoder().getPosition()/OVERALL_GEARING));
+		System.out.println(pivotPositionSetpoint);
+		return Math.abs(Units.rotationsToDegrees(pivotMotor.getEncoder().getPosition()/OVERALL_GEARING) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees);
 	}
 
 	@Override

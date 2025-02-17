@@ -18,8 +18,9 @@ public final class AlgaerConstants {
 
 	public static final String SUBSYSTEM_NAME = "Algaer";
 
-	public static final double INTAKING_SPEED = 0.3;
-	public static final double PROCESSING_SPEED = -0.2;
+	public static final double INTAKING_SPEED = -0.3;
+	public static final double PROCESSING_SPEED = 0.5;
+	public static final double HOLDING_SPEED = -0.05;
 	public static final double IDLE_SPEED = 0;
 
 	// TODO: FIND!
@@ -27,15 +28,15 @@ public final class AlgaerConstants {
 
 	public static final Angle INTAKING_PIVOT = Degrees.of(-90);
 	public static final Angle PROCESSING_PIVOT = Degrees.of(-90);
-	public static final Angle HOLDING_PIVOT = Degrees.of(-65);
+	public static final Angle HOLDING_PIVOT = Degrees.of(-30);
 	public static final Angle IDLE_PIVOT = Degrees.of(0);
 
-	public static final Angle PIVOT_TOLERANCE = Degrees.of(3);
+	public static final Angle PIVOT_TOLERANCE = Degrees.of(15);
 	public static final AngularVelocity WHEEL_TOLERANCE = RotationsPerSecond.of(5);
 
 	public static final Supplier<PIDController> PIVOT_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new PIDController(0.5, 0, 0.01);
+			case REAL -> new PIDController(0.1, 0, 0.01);
 			case SIM -> new PIDController(0.05, 0, 0.01);
 			case TESTING -> new PIDController(0.1, 0, 0);
 			default -> new PIDController(0, 0, 0);
