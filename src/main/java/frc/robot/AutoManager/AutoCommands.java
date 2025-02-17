@@ -1,8 +1,12 @@
 package frc.robot.AutoManager;
 
+import static edu.wpi.first.units.Units.Meters;
+import static frc.robot.AutoManager.AutoConstants.CLOSE_DISTANCE;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.SubsystemManager.SubsystemManagerStates;
+import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
 
 public class AutoCommands {
@@ -103,6 +107,31 @@ public class AutoCommands {
 		@Override
 		public boolean isFinished() {
 			return manager.getState() == SubsystemManagerStates.IDLE;
+		}
+	}
+
+	public class Transition extends Command {
+		private final SubsystemManager manager = SubsystemManager.getInstance();
+		private final Drive drive = Drive.getInstance();
+
+		public static Transition get() {
+			return AutoCommands.getInstance().new Transition();
+		}
+
+		@Override
+		public void initialize() {
+			manager.setState(SubsystemManagerStates.IDLE);
+		}
+
+		@Override
+		public void execute() {
+			System.out.println("hi");
+			manager.setState(SubsystemManagerStates.IDLE);
+		}
+
+		@Override
+		public boolean isFinished() {
+			return drive.getPose().getTranslation().getDistance(AutoManager.getInstance().getEndPose().getTranslation()) < CLOSE_DISTANCE.in(Meters);
 		}
 	}
 }

@@ -15,9 +15,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "Transition L4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Transition"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Transition L4"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -59,9 +72,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "Transition L4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Transition"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Transition L4"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -103,9 +129,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "Transition L4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Transition"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Transition L4"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -147,9 +186,22 @@
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "Transition L4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Transition"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Transition L4"
+                      }
+                    }
+                  ]
                 }
               }
             ]

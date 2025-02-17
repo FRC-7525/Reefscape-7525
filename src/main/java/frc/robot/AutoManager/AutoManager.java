@@ -27,6 +27,7 @@ public class AutoManager {
 
 	private LinearVelocity cachedVelocity;
 	private int loopCount;
+	private Pose2d endPose = new Pose2d();
 
 	private AutoManager() {
 		this.cachedVelocity = Drive.getInstance().getVelocity();
@@ -58,6 +59,7 @@ public class AutoManager {
 					loopCount = 0;
 				}
 			}
+			if (!activePath.isEmpty()) endPose = activePath.get(activePath.size() - 1);
 		});
 
 		// Name Commands
@@ -74,6 +76,8 @@ public class AutoManager {
 		NamedCommands.registerCommand("Return To Idle", AutoCommands.ReturnToIdle.get());
 
 		NamedCommands.registerCommand("Intake Coral", AutoCommands.IntakeCoral.getCoral());
+
+		NamedCommands.registerCommand("Transition", AutoCommands.Transition.get());
 
 		// Autos
 
@@ -117,6 +121,11 @@ public class AutoManager {
 			return new PrintCommand("No auto selected");
 		}
 
+		
 		return autoChooser.getSelected();
+	}
+
+	public Pose2d getEndPose() {
+		return endPose;
 	}
 }
