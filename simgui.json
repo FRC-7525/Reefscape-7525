@@ -57,6 +57,9 @@
       "AdvantageKit": {
         "RealOutputs": {
           "Vision": {
+            "Camera0": {
+              "open": true
+            },
             "open": true
           },
           "open": true
