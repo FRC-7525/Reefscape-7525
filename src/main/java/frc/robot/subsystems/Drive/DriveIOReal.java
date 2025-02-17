@@ -2,6 +2,8 @@ package frc.robot.Subsystems.Drive;
 
 import static frc.robot.Subsystems.Drive.TunerConstants.*;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.Matrix;
@@ -69,6 +71,9 @@ public class DriveIOReal implements DriveIO {
 	@Override
 	public void addVisionMeasurement(Pose2d pose, double timestamp, Matrix<N3, N1> standardDeviaton) {
 		drivetrain.addVisionMeasurement(pose, timestamp, standardDeviaton);
+		Logger.recordOutput("VisionTuning/STDev", standardDeviaton);
+		Logger.recordOutput("VisionTuning/Timestamp", timestamp);
+		Logger.recordOutput("VisionTuning/pose", timestamp);
 	}
 
 	/**
