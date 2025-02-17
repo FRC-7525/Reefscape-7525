@@ -1,7 +1,7 @@
 package frc.robot.SubsystemManager;
 
-import static frc.robot.GlobalConstants.FIELD;
 import static frc.robot.GlobalConstants.Controllers.*;
+import static frc.robot.GlobalConstants.FIELD;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
