@@ -58,7 +58,6 @@ public final class AlgaerConstants {
 	}
 
 	public static final class Real {
-
 		public static final int WHEEL_MOTOR_CANID = 29; 
 		public static final int PIVOT_MOTOR_CANID = 15;
 	}
