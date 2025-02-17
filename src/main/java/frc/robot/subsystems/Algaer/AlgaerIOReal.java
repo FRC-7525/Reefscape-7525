@@ -58,8 +58,8 @@ public class AlgaerIOReal implements AlgaerIO {
 
 	@Override
 	public boolean nearTarget() {
-		System.out.println(Units.rotationsToDegrees(pivotMotor.getEncoder().getPosition() / OVERALL_GEARING));
-		System.out.println(pivotPositionSetpoint);
+		// System.out.println(Units.rotationsToDegrees(pivotMotor.getEncoder().getPosition() / OVERALL_GEARING));
+		// System.out.println(pivotPositionSetpoint);
 		return Math.abs(Units.rotationsToDegrees(pivotMotor.getEncoder().getPosition() / OVERALL_GEARING) - pivotPositionSetpoint) < PIVOT_TOLERANCE.in(Degrees);
 	}
 

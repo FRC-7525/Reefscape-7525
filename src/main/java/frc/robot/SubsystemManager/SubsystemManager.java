@@ -22,7 +22,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 	private static SubsystemManager instance = new SubsystemManager();
 
-	// private final Drive drive = Drive.getInstance();
+	private final Drive drive = Drive.getInstance();
 	// private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
@@ -193,7 +193,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		coraler.periodic();
 		algaer.periodic();
 		// vision.periodic();
-		// drive.periodic();
+		drive.periodic();
 		ledSubsystem.periodic();
 		// climber.periodic();
 
