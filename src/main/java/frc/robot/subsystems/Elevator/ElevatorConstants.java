@@ -35,7 +35,7 @@ public final class ElevatorConstants {
 	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-4);
 	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(15.0);
 
-	public static final Distance L4_HEIGHT = Inches.of(24.5);
+	public static final Distance L4_HEIGHT = Inches.of(25);
 	public static final Distance L3_HEIGHT = Inches.of(13.5);
 	public static final Distance L2_HEIGHT = Inches.of(6.5);
 	public static final Distance L1_HEIGHT = Inches.of(0);
@@ -71,12 +71,12 @@ public final class ElevatorConstants {
 		public static final boolean LEFT_INVERTED = false;
 		public static final NeutralModeValue LEFT_NEUTRAL_MODE = NeutralModeValue.Brake;
 		public static final boolean LEFT_STRATOR_CURRENT_LIMIT_ENABLED = true;
-		public static final Current LEFT_STRATOR_CURRENT_LIMIT = Amps.of(40);
+		public static final Current LEFT_STRATOR_CURRENT_LIMIT = Amps.of(80);
 
 		public static final boolean RIGHT_INVERTED = false;
 		public static final NeutralModeValue RIGHT_NEUTRAL_MODE = NeutralModeValue.Brake;
 		public static final boolean RIGHT_STRATOR_CURRENT_LIMIT_ENABLED = true;
-		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(40);
+		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(80);
 
 		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(40, 0, 0, 0);
 		// The move is prob to keep this at 0 and not bother tuning

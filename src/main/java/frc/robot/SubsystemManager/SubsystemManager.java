@@ -26,7 +26,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	// private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
-	private final Algaer algaer = Algaer.getInstance();
+	// private final Algaer algaer = Algaer.getInstance();
 	// private final AutoAlign autoAlign = AutoAlign.getInstance();
 	// private final Vision vision = Vision.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
@@ -95,7 +95,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 		// // Scoring Algae at Processor
 		addTrigger(SubsystemManagerStates.HOLDING_ALGAE, SubsystemManagerStates.GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
-		addTrigger(SubsystemManagerStates.GOING_PROCESSOR, SubsystemManagerStates.SCORING_PROCESSOR, () -> elevator.nearTarget() && algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed());
+		// addTrigger(SubsystemManagerStates.GOING_PROCESSOR, SubsystemManagerStates.SCORING_PROCESSOR, () -> elevator.nearTarget() && algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed());
 		addTrigger(SubsystemManagerStates.SCORING_PROCESSOR, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getAButtonPressed);
 
 		// Scoring Reef Manual
@@ -182,7 +182,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Set States, drive and vision are rogue so you don't need to set state
 		elevator.setState(getState().getElevatorStateSupplier().get());
 		coraler.setState(getState().getCoralerState());
-		algaer.setState(getState().getAlgaerState());
+		// algaer.setState(getState().getAlgaerState());
 		// autoAlign.setState(getState().getAutoAlignSupplier().get());
 		ledSubsystem.setState(getState().getLedState());
 		// climber.setState(getState().getClimberState());
@@ -191,7 +191,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// autoAlign.periodic();
 		elevator.periodic();
 		coraler.periodic();
-		algaer.periodic();
+		// algaer.periodic();
 		// vision.periodic();
 		// drive.periodic();
 		ledSubsystem.periodic();
