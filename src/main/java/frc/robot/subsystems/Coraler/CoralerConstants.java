@@ -36,6 +36,7 @@ public class CoralerConstants {
 	public static class Real {
 
 		public static final int WHEEL_MOTOR_CAN_ID = 20;
+		public static final int DIO_PORT = 1;
 	}
 
 	public static class Sim {
