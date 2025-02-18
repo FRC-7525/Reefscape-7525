@@ -7,7 +7,6 @@ import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 

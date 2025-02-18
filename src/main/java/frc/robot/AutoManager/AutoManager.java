@@ -119,7 +119,6 @@ public class AutoManager {
 			return new PrintCommand("No auto selected");
 		}
 
-		
 		return autoChooser.getSelected();
 	}
 

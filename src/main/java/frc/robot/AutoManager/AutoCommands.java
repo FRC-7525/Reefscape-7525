@@ -121,6 +121,7 @@ public class AutoCommands {
 	}
 
 	public class Transition extends Command {
+
 		private final SubsystemManager manager = SubsystemManager.getInstance();
 		private final Drive drive = Drive.getInstance();
 
