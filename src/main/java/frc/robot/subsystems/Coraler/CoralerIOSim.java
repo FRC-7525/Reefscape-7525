@@ -49,4 +49,9 @@ public class CoralerIOSim implements CoralerIO {
 	public boolean currentLimitReached() {
 		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds);
 	}
+
+	@Override
+	public boolean hasGamepiece() {
+		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds);
+	}
 }

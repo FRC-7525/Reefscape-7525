@@ -70,7 +70,10 @@
           "open": true
         },
         "RealOutputs": {
-          "Manager": {
+          "Drive": {
+            "open": true
+          },
+          "Vision": {
             "open": true
           },
           "open": true
