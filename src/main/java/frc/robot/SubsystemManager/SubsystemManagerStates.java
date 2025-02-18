@@ -2,7 +2,6 @@ package frc.robot.SubsystemManager;
 
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
-
 import frc.robot.Subsystems.Algaer.AlgaerStates;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Climber.ClimberStates;
