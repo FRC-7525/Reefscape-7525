@@ -15,22 +15,9 @@
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Transition"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Transition L4"
-                      }
-                    }
-                  ]
+                  "name": "Transition L4"
                 }
               }
             ]
@@ -72,22 +59,9 @@
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Transition"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Transition L4"
-                      }
-                    }
-                  ]
+                  "name": "Transition L4"
                 }
               }
             ]
@@ -129,22 +103,9 @@
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Transition"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Transition L4"
-                      }
-                    }
-                  ]
+                  "name": "Transition L4"
                 }
               }
             ]
@@ -180,22 +141,9 @@
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Transition"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Transition L4"
-                      }
-                    }
-                  ]
+                  "name": "Transition L4"
                 }
               }
             ]
@@ -231,22 +179,9 @@
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Transition"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Transition L4"
-                      }
-                    }
-                  ]
+                  "name": "Transition L4"
                 }
               }
             ]
@@ -282,22 +217,9 @@
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Transition"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Transition L4"
-                      }
-                    }
-                  ]
+                  "name": "Transition L4"
                 }
               }
             ]

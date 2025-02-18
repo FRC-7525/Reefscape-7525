@@ -56,12 +56,22 @@ public class AutoCommands {
 		@Override
 		public void initialize() {
 			SubsystemManager.getInstance().setDriverReefScoringLevel(scoringLevel);
-			SubsystemManager.getInstance().setState(SubsystemManagerStates.SCORING_REEF_MANUAL);
+			SubsystemManager.getInstance().setState(SubsystemManagerStates.TRANSITIONING_SCORING_REEF);
+		}
+
+		@Override
+		public void execute() {
+			if (Elevator.getInstance().nearTarget()) SubsystemManager.getInstance().setState(SubsystemManagerStates.SCORING_REEF_MANUAL);
 		}
 
 		@Override
 		public boolean isFinished() {
-			return SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE;
+			return SubsystemManager.getInstance().getState() == SubsystemManagerStates.SCORING_REEF_MANUAL && SubsystemManager.getInstance().getTime() > 0.25;
+		}
+
+		@Override
+		public void end(boolean interrupted) {
+			SubsystemManager.getInstance().setState(SubsystemManagerStates.IDLE);
 		}
 	}
 
@@ -114,8 +124,14 @@ public class AutoCommands {
 		private final SubsystemManager manager = SubsystemManager.getInstance();
 		private final Drive drive = Drive.getInstance();
 
-		public static Transition get() {
-			return AutoCommands.getInstance().new Transition();
+		private final int scoringLevel;
+
+		private Transition(int scoringLevel) {
+			this.scoringLevel = scoringLevel;
+		}
+
+		public static Transition get(int scoringLevel) {
+			return AutoCommands.getInstance().new Transition(scoringLevel);
 		}
 
 		@Override
@@ -124,14 +140,14 @@ public class AutoCommands {
 		}
 
 		@Override
-		public void execute() {
-			System.out.println("hi");
-			manager.setState(SubsystemManagerStates.IDLE);
+		public boolean isFinished() {
+			return drive.getPose().getTranslation().getDistance(AutoManager.getInstance().getEndPose().getTranslation()) < CLOSE_DISTANCE.in(Meters);
 		}
 
 		@Override
-		public boolean isFinished() {
-			return drive.getPose().getTranslation().getDistance(AutoManager.getInstance().getEndPose().getTranslation()) < CLOSE_DISTANCE.in(Meters);
+		public void end(boolean interrupted) {
+			SubsystemManager.getInstance().setDriverReefScoringLevel(scoringLevel);
+			SubsystemManager.getInstance().setState(SubsystemManagerStates.TRANSITIONING_SCORING_REEF);
 		}
 	}
 }

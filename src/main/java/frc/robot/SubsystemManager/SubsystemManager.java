@@ -167,6 +167,10 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public AutoAlignStates getNextInQueue() {
 		return autoAlignQueue.get(0);
 	}
+	
+	public double getTime() {
+		return getStateTime();
+	}
 
 	@Override
 	public void runState() {
