@@ -26,9 +26,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	// private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
-	private final Algaer algaer = Algaer.getInstance();
 	// private final AutoAlign autoAlign = AutoAlign.getInstance();
-	// private final Vision vision = Vision.getInstance();
+	private final Vision vision = Vision.getInstance();
+	private final Algaer algaer = Algaer.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
 
 	public Boolean leftSourceSelected = false;
@@ -79,7 +79,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 		// Intaking at Coral Station
 		// AA
-		// addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
+		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
 		// addTrigger(SubsystemManagerStates.INTAKING_CORALER, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
 		// Manual
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);

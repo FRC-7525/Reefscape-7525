@@ -238,10 +238,6 @@ public class Drive extends Subsystem<DriveStates> {
 		driveIO.setControl(new SwerveRequest.SwerveDriveBrake().withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
 	}
 
-	public void addVisionMeasument(Pose2d pose, double timestamp, Matrix<N3, N1> standardDeviaton) {
-		driveIO.addVisionMeasurement(pose, timestamp, standardDeviaton);
-	}
-
 	// SYSId Trash (no hate ofc)
 	public enum SysIdMode {
 		TRANSLATION,
@@ -413,6 +409,6 @@ public class Drive extends Subsystem<DriveStates> {
 	}
 
 	public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
-		driveIO.addVisionMeasurement(visionPose, timestamp, visionMeasurementStdDevs);
+		driveIO.addVisionMeasurement(visionPose, Utils.fpgaToCurrentTime(timestamp), visionMeasurementStdDevs);
 	}
 }

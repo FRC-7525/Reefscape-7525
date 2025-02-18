@@ -18,7 +18,8 @@
       "/SmartDashboard/Alerts": "Alerts",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
-      "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d"
+      "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d",
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
     },
     "windows": {
       "/SmartDashboard/Field": {
@@ -28,10 +29,7 @@
         "left": 534,
         "right": 3466,
         "top": 291,
-        "width": 17.54825210571289,
-        "window": {
-          "visible": true
-        }
+        "width": 17.54825210571289
       },
       "/SmartDashboard/VisionSystemSim-Vision/Sim Field": {
         "Robot": {
@@ -47,6 +45,18 @@
           "arrows": false,
           "style": "Hidden"
         },
+        "height": 8.051901817321777,
+        "left": 534,
+        "right": 3466,
+        "top": 291,
+        "width": 17.54825210571289
+      },
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": {
+        "apriltag": {
+          "style": "Hidden"
+        },
+        "bottom": 1638,
+        "builtin": "2025 Reefscape",
         "height": 8.051901817321777,
         "left": 534,
         "right": 3466,
@@ -74,6 +84,9 @@
             "open": true
           },
           "Vision": {
+            "Camera0": {
+              "open": true
+            },
             "open": true
           },
           "open": true
@@ -84,6 +97,9 @@
         "VisionSystemSim-Vision": {
           "open": true
         }
+      },
+      "photonvision": {
+        "open": true
       }
     }
   },
