@@ -101,8 +101,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		yApplied = translationController.calculate(drivePose.getY(), targetPose.getY());
 
 		double rotationApplied = rotationController.calculate(drivePose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
-		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false);
-		else drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false);
+		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false, false);
+		else drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false, false);
 	}
 
 	private void repulsorAutoAlign(Pose2d pose, SwerveSample sample) {
@@ -115,8 +115,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		Logger.recordOutput("TESTING VX", targetSpeeds.vxMetersPerSecond);
 		Logger.recordOutput("TESTING VY", targetSpeeds.vyMetersPerSecond);
-		if (isRedAlliance) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
-		else drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
+		if (isRedAlliance) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
+		else drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
 	}
 
 	private boolean checkForReefCollision() {
@@ -150,7 +150,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	public boolean nearTarget() {
-		return (drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < DISTANCE_ERROR_MARGIN && Math.abs(drive.getPose().getRotation().getDegrees() - targetPose.getRotation().getDegrees()) < ANGLE_ERROR_MARGIN);
+		return (drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getError()) < ANGLE_ERROR_MARGIN));
 	}
 
 	public boolean readyForClose() {

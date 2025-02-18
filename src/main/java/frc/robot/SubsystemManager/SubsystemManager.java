@@ -5,13 +5,16 @@ import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.SubsystemManager.SubsystemManagerConstants.AAReefTarget;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
+import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.LED.LED;
 import frc.robot.Subsystems.Vision.Vision;
+import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -23,9 +26,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	// private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
-	// private final Algaer algaer = Algaer.getInstance();
 	// private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
+	private final Algaer algaer = Algaer.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
 
 	public Boolean leftSourceSelected = false;
@@ -34,6 +37,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public int operatorReefScoringLevel = 1;
 	public int hexagonTargetSide = 1;
 	public boolean scoringReefLeft = false;
+
+	private ArrayList<AutoAlignStates> autoAlignQueue = new ArrayList<AutoAlignStates>();
 
 	private SubsystemManager() {
 		super("Manager", SubsystemManagerStates.IDLE);
@@ -51,26 +56,26 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 4, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
 
 		// // Toggling which level to score at (auto align)
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 1, () -> OPERATOR_CONTROLLER.getRawButtonPressed(1));
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 2, () -> OPERATOR_CONTROLLER.getRawButtonPressed(3));
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 3, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4));
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 4, () -> OPERATOR_CONTROLLER.getRawButtonPressed(5));
+		// addRunnableTrigger(() -> this.operatorReefScoringLevel = 1, () -> OPERATOR_CONTROLLER.getRawButtonPressed(1));
+		// addRunnableTrigger(() -> this.operatorReefScoringLevel = 2, () -> OPERATOR_CONTROLLER.getRawButtonPressed(3));
+		// addRunnableTrigger(() -> this.operatorReefScoringLevel = 3, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4));
+		// addRunnableTrigger(() -> this.operatorReefScoringLevel = 4, () -> OPERATOR_CONTROLLER.getRawButtonPressed(5));
 
 		// Togling which side of the hexagon to score at (auto align)
-		addRunnableTrigger(() -> this.hexagonTargetSide = 1, () -> OPERATOR_CONTROLLER.getRawButtonPressed(11));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 2, () -> OPERATOR_CONTROLLER.getRawButtonPressed(12));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 3, () -> OPERATOR_CONTROLLER.getRawButtonPressed(7));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 4, () -> OPERATOR_CONTROLLER.getRawButtonPressed(8));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 5, () -> OPERATOR_CONTROLLER.getRawButtonPressed(9));
-		addRunnableTrigger(() -> this.hexagonTargetSide = 6, () -> OPERATOR_CONTROLLER.getRawButtonPressed(10));
+		// addRunnableTrigger(() -> this.hexagonTargetSide = 1, () -> OPERATOR_CONTROLLER.getRawButtonPressed(11));
+		// addRunnableTrigger(() -> this.hexagonTargetSide = 2, () -> OPERATOR_CONTROLLER.getRawButtonPressed(12));
+		// addRunnableTrigger(() -> this.hexagonTargetSide = 3, () -> OPERATOR_CONTROLLER.getRawButtonPressed(7));
+		// addRunnableTrigger(() -> this.hexagonTargetSide = 4, () -> OPERATOR_CONTROLLER.getRawButtonPressed(8));
+		// addRunnableTrigger(() -> this.hexagonTargetSide = 5, () -> OPERATOR_CONTROLLER.getRawButtonPressed(9));
+		// addRunnableTrigger(() -> this.hexagonTargetSide = 6, () -> OPERATOR_CONTROLLER.getRawButtonPressed(10));
 
 		// Toggling Left or Right Hexagon Side Scoring (auto align)
-		addRunnableTrigger(() -> this.scoringReefLeft = true, () -> OPERATOR_CONTROLLER.getRawAxis(0) > AXIS_RECOGNITION_POINT);
-		addRunnableTrigger(() -> this.scoringReefLeft = false, () -> OPERATOR_CONTROLLER.getRawAxis(0) < -AXIS_RECOGNITION_POINT);
+		// addRunnableTrigger(() -> this.scoringReefLeft = true, () -> OPERATOR_CONTROLLER.getRawAxis(0) > AXIS_RECOGNITION_POINT);
+		// addRunnableTrigger(() -> this.scoringReefLeft = false, () -> OPERATOR_CONTROLLER.getRawAxis(0) < -AXIS_RECOGNITION_POINT);
 
 		// // Climbing
-		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.CLIMBING, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() > 0.5);
-		addTrigger(SubsystemManagerStates.CLIMBING, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() == 0);
+		// addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.CLIMBING, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() > 0.5);
+		// addTrigger(SubsystemManagerStates.CLIMBING, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() == 0);
 
 		// Intaking at Coral Station
 		// AA
@@ -78,8 +83,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// addTrigger(SubsystemManagerStates.INTAKING_CORALER, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
 		// Manual
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
-		addTrigger(SubsystemManagerStates.INTAKING_CORALER_AA_OFF, SubsystemManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.currentSenseGamepiece());
-		addTrigger(SubsystemManagerStates.CENTERING_CORALER, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || getStateTime() > CORAL_CENTERING_TIME);
+		// addTrigger(SubsystemManagerStates.INTAKING_CORALER_AA_OFF, SubsystemManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
+		addTrigger(SubsystemManagerStates.INTAKING_CORALER_AA_OFF, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
 
 		// // Intaking Algae
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
@@ -90,7 +95,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 		// // Scoring Algae at Processor
 		addTrigger(SubsystemManagerStates.HOLDING_ALGAE, SubsystemManagerStates.GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
-		// addTrigger(SubsystemManagerStates.GOING_PROCESSOR, SubsystemManagerStates.SCORING_PROCESSOR, () -> elevator.nearTarget() && algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed());
+		addTrigger(SubsystemManagerStates.GOING_PROCESSOR, SubsystemManagerStates.SCORING_PROCESSOR, () -> (algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed()));
 		addTrigger(SubsystemManagerStates.SCORING_PROCESSOR, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getAButtonPressed);
 
 		// Scoring Reef Manual
@@ -100,14 +105,23 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Auto
 		addTrigger(SubsystemManagerStates.SCORING_REEF_MANUAL, SubsystemManagerStates.IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		// Scoring Reef Auto Align
-		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
-		// addTrigger(SubsystemManagerStates.AUTO_ALIGN_FAR, SubsystemManag2erStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
-		// addTrigger(SubsystemManagerStates.AUTO_ALIGN_CLOSE, SubsystemManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
-		addTrigger(SubsystemManagerStates.SCORING_REEF_AA, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 
-		// // Zero Elevator
-		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.ZEROING_ELEVATOR, () -> DRIVER_CONTROLLER.getBackButtonPressed());
-		addTrigger(SubsystemManagerStates.ZEROING_ELEVATOR, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getBackButtonPressed() || elevator.motorsZeroed());
+		// addRunnableTrigger(() -> autoAlignQueue.add(REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()))), () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
+		// addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.AUTO_ALIGN_FAR, () -> !autoAlignQueue.isEmpty());
+		// addTrigger(SubsystemManagerStates.AUTO_ALIGN_FAR, SubsystemManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
+		// addTrigger(SubsystemManagerStates.AUTO_ALIGN_CLOSE, SubsystemManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
+		// // addTrigger(SubsystemManagerStates.SCORING_REEF_AA, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
+		// addRunnableTrigger(
+		// 	() -> {
+		// 		autoAlignQueue.remove(0);
+		// 		setState(SubsystemManagerStates.IDLE);
+		// 	},
+		// 	() -> (getState() == SubsystemManagerStates.SCORING_REEF_AA && (getStateTime() > 0.5 || DRIVER_CONTROLLER.getYButtonPressed()))
+		// );
+
+		// Zero Elevator
+		// addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.ZEROING_ELEVATOR, () -> DRIVER_CONTROLLER.getBackButtonPressed());
+		// addTrigger(SubsystemManagerStates.ZEROING_ELEVATOR, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getBackButtonPressed() || elevator.motorsZeroed());
 	}
 
 	public static SubsystemManager getInstance() {
@@ -146,6 +160,10 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		this.leftSourceSelected = leftSourceTargeted;
 	}
 
+	public AutoAlignStates getNextInQueue() {
+		return autoAlignQueue.get(0);
+	}
+
 	@Override
 	public void runState() {
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
@@ -154,6 +172,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Selected Reef Level", operatorReefScoringLevel);
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Left Pose Selected", scoringReefLeft);
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Driver Reef Level", driverReefScoringLevel);
+		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/AA Queue", autoAlignQueue.toString());
 		if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
 			Logger.recordOutput(SUBSYSTEM_NAME + "/ALLIANCE COLOR", "RED");
 		} else {
@@ -163,7 +182,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Set States, drive and vision are rogue so you don't need to set state
 		elevator.setState(getState().getElevatorStateSupplier().get());
 		coraler.setState(getState().getCoralerState());
-		// algaer.setState(getState().getAlgaerState());
+		algaer.setState(getState().getAlgaerState());
 		// autoAlign.setState(getState().getAutoAlignSupplier().get());
 		ledSubsystem.setState(getState().getLedState());
 		// climber.setState(getState().getClimberState());
@@ -172,8 +191,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// autoAlign.periodic();
 		elevator.periodic();
 		coraler.periodic();
-		// algaer.periodic();
-		vision.periodic();
+		algaer.periodic();
+		// vision.periodic();
 		drive.periodic();
 		ledSubsystem.periodic();
 		// climber.periodic();

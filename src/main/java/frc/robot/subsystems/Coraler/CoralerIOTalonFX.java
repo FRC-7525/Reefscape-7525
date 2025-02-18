@@ -7,17 +7,20 @@ import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class CoralerIOTalonFX implements CoralerIO {
 
 	private final TalonFX velocityMotor;
 	private final PIDController velocityController;
+	private final DigitalInput beamBreak;
 	private double speedPoint;
 
 	public CoralerIOTalonFX() {
 		velocityMotor = new TalonFX(Real.WHEEL_MOTOR_CAN_ID);
 		velocityMotor.setNeutralMode(NeutralModeValue.Brake);
+		beamBreak = new DigitalInput(Real.DIO_PORT);
 
 		velocityController = VELOCITY_CONTROLLER.get();
 		speedPoint = 0.0;
@@ -46,5 +49,10 @@ public class CoralerIOTalonFX implements CoralerIO {
 	@Override
 	public boolean currentLimitReached() {
 		return velocityMotor.getStatorCurrent().getValue().in(Amp) > STATOR_CURRENT_SENSING_LIMIT;
+	}
+
+	@Override
+	public boolean hasGamepiece() {
+		return !beamBreak.get();
 	}
 }
