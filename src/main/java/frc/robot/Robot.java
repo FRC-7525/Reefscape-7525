@@ -21,6 +21,7 @@ import org.team7525.misc.CommandsUtil;
 public class Robot extends LoggedRobot {
 
 	private final SubsystemManager manager = SubsystemManager.getInstance();
+
 	// private final AutoManager autoManager = AutoManager.getInstance();
 	// private final MusicManager musicManager = MusicManager.getInstance();
 	// private final FaultManager faultManager = FaultManager.getInstance();

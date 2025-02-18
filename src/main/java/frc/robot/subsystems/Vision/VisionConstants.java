@@ -11,7 +11,7 @@ import org.team7525.misc.VisionUtil.CameraResolution;
 
 public class VisionConstants {
 
-	// Front Left 
+	// Front Left
 	public static final String FRONT_LEFT_CAM_NAME = "Front Left Camera";
 	public static final Translation3d ROBOT_TO_FRONT_LEFT_CAMERA_TRANSLATION = new Translation3d(Units.inchesToMeters(11.662), Units.inchesToMeters(11.72), Units.inchesToMeters(9.1));
 	public static final Rotation3d ROBOT_TO_FRONT_LEFT_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-28.125), Math.toRadians(30));
@@ -22,7 +22,7 @@ public class VisionConstants {
 	public static final Translation3d ROBOT_TO_FRONT_RIGHT_CAMERA_TRANSLATION = new Translation3d(Units.inchesToMeters(11.697), Units.inchesToMeters(-11.81), Units.inchesToMeters(8.859));
 	public static final Rotation3d ROBOT_TO_FRONT_RIGHT_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-15), Math.toRadians(0));
 	public static final Transform3d ROBOT_TO_FRONT_RIGHT_CAMERA = new Transform3d(ROBOT_TO_FRONT_RIGHT_CAMERA_TRANSLATION, ROBOT_TO_FRONT_RIGHT_CAMERA_ROTATION);
-	
+
 	//Back Left
 	public static final String BACK_LEFT_CAM_NAME = "Back Left Camera";
 	public static final Translation3d ROBOT_TO_BACK_LEFT_CAMERA_TRALSLATION = new Translation3d(Units.inchesToMeters(-11.697), Units.inchesToMeters(11.81), Units.inchesToMeters(8.859));
