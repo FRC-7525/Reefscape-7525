@@ -220,12 +220,6 @@
                 "data": {
                   "name": "Intake Coral"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Transition L4"
-                }
               }
             ]
           }
@@ -238,6 +232,12 @@
                 "type": "path",
                 "data": {
                   "pathName": "CIRR to CA"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Transition L4"
                 }
               }
             ]
