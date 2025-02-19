@@ -57,9 +57,8 @@ public final class ElevatorConstants {
 		public static final boolean SIMULATE_GRAVITY = true;
 		public static final Distance STARTING_HEIGHT = Inches.of(0);
 
-		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(40, 3, 1, 0.5);
-		// Theoretical kG: 0.4-6, kA should be negligible
-		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0, 13.77, 0);
+		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(10, 2, 1, 0.1);
+		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.24, 6.66, 0.03);
 
 		// Sim is trolling, idk why
 		public static final Distance POSITION_TOLERANCE_SIM = Inches.of(4);
