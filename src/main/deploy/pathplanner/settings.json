@@ -17,7 +17,7 @@
     "6 Coral",
     "Misc"
   ],
-  "defaultMaxVel": 4.0,
+  "defaultMaxVel": 3.9,
   "defaultMaxAccel": 11.7,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 2260.0,
