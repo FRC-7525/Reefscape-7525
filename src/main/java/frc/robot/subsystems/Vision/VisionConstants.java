@@ -43,7 +43,11 @@ public class VisionConstants {
 	public static final CameraResolution FRONT_RESOLUTION = CameraResolution.HIGH_RES;
 
 	// Other
-	public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+	// INSANE skill issue from First
+	// This is comp dependent
+	public static final boolean USE_WELDED_FIELD = false;
+
+	public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFieldLayout.loadField(USE_WELDED_FIELD ? AprilTagFields.k2025ReefscapeWelded : AprilTagFields.k2025ReefscapeAndyMark);
 
 	public static final int CAMERA_WIDTH = 1200;
 	public static final int CAMERA_HEIGHT = 800;
