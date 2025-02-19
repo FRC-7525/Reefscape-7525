@@ -1,6 +1,8 @@
 package frc.robot.Subsystems.Elevator;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+
+import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import org.littletonrobotics.junction.AutoLog;
 
@@ -39,6 +41,8 @@ public interface ElevatorIO {
 	public Distance getStageOneHeight();
 
 	public Distance getCarriageHeight();
+
+	public boolean overZeroingLimit();
 
 	public TalonFX getLeftMotor();
 

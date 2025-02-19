@@ -14,6 +14,8 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
+import edu.wpi.first.units.measure.Time;
+
 import org.team7525.controlConstants.FFConstants;
 
 public final class ElevatorConstants {
@@ -32,8 +34,9 @@ public final class ElevatorConstants {
 	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(70);
 
 	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(MAX_VELOCITY.in(MetersPerSecond), MAX_ACCELERATION.in(MetersPerSecondPerSecond));
-	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-4);
-	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(15.0);
+	// TODO: Don't smash up the elevator chat
+	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-6);
+	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(30.0);
 
 	public static final Distance L4_HEIGHT = Meters.of(0.63);
 	public static final Distance L3_HEIGHT = Inches.of(12);
@@ -57,12 +60,14 @@ public final class ElevatorConstants {
 		public static final boolean SIMULATE_GRAVITY = true;
 		public static final Distance STARTING_HEIGHT = Inches.of(0);
 
-		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(10, 2, 1, 0.1);
-		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.24, 6.66, 0.03);
+		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(40, 3, 1, 0.5);
+		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0, 13.77, 0);
 
 		// Sim is trolling, idk why
 		public static final Distance POSITION_TOLERANCE_SIM = Inches.of(4);
 		public static final LinearVelocity VELOCITY_TOLERANCE_SIM = InchesPerSecond.of(0.5);
+
+		public static final Time SIM_ZEROING_TIME = Seconds.of(2);
 	}
 
 	public static class Real {
