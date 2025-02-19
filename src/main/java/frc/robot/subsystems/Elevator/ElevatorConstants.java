@@ -15,7 +15,6 @@ import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.units.measure.Time;
-
 import org.team7525.controlConstants.FFConstants;
 
 public final class ElevatorConstants {

@@ -1,7 +1,6 @@
 package frc.robot.Subsystems.Elevator;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import org.littletonrobotics.junction.AutoLog;
