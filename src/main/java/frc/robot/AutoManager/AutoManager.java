@@ -27,6 +27,7 @@ public class AutoManager {
 
 	private LinearVelocity cachedVelocity;
 	private int loopCount;
+	private Pose2d endPose = new Pose2d();
 
 	private AutoManager() {
 		this.cachedVelocity = Drive.getInstance().getVelocity();
@@ -58,6 +59,7 @@ public class AutoManager {
 					loopCount = 0;
 				}
 			}
+			if (!activePath.isEmpty()) endPose = activePath.get(activePath.size() - 1);
 		});
 
 		// Name Commands
@@ -66,14 +68,14 @@ public class AutoManager {
 		NamedCommands.registerCommand("Score L2", AutoCommands.ScoreReef.atLevel(2));
 		NamedCommands.registerCommand("Score L1", AutoCommands.ScoreReef.atLevel(1));
 
-		NamedCommands.registerCommand("Transition L4", AutoCommands.GoToElevatorLevel.atLevel(4));
-		NamedCommands.registerCommand("Transition L3", AutoCommands.GoToElevatorLevel.atLevel(3));
-		NamedCommands.registerCommand("Transition L2", AutoCommands.GoToElevatorLevel.atLevel(2));
-		NamedCommands.registerCommand("Transition L1", AutoCommands.GoToElevatorLevel.atLevel(1));
-
 		NamedCommands.registerCommand("Return To Idle", AutoCommands.ReturnToIdle.get());
 
 		NamedCommands.registerCommand("Intake Coral", AutoCommands.IntakeCoral.getCoral());
+
+		NamedCommands.registerCommand("Transition L1", AutoCommands.Transition.get(1));
+		NamedCommands.registerCommand("Transition L2", AutoCommands.Transition.get(2));
+		NamedCommands.registerCommand("Transition L3", AutoCommands.Transition.get(3));
+		NamedCommands.registerCommand("Transition L4", AutoCommands.Transition.get(4));
 
 		// Autos
 
@@ -118,5 +120,9 @@ public class AutoManager {
 		}
 
 		return autoChooser.getSelected();
+	}
+
+	public Pose2d getEndPose() {
+		return endPose;
 	}
 }

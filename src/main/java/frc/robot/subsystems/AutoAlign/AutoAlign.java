@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Radians;
+import static frc.robot.GlobalConstants.FIELD;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
 
@@ -15,6 +16,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private static AutoAlign instance;
 
 	private final Drive drive = Drive.getInstance();
-	private final RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner(new ArrayList<>(), new ArrayList<>());
+	private final RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner(new ArrayList<>(), new ArrayList<>(), true);
 
 	private PIDController translationController;
 	private PIDController rotationController;
@@ -53,6 +55,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		this.repulsionRotationController = REPULSOR_ROTATIONAL_CONTROLLER.get();
 
 		repulsorActivated = false;
+		targetPose = new Pose2d();
 	}
 
 	public static AutoAlign getInstance() {

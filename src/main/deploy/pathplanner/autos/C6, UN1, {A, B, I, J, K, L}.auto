@@ -112,12 +112,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Score L4"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -153,12 +147,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Score L4"
           }
         },
         {
@@ -200,12 +188,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Score L4"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -241,12 +223,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Score L4"
           }
         }
       ]
