@@ -25,7 +25,7 @@ public class Robot extends LoggedRobot {
 
 	// private final AutoManager autoManager = AutoManager.getInstance();
 	// private final MusicManager musicManager = MusicManager.getInstance();
-	// private final FaultManager faultManager = FaultManager.getInstance();
+	private final FaultManager faultManager = FaultManager.getInstance();
 
 	@Override
 	public void robotInit() {
@@ -58,7 +58,6 @@ public class Robot extends LoggedRobot {
 		Tracer.startTrace("RobotPeriodic");
 		CommandScheduler.getInstance().run();
 		Tracer.traceFunc("SubsystemManager", manager::periodic);
-		Tracer.traceFunc("Fault Manager", faultManager::periodic);
 		Tracer.endTrace();
 	}
 
@@ -109,7 +108,9 @@ public class Robot extends LoggedRobot {
 	}
 
 	@Override
-	public void testPeriodic() {}
+	public void testPeriodic() {
+		Tracer.traceFunc("Fault Manager", faultManager::periodic);
+	}
 
 	@Override
 	public void simulationInit() {}
