@@ -1,5 +1,7 @@
 package frc.robot.MusicManager;
 
+import org.team7525.misc.Tracer;
+
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -42,10 +44,12 @@ public class MusicManager {
 	}
 
 	public void playMusic() {
+		Tracer.startTrace(SUBSYSTEM_NAME);
 		if (!orchestra.isPlaying()) {
 			orchestra.loadMusic(songToPlay.getSelected());
 		}
 		orchestra.play();
+		Tracer.endTrace();
 	}
 
 	public void addMotor(TalonFX motor) {
