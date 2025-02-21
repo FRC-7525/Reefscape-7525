@@ -35,7 +35,7 @@ public class CoralerConstants {
 	public static final double STATOR_CURRENT_SENSING_LIMIT = 30;
 
 	public static final Distance CLOSE_DISTANCE = Meter.of(0.05);
-		
+
 	public static class Real {
 
 		public static final int WHEEL_MOTOR_CAN_ID = 20;
