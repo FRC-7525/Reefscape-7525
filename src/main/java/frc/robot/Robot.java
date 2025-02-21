@@ -17,6 +17,7 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.team7525.misc.CommandsUtil;
+import org.team7525.misc.Tracer;
 
 public class Robot extends LoggedRobot {
 
@@ -24,7 +25,7 @@ public class Robot extends LoggedRobot {
 
 	// private final AutoManager autoManager = AutoManager.getInstance();
 	// private final MusicManager musicManager = MusicManager.getInstance();
-	// private final FaultManager faultManager = FaultManager.getInstance();
+	private final FaultManager faultManager = FaultManager.getInstance();
 
 	@Override
 	public void robotInit() {
@@ -49,13 +50,15 @@ public class Robot extends LoggedRobot {
 
 		FaultManager.getInstance().calibrateDeviceOrder(FaultManagerConstants.CANIVORE_DEVICE_ORDER, "CANivore");
 		FollowPathCommand.warmupCommand().schedule();
+		System.gc();
 	}
 
 	@Override
 	public void robotPeriodic() {
+		Tracer.startTrace("RobotPeriodic");
 		CommandScheduler.getInstance().run();
-		manager.periodic();
-		// faultManager.periodic();
+		Tracer.traceFunc("SubsystemManager", manager::periodic);
+		Tracer.endTrace();
 	}
 
 	@Override
@@ -83,7 +86,9 @@ public class Robot extends LoggedRobot {
 	public void teleopPeriodic() {}
 
 	@Override
-	public void disabledInit() {}
+	public void disabledInit() {
+		System.gc();
+	}
 
 	@Override
 	public void disabledPeriodic() {
@@ -103,7 +108,9 @@ public class Robot extends LoggedRobot {
 	}
 
 	@Override
-	public void testPeriodic() {}
+	public void testPeriodic() {
+		Tracer.traceFunc("Fault Manager", faultManager::periodic);
+	}
 
 	@Override
 	public void simulationInit() {}

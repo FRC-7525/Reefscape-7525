@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonCamera;
+import org.team7525.misc.Tracer;
 
 public class FaultManager {
 
@@ -183,8 +184,10 @@ public class FaultManager {
 	}
 
 	public void periodic() {
-		checkDevices();
-		logDevices();
+		Tracer.startTrace("FaultManager");
+		Tracer.traceFunc("Check Devices", this::checkDevices);
+		Tracer.traceFunc("Log Devices", this::logDevices);
+		Tracer.endTrace();
 	}
 
 	public void checkDevices() {

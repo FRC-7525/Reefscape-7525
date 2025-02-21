@@ -29,7 +29,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private static AutoAlign instance;
 
 	private final Drive drive = Drive.getInstance();
-	private final RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner(new ArrayList<>(), new ArrayList<>(), true);
+	private final RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner(new ArrayList<>(), new ArrayList<>(), (ROBOT_MODE == RobotMode.SIM));
 
 	private PIDController translationController;
 	private PIDController rotationController;
