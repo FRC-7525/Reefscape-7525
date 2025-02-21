@@ -18,35 +18,26 @@ public final class AlgaerConstants {
 
 	public static final String SUBSYSTEM_NAME = "Algaer";
 
-	public static final AngularVelocity INTAKING_SPEED = RotationsPerSecond.of(30);
-	public static final AngularVelocity PROCESSING_SPEED = RotationsPerSecond.of(30);
-	public static final AngularVelocity IDLE_SPEED = RotationsPerSecond.of(0);
+	public static final double INTAKING_SPEED = -0.3;
+	public static final double PROCESSING_SPEED = 0.5;
+	public static final double HOLDING_SPEED = -0.05;
+	public static final double IDLE_SPEED = 0;
 
 	// TODO: FIND!
-	public static final Angle ABSOLUTE_ENCODER_OFFSET = Degrees.of(0);
-	public static final double ABSOLUTE_ENCODER_GEARING = 2;
-	public static final double OVERALL_GEARING = 5;
+	public static final double OVERALL_GEARING = 50;
 
-	public static final Angle INTAKING_PIVOT = Degrees.of(90);
-	public static final Angle PROCESSING_PIVOT = Degrees.of(90);
-	public static final Angle HOLDING_PIVOT = Degrees.of(65);
+	public static final Angle INTAKING_PIVOT = Degrees.of(-90);
+	public static final Angle PROCESSING_PIVOT = Degrees.of(-90);
+	public static final Angle HOLDING_PIVOT = Degrees.of(-30);
 	public static final Angle IDLE_PIVOT = Degrees.of(0);
 
-	public static final Angle PIVOT_TOLERANCE = Degrees.of(5);
+	public static final Angle PIVOT_TOLERANCE = Degrees.of(15);
 	public static final AngularVelocity WHEEL_TOLERANCE = RotationsPerSecond.of(5);
 
 	public static final Supplier<PIDController> PIVOT_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new PIDController(0.1, 0, 0);
+			case REAL -> new PIDController(0.1, 0, 0.01);
 			case SIM -> new PIDController(0.05, 0, 0.01);
-			case TESTING -> new PIDController(0.1, 0, 0);
-			default -> new PIDController(0, 0, 0);
-		};
-
-	public static final Supplier<PIDController> WHEEL_CONTROLLER = () ->
-		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new PIDController(0.1, 0, 0);
-			case SIM -> new PIDController(0.1, 0, 0);
 			case TESTING -> new PIDController(0.1, 0, 0);
 			default -> new PIDController(0, 0, 0);
 		};
@@ -69,8 +60,7 @@ public final class AlgaerConstants {
 
 	public static final class Real {
 
-		public static final int WHEEL_MOTOR_CANID = 10; //TODO: Get actual CAN IDs
-		public static final int PIVOT_MOTOR_CANID = 11;
-		public static final int ABSOLUTE_ENCODER_PORT = 12;
+		public static final int WHEEL_MOTOR_CANID = 29;
+		public static final int PIVOT_MOTOR_CANID = 15;
 	}
 }

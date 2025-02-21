@@ -21,9 +21,10 @@ import org.team7525.misc.CommandsUtil;
 public class Robot extends LoggedRobot {
 
 	private final SubsystemManager manager = SubsystemManager.getInstance();
-	private final AutoManager autoManager = AutoManager.getInstance();
-	private final MusicManager musicManager = MusicManager.getInstance();
-	private final FaultManager faultManager = FaultManager.getInstance();
+
+	// private final AutoManager autoManager = AutoManager.getInstance();
+	// private final MusicManager musicManager = MusicManager.getInstance();
+	// private final FaultManager faultManager = FaultManager.getInstance();
 
 	@Override
 	public void robotInit() {
@@ -54,14 +55,14 @@ public class Robot extends LoggedRobot {
 	public void robotPeriodic() {
 		CommandScheduler.getInstance().run();
 		manager.periodic();
-		faultManager.periodic();
+		// faultManager.periodic();
 	}
 
 	@Override
 	public void autonomousInit() {
-		CommandScheduler.getInstance().schedule(autoManager.getSelectedCommand());
-		musicManager.stopMusic();
-		musicManager.removeAllMotors();
+		// CommandScheduler.getInstance().schedule(autoManager.getSelectedCommand());
+		// musicManager.stopMusic();
+		// musicManager.removeAllMotors();
 	}
 
 	@Override
@@ -74,8 +75,8 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void teleopInit() {
-		musicManager.stopMusic();
-		musicManager.removeAllMotors();
+		// musicManager.stopMusic();
+		// musicManager.removeAllMotors();
 	}
 
 	@Override
@@ -86,19 +87,19 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void disabledPeriodic() {
-		if (musicManager.playMusicEnabled()) {
-			musicManager.playMusic();
-		}
+		// if (musicManager.playMusicEnabled()) {
+		// 	musicManager.playMusic();
+		// }
 
-		if (!musicManager.hasInstruments() && musicManager.playMusicEnabled()) {
-			musicManager.addAllSubsystemInstruments();
-		}
+		// if (!musicManager.hasInstruments() && musicManager.playMusicEnabled()) {
+		// 	musicManager.addAllSubsystemInstruments();
+		// }
 	}
 
 	@Override
 	public void testInit() {
-		musicManager.stopMusic();
-		musicManager.removeAllMotors();
+		// musicManager.stopMusic();
+		// musicManager.removeAllMotors();
 	}
 
 	@Override
