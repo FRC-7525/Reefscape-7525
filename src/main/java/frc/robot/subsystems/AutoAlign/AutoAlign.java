@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Radians;
+import static frc.robot.GlobalConstants.FIELD;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
 
@@ -15,6 +16,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
@@ -53,6 +55,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		this.repulsionRotationController = REPULSOR_ROTATIONAL_CONTROLLER.get();
 
 		repulsorActivated = false;
+		targetPose = new Pose2d();
 	}
 
 	public static AutoAlign getInstance() {
@@ -101,8 +104,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		yApplied = translationController.calculate(drivePose.getY(), targetPose.getY());
 
 		double rotationApplied = rotationController.calculate(drivePose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
-		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false);
-		else drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false);
+		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false, false);
+		else drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false, false);
 	}
 
 	private void repulsorAutoAlign(Pose2d pose, SwerveSample sample) {
@@ -113,8 +116,10 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		targetSpeeds.vyMetersPerSecond += repulsionTranslationController.calculate(pose.getY(), sample.y);
 		targetSpeeds.omegaRadiansPerSecond += repulsionRotationController.calculate(pose.getRotation().getRadians(), sample.heading);
 
-		if (isRedAlliance) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
-		else drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false);
+		Logger.recordOutput("TESTING VX", targetSpeeds.vxMetersPerSecond);
+		Logger.recordOutput("TESTING VY", targetSpeeds.vyMetersPerSecond);
+		if (isRedAlliance) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
+		else drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
 	}
 
 	private boolean checkForReefCollision() {

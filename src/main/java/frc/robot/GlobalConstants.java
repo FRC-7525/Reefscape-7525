@@ -6,6 +6,7 @@ import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.Mass;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,13 +17,15 @@ public class GlobalConstants {
 	// TODO: This is wrong
 	public static final Mass ROBOT_MASS = Kilograms.of(60);
 
+	public static final Field2d FIELD = new Field2d();
+
 	public enum RobotMode {
 		REAL,
 		TESTING,
 		SIM,
 	}
 
-	public static final RobotMode ROBOT_MODE = "Crash".equals(System.getenv("CI_NAME")) ? RobotMode.SIM : RobotMode.SIM;
+	public static final RobotMode ROBOT_MODE = "Crash".equals(System.getenv("CI_NAME")) ? RobotMode.SIM : RobotMode.REAL;
 
 	public static class Controllers {
 

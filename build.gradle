@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "edu.wpi.first.GradleRIO" version "2025.2.1"
+    id "edu.wpi.first.GradleRIO" version "2025.3.1"
 }
 
 java {
@@ -103,7 +103,8 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // Team Lib CHANGE WHEN U UPDATE!!!!!!!!!!!!!
-    implementation 'com.github.FRC-7525:pioneerslib:1.1.0'
+    implementation 'com.github.FRC-7525:pioneerslib:1.1.1'
+    
     // AKIT
     def akitJson = new groovy.json.JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)
     annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"

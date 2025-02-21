@@ -10,6 +10,7 @@ import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -27,7 +28,7 @@ public class ElevatorIOReal implements ElevatorIO {
 	private TalonFXConfiguration rightConfigurations;
 
 	private ProfiledPIDController pidController;
-	// private ElevatorFeedforward ffcontroller;
+	private ElevatorFeedforward ffcontroller;
 
 	private double leftMotorVoltage;
 	private double rightMotorVoltage;
@@ -67,7 +68,7 @@ public class ElevatorIOReal implements ElevatorIO {
 		pidController.setTolerance(ElevatorConstants.POSITION_TOLERANCE.in(Meters), ElevatorConstants.VELOCITY_TOLERANCE.in(MetersPerSecond));
 		pidController.setIZone(PROFILLED_PID_CONSTANTS.iZone);
 
-		// ffcontroller = new ElevatorFeedforward(FF_CONSTANTS.kS, FF_CONSTANTS.kG, FF_CONSTANTS.kV, FF_CONSTANTS.kA);
+		ffcontroller = new ElevatorFeedforward(FF_CONSTANTS.kS, FF_CONSTANTS.kG, FF_CONSTANTS.kV, FF_CONSTANTS.kA);
 
 		if (ROBOT_MODE == RobotMode.TESTING) {
 			SmartDashboard.putData("Elevator PID controller", pidController);
@@ -109,9 +110,7 @@ public class ElevatorIOReal implements ElevatorIO {
 
 	@Override
 	public void runElevator() {
-		// TODO: FF is commented out because our theoretical kg values are wrong (were are lighter bc no algaer yet). Should test anyways
-		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
-		//  + ffcontroller.calculate(pidController.getSetpoint().velocity);
+		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
 		leftMotor.setVoltage(leftMotorVoltage);
 	}
 

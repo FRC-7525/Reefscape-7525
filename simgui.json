@@ -18,20 +18,49 @@
       "/SmartDashboard/Alerts": "Alerts",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Field": "Field2d",
-      "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d"
+      "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d",
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
     },
     "windows": {
       "/SmartDashboard/Field": {
+        "Selected AA Pose": {
+          "arrowColor": [
+            0.4705974757671356,
+            0.8262910842895508,
+            0.10474110394716263,
+            255.0
+          ],
+          "color": [
+            0.563380241394043,
+            1.0,
+            0.0,
+            255.0
+          ]
+        },
+        "Target AA Pose": {
+          "arrowColor": [
+            0.0,
+            255.0,
+            244.2252960205078,
+            255.0
+          ],
+          "arrowSize": 10,
+          "color": [
+            0.05783683434128761,
+            0.21831387281417847,
+            0.7699530720710754,
+            255.0
+          ],
+          "length": 0.4000000059604645,
+          "width": 0.4000000059604645
+        },
         "bottom": 1638,
         "builtin": "2025 Reefscape",
         "height": 8.051901817321777,
         "left": 534,
         "right": 3466,
         "top": 291,
-        "width": 17.54825210571289,
-        "window": {
-          "visible": true
-        }
+        "width": 17.54825210571289
       },
       "/SmartDashboard/VisionSystemSim-Vision/Sim Field": {
         "Robot": {
@@ -47,6 +76,18 @@
           "arrows": false,
           "style": "Hidden"
         },
+        "height": 8.051901817321777,
+        "left": 534,
+        "right": 3466,
+        "top": 291,
+        "width": 17.54825210571289
+      },
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": {
+        "apriltag": {
+          "style": "Hidden"
+        },
+        "bottom": 1638,
+        "builtin": "2025 Reefscape",
         "height": 8.051901817321777,
         "left": 534,
         "right": 3466,
@@ -69,6 +110,18 @@
         "Coraler": {
           "open": true
         },
+        "RealOutputs": {
+          "Drive": {
+            "open": true
+          },
+          "Vision": {
+            "Camera0": {
+              "open": true
+            },
+            "open": true
+          },
+          "open": true
+        },
         "open": true
       },
       "SmartDashboard": {
@@ -76,29 +129,8 @@
           "open": true
         }
       },
-      "Tracer": {
-        "open": true,
-        "robot main": {
-          "Manager": {
-            "open": true
-          },
-          "RobotPeriodic": {
-            "Manager": {
-              "open": true
-            },
-            "SubsystemManager": {
-              "open": true
-            },
-            "open": true
-          },
-          "SubsystemManager": {
-            "Manager": {
-              "open": true
-            },
-            "open": true
-          },
-          "open": true
-        }
+      "photonvision": {
+        "open": true
       }
     }
   },

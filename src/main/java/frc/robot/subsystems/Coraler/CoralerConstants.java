@@ -3,6 +3,7 @@ package frc.robot.Subsystems.Coraler;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Time;
 import frc.robot.GlobalConstants;
 import java.util.function.Supplier;
@@ -33,9 +34,12 @@ public class CoralerConstants {
 
 	public static final double STATOR_CURRENT_SENSING_LIMIT = 30;
 
+	public static final Distance CLOSE_DISTANCE = Meter.of(0.05);
+
 	public static class Real {
 
 		public static final int WHEEL_MOTOR_CAN_ID = 20;
+		public static final int DIO_PORT = 2;
 	}
 
 	public static class Sim {
