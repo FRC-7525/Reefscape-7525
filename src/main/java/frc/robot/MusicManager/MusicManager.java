@@ -1,7 +1,5 @@
 package frc.robot.MusicManager;
 
-import org.team7525.misc.Tracer;
-
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -10,6 +8,7 @@ import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
+import org.team7525.misc.Tracer;
 
 public class MusicManager {
 
