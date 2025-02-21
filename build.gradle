@@ -103,7 +103,7 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // Team Lib CHANGE WHEN U UPDATE!!!!!!!!!!!!!
-    implementation 'com.github.FRC-7525:pioneerslib:1.1.1'
+    implementation 'com.github.FRC-7525:pioneerslib:1.1.2'
     // AKIT
     def akitJson = new groovy.json.JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)
     annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
