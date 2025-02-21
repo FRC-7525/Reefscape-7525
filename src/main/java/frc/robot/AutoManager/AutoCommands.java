@@ -1,7 +1,9 @@
 package frc.robot.AutoManager;
 
 import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.Second;
 import static frc.robot.AutoManager.AutoConstants.CLOSE_DISTANCE;
+import static frc.robot.AutoManager.AutoConstants.TIME_TO_SCORE;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.SubsystemManager.SubsystemManager;
@@ -66,7 +68,7 @@ public class AutoCommands {
 
 		@Override
 		public boolean isFinished() {
-			return SubsystemManager.getInstance().getState() == SubsystemManagerStates.SCORING_REEF_MANUAL && SubsystemManager.getInstance().getTime() > 0.25;
+			return SubsystemManager.getInstance().getState() == SubsystemManagerStates.SCORING_REEF_MANUAL && SubsystemManager.getInstance().getTime() > TIME_TO_SCORE.in(Second);
 		}
 
 		@Override

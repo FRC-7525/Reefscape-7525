@@ -9,7 +9,8 @@ import java.util.HashMap;
 
 public class AutoConstants {
 
-	public static Distance CLOSE_DISTANCE = Meter.of(2);
+	public static Distance CLOSE_DISTANCE = Meter.of(0.5);
+	public static Time TIME_TO_SCORE = Seconds.of(0.25);
 
 	public static final Mass CHASSIS_MASS = Pounds.of(61.717);
 	public static final Mass ELEVATOR_MASS = Pounds.of(34.445);

@@ -49,6 +49,6 @@ public class CoralerIOSim implements CoralerIO {
 
 	@Override
 	public boolean currentLimitReached() { //TODO this is so buns find a better way to check this
-		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds) && Drive.getInstance().getPose().getTranslation().getDistance(AutoManager.getInstance().getEndPose().getTranslation()) < 0.05;
+		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds) && Drive.getInstance().getPose().getTranslation().getDistance(AutoManager.getInstance().getEndPose().getTranslation()) < CLOSE_DISTANCE.in(Meters);
 	}
 }
