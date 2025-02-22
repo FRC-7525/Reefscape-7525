@@ -1,12 +1,15 @@
 package frc.robot.Subsystems.Drive;
 
-import static edu.wpi.first.units.Units.Meters;
+import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.ROBOT_MASS;
 import static frc.robot.Subsystems.Drive.DriveConstants.*;
 import static frc.robot.Subsystems.Drive.TunerConstants.*;
 
+import org.ironmaple.simulation.drivesims.GyroSimulation;
 import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
+import org.ironmaple.simulation.drivesims.SwerveModuleSimulation;
 import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
+import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 
 import com.ctre.phoenix6.Utils;
 
@@ -14,7 +17,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
-import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 
 /**
  * This class represents the simulated input/output for the drive subsystem.
@@ -22,13 +24,17 @@ import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
  */
 public class DriveIOSim extends DriveIOReal {
 
+	private SwerveModuleSimulationConfig swerveModConfigs = new SwerveModuleSimulationConfig(DCMotor.getKrakenX60Foc(1), DCMotor.getFalcon500(1), TunerConstants.FrontLeft.DriveMotorGearRatio, TunerConstants.FrontLeft.SteerMotorGearRatio, Volts.of(TunerConstants.FrontLeft.DriveFrictionVoltage), Volts.of(TunerConstants.FrontLeft.SteerFrictionVoltage), Meters.of(TunerConstants.FrontLeft.WheelRadius), KilogramSquareMeters.of(TunerConstants.FrontLeft.SteerInertia), 1.2);
+
+
+	@SuppressWarnings("unchecked")
 	private final DriveTrainSimulationConfig driveConfig = new DriveTrainSimulationConfig(ROBOT_MASS,
 	Meters.of(.826),
 	Meters.of(.826),
 	Meters.of(0.546),
 	Meters.of(0.546),
-	null,
-	null);
+	() -> new GyroSimulation(SIM_UPDATE_TIME, SIM_UPDATE_TIME),
+	() -> {return new SwerveModuleSimulation(swerveModConfigs);});
 
 
 	private double lastSimTime;
