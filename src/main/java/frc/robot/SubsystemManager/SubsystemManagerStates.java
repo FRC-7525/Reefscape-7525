@@ -19,6 +19,7 @@ public enum SubsystemManagerStates implements SubsystemStates {
 	GOING_PROCESSOR("Going to Processor", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.GOING_TO_PROCESS, () -> AutoAlignStates.OFF, LEDStates.GREEN, ClimberStates.DOWN),
 	SCORING_PROCESSOR("Scoring at Processor", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.PROCESSING, () -> AutoAlignStates.OFF, LEDStates.GREEN, ClimberStates.DOWN),
 	HOLDING_ALGAE("Holding Algae", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.HOLDING_ALGAE, () -> AutoAlignStates.OFF, LEDStates.GREEN, ClimberStates.DOWN),
+	INTAKING_ALGAE_GROUND("Intaking Algae ground", () -> ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.INTAKING, () -> AutoAlignStates.OFF, LEDStates.BLUE, ClimberStates.DOWN),
 	// AUTO_ALIGN_CLOSE("Aligning Close", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getOperatorReefScoringLevel()), CoralerStates.IDLE, AlgaerStates.IDLE, () -> SubsystemManager.getInstance().getNextInQueue(), LEDStates.PURPLE, ClimberStates.DOWN),
 	// AUTO_ALIGN_FAR("Aligning Close", () -> ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, () -> SubsystemManager.getInstance().getNextInQueue(), LEDStates.PURPLE, ClimberStates.DOWN),
 	INTAKING_CORALER(

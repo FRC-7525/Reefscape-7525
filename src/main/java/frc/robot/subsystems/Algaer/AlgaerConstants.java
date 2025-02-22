@@ -29,7 +29,7 @@ public final class AlgaerConstants {
 	public static final Angle INTAKING_PIVOT = Degrees.of(-90);
 	public static final Angle PROCESSING_PIVOT = Degrees.of(-90);
 	public static final Angle HOLDING_PIVOT = Degrees.of(-30);
-	public static final Angle IDLE_PIVOT = Degrees.of(0);
+	public static final Angle IDLE_PIVOT = Degrees.of(-10);
 
 	public static final Angle PIVOT_TOLERANCE = Degrees.of(15);
 	public static final AngularVelocity WHEEL_TOLERANCE = RotationsPerSecond.of(5);

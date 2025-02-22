@@ -92,11 +92,21 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(SubsystemManagerStates.INTAKING_CORALER_AA_OFF, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
 
 		// // Intaking Algae
-		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
-		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
+		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_ALGAE_GROUND, DRIVER_CONTROLLER::getBButtonPressed);
+
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_GROUND, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD ||  DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_GROUND, SubsystemManagerStates.INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
+
 		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_LOW, SubsystemManagerStates.INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_LOW, SubsystemManagerStates.INTAKING_ALGAE_GROUND, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
+
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD ||  DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
+
+		// Go Back Down after intaking
 		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
 		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_LOW, SubsystemManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_GROUND, SubsystemManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
 
 		// // Scoring Algae at Processor
 		addTrigger(SubsystemManagerStates.HOLDING_ALGAE, SubsystemManagerStates.GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
@@ -196,7 +206,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
 		Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
 		// Tracer.traceFunc("VisionPeriodic", vision::periodic);
-		// Tracer.traceFunc("AlgaerPeriodic", algaer::periodic);
+		Tracer.traceFunc("AlgaerPeriodic", algaer::periodic);
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
 		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
 		// Tracer.traceFunc("ClimberPeriodic", climber::periodic);
