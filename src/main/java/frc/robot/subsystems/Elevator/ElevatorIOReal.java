@@ -159,4 +159,9 @@ public class ElevatorIOReal implements ElevatorIO {
 	public TalonFX getRightMotor() {
 		return rightMotor;
 	}
+
+	@Override
+	public boolean overZeroingLimit() {
+		return leftMotor.getStatorCurrent().getValueAsDouble() > ElevatorConstants.ZEROING_CURRENT_LIMIT.in(Amps);
+	}
 }

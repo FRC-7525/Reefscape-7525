@@ -124,4 +124,9 @@ public class ElevatorIOSim implements ElevatorIO {
 	public TalonFX getRightMotor() {
 		return rightMotor;
 	}
+
+	@Override
+	public boolean overZeroingLimit() {
+		return Elevator.getInstance().getStateTime() > 2;
+	}
 }
