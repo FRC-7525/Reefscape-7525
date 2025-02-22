@@ -30,8 +30,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	// private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
-	private final AutoAlign autoAlign = AutoAlign.getInstance();
-	private final Vision vision = Vision.getInstance();
+	// private final AutoAlign autoAlign = AutoAlign.getInstance();
+	// private final Vision vision = Vision.getInstance();
 	private final Algaer algaer = Algaer.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
 
@@ -41,9 +41,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public int operatorReefScoringLevel = 1;
 	public int hexagonTargetSide = 1;
 	public boolean scoringReefLeft = false;
-	private ArrayList<AutoAlignStates> autoAlignQueue = new ArrayList<AutoAlignStates>();
+	// private ArrayList<AutoAlignStates> autoAlignQueue = new ArrayList<AutoAlignStates>();
 
-	private final FieldObject2d selectedAAPose = FIELD.getObject("Selected AA Pose");
+	// private final FieldObject2d selectedAAPose = FIELD.getObject("Selected AA Pose");
 
 	private SubsystemManager() {
 		super("Manager", SubsystemManagerStates.IDLE);
@@ -165,10 +165,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		this.leftSourceSelected = leftSourceTargeted;
 	}
 
-	public AutoAlignStates getNextInQueue() {
-		return autoAlignQueue.get(0);
-	}
-
 	public double getTime() {
 		return getStateTime();
 	}
@@ -181,7 +177,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Selected Reef Level", operatorReefScoringLevel);
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Left Pose Selected", scoringReefLeft);
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Driver Reef Level", driverReefScoringLevel);
-		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/AA Queue", autoAlignQueue.toString());
 		if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
 			Logger.recordOutput(SUBSYSTEM_NAME + "/ALLIANCE COLOR", "RED");
 		} else {
@@ -197,10 +192,10 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// climber.setState(getState().getClimberState());
 
 		// Periodics
-		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
+		// Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
 		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
 		Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
-		Tracer.traceFunc("VisionPeriodic", vision::periodic);
+		// Tracer.traceFunc("VisionPeriodic", vision::periodic);
 		// Tracer.traceFunc("AlgaerPeriodic", algaer::periodic);
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
 		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
@@ -211,7 +206,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 			setState(SubsystemManagerStates.IDLE);
 		}
 
-		selectedAAPose.setPose(REEF_TARGET_MAP.get(AAReefTarget.of(hexagonTargetSide, scoringReefLeft)).getTargetPose());
-		SmartDashboard.putData(FIELD);
+		// selectedAAPose.setPose(REEF_TARGET_MAP.get(AAReefTarget.of(hexagonTargetSide, scoringReefLeft)).getTargetPose());
+		// SmartDashboard.putData(FIELD);
 	}
 }
