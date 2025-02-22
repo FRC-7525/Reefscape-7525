@@ -60,7 +60,10 @@
         "left": 534,
         "right": 3466,
         "top": 291,
-        "width": 17.54825210571289
+        "width": 17.54825210571289,
+        "window": {
+          "visible": true
+        }
       },
       "/SmartDashboard/VisionSystemSim-Vision/Sim Field": {
         "Robot": {
@@ -80,7 +83,10 @@
         "left": 534,
         "right": 3466,
         "top": 291,
-        "width": 17.54825210571289
+        "width": 17.54825210571289,
+        "window": {
+          "visible": true
+        }
       },
       "/SmartDashboard/VisionSystemSim-main/Sim Field": {
         "apriltag": {
@@ -111,6 +117,9 @@
           "open": true
         },
         "RealOutputs": {
+          "Board": {
+            "open": true
+          },
           "Drive": {
             "open": true
           },

@@ -19,6 +19,8 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.team7525.misc.CommandsUtil;
 import org.team7525.misc.Tracer;
 
+import static frc.robot.GlobalConstants.Controllers.OPERATOR_CONTROLLER;
+
 public class Robot extends LoggedRobot {
 
 	private final SubsystemManager manager = SubsystemManager.getInstance();
