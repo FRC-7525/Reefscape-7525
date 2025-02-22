@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static frc.robot.GlobalConstants.Controllers.OPERATOR_CONTROLLER;
+
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -18,8 +20,6 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.team7525.misc.CommandsUtil;
 import org.team7525.misc.Tracer;
-
-import static frc.robot.GlobalConstants.Controllers.OPERATOR_CONTROLLER;
 
 public class Robot extends LoggedRobot {
 
