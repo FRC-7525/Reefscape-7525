@@ -21,7 +21,7 @@ import org.team7525.autoAlign.RepulsorFieldPlanner.VerticalObstacle;
 
 public final class AutoAlignConstants {
 
-	public static final Distance ROBOT_RADIUS = Meters.of(0.7);
+	public static final Distance ROBOT_RADIUS = Meters.of(0.9);
 	public static final Distance REEF_HITBOX = Meters.of(0.55);
 
 	public static final Angle MIN_HEADING_ANGLE = Degrees.of(-180);
