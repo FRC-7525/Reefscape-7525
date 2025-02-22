@@ -2,12 +2,14 @@ package frc.robot.SubsystemManager;
 
 import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.GlobalConstants.FIELD;
+import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.SubsystemManager.SubsystemManagerConstants.AAReefTarget;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
@@ -175,6 +177,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 	@Override
 	public void runState() {
+		if (ROBOT_MODE == RobotMode.SIM) runMapleSim();
+
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/State Time", getStateTime());
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/State String", getState().getStateString());
 		Logger.recordOutput(SubsystemManagerConstants.SUBSYSTEM_NAME + "/Selected Reef Side", hexagonTargetSide);
@@ -213,5 +217,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 		selectedAAPose.setPose(REEF_TARGET_MAP.get(AAReefTarget.of(hexagonTargetSide, scoringReefLeft)).getTargetPose());
 		SmartDashboard.putData(FIELD);
+	}
+
+	public void runMapleSim() {
+
 	}
 }

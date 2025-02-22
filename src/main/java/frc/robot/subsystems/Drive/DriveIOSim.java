@@ -1,10 +1,20 @@
 package frc.robot.Subsystems.Drive;
 
+import static edu.wpi.first.units.Units.Meters;
+import static frc.robot.GlobalConstants.ROBOT_MASS;
 import static frc.robot.Subsystems.Drive.DriveConstants.*;
+import static frc.robot.Subsystems.Drive.TunerConstants.*;
+
+import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
+import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
 
 import com.ctre.phoenix6.Utils;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
+import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 
 /**
  * This class represents the simulated input/output for the drive subsystem.
@@ -12,8 +22,18 @@ import edu.wpi.first.wpilibj.RobotController;
  */
 public class DriveIOSim extends DriveIOReal {
 
+	private final DriveTrainSimulationConfig driveConfig = new DriveTrainSimulationConfig(ROBOT_MASS,
+	Meters.of(.826),
+	Meters.of(.826),
+	Meters.of(0.546),
+	Meters.of(0.546),
+	null,
+	null);
+
+
 	private double lastSimTime;
 	private Notifier simNotifier;
+	private SwerveDriveSimulation mapleSwerveDrive = null;
 
 	/**
 	 * Constructs a new DriveIOSim object.
@@ -26,6 +46,8 @@ public class DriveIOSim extends DriveIOReal {
 	private void startSimThread() {
 		lastSimTime = Utils.getCurrentTimeSeconds();
 
+		mapleSwerveDrive = new SwerveDriveSimulation(null, null);
+
 		/* Run simulation at a faster rate so PID gains behave more reasonably */
 		simNotifier = new Notifier(() -> {
 			final double currentTime = Utils.getCurrentTimeSeconds();
@@ -37,4 +59,5 @@ public class DriveIOSim extends DriveIOReal {
 		});
 		simNotifier.startPeriodic(SIM_UPDATE_TIME);
 	}
+	
 }
