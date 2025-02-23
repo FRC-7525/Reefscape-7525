@@ -43,10 +43,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Un zero elevators (as in set the boolean to false for zeroed)
 		addRunnableTrigger(elevator::resetMotorsZeroed, () -> DRIVER_CONTROLLER.getBackButtonPressed() && getState() == SubsystemManagerStates.IDLE);
 
-		// Toggling which source to AA to
-		// addRunnableTrigger(() -> this.leftSourceSelected = true, DRIVER_CONTROLLER::getLeftBumperButtonPressed);
-		// addRunnableTrigger(() -> this.leftSourceSelected = false, DRIVER_CONTROLLER::getRightBumperButtonPressed);
-
 		// Toggling which level to score at (manual)
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 1, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 2, () -> DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
