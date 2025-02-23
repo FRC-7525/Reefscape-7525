@@ -1,12 +1,10 @@
 package frc.robot.SubsystemManager;
 
 import static frc.robot.GlobalConstants.Controllers.*;
-import static frc.robot.GlobalConstants.FIELD;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
@@ -27,7 +25,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
-	// private final Vision vision = Vision.getInstance();
+	private final Vision vision = Vision.getInstance();
 	private final Algaer algaer = Algaer.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
 
@@ -191,7 +189,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
 		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
 		Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
-		// Tracer.traceFunc("VisionPeriodic", vision::periodic);
+		Tracer.traceFunc("VisionPeriodic", vision::periodic);
 		Tracer.traceFunc("AlgaerPeriodic", algaer::periodic);
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
 		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);

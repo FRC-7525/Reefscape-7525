@@ -4,15 +4,13 @@
 
 package frc.robot;
 
-import static frc.robot.GlobalConstants.Controllers.OPERATOR_CONTROLLER;
-
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.AutoManager.AutoManager;
 import frc.robot.FaultManager.FaultManager;
 import frc.robot.GlobalConstants.FaultManagerConstants;
-import frc.robot.MusicManager.MusicManager;
+// import frc.robot.MusicManager.MusicManager;
 import frc.robot.SubsystemManager.SubsystemManager;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -25,9 +23,9 @@ public class Robot extends LoggedRobot {
 
 	private final SubsystemManager manager = SubsystemManager.getInstance();
 
-	// private final AutoManager autoManager = AutoManager.getInstance();
+	private final AutoManager autoManager = AutoManager.getInstance();
 	// private final MusicManager musicManager = MusicManager.getInstance();
-	private final FaultManager faultManager = FaultManager.getInstance();
+	// private final FaultManager faultManager = FaultManager.getInstance();
 
 	@Override
 	public void robotInit() {
@@ -51,6 +49,7 @@ public class Robot extends LoggedRobot {
 		CommandScheduler.getInstance().unregisterAllSubsystems();
 
 		FaultManager.getInstance().calibrateDeviceOrder(FaultManagerConstants.CANIVORE_DEVICE_ORDER, "CANivore");
+		// Needed so we don't waste time in auto "warming up" the first command
 		FollowPathCommand.warmupCommand().schedule();
 		System.gc();
 	}
@@ -65,7 +64,7 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void autonomousInit() {
-		// CommandScheduler.getInstance().schedule(autoManager.getSelectedCommand());
+		CommandScheduler.getInstance().schedule(autoManager.getSelectedCommand());
 		// musicManager.stopMusic();
 		// musicManager.removeAllMotors();
 	}
@@ -80,6 +79,7 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void teleopInit() {
+		// UN COMMENT FOR MUSIC MANAGER
 		// musicManager.stopMusic();
 		// musicManager.removeAllMotors();
 	}
@@ -94,6 +94,7 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void disabledPeriodic() {
+		// UN COMMENT FOR MUSIC MANAGER
 		// if (musicManager.playMusicEnabled()) {
 		// 	musicManager.playMusic();
 		// }
@@ -101,6 +102,9 @@ public class Robot extends LoggedRobot {
 		// if (!musicManager.hasInstruments() && musicManager.playMusicEnabled()) {
 		// 	musicManager.addAllSubsystemInstruments();
 		// }
+
+		// UN COMMENT FOR FAULT MANAGER
+		// Tracer.traceFunc("FaultManager", faultManager::periodic);
 	}
 
 	@Override
@@ -111,7 +115,6 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void testPeriodic() {
-		Tracer.traceFunc("Fault Manager", faultManager::periodic);
 	}
 
 	@Override
