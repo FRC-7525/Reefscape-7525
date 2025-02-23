@@ -142,8 +142,10 @@ public class Drive extends Subsystem<DriveStates> {
 		driveIO.updateInputs(inputs);
 		Logger.processInputs("Drive", inputs);
 
+		if (DriverStation.isDisabled()) robotMirrored = false;
+
 		// Zero on init/when first disabled
-		if (!robotMirrored || DriverStation.isDisabled()) {
+		if (!robotMirrored && !DriverStation.isDisabled()) {
 			DriverStation.getAlliance()
 				.ifPresent(allianceColor -> {
 					driveIO.getDrive().setOperatorPerspectiveForward(allianceColor == Alliance.Red ? RED_ALLIANCE_PERSPECTIVE_ROTATION : BLUE_ALLIANCE_PERSPECTIVE_ROTATION);

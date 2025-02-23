@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static frc.robot.GlobalConstants.Controllers.OPERATOR_CONTROLLER;
+
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
