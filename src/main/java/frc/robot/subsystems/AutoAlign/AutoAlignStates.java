@@ -17,9 +17,9 @@ public enum AutoAlignStates implements SubsystemStates {
 
 	R1("Driving to Reef Right 1", PosePair.of(new Pose2d(14.345, 4.130, Rotation2d.fromDegrees(180)), new Pose2d(3.2, 3.923, Rotation2d.fromDegrees(0))), Meters.of(0.5)),
 
-	L2("Driving to Reef Left 2", PosePair.of(new Pose2d(13.892, 5.026, Rotation2d.fromDegrees(240)), new Pose2d(3.658, 3.028, Rotation2d.fromDegrees(60))), Meters.of(0.5)),
+	L2("Driving to Reef Left 2", PosePair.of(new Pose2d(13.892, 5.026, Rotation2d.fromDegrees(240)), new Pose2d(4.083, 2.763, Rotation2d.fromDegrees(60))), Meters.of(0.5)),
 
-	R2("Driving to Reef Right 2", PosePair.of(new Pose2d(13.612, 5.191, Rotation2d.fromDegrees(240)), new Pose2d(2.864, 3.946, Rotation2d.fromDegrees(60))), Meters.of(0.5)),
+	R2("Driving to Reef Right 2", PosePair.of(new Pose2d(13.612, 5.191, Rotation2d.fromDegrees(240)), new Pose2d(3.864, 2.946, Rotation2d.fromDegrees(60))), Meters.of(0.5)),
 
 	L3("Driving to Reef Left 3", PosePair.of(new Pose2d(12.605, 5.243, Rotation2d.fromDegrees(300)), new Pose2d(4.934, 2.802, Rotation2d.fromDegrees(120))), Meters.of(0.5)),
 
@@ -33,9 +33,9 @@ public enum AutoAlignStates implements SubsystemStates {
 
 	R5("Driving to Reef Right 5", PosePair.of(new Pose2d(12.520, 2.858, Rotation2d.fromDegrees(60)), new Pose2d(5.043, 5.186, Rotation2d.fromDegrees(240))), Meters.of(0.5)),
 
-	L6("Driving to Reef Left 6", PosePair.of(new Pose2d(13.517, 2.805, Rotation2d.fromDegrees(120)), new Pose2d(2, 12, Rotation2d.fromDegrees(180))), Meters.of(0.5)), // TODO add red poses for last 2
+	L6("Driving to Reef Left 6", PosePair.of(new Pose2d(13.517, 2.805, Rotation2d.fromDegrees(120)), new Pose2d(4.035, 5.248, Rotation2d.fromDegrees(300))), Meters.of(0.5)), // TODO add red poses for last 2
 
-	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(13.792, 2.967, Rotation2d.fromDegrees(120)), new Pose2d(2, 13, Rotation2d.fromDegrees(180))), Meters.of(0.5)),
+	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(13.792, 2.967, Rotation2d.fromDegrees(120)), new Pose2d(3.761, 5.087, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
 
 	RIGHT_SOURCE("Driving to Source Right", PosePair.of(new Pose2d(1, 14, Rotation2d.fromDegrees(180)), new Pose2d(2, 14, Rotation2d.fromDegrees(180))), Meters.of(0.5)),
 	LEFT_SOURCE("Driving to Source Left", PosePair.of(new Pose2d(1, 15, Rotation2d.fromDegrees(180)), new Pose2d(2, 15, Rotation2d.fromDegrees(180))), Meters.of(0.5));
