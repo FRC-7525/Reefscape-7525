@@ -77,7 +77,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 			this.leftSourceSelected = left ? true : (right ? false : leftSourceSelected);
 			return left || right;
 		});
-		addTrigger(SubsystemManagerStates.INTAKING_CORALER, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
+		addTrigger(SubsystemManagerStates.INTAKING_CORALER, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearGoal);
 
 		// Manual
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
@@ -115,7 +115,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// TODO: Make this y button on driver controller ONLY
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || DRIVER_CONTROLLER.getYButtonPressed()); // 4
 		addTrigger(SubsystemManagerStates.AUTO_ALIGN_FAR, SubsystemManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
-		addTrigger(SubsystemManagerStates.AUTO_ALIGN_CLOSE, SubsystemManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
+		addTrigger(SubsystemManagerStates.AUTO_ALIGN_CLOSE, SubsystemManagerStates.SCORING_REEF_AA, autoAlign::nearGoal);
 		addTrigger(SubsystemManagerStates.SCORING_REEF_AA, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 		// Zero Elevator
 		// TODO: Extra operator button is for zeroing elevator (TBD after testing on 2-23-25)
