@@ -208,7 +208,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	 * isn't checked in the previous state so you can "pre"-transition
 	 * a state before you're even there which is mad annoying.
 	 * The real solution for this is adding something to the subsystem class so this
-	 * is ONLY called when a state is actually transitioned 
+	 * is ONLY called when a state is actually transitioned
 	 * (attempted but uh it wasn't working so we cooked up this temp fix cause its not
 	 * that intesive)
 	 */

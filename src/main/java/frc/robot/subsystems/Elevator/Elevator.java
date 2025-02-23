@@ -42,7 +42,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 			io.zero();
 			return;
 		}
-		
+
 		io.updateInputs(inputs);
 		Logger.processInputs(ElevatorConstants.SUBSYSTEM_NAME, inputs);
 
