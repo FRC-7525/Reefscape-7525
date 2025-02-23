@@ -43,6 +43,8 @@ import frc.robot.FaultManager.FaultManager;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
+import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -65,6 +67,9 @@ public class Drive extends Subsystem<DriveStates> {
 	private final Field2d field = new Field2d();
 	private final SlewRateLimiter xTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_DECELERATION.in(MetersPerSecondPerSecond));
 	private final SlewRateLimiter yTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_DECELERATION.in(MetersPerSecondPerSecond));
+
+	private final SlewRateLimiter xElevatorUpTranslationLimiter = new SlewRateLimiter(MAX_ELEVATOR_UP_ACCEL.in(MetersPerSecondPerSecond));
+	private final SlewRateLimiter yElevatorUpTranslationLimiter = new SlewRateLimiter(MAX_ELEVATOR_UP_ACCEL.in(MetersPerSecondPerSecond));
 
 	private final SlewRateLimiter xStoppingTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_STOPPING_ACCELERATION.in(MetersPerSecondPerSecond));
 	private final SlewRateLimiter yStoppingTranslationLimiter = new SlewRateLimiter(MAX_LINEAR_STOPPING_ACCELERATION.in(MetersPerSecondPerSecond));
@@ -153,6 +158,9 @@ public class Drive extends Subsystem<DriveStates> {
 		if (!DriverStation.isAutonomous() && AutoAlign.getInstance().getState() == AutoAlignStates.OFF && !WheelRadiusCharacterization.getInstance().isCharacterizationActive()) {
 			getState().driveRobot();
 		}
+
+		field.setRobotPose(getPose());
+		SmartDashboard.putData("Field", field);
 	}
 
 	/**
@@ -209,8 +217,13 @@ public class Drive extends Subsystem<DriveStates> {
 				Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", true);
 			} else {
 				// When ur tryna anti tip but you wouldn't tip anyways
-				antiTipX = xTranslationLimiter.calculate(xVelocity);
-				antiTipY = yTranslationLimiter.calculate(yVelocity);
+				if (Elevator.getInstance().getState() != ElevatorStates.ALGAE_PROCESSOR || Elevator.getInstance().getState() != ElevatorStates.CORAL_STATION || Elevator.getInstance().getState() != ElevatorStates.IDLE) {
+					antiTipX = xTranslationLimiter.calculate(xVelocity);
+					antiTipY = yTranslationLimiter.calculate(yVelocity);
+				} else {
+					antiTipX = xElevatorUpTranslationLimiter.calculate(xVelocity);
+					antiTipY = yElevatorUpTranslationLimiter.calculate(yVelocity);
+				}
 				Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", false);
 			}
 		}

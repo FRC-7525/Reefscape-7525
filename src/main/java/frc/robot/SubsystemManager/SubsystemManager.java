@@ -27,7 +27,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
-	// private final Vision vision = Vision.getInstance();
+	private final Vision vision = Vision.getInstance();
 	private final Algaer algaer = Algaer.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
 
@@ -79,17 +79,28 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// AA
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER, () -> DRIVER_CONTROLLER.getLeftBumperButtonPressed() || DRIVER_CONTROLLER.getRightBumperButtonPressed());
 		addTrigger(SubsystemManagerStates.INTAKING_CORALER, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, autoAlign::nearTarget);
-		// Manual
+
+    // Manual
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
 		addTrigger(SubsystemManagerStates.INTAKING_CORALER_AA_OFF, SubsystemManagerStates.CENTERING_CORALER, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
 		addTrigger(SubsystemManagerStates.INTAKING_CORALER_AA_OFF, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
 
 		// // Intaking Algae
-		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_ALGAE_LOW, DRIVER_CONTROLLER::getBButtonPressed);
-		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
+		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_ALGAE_GROUND, DRIVER_CONTROLLER::getBButtonPressed);
+
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_GROUND, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD || DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_GROUND, SubsystemManagerStates.INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
+
 		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_LOW, SubsystemManagerStates.INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_LOW, SubsystemManagerStates.INTAKING_ALGAE_GROUND, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
+
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD || DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
+
+		// Go Back Down after intaking
 		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
 		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_LOW, SubsystemManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_GROUND, SubsystemManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
 
 		// // Scoring Algae at Processor
 		addTrigger(SubsystemManagerStates.HOLDING_ALGAE, SubsystemManagerStates.GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
@@ -176,10 +187,10 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// climber.setState(getState().getClimberState());
 
 		// Periodics
-		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
+		// Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
 		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
 		Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
-		// Tracer.traceFunc("VisionPeriodic", vision::periodic);
+		Tracer.traceFunc("VisionPeriodic", vision::periodic);
 		Tracer.traceFunc("AlgaerPeriodic", algaer::periodic);
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
 		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
@@ -189,7 +200,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(5)) { // 5
 			setState(SubsystemManagerStates.IDLE);
 		}
-		SmartDashboard.putData(FIELD);
 	}
 
 	public void clearButtonPressCache() {
