@@ -22,13 +22,15 @@ public final class AlgaerConstants {
 	public static final double PROCESSING_SPEED = 0.5;
 	public static final double HOLDING_SPEED = -0.05;
 	public static final double IDLE_SPEED = 0;
+	public static final double SCORING_NET = 1;
 
 	// TODO: FIND!
 	public static final double OVERALL_GEARING = 50;
 
-	public static final Angle INTAKING_PIVOT = Degrees.of(-90);
-	public static final Angle PROCESSING_PIVOT = Degrees.of(-90);
-	public static final Angle HOLDING_PIVOT = Degrees.of(-30);
+	public static final Angle INTAKING_PIVOT = Degrees.of(-80);
+	public static final Angle PROCESSING_PIVOT = Degrees.of(-80);
+	public static final Angle HOLDING_PIVOT = Degrees.of(-40);
+	public static final Angle SCORING_NET_ANGLE = Degrees.of(-60);
 	public static final Angle IDLE_PIVOT = Degrees.of(-10);
 
 	public static final Angle PIVOT_TOLERANCE = Degrees.of(15);

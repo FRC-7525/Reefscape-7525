@@ -27,7 +27,7 @@ public class DriveConstants {
 	public static final LinearAcceleration MAX_LINEAR_DECELERATION = MetersPerSecondPerSecond.of(8);
 	public static final LinearAcceleration MAX_LINEAR_STOPPING_ACCELERATION = MetersPerSecondPerSecond.of(3);
 
-	public static final LinearAcceleration MAX_ELEVATOR_UP_ACCEL = MetersPerSecondPerSecond.of(4);
+	public static final LinearAcceleration MAX_ELEVATOR_UP_ACCEL = MetersPerSecondPerSecond.of(2);
 
 	public static final LinearVelocity TIPPING_LIMITER_THRESHOLD = MetersPerSecond.of(3);
 
