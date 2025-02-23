@@ -41,6 +41,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public int operatorReefScoringLevel = 1;
 	public int hexagonTargetSide = 1;
 	public boolean scoringReefLeft = false;
+
 	// private ArrayList<AutoAlignStates> autoAlignQueue = new ArrayList<AutoAlignStates>();
 
 	// private final FieldObject2d selectedAAPose = FIELD.getObject("Selected AA Pose");
@@ -94,14 +95,14 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// // Intaking Algae
 		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_ALGAE_GROUND, DRIVER_CONTROLLER::getBButtonPressed);
 
-		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_GROUND, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD ||  DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_GROUND, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD || DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
 		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_GROUND, SubsystemManagerStates.INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
 
 		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_LOW, SubsystemManagerStates.INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
 		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_LOW, SubsystemManagerStates.INTAKING_ALGAE_GROUND, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
 
 		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
-		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD ||  DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
+		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD || DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
 
 		// Go Back Down after intaking
 		addTrigger(SubsystemManagerStates.INTAKING_ALGAE_HIGH, SubsystemManagerStates.HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
@@ -215,7 +216,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(6)) {
 			setState(SubsystemManagerStates.IDLE);
 		}
-
 		// selectedAAPose.setPose(REEF_TARGET_MAP.get(AAReefTarget.of(hexagonTargetSide, scoringReefLeft)).getTargetPose());
 		// SmartDashboard.putData(FIELD);
 	}
