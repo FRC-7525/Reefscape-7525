@@ -38,10 +38,11 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
 	@Override
 	protected void runState() {
-		// if (getState() == ElevatorStates.ZEROING) {
-		// 	io.zero();
-		// 	return;
-		// }
+		if (getState() == ElevatorStates.ZEROING) {
+			io.zero();
+			return;
+		}
+		
 		io.updateInputs(inputs);
 		Logger.processInputs(ElevatorConstants.SUBSYSTEM_NAME, inputs);
 
