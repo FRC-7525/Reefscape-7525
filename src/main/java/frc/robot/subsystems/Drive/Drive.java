@@ -157,6 +157,9 @@ public class Drive extends Subsystem<DriveStates> {
 		if (!DriverStation.isAutonomous() && AutoAlign.getInstance().getState() == AutoAlignStates.OFF && !WheelRadiusCharacterization.getInstance().isCharacterizationActive()) {
 			getState().driveRobot();
 		}
+
+		field.setRobotPose(getPose());
+		SmartDashboard.putData("Field", field);
 	}
 
 	/**
