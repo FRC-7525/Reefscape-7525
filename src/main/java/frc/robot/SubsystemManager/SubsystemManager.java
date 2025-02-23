@@ -50,8 +50,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// // Toggling which level to score at (auto align)
 		addRunnableTrigger(() -> this.operatorReefScoringLevel = 1, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2)); // 2
 		addRunnableTrigger(() -> this.operatorReefScoringLevel = 2, () -> OPERATOR_CONTROLLER.getRawButtonPressed(6)); // 6
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 3, () -> OPERATOR_CONTROLLER.getRawAxis(0) > AXIS_RECOGNITION_POINT); // pos OPERATOR_CONTROLLER.getRawAxis(0) > AXIS_RECOGNITION_POINT)
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 4, () -> OPERATOR_CONTROLLER.getRawAxis(0) < -AXIS_RECOGNITION_POINT); // neg OPERATOR_CONTROLLER.getRawAxis(0) < -AXIS_RECOGNITION_POINT)
+		addRunnableTrigger(() -> this.operatorReefScoringLevel = 3, () -> OPERATOR_CONTROLLER.getRawAxis(0) < -AXIS_RECOGNITION_POINT); // pos OPERATOR_CONTROLLER.getRawAxis(0) > AXIS_RECOGNITION_POINT)
+		addRunnableTrigger(() -> this.operatorReefScoringLevel = 4, () -> OPERATOR_CONTROLLER.getRawAxis(0) > AXIS_RECOGNITION_POINT); // neg OPERATOR_CONTROLLER.getRawAxis(0) < -AXIS_RECOGNITION_POINT)
 
 		// Togling which side of the hexagon to score at (auto align)
 		addRunnableTrigger(() -> this.hexagonTargetSide = 1, () -> OPERATOR_CONTROLLER.getRawButtonPressed(8)); // 8
