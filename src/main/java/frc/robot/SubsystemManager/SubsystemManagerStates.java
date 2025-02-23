@@ -15,6 +15,7 @@ import org.team7525.subsystem.SubsystemStates;
 public enum SubsystemManagerStates implements SubsystemStates {
 	IDLE("Idle", () -> ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.GREEN, ClimberStates.DOWN),
 	CLIMBING("Climbing", () -> ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, LEDStates.WHITE, ClimberStates.UP),
+	INTAKING_ALGAE_GROUND("Intaking Algae Ground", () -> ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.INTAKING, () -> AutoAlignStates.OFF, LEDStates.BLUE, ClimberStates.DOWN),
 	INTAKING_ALGAE_LOW("Intaking Algae Low", () -> ElevatorStates.ALGAE_LOW, CoralerStates.IDLE, AlgaerStates.INTAKING, () -> AutoAlignStates.OFF, LEDStates.BLUE, ClimberStates.DOWN),
 	INTAKING_ALGAE_HIGH("Intaking Algae High", () -> ElevatorStates.ALGAE_HIGH, CoralerStates.IDLE, AlgaerStates.INTAKING, () -> AutoAlignStates.OFF, LEDStates.BLUE, ClimberStates.DOWN),
 	GOING_PROCESSOR("Going to Processor", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE, AlgaerStates.GOING_TO_PROCESS, () -> AutoAlignStates.OFF, LEDStates.GREEN, ClimberStates.DOWN),
