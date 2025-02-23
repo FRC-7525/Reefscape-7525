@@ -1,12 +1,10 @@
 package frc.robot.SubsystemManager;
 
 import static frc.robot.GlobalConstants.Controllers.*;
-import static frc.robot.GlobalConstants.FIELD;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
@@ -27,7 +25,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
-	// private final Vision vision = Vision.getInstance();
+	private final Vision vision = Vision.getInstance();
 	private final Algaer algaer = Algaer.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
 
@@ -115,12 +113,13 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Auto
 		addTrigger(SubsystemManagerStates.SCORING_REEF_MANUAL, SubsystemManagerStates.IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		// Scoring Reef Auto Align
-
-		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4)); // 4
+		// TODO: Make this y button on driver controller ONLY
+		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.AUTO_ALIGN_FAR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || DRIVER_CONTROLLER.getYButtonPressed()); // 4
 		addTrigger(SubsystemManagerStates.AUTO_ALIGN_FAR, SubsystemManagerStates.AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
 		addTrigger(SubsystemManagerStates.AUTO_ALIGN_CLOSE, SubsystemManagerStates.SCORING_REEF_AA, autoAlign::nearTarget);
 		addTrigger(SubsystemManagerStates.SCORING_REEF_AA, SubsystemManagerStates.IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 		// Zero Elevator
+		// TODO: Extra operator button is for zeroing elevator (TBD after testing on 2-23-25)
 		// addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.ZEROING_ELEVATOR, () -> DRIVER_CONTROLLER.getBackButtonPressed());
 		// addTrigger(SubsystemManagerStates.ZEROING_ELEVATOR, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getBackButtonPressed() || elevator.motorsZeroed());
 	}
@@ -191,7 +190,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
 		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
 		Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
-		// Tracer.traceFunc("VisionPeriodic", vision::periodic);
+		Tracer.traceFunc("VisionPeriodic", vision::periodic);
 		Tracer.traceFunc("AlgaerPeriodic", algaer::periodic);
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
 		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
@@ -203,6 +202,16 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		}
 	}
 
+	/*
+	 * This essentially ensures you don't automatically
+	 * transition out of the next state you're "pressed"
+	 * isn't checked in the previous state so you can "pre"-transition
+	 * a state before you're even there which is mad annoying.
+	 * The real solution for this is adding something to the subsystem class so this
+	 * is ONLY called when a state is actually transitioned
+	 * (attempted but uh it wasn't working so we cooked up this temp fix cause its not
+	 * that intesive)
+	 */
 	public void clearButtonPressCache() {
 		DRIVER_CONTROLLER.getAButtonPressed();
 		DRIVER_CONTROLLER.getBButtonPressed();
