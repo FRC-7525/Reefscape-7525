@@ -415,6 +415,10 @@ public class Drive extends Subsystem<DriveStates> {
 	}
 
 	public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {
-		driveIO.addVisionMeasurement(visionPose, Utils.fpgaToCurrentTime(timestamp), visionMeasurementStdDevs);
+		if (ROBOT_MODE == RobotMode.REAL) {
+			driveIO.addVisionMeasurement(visionPose, Utils.fpgaToCurrentTime(timestamp), visionMeasurementStdDevs);
+		} else {
+			driveIO.addVisionMeasurement(visionPose, timestamp, visionMeasurementStdDevs);
+		}
 	}
 }
