@@ -51,7 +51,7 @@ public final class AutoAlignConstants {
 			default -> new PIDController(1, 0, 0);
 		};
 
-		public static final Supplier<PIDController> TRANSLATIONALX_CONTROLLER = () ->
+	public static final Supplier<PIDController> TRANSLATIONALX_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(5, 0, 0.1);
 			case SIM -> new PIDController(2.5, 0, 0);
@@ -60,12 +60,12 @@ public final class AutoAlignConstants {
 
 	public static final AngularVelocity MAX_ANGULAR_VELOCITY = RotationsPerSecond.of(2);
 	public static final AngularAcceleration MAX_ACCELERATION = RotationsPerSecondPerSecond.of(1);
-		
+
 	public static final Supplier<ProfiledPIDController> ROTATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new ProfiledPIDController(3, 0, 0, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ACCELERATION.in(RadiansPerSecondPerSecond)));
 			case SIM -> new ProfiledPIDController(0.1, 0, 0.2, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ACCELERATION.in(RadiansPerSecondPerSecond)));
-		    default -> new ProfiledPIDController(0.1, 0, 0.2, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ACCELERATION.in(RadiansPerSecondPerSecond)));
+			default -> new ProfiledPIDController(0.1, 0, 0.2, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ACCELERATION.in(RadiansPerSecondPerSecond)));
 		};
 
 	public static final Supplier<PIDController> REPULSOR_TRANSLATIONAL_CONTROLLER = () ->
