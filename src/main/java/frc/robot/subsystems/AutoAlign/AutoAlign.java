@@ -36,6 +36,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private PIDController repulsionRotationController;
 
 	private Pose2d targetPose;
+	private Pose2d goalPose;
 	private Pose2d reefPose = REEF_POSE;
 	private boolean isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 	private Pose2d interpolatedPose;
@@ -56,6 +57,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		repulsorActivated = false;
 		targetPose = new Pose2d();
+		goalPose = new Pose2d();
 	}
 
 	public static AutoAlign getInstance() {
@@ -75,6 +77,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		if (getState() == AutoAlignStates.OFF) return;
 
+		goalPose = getState().getTargetPose();
 		targetPose = getState().getTargetPose();
 		if (!readyForClose()) {
 			Translation2d temp = reefPose.getTranslation().minus(drive.getPose().getTranslation());
@@ -152,11 +155,11 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/Arrows", repulsor.getArrows().toArray(arrowsArray));
 	}
 
-	public boolean nearTarget() {
-		return (drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
+	public boolean nearGoal() {
+		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
 	}
 
 	public boolean readyForClose() {
-		return (drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < getState().getDistanceForCloseAA().in(Meters));
+		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < getState().getDistanceForCloseAA().in(Meters));
 	}
 }
