@@ -73,8 +73,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 		// Intaking at Coral Station
 		// AA
-		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER, () -> 
-		{
+		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.INTAKING_CORALER, () -> {
 			Boolean left = DRIVER_CONTROLLER.getLeftBumperButtonPressed();
 			Boolean right = DRIVER_CONTROLLER.getRightBumperButtonPressed();
 			this.leftSourceSelected = left ? true : (right ? false : leftSourceSelected);
