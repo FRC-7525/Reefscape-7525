@@ -33,12 +33,12 @@ public enum AutoAlignStates implements SubsystemStates {
 
 	R5("Driving to Reef Right 5", PosePair.of(new Pose2d(12.520, 2.858, Rotation2d.fromDegrees(60)), new Pose2d(5.043, 5.186, Rotation2d.fromDegrees(240))), Meters.of(0.5)),
 
-	L6("Driving to Reef Left 6", PosePair.of(new Pose2d(13.517, 2.805, Rotation2d.fromDegrees(120)), new Pose2d(4.035, 5.248, Rotation2d.fromDegrees(300))), Meters.of(0.5)), // TODO add red poses for last 2
+	L6("Driving to Reef Left 6", PosePair.of(new Pose2d(13.517, 2.805, Rotation2d.fromDegrees(120)), new Pose2d(4.035, 5.248, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
 
 	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(13.792, 2.967, Rotation2d.fromDegrees(120)), new Pose2d(3.761, 5.087, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
 
-	RIGHT_SOURCE("Driving to Source Right", PosePair.of(new Pose2d(15.930, 7.391, Rotation2d.fromDegrees(-126)), new Pose2d(1.62, 0.651, Rotation2d.fromDegrees(54))), Meters.of(1)),
-	LEFT_SOURCE("Driving to Source Left", PosePair.of(new Pose2d(16.009, 0.7, Rotation2d.fromDegrees(126)), new Pose2d(1.16, 6.81, Rotation2d.fromDegrees(306))), Meters.of(1));
+	RIGHT_SOURCE("Driving to Source Right", PosePair.of(new Pose2d(16.303, 7.104, Rotation2d.fromDegrees(-126)), new Pose2d(1.110, 1.03, Rotation2d.fromDegrees(54))), Meters.of(1)),
+	LEFT_SOURCE("Driving to Source Left", PosePair.of(new Pose2d(16.418, 1.006, Rotation2d.fromDegrees(126)), new Pose2d(1.236, 7.104, Rotation2d.fromDegrees(306))), Meters.of(1));
 
 	AutoAlignStates(String stateString, PosePair targetPose, Distance distanceForCloseAA) {
 		this.stateString = stateString;
