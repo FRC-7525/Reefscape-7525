@@ -7,6 +7,7 @@ import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
 import choreo.trajectory.SwerveSample;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -26,12 +27,16 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private final Drive drive = Drive.getInstance();
 	private final RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner(new ArrayList<>(), new ArrayList<>(), (ROBOT_MODE == RobotMode.SIM));
 
-	private PIDController translationController;
-	private PIDController rotationController;
+	private PIDController translationXController;
+	private PIDController translationYController;
+
+	private ProfiledPIDController rotationController;
+
 	private PIDController repulsionTranslationController;
 	private PIDController repulsionRotationController;
 
 	private Pose2d targetPose;
+	private Pose2d goalPose;
 	private Pose2d reefPose = REEF_POSE;
 	private boolean isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 	private Pose2d interpolatedPose;
@@ -44,13 +49,15 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
 		// PID Config
-		this.translationController = TRANSLATIONAL_CONTROLLER.get();
+		this.translationXController = TRANSLATIONALX_CONTROLLER.get();
+		this.translationYController = TRANSLATIONALY_CONTROLLER.get();
 		this.rotationController = ROTATIONAL_CONTROLLER.get();
 		this.repulsionTranslationController = REPULSOR_TRANSLATIONAL_CONTROLLER.get();
 		this.repulsionRotationController = REPULSOR_ROTATIONAL_CONTROLLER.get();
 
 		repulsorActivated = false;
 		targetPose = new Pose2d();
+		goalPose = new Pose2d();
 	}
 
 	public static AutoAlign getInstance() {
@@ -70,6 +77,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		if (getState() == AutoAlignStates.OFF) return;
 
+		goalPose = getState().getTargetPose();
 		targetPose = getState().getTargetPose();
 		if (!readyForClose()) {
 			Translation2d temp = reefPose.getTranslation().minus(drive.getPose().getTranslation());
@@ -89,16 +97,16 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	private void braindeadAutoAlign() {
-		rotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Degrees), MAX_HEADING_ANGLE.in(Degrees));
+		rotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Radian), MAX_HEADING_ANGLE.in(Radian));
 		Pose2d drivePose = drive.getPose();
 
 		// idk why applied needs to be negative but it works if it is negative 💀
 		// update: it's negative because otto is a bum and can't set up his sim properly
 
-		xApplied = translationController.calculate(drivePose.getX(), targetPose.getX());
-		yApplied = translationController.calculate(drivePose.getY(), targetPose.getY());
+		xApplied = translationXController.calculate(drivePose.getX(), targetPose.getX());
+		yApplied = translationYController.calculate(drivePose.getY(), targetPose.getY());
 
-		double rotationApplied = rotationController.calculate(drivePose.getRotation().getDegrees(), targetPose.getRotation().getDegrees());
+		double rotationApplied = rotationController.calculate(drivePose.getRotation().getRadians(), targetPose.getRotation().getRadians());
 		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false, false);
 		else drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false, false);
 	}
@@ -147,11 +155,11 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/Arrows", repulsor.getArrows().toArray(arrowsArray));
 	}
 
-	public boolean nearTarget() {
-		return (drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getError()) < ANGLE_ERROR_MARGIN));
+	public boolean nearGoal() {
+		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
 	}
 
 	public boolean readyForClose() {
-		return (drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < getState().getDistanceForCloseAA().in(Meters));
+		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < getState().getDistanceForCloseAA().in(Meters));
 	}
 }
