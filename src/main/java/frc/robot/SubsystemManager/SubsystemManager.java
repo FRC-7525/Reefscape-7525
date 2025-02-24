@@ -39,7 +39,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 	private SubsystemManager() {
 		super(SUBSYSTEM_NAME, SubsystemManagerStates.IDLE);
-
 		// Toggling which level to score at (manual)
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 1, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 2, () -> DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
@@ -110,10 +109,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 		// Scoring Reef Auto Align
 		// See if odo is good enough to ALWAYS automatically score, otherwise we just have driver click y after minior adjustments
-		addTrigger(IDLE, AUTO_ALIGN_FAR, DRIVER_CONTROLLER::getYButtonPressed); 
+		addTrigger(IDLE, AUTO_ALIGN_FAR, DRIVER_CONTROLLER::getYButtonPressed);
 		addTrigger(AUTO_ALIGN_FAR, AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
 		addTrigger(AUTO_ALIGN_CLOSE, SCORING_REEF_MANUAL, autoAlign::nearGoal);
-
 		// Zero Elevator
 		// TODO: Test
 		// addTrigger(IDLE, ZEROING_ELEVATOR, () -> {
