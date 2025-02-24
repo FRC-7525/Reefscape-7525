@@ -33,7 +33,7 @@ public enum AutoAlignStates implements SubsystemStates {
 
 	R5("Driving to Reef Right 5", PosePair.of(new Pose2d(12.520, 2.858, Rotation2d.fromDegrees(60)), new Pose2d(5.043, 5.186, Rotation2d.fromDegrees(240))), Meters.of(0.5)),
 
-	L6("Driving to Reef Left 6", PosePair.of(new Pose2d(13.517, 2.805, Rotation2d.fromDegrees(120)), new Pose2d(4.035, 5.248, Rotation2d.fromDegrees(300))), Meters.of(0.5)), 
+	L6("Driving to Reef Left 6", PosePair.of(new Pose2d(13.517, 2.805, Rotation2d.fromDegrees(120)), new Pose2d(4.035, 5.248, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
 
 	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(13.792, 2.967, Rotation2d.fromDegrees(120)), new Pose2d(3.761, 5.087, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
 
