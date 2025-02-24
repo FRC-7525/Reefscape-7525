@@ -101,12 +101,12 @@ public class Drive extends Subsystem<DriveStates> {
 		faultManager.addDevice(driveIO.getDrive().getModule(3).getEncoder(), "Back Right CANcoder", "CANivore");
 
 		// Zero Gyro
-		// addRunnableTrigger(
-		// 	() -> {
-		// 		driveIO.zeroGyro();
-		// 	},
-		// 	DRIVER_CONTROLLER::getStartButtonPressed
-		// );
+		addRunnableTrigger(
+			() -> {
+				driveIO.zeroGyro();
+			},
+			DRIVER_CONTROLLER::getStartButtonPressed
+		);
 
 		// Wheel Radius Characterization (no I didn't test it in sim, banks said it works)
 		addRunnableTrigger(
