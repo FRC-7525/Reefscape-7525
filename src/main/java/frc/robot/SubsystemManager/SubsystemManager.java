@@ -46,10 +46,34 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 4, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
 
 		// // Toggling which level to score at (auto align)
-		addRunnableTrigger(() -> {this.operatorReefScoringLevel = 1; this.driverReefScoringLevel = 1;}, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
-		addRunnableTrigger(() -> {this.operatorReefScoringLevel = 2; this.driverReefScoringLevel = 2;}, () -> OPERATOR_CONTROLLER.getRawButtonPressed(6));
-		addRunnableTrigger(() -> {this.operatorReefScoringLevel = 3; this.driverReefScoringLevel = 3;}, () -> OPERATOR_CONTROLLER.getRawAxis(0) < -AXIS_RECOGNITION_POINT);
-		addRunnableTrigger(() -> {this.operatorReefScoringLevel = 4; this.driverReefScoringLevel = 4;}, () -> OPERATOR_CONTROLLER.getRawAxis(0) > AXIS_RECOGNITION_POINT);
+		addRunnableTrigger(
+			() -> {
+				this.operatorReefScoringLevel = 1;
+				this.driverReefScoringLevel = 1;
+			},
+			() -> OPERATOR_CONTROLLER.getRawButtonPressed(2)
+		);
+		addRunnableTrigger(
+			() -> {
+				this.operatorReefScoringLevel = 2;
+				this.driverReefScoringLevel = 2;
+			},
+			() -> OPERATOR_CONTROLLER.getRawButtonPressed(6)
+		);
+		addRunnableTrigger(
+			() -> {
+				this.operatorReefScoringLevel = 3;
+				this.driverReefScoringLevel = 3;
+			},
+			() -> OPERATOR_CONTROLLER.getRawAxis(0) < -AXIS_RECOGNITION_POINT
+		);
+		addRunnableTrigger(
+			() -> {
+				this.operatorReefScoringLevel = 4;
+				this.driverReefScoringLevel = 4;
+			},
+			() -> OPERATOR_CONTROLLER.getRawAxis(0) > AXIS_RECOGNITION_POINT
+		);
 
 		// Togling which side of the hexagon to score at (auto align)
 		addRunnableTrigger(() -> this.hexagonTargetSide = 1, () -> OPERATOR_CONTROLLER.getRawButtonPressed(8));
