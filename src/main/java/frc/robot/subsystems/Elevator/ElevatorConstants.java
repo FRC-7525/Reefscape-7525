@@ -40,8 +40,8 @@ public final class ElevatorConstants {
 	public static final Distance L2_HEIGHT = Inches.of(4);
 	public static final Distance L1_HEIGHT = Inches.of(0);
 	public static final Distance IDLE_HEIGHT = Inches.of(0);
-	public static final Distance ALGAE_LOW_HEIGHT = Inches.of(14);
-	public static final Distance ALGAE_HIGH_HEIGHT = Inches.of(20.5);
+	public static final Distance ALGAE_LOW_HEIGHT = Inches.of(14.5);
+	public static final Distance ALGAE_HIGH_HEIGHT = Inches.of(22);
 	public static final Distance ALGAE_PROCESSOR_HEIGHT = Inches.of(3.5);
 
 	public static final Distance METERS_PER_ROTATION = Meters.of((1 / GEARING) * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right

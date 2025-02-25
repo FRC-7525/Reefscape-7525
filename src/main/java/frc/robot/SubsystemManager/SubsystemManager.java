@@ -46,10 +46,10 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 4, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
 
 		// // Toggling which level to score at (auto align)
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 1, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 2, () -> OPERATOR_CONTROLLER.getRawButtonPressed(6));
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 3, () -> OPERATOR_CONTROLLER.getRawAxis(0) < -AXIS_RECOGNITION_POINT);
-		addRunnableTrigger(() -> this.operatorReefScoringLevel = 4, () -> OPERATOR_CONTROLLER.getRawAxis(0) > AXIS_RECOGNITION_POINT);
+		addRunnableTrigger(() -> {this.operatorReefScoringLevel = 1; this.driverReefScoringLevel = 1;}, () -> OPERATOR_CONTROLLER.getRawButtonPressed(2));
+		addRunnableTrigger(() -> {this.operatorReefScoringLevel = 2; this.driverReefScoringLevel = 2;}, () -> OPERATOR_CONTROLLER.getRawButtonPressed(6));
+		addRunnableTrigger(() -> {this.operatorReefScoringLevel = 3; this.driverReefScoringLevel = 3;}, () -> OPERATOR_CONTROLLER.getRawAxis(0) < -AXIS_RECOGNITION_POINT);
+		addRunnableTrigger(() -> {this.operatorReefScoringLevel = 4; this.driverReefScoringLevel = 4;}, () -> OPERATOR_CONTROLLER.getRawAxis(0) > AXIS_RECOGNITION_POINT);
 
 		// Togling which side of the hexagon to score at (auto align)
 		addRunnableTrigger(() -> this.hexagonTargetSide = 1, () -> OPERATOR_CONTROLLER.getRawButtonPressed(8));
@@ -111,7 +111,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// See if odo is good enough to ALWAYS automatically score, otherwise we just have driver click y after minior adjustments
 		addTrigger(IDLE, AUTO_ALIGN_FAR, DRIVER_CONTROLLER::getYButtonPressed);
 		addTrigger(AUTO_ALIGN_FAR, AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
-		addTrigger(AUTO_ALIGN_CLOSE, SCORING_REEF_MANUAL, autoAlign::nearGoal);
+		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, autoAlign::nearGoal);
 		// Zero Elevator
 		// TODO: Test
 		// addTrigger(IDLE, ZEROING_ELEVATOR, () -> {
