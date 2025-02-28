@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 
 #define PIN 6            // Data pin to first LED
-#define NUM_LEDS 300      // Number of LEDs in the chain (fake)
+#define NUM_LEDS 50      // Number of LEDs in the chain (fake)
 
 Adafruit_NeoPixel strip(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 
@@ -12,21 +12,23 @@ unsigned long previousPulseWidth = 0; // Store the previous pulse width from A0 
 struct LedState {
   unsigned long minPulseWidth; // Minimum pulse width for this state
   unsigned long maxPulseWidth; // Maximum pulse width for this state
-  uint32_t color;             // RGB color value (use Adafruit's RGB format)
   const char* name;           // Name of the state for debugging
 };
 
 // Different color states, 500 micro second thresholds bc PWM is NOT trustworthy (I think, idrk)
 
 const LedState LED_STATES[] = {
-  {0, 750, strip.Color(255, 0, 0), "Red"},       // Pulse width 0-750 => Red
-  {751, 1250, strip.Color(255, 165, 0), "Orange"}, // Pulse width 751-1250 => Orange
-  {1251, 1750, strip.Color(0, 255, 0), "Green"}, // Pulse width 1251-1750 => Green
-  {1751, 2250, strip.Color(128, 0, 128), "Purple"}, // Pulse width 1751-2250 => Purple
-  {2251, 2750, strip.Color(0, 0, 255), "Blue"},  // Pulse width 2251-2750 => Blue
-  {2751, 3250, strip.Color(255, 255, 0), "Yellow"}, // Pulse width 2751-3250 => Yellow
-  {3251, 3750, strip.Color(255, 255, 255), "White"}, // Pulse width 3251-3750 => White
-  {3751, 4096, strip.Color(0, 0, 0), "Off"}     // Pulse width 3751-4096 => Off (black)
+  {0, 372, "Disabled"},
+  {373, 745, "Idle"},
+  {746, 1117, "Intaking"},
+  {1118, 1489, "Scoring"},
+  {1490, 1862, "Autoalign"},
+  {1863, 2234, "Algae"},
+  {2235, 2607, "Climbing"},
+  {2608, 2979, "L1"},
+  {2980, 3351, "L2"},
+  {3352, 3724, "L3"},
+  {3725, 4096, "L4"}
 };
 
 const int NUM_STATES = sizeof(LED_STATES) / sizeof(LED_STATES[0]);
