@@ -1,5 +1,3 @@
 package frc.robot.Subsystems.ObstacleVision;
 
-public interface ObstacleVisionIO {
-    
-}
+public interface ObstacleVisionIO {}

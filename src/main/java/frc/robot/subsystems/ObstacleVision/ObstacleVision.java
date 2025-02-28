@@ -1,5 +1,3 @@
 package frc.robot.Subsystems.ObstacleVision;
 
-public class ObstacleVision {
-    
-}
+public class ObstacleVision {}
