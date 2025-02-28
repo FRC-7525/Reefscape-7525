@@ -3,13 +3,17 @@ package frc.robot.Subsystems.LED;
 import org.team7525.subsystem.SubsystemStates;
 
 public enum LEDStates implements SubsystemStates {
-	RED("Red", 500),
-	ORANGE("Orange", 1000),
-	GREEN("Green", 1500),
-	PURPLE("Purple", 2000),
-	BLUE("Blue", 2500),
-	YELLOW("Yellow", 3000),
-	WHITE("White", 3500);
+	DISABLED("Disabled", 400),
+	IDLE("Idle", 800),
+	INTAKING("Intaking", 1200),
+	SCORING("Scoring", 1600),
+	AUTOALIGN("Autoalign", 2000),
+	ALGAE("Algae", 2400),
+	CLIMBING("Climbing"),
+	L1("L1", 2800),
+	L2("L2", 3200),
+	L3("L3", 3600),
+	L4("L4", 4000); //TODO: Probably need to change these values cuz rez is too low
 
 	private int pwmSignal;
 	private String stateString;
