@@ -4,6 +4,8 @@ import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.*;
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -58,6 +60,8 @@ public class CoralerIOTalonFX implements CoralerIO {
 	@Override
 	public boolean hasGamepiece() {
 		// return !beamBreak.get();
-		return velocityMotor.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
+		boolean switchTripped = velocityMotor.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
+		Logger.recordOutput("Coraler/Switch Tripper", switchTripped);
+		return switchTripped;
 	}
 }
