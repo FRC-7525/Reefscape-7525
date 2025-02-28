@@ -13,7 +13,7 @@ public enum LEDStates implements SubsystemStates {
 	L1("L1", 2794),
 	L2("L2", 3166),
 	L3("L3", 3538),
-	L4("L4", 3911); //TODO: Probably need to change these values cuz rez is too low
+	L4("L4", 3911); //TODO: Might need to change these values cuz rez is too low
 
 	private int pwmSignal;
 	private String stateString;

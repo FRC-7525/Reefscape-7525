@@ -53,7 +53,7 @@ void loop() {
   for (int i = 0; i < NUM_STATES; i++) {
     if (pulseWidth >= LED_STATES[i].minPulseWidth && pulseWidth <= LED_STATES[i].maxPulseWidth) {
       // Set all LEDs to the corresponding color for this state
-      LED_STATES[i].pattern.run();
+      LED_STATES[i].pattern.run(leds);
       break;
     }
   }
