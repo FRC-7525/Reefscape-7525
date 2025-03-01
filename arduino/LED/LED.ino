@@ -25,6 +25,8 @@ bool increase = false;
 
 int darkness = 255;
 
+int elevatorHeight = 0;
+
 // Different states
 void disabled() {
   if (darkness >= 255) {
@@ -91,7 +93,21 @@ void intaking() {
 }
 
 void scoring() {
+  if (spots[0] >= elevatorHeight) {
+    spots[0] = 0;
+  }
 
+  for (int i = 0; i < NUM_LEDS; i++) {
+    if (spots[0] - 2 <= i && i < spots[0] + 2) {
+      leds[i].setRGB(255, 0, 0);
+    } else if (elevatorHeight - 2 <= i && i <= elevatorHeight + 2) {
+      leds[i].setRGB(255, 0, 0);
+    } else {
+      leds[i].setRGB(255, 255, 255);
+    }
+  }
+
+  spots[0]++;
 }
 
 void autoalign() {
@@ -114,9 +130,11 @@ void algae() {
 
   for (int i = 0; i < numSpots; i++) {
     if (spots[i] >= NUM_LEDS) {
-      spots[i] = 0;
+      spots[i] = NUM_LEDS - 1;
+      increases[i] = false;
     } else if (spots[i] < 0) {
       spots[i] = 0;
+      increases[i] = true;
     }
   }
 
@@ -141,7 +159,10 @@ void algae() {
     else leds[i].setHSV(160, 255, 0);
   }
 
-  for (int i = 0; i < numSpots; i++) spots[i]++;
+  for (int i = 0; i < numSpots; i++) {
+    if (increases[i]) spots[i]++;
+    else spots[i]--;
+  }
 }
 
 void climbing() {
@@ -168,6 +189,8 @@ void l1() {
       leds[i].setHSV(0, 255, 255);
     }
   }
+
+  elevatorHeight = 12;
 }
 
 void l2() {
@@ -178,6 +201,8 @@ void l2() {
       leds[i].setHSV(0, 255, 255);
     }
   }
+
+  elevatorHeight = 25;
 }
 
 void l3() {  
@@ -188,6 +213,8 @@ void l3() {
       leds[i].setHSV(0, 255, 255);
     }
   }
+
+  elevatorHeight = 37;
 }
 
 void l4() {
@@ -198,6 +225,8 @@ void l4() {
       leds[i].setHSV(0, 255, 255);
     }
   }
+
+  elevatorHeight = 48;
 }
 
 const LedState LED_STATES[] = {
