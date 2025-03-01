@@ -32,11 +32,11 @@ public final class ClimberConstants {
 
 	public static class Real {
 
-		public static final int CLIMBER_CANID = 18;
+		public static final int CLIMBER_CANID = 24;
 
 		public static final LinearVelocity ZEROING_VELOCITY = MetersPerSecond.of(0.25);
 		public static final Current ZEROING_CURRENT_LIMIT = Amps.of(10.0);
 
-		public static final PIDConstants PID_CONSTANTS = new PIDConstants(0, 0, 0, 0);
+		public static final PIDConstants PID_CONSTANTS = new PIDConstants(0.1, 0, 0, 0);
 	}
 }
