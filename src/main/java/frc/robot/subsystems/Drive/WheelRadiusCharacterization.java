@@ -77,7 +77,7 @@ public class WheelRadiusCharacterization {
 				averageWheelPosition = averageWheelPosition / 4.0;
 				currentEffectiveWheelRadius = (accumGyroYawRads * DRIVE_RADIUS) / averageWheelPosition;
 				// System.out.println("effective wheel radius: " + currentEffectiveWheelRadius);
-				System.out.println("Average Wheel Position: " + averageWheelPosition);
+				// System.out.println("Average Wheel Position: " + averageWheelPosition);
 			},
 			() -> {
 				drive.getDriveTrain().setControl(m_characterizationReq.withRotationalRate(0));
@@ -105,7 +105,7 @@ public class WheelRadiusCharacterization {
 		 *
 		 * -Chat GPT (the maintainer of this codebase)
 		 */
-		return Commands.sequence(initialize, executeEnd).withTimeout(3);
+		return Commands.sequence(initialize, executeEnd).withTimeout(6);
 	}
 
 	public boolean isCharacterizationActive() {

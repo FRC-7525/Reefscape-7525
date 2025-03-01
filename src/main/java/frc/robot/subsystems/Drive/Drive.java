@@ -114,7 +114,7 @@ public class Drive extends Subsystem<DriveStates> {
 				CommandScheduler.getInstance().cancelAll();
 				CommandScheduler.getInstance().schedule(WheelRadiusCharacterization.getInstance().getWheelRadiusCharacterizationCommand(-1, this));
 			},
-			TEST_CONTROLLER::getRightBumperButtonPressed
+			TEST_CONTROLLER::getBButtonPressed
 		);
 
 		this.lastHeading = Degrees.of(driveIO.getDrive().getState().Pose.getRotation().getDegrees());
