@@ -21,7 +21,7 @@ public final class ClimberConstants {
 	public static final Distance DOWN = Meters.of(0);
 	public static final Distance OUTER_GEAR_DIAMETER = Millimeters.of(35.9);
 	public static final double MOTOR_GEARING = 25;
-	public static final Distance METERS_PER_ROTATION = Meters.of((OUTER_GEAR_DIAMETER.in(Meters) * Math.PI)/GEARING); // random value lol
+	public static final Distance METERS_PER_ROTATION = Meters.of((OUTER_GEAR_DIAMETER.in(Meters) * Math.PI) / GEARING); // random value lol
 
 	public static class Sim {
 
