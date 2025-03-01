@@ -39,7 +39,7 @@ public class AutoCommands {
 
 		@Override
 		public boolean isFinished() {
-			return manager.getState() != SubsystemManagerStates.INTAKING_CORALER_AA_OFF;
+			return manager.getState() != SubsystemManagerStates.IDLE;
 		}
 	}
 

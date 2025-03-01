@@ -57,7 +57,7 @@ public final class ElevatorConstants {
 		public static final boolean SIMULATE_GRAVITY = true;
 		public static final Distance STARTING_HEIGHT = Inches.of(0);
 
-		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(10, 2, 1, 0.1);
+		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(70, 2, 1, 0.1);
 		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.24, 6.66, 0.03);
 
 		// Sim is trolling, idk why
