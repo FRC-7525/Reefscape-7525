@@ -50,7 +50,6 @@ public final class AutoAlignConstants {
 			case SIM -> new PIDController(2.5, 0, 0);
 			default -> new PIDController(1, 0, 0);
 		};
-		
 
 	public static final Supplier<PIDController> TRANSLATIONALX_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
