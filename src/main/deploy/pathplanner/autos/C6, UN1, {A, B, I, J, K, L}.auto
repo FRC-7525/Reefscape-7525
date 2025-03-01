@@ -17,7 +17,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Transition L4"
+                  "name": "Transition L4 Alt"
                 }
               }
             ]
@@ -61,7 +61,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Transition L4"
+                  "name": "Transition L4 Alt"
                 }
               }
             ]
@@ -105,10 +105,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Transition L4"
+                  "name": "Transition L4 Alt"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score L4"
           }
         },
         {
@@ -143,10 +149,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Transition L4"
+                  "name": "Transition L4 Alt"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score L4"
           }
         },
         {
@@ -181,10 +193,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Transition L4"
+                  "name": "Transition L4 Alt"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score L4"
           }
         },
         {
@@ -219,10 +237,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Transition L4"
+                  "name": "Transition L4 Alt"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score L4"
           }
         }
       ]

@@ -77,6 +77,11 @@ public class AutoManager {
 		NamedCommands.registerCommand("Transition L3", AutoCommands.Transition.get(3));
 		NamedCommands.registerCommand("Transition L4", AutoCommands.Transition.get(4));
 
+		NamedCommands.registerCommand("Transition L1 Alt", AutoCommands.TransitionAlt.get(1));
+		NamedCommands.registerCommand("Transition L2 Alt", AutoCommands.TransitionAlt.get(2));
+		NamedCommands.registerCommand("Transition L3 Alt", AutoCommands.TransitionAlt.get(3));
+		NamedCommands.registerCommand("Transition L4 Alt", AutoCommands.TransitionAlt.get(4));
+
 		// Autos
 
 		// Misc

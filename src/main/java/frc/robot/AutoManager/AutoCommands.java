@@ -153,4 +153,36 @@ public class AutoCommands {
 			SubsystemManager.getInstance().setState(SubsystemManagerStates.TRANSITIONING_SCORING_REEF);
 		}
 	}
+
+	public class TransitionAlt extends Command {
+
+		private final SubsystemManager manager = SubsystemManager.getInstance();
+		private final Drive drive = Drive.getInstance();
+
+		private final int scoringLevel;
+
+		private TransitionAlt(int scoringLevel) {
+			this.scoringLevel = scoringLevel;
+		}
+
+		public static TransitionAlt get(int scoringLevel) {
+			return AutoCommands.getInstance().new TransitionAlt(scoringLevel);
+		}
+
+		@Override
+		public void initialize() {
+			manager.setState(SubsystemManagerStates.IDLE);
+		}
+
+		@Override
+		public boolean isFinished() {
+			return drive.getPose().getTranslation().getDistance(AutoManager.getInstance().getEndPose().getTranslation()) < 0.1;
+		}
+
+		@Override
+		public void end(boolean interrupted) {
+			SubsystemManager.getInstance().setDriverReefScoringLevel(scoringLevel);
+			SubsystemManager.getInstance().setState(SubsystemManagerStates.TRANSITIONING_SCORING_REEF);
+		}
+	}
 }
