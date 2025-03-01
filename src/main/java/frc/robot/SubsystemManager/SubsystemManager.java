@@ -89,8 +89,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addRunnableTrigger(() -> this.scoringReefLeft = false, () -> OPERATOR_CONTROLLER.getRawButton(3)); // 3
 
 		// // Climbing
-		addTrigger(SubsystemManagerStates.IDLE, SubsystemManagerStates.CLIMBING, () -> DRIVER_CONTROLLER.getRightTriggerAxis() > 0.5);
-		addTrigger(SubsystemManagerStates.CLIMBING, SubsystemManagerStates.IDLE, () -> DRIVER_CONTROLLER.getRightTriggerAxis() == 0);
+		addTrigger(IDLE, CLIMBING, () -> DRIVER_CONTROLLER.getRightTriggerAxis() > 0.5);
+		addTrigger(CLIMBING, IDLE, () -> DRIVER_CONTROLLER.getRightTriggerAxis() == 0);
 
 		// Intaking at Coral Station
 		// AA
@@ -139,6 +139,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, autoAlign::nearGoal);
 		// Zero Elevator
 		// TODO: Test
+		// Not testing all that :laughing cat emoji:
 		// addTrigger(IDLE, ZEROING_ELEVATOR, () -> {
 		// 	boolean pressed = OPERATOR_CONTROLLER.getRawButtonPressed(4);
 		// 	if (pressed) {
@@ -208,7 +209,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		coraler.setState(getState().getCoralerState());
 		algaer.setState(getState().getAlgaerState());
 		autoAlign.setState(getState().getAutoAlignSupplier().get());
-		ledSubsystem.setState(getState().getLedState());
+		ledSubsystem.setState(getState().getLedStateSupplier().get());
 		climber.setState(getState().getClimberState());
 
 		// Periodics
