@@ -207,7 +207,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		coraler.setState(getState().getCoralerState());
 		algaer.setState(getState().getAlgaerState());
 		autoAlign.setState(getState().getAutoAlignSupplier().get());
-		ledSubsystem.setState(getState().getLedState());
+		ledSubsystem.setState(getState().getLedStateSupplier().get());
 		// climber.setState(getState().getClimberState());
 
 		// Periodics

@@ -1,6 +1,6 @@
 package frc.robot.Subsystems.LED;
 
-import static frc.robot.Subsystems.Elevator.ElevatorConstants.SUBSYSTEM_NAME;
+import static frc.robot.Subsystems.LED.LEDConstants.SUBSYSTEM_NAME;
 
 import frc.robot.GlobalConstants;
 import org.littletonrobotics.junction.Logger;
@@ -13,7 +13,7 @@ public class LED extends Subsystem<LEDStates> {
 	private LEDIOInputsAutoLogged inputs;
 
 	private LED() {
-		super(SUBSYSTEM_NAME, LEDStates.RED);
+		super(SUBSYSTEM_NAME, LEDStates.DISABLED);
 		io = switch (GlobalConstants.ROBOT_MODE) {
 			case SIM -> new LEDIOSim();
 			case REAL -> new LEDIOReal();
