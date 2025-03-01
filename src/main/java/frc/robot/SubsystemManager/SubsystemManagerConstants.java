@@ -2,6 +2,7 @@ package frc.robot.SubsystemManager;
 
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
+import frc.robot.Subsystems.LED.LEDStates;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -82,4 +83,6 @@ public final class SubsystemManagerConstants {
 	}
 
 	public static final Map<Boolean, AutoAlignStates> SOURCE_TARGET_MAP = Map.of(true, AutoAlignStates.LEFT_SOURCE, false, AutoAlignStates.RIGHT_SOURCE);
+
+	public static final Map<Integer, LEDStates> LED_TO_REEF_LEVEL = Map.of(1, LEDStates.L1, 2, LEDStates.L2, 3, LEDStates.L3, 4, LEDStates.L4);
 }
