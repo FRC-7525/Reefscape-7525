@@ -17,8 +17,8 @@
     "6 Coral",
     "Misc"
   ],
-  "defaultMaxVel": 3.9,
-  "defaultMaxAccel": 11.7,
+  "defaultMaxVel": 3.7,
+  "defaultMaxAccel": 11.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 2260.0,
   "defaultNominalVoltage": 12.0,

@@ -34,8 +34,8 @@ public final class AutoAlignConstants {
 	// TODO update max speed once robot is built
 	public static final LinearVelocity MAX_SPEED = FeetPerSecond.of(15);
 	public static final boolean USE_GOAL = true;
-	public static final double DISTANCE_ERROR_MARGIN = 0.01;
-	public static final double ANGLE_ERROR_MARGIN = 0.03;
+	public static final double DISTANCE_ERROR_MARGIN = 0.025;
+	public static final double ANGLE_ERROR_MARGIN = 0.1;
 
 	public static final double GOAL_STRENGTH = 0.65;
 	static final double FIELD_LENGTH = 16.42;
@@ -46,14 +46,14 @@ public final class AutoAlignConstants {
 	// TODO tune these
 	public static final Supplier<PIDController> TRANSLATIONALY_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new PIDController(10, 0, .1);
+			case REAL -> new PIDController(7, 0, 0);
 			case SIM -> new PIDController(2.5, 0, 0);
 			default -> new PIDController(1, 0, 0);
 		};
 
 	public static final Supplier<PIDController> TRANSLATIONALX_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new PIDController(10, 0, 0.1);
+			case REAL -> new PIDController(7, 0, 0);
 			case SIM -> new PIDController(2.5, 0, 0);
 			default -> new PIDController(1, 0, 0);
 		};
@@ -84,7 +84,7 @@ public final class AutoAlignConstants {
 
 	public static final class obstacles {
 
-		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 2, true, 0.5), new GuidedObstacle(new Translation2d(13.08, 4), 2, true, 0.5));
+		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 4, true, 0.7), new GuidedObstacle(new Translation2d(13.08, 4), 2, true, 0.5));
 
 		public static final List<Obstacle> WALLS = List.of(
 			new HorizontalObstacle(0.0, 0.5, true),
