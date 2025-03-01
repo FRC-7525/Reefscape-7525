@@ -19,17 +19,75 @@ CRGB leds[NUM_LEDS];
 int spots[] = {0, 16, 32};
 const int numSpots = sizeof(spots) / sizeof(spots[0]);
 
+bool increases[] = {true, true, true};
+
+bool increase = false;
+
+int darkness = 255;
+
 // Different states
 void disabled() {
+  if (darkness >= 255) {
+    darkness = 255;
+    increase = false;
+  } else if (darkness <= 0) {
+    darkness = 0;
+    increase = true;
+  }
+  
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i].setHSV(0, 255, darkness);
+  }
 
+  if (increase) darkness += 5;
+  else darkness -= 5;
 }
 
 void idle() {
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i].setHSV(18.42, 204.26, 231.03);
+    FastLED.show();
+    delay(30);
+  }
 
+  delay(100);
+
+  for (int i = NUM_LEDS - 1; i >= 0; i--) {
+    leds[i].setHSV(151, 140, 200);
+    FastLED.show();
+    delay(30);
+  }
+
+  delay(100);
 }
 
 void intaking() {
+  for (int i = 0; i < numSpots; i++) {
+    if (spots[i] >= NUM_LEDS) spots[i] = 0;
+  }
 
+  for (int i = 0; i < NUM_LEDS; i++) {
+    bool lit = false;
+    for (int j = 0; j < numSpots; j++) {
+      int dimPercent = ((1 - abs(spots[j] - i)) / 5.0) * 255;
+
+      if (spots[j] - 5 <= i && i < spots[j]) {
+        leds[i].setHSV(160, 255, dimPercent);
+        lit = true;
+      } else if (i == spots[j]) {
+        leds[i].setHSV(160, 255, 255);
+        lit = true;
+      } else if (spots[j] < i && i <= spots[j] + 5) {
+        leds[i].setHSV(160, 255, dimPercent);
+        lit = true;
+      }
+    }
+
+    if (lit) continue;
+    else leds[i].setHSV(160, 255, 0);
+  }
+
+  for (int i = 0; i < numSpots; i++) spots[i]++;
 }
 
 void scoring() {
@@ -37,19 +95,61 @@ void scoring() {
 }
 
 void autoalign() {
+  if (spots[0] >= NUM_LEDS) {
+    spots[0] = NUM_LEDS;
+    increase = false;
+  } else if (spots[0] < 0) {
+    spots[0] = 0;
+    increase = true;
+  }
 
+  fill_gradient(leds, 0, CHSV(32.58, 255, 249.9), spots[0], CHSV(5.67, 255, 128.01));
+  fill_gradient(leds, spots[0], CHSV(5.67, 255, 128.01), NUM_LEDS - 1, CHSV(32.58, 255, 249.9));
+
+  if (increase) spots[0]++;
+  else spots[0]--;
 }
 
 void algae() {
 
+  for (int i = 0; i < numSpots; i++) {
+    if (spots[i] >= NUM_LEDS) {
+      spots[i] = 0;
+    } else if (spots[i] < 0) {
+      spots[i] = 0;
+    }
+  }
+
+  for (int i = 0; i < NUM_LEDS; i++) {
+    bool lit = false;
+    for (int j = 0; j < numSpots; j++) {
+      int dimPercent = ((1 - abs(spots[j] - i)) / 5.0) * 255;
+
+      if (spots[j] - 5 <= i && i < spots[j]) {
+        leds[i].setHSV(110, 255, dimPercent);
+        lit = true;
+      } else if (i == spots[j]) {
+        leds[i].setHSV(110, 255, 255);
+        lit = true;
+      } else if (spots[j] < i && i <= spots[j] + 5) {
+        leds[i].setHSV(110, 255, dimPercent);
+        lit = true;
+      }
+    }
+
+    if (lit) continue;
+    else leds[i].setHSV(160, 255, 0);
+  }
+
+  for (int i = 0; i < numSpots; i++) spots[i]++;
 }
 
 void climbing() {
   if (spots[0] >= NUM_LEDS) spots[0] = 0;
 
   //Need to replace with actual values of blue and purple
-  fill_gradient(leds, spots[0] - 5, CHSV(160, 255, 10), spots[0], CHSV(192, 255, 255));
-  fill_gradient(leds, spots[0], CHSV(192, 255, 255), spots[0] + 5, CHSV(160, 255, 10));
+  fill_gradient(leds, spots[0] - 5, CHSV(160, 255, 10), spots[0], CHSV(210.375, 176.97, 121.125));
+  fill_gradient(leds, spots[0], CHSV(210.375, 176.97, 121.125), spots[0] + 5, CHSV(160, 255, 10));
 
   for (int i = 0; i < NUM_LEDS; i++) {
     if (i < spots[0] - 5 || i > spots[0] + 5) {
@@ -61,27 +161,43 @@ void climbing() {
 }
 
 void l1() {
-  //TODO: Figure out cool-looking gradient colors
-  fill_gradient(leds, 0, CHSV(160, 255, 10), 12, CHSV(192, 255, 255));
-  fill_gradient(leds, 12, CHSV(192, 255, 255), NUM_LEDS - 1, CHSV(160, 255, 10));
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i].setRGB(255, 255, 255);
+
+    if (10 <= i && i <= 14) {
+      leds[i].setHSV(0, 255, 255);
+    }
+  }
 }
 
 void l2() {
-  //TODO: Figure out cool-looking gradient colors
-  fill_gradient(leds, 0, CHSV(160, 255, 10), 24, CHSV(192, 255, 255));
-  fill_gradient(leds, 24, CHSV(192, 255, 255), NUM_LEDS - 1, CHSV(160, 255, 10));
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i].setRGB(255, 255, 255);
+
+    if (23 <= i && i <= 27) {
+      leds[i].setHSV(0, 255, 255);
+    }
+  }
 }
 
-void l3() {
-  //TODO: Figure out cool-looking gradient colors
-  fill_gradient(leds, 0, CHSV(160, 255, 10), 37, CHSV(192, 255, 255));
-  fill_gradient(leds, 37, CHSV(192, 255, 255), NUM_LEDS - 1, CHSV(160, 255, 10));
+void l3() {  
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i].setRGB(255, 255, 255);
+
+    if (35 <= i && i <= 39) {
+      leds[i].setHSV(0, 255, 255);
+    }
+  }
 }
 
 void l4() {
-  //TODO: Figure out cool-looking gradient colors
-  fill_gradient(leds, 0, CHSV(160, 255, 10), 49, CHSV(192, 255, 255));
-  fill_gradient(leds, 49, CHSV(192, 255, 255), NUM_LEDS - 1, CHSV(160, 255, 10));
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i].setRGB(255, 255, 255);
+
+    if (46 <= i && i <= 50) {
+      leds[i].setHSV(0, 255, 255);
+    }
+  }
 }
 
 const LedState LED_STATES[] = {
@@ -111,7 +227,7 @@ void setup() {
 
 void loop() {
   // Read the PWM pulse width from A5
-  pulseWidth = pulseIn(A5, HIGH);
+  pulseWidth = 2300;
   // Serial.println(pulseWidth);
 
   // Find the corresponding color state based on the pulse width
