@@ -30,7 +30,15 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		() -> LEDStates.AUTOALIGN,
 		ClimberStates.DOWN
 	),
-	AUTO_ALIGN_FAR("Aligning Close", () -> ElevatorStates.IDLE, CoralerStates.IDLE, AlgaerStates.IDLE, () -> REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())), () -> LEDStates.AUTOALIGN, ClimberStates.DOWN),
+	AUTO_ALIGN_FAR(
+		"Aligning Close",
+		() -> ElevatorStates.IDLE,
+		CoralerStates.IDLE,
+		AlgaerStates.IDLE,
+		() -> REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())),
+		() -> LEDStates.AUTOALIGN,
+		ClimberStates.DOWN
+	),
 	INTAKING_CORALER(
 		"Intaking at Coral Station",
 		() -> ElevatorStates.IDLE,
@@ -44,9 +52,17 @@ public enum SubsystemManagerStates implements SubsystemStates {
 	SCOING_NET("Scoring net", () -> ElevatorStates.L4, CoralerStates.IDLE, AlgaerStates.SCORING_NET, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, ClimberStates.DOWN),
 	INTAKING_CORALER_AA_OFF("Intaking Coral Station with Driver Control", () -> ElevatorStates.IDLE, CoralerStates.INAKING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.INTAKING, ClimberStates.DOWN),
 	CENTERING_CORALER("Centering Coral", () -> ElevatorStates.IDLE, CoralerStates.CENTERING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.INTAKING, ClimberStates.DOWN),
-	SCORING_REEF_MANUAL("Scoring Reef", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getDriverReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF,  () -> LEDStates.SCORING, ClimberStates.DOWN),
+	SCORING_REEF_MANUAL("Scoring Reef", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getDriverReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, ClimberStates.DOWN),
 	SCORING_REEF_AA("Scoring Reef AA", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getOperatorReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, ClimberStates.DOWN),
-	TRANSITIONING_SCORING_REEF("Transitioning Scoring", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getDriverReefScoringLevel()), CoralerStates.IDLE, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, () -> LED_TO_REEF_LEVEL.get(SubsystemManager.getInstance().getDriverReefScoringLevel()), ClimberStates.DOWN),
+	TRANSITIONING_SCORING_REEF(
+		"Transitioning Scoring",
+		() -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getDriverReefScoringLevel()),
+		CoralerStates.IDLE,
+		AlgaerStates.IDLE,
+		() -> AutoAlignStates.OFF,
+		() -> LED_TO_REEF_LEVEL.get(SubsystemManager.getInstance().getDriverReefScoringLevel()),
+		ClimberStates.DOWN
+	),
 	ZEROING_ELEVATOR("Zeroing Elevator", () -> ElevatorStates.ZEROING, CoralerStates.IDLE, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.IDLE, ClimberStates.DOWN);
 
 	SubsystemManagerStates(String stateString, Supplier<ElevatorStates> elevatorStateSupplier, CoralerStates coralerState, AlgaerStates algaerState, Supplier<AutoAlignStates> autoAlignSupplier, Supplier<LEDStates> ledStateSupplier, ClimberStates climberState) {
