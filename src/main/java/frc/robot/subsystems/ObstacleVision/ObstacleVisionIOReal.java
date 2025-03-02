@@ -1,0 +1,63 @@
+package frc.robot.Subsystems.ObstacleVision;
+
+import static edu.wpi.first.units.Units.Meters;
+import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.REEF_HITBOX;
+
+import java.util.ArrayList;
+
+import org.littletonrobotics.junction.Logger;
+import org.photonvision.PhotonCamera;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Subsystems.Drive.Drive;
+import java.util.ArrayList;
+import org.photonvision.PhotonCamera;
+import org.photonvision.simulation.PhotonCameraSim;
+
+public class ObstacleVisionIOReal implements ObstacleVisionIO {
+
+	private PhotonCamera camera;
+	private Transform3d robotToCamera;
+	private ArrayList<Pose2d> obstacleList;
+
+    public ObstacleVisionIOReal(String cameraName, Transform3d robotToCamera) {
+        camera = new PhotonCamera(cameraName);
+        this.robotToCamera = robotToCamera;
+        obstacleList = new ArrayList<Pose2d>();
+    }
+
+				Translation3d transformRobotRelative = cameraToObject.getTranslation().rotateBy(robotToCamera.getRotation().unaryMinus());
+				Pose2d obstaclePose = robotPose.transformBy(new Transform2d(transformRobotRelative.toTranslation2d(), cameraToObject.getRotation().toRotation2d()));
+                // if (robotPose.getTranslation().getDistance(reefPose2d.getTranslation()) > REEF_HITBOX.in(Meters)) continue;
+
+                Translation2d fieldRelativeObjectTranslation = cameraToObject.plus(robotToCamera).getTranslation().toTranslation2d().rotateBy(robotPose.getRotation());
+                Pose2d obstaclePose = new Pose2d(fieldRelativeObjectTranslation, new Rotation2d());
+
+                // for (int i = 0; i < obstacleList.size(); i++) {
+                //     if (obstacleList.get(i).getTranslation().getDistance(obstaclePose.getTranslation()) < .1) {
+                //         alreadyListed = true;
+                //         obstacleList.set(i, obstaclePose);
+                //         break;
+                //     }
+                // }
+
+                Logger.recordOutput("ObjectVision", obstaclePose);
+            }
+        }
+        return obstacleList;
+        
+    }
+
+    @Override
+    public void updateInputs(VisionIOInputs inputs) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateInputs'");
+    }
+}
