@@ -1,5 +1,4 @@
 package frc.robot.Subsystems.ObstacleVision;
-
 import org.team7525.subsystem.Subsystem;
 
 public class ObstacleVision extends Subsystem {
