@@ -65,13 +65,14 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void autonomousInit() {
-		CommandScheduler.getInstance().schedule(autoManager.getSelectedCommand());
 		// musicManager.stopMusic();
 		// musicManager.removeAllMotors();
 	}
 
 	@Override
-	public void autonomousPeriodic() {}
+	public void autonomousPeriodic() {
+		autoManager.periodic();
+	}
 
 	@Override
 	public void autonomousExit() {

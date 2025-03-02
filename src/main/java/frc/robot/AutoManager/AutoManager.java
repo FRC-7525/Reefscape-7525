@@ -1,6 +1,7 @@
 package frc.robot.AutoManager;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.SubsystemManager.SubsystemManagerStates;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -44,6 +45,9 @@ public class AutoManager extends Subsystem<AutoStates> {
 		addTrigger(INTAKING_CORAL, SCORING_CORAL, () -> SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE);
 		addTrigger(SCORING_CORAL, IDLE, () -> orderInRoutine == scoringLocationChooser.getSelected().length);
 
+		SmartDashboard.putData("Level Chooser", scoringLevelChooser);
+		SmartDashboard.putData("Side Chooser", scoringLocationChooser);
+		SmartDashboard.putData("Intaking Chooser", intakingLocationChooser);
 	}
 
 	public class AutoScoringLocation {
