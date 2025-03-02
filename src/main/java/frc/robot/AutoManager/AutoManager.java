@@ -1,116 +1,69 @@
 package frc.robot.AutoManager;
 
-import static frc.robot.AutoManager.AutoConstants.*;
-
-import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.util.PathPlannerLogging;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import frc.robot.GlobalConstants;
-import frc.robot.Subsystems.Drive.Drive;
-import frc.robot.Subsystems.Drive.DriveConstants;
+import frc.robot.SubsystemManager.SubsystemManager;
+import frc.robot.SubsystemManager.SubsystemManagerStates;
 import frc.robot.Subsystems.Elevator.Elevator;
-import org.littletonrobotics.junction.Logger;
 
-public class AutoManager {
+import org.team7525.subsystem.Subsystem;
+
+import static frc.robot.AutoManager.AutoStates.*;
+
+public class AutoManager extends Subsystem<AutoStates> {
 
 	public static AutoManager instance;
 
-	private final SendableChooser<Command> autoChooser = new SendableChooser<>();
-	private final TippingCalculator tippingCalculator = new TippingCalculator(GlobalConstants.ROBOT_MASS, DriveConstants.WHEEL_BASE);
-
-	private LinearVelocity cachedVelocity;
-	private int loopCount;
-	private Pose2d endPose = new Pose2d();
+	private final SendableChooser<AutoScoringLocation[]> scoringLocationChooser = new SendableChooser<>();
+	private final SendableChooser<Boolean> intakingLocationChooser = new SendableChooser<>(); 
+	private final SendableChooser<Integer>  scoringLevelChooser = new SendableChooser<>();
+	private int orderInRoutine = 0;
 
 	private AutoManager() {
-		this.cachedVelocity = Drive.getInstance().getVelocity();
-		this.loopCount = 0;
+		super("Auto", AutoStates.IDLE);
 
-		// Logging Config (path planner)
-		PathPlannerLogging.setLogActivePathCallback(poses -> {
-			Logger.recordOutput("Auto/poses", poses.toArray(new Pose2d[poses.size()]));
-		});
-		PathPlannerLogging.setLogTargetPoseCallback(targetPose -> {
-			Logger.recordOutput("Auto/TrajectorySetpoint", targetPose);
-		});
-		PathPlannerLogging.setLogActivePathCallback(activePath -> {
-			Logger.recordOutput("Auto/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
+		intakingLocationChooser.setDefaultOption("Right", false);
+		intakingLocationChooser.addOption("Left", true);
 
-			// Logging for tipping
-			if (GlobalConstants.ROBOT_MODE == GlobalConstants.RobotMode.SIM) {
-				Distance cgHeight = calculateVerticalCG(Elevator.getInstance().getHeight());
-				tippingCalculator.updateCGHeight(cgHeight);
+		scoringLevelChooser.setDefaultOption("L4", 4);
+		scoringLevelChooser.addOption("L3", 3);
+		scoringLevelChooser.addOption("L2", 2);
+		scoringLevelChooser.addOption("L1", 1);
 
-				if (activePath.size() > 0) {
-					Logger.recordOutput("Auto/Tipping", tippingCalculator.willTip(activePath.get(activePath.size() - 1), Drive.getInstance().getPose(), Drive.getInstance().getVelocity()));
-				}
-				// Half a second, assumes non significant loop overuns (which is fine)
-				loopCount += 1;
-				if (loopCount % 25 == 0) {
-					Logger.recordOutput("Auto/Velocity Calculated Tipping", tippingCalculator.willTip(Drive.getInstance().getVelocity(), cachedVelocity, TIPPING_CALCULATION_TIME));
-					cachedVelocity = Drive.getInstance().getVelocity();
-					loopCount = 0;
-				}
+		scoringLocationChooser.addOption("Blue Side 6", new AutoScoringLocation[] {new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1)});
+		scoringLocationChooser.addOption("Red Side 6", new AutoScoringLocation[] {new AutoScoringLocation(false, 3), new AutoScoringLocation(true, 3)});
+
+
+		addTrigger(IDLE, SCORING_CORAL, () -> true);
+		addTrigger(SCORING_CORAL, INTAKING_CORAL, () -> {
+			boolean triggered = SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE && Elevator.getInstance().nearTarget();
+			if (triggered && orderInRoutine != scoringLocationChooser.getSelected().length) {
+				orderInRoutine +=1;
 			}
-			if (!activePath.isEmpty()) endPose = activePath.get(activePath.size() - 1);
+			return triggered;
 		});
+		addTrigger(INTAKING_CORAL, SCORING_CORAL, () -> SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE);
+		addTrigger(SCORING_CORAL, IDLE, () -> orderInRoutine == scoringLocationChooser.getSelected().length);
 
-		// Name Commands
-		NamedCommands.registerCommand("Score L4", AutoCommands.ScoreReef.atLevel(4));
-		NamedCommands.registerCommand("Score L3", AutoCommands.ScoreReef.atLevel(3));
-		NamedCommands.registerCommand("Score L2", AutoCommands.ScoreReef.atLevel(2));
-		NamedCommands.registerCommand("Score L1", AutoCommands.ScoreReef.atLevel(1));
-
-		NamedCommands.registerCommand("Return To Idle", AutoCommands.ReturnToIdle.get());
-
-		NamedCommands.registerCommand("Intake Coral", AutoCommands.IntakeCoral.getCoral());
-
-		NamedCommands.registerCommand("Transition L1", AutoCommands.Transition.get(1));
-		NamedCommands.registerCommand("Transition L2", AutoCommands.Transition.get(2));
-		NamedCommands.registerCommand("Transition L3", AutoCommands.Transition.get(3));
-		NamedCommands.registerCommand("Transition L4", AutoCommands.Transition.get(4));
-
-		NamedCommands.registerCommand("Transition L1 Alt", AutoCommands.TransitionAlt.get(1));
-		NamedCommands.registerCommand("Transition L2 Alt", AutoCommands.TransitionAlt.get(2));
-		NamedCommands.registerCommand("Transition L3 Alt", AutoCommands.TransitionAlt.get(3));
-		NamedCommands.registerCommand("Transition L4 Alt", AutoCommands.TransitionAlt.get(4));
-
-		// Autos
-
-		// Misc
-		autoChooser.setDefaultOption("Do Nothing", new PrintCommand("Do Nothing"));
-		autoChooser.addOption("Cross Line", new PathPlannerAuto("Cross Line"));
-		autoChooser.addOption("PID Tuning", new PathPlannerAuto("PID Tuning"));
-
-		// 1 Coral
-		autoChooser.addOption("C1 | BN1 | G", new PathPlannerAuto("C1, BN1, G"));
-		autoChooser.addOption("C1 | UN1 | H", new PathPlannerAuto("C1, UN1, H"));
-
-		// 2 Coral
-
-		// 3 Coral
-
-		// 4 Coral
-		autoChooser.addOption("C4 | UN1 | I, J, K, L", new PathPlannerAuto("C4, UN1, {I, J, K, L}"));
-		autoChooser.addOption("C4 | BN1 | C, D, E, F", new PathPlannerAuto("C4, BN1, { C, D, E, F}"));
-
-		// 5 Coral
-		autoChooser.addOption("C5 | UN1 | A, I, J, K, L", new PathPlannerAuto("C5, UN1, {A, I, J, K, L}"));
-		autoChooser.addOption("C5 | BN1 | B, C, D, E, F", new PathPlannerAuto("C5, BN1, { B, C, D, E, F}"));
-
-		// 6 Coral
-		autoChooser.addOption("C6 | UN1 | A, B, I, J, K, L", new PathPlannerAuto("C6, UN1, {A, B, I, J, K, L}"));
-		autoChooser.addOption("C6 | BN1 | A, B, C, D, E, F", new PathPlannerAuto("C6, BN1, {A, B, C, D, E, F}"));
-
-		SmartDashboard.putData("Auto Chooser", autoChooser);
 	}
+
+	public class AutoScoringLocation {
+		private boolean scoreLeftPeg;
+		private int hexagonTargetSide;
+
+		public AutoScoringLocation(boolean scoreLeftPeg, int hexagonTargetSide) {
+			this.scoreLeftPeg = scoreLeftPeg;
+			this.hexagonTargetSide = hexagonTargetSide;
+		}
+
+		public boolean getScoringReefLeft() {
+			return scoreLeftPeg;
+		}
+
+		public int getHexagonTargetSide() {
+			return hexagonTargetSide;
+		}
+	}
+
 
 	public static AutoManager getInstance() {
 		if (instance == null) {
@@ -119,15 +72,16 @@ public class AutoManager {
 		return instance;
 	}
 
-	public Command getSelectedCommand() {
-		if (autoChooser.getSelected() == null) {
-			return new PrintCommand("No auto selected");
-		}
-
-		return autoChooser.getSelected();
-	}
-
-	public Pose2d getEndPose() {
-		return endPose;
+	@Override
+	public void runState () {
+		// Setting Manager State
+		SubsystemManager.getInstance().setState(getState().getManagerState().get());
+		
+		// Config for scoring location	
+		SubsystemManager.getInstance().setLeftSourceTargeted(intakingLocationChooser.getSelected());
+		SubsystemManager.getInstance().setDriverReefScoringLevel(scoringLevelChooser.getSelected());
+		SubsystemManager.getInstance().setOperatorScoringLevel(scoringLevelChooser.getSelected());
+		SubsystemManager.getInstance().setHexagonTargetSide(scoringLocationChooser.getSelected()[orderInRoutine].hexagonTargetSide);
+		SubsystemManager.getInstance().setScoringReefLeft(scoringLocationChooser.getSelected()[orderInRoutine].scoreLeftPeg);	
 	}
 }
