@@ -17,9 +17,10 @@ public class AutoManager extends Subsystem<AutoStates> {
 	private final SendableChooser<Boolean> intakingLocationChooser = new SendableChooser<>();
 	private final SendableChooser<Integer> scoringLevelChooser = new SendableChooser<>();
 	private int orderInRoutine = 0;
+	private boolean setManagerStateAlready = false;
 
 	private AutoManager() {
-		super("Auto", AutoStates.IDLE);
+		super("Auto", AutoStates.SCORING_CORAL);
 		intakingLocationChooser.setDefaultOption("Right", false);
 		intakingLocationChooser.addOption("Left", true);
 
@@ -28,14 +29,15 @@ public class AutoManager extends Subsystem<AutoStates> {
 		scoringLevelChooser.addOption("L2", 2);
 		scoringLevelChooser.addOption("L1", 1);
 
+		scoringLocationChooser.setDefaultOption("Blue Side 6", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) });
 		scoringLocationChooser.addOption("Blue Side 6", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) });
 		scoringLocationChooser.addOption("Red Side 6", new AutoScoringLocation[] { new AutoScoringLocation(false, 3), new AutoScoringLocation(true, 3) });
 
-		addTrigger(IDLE, SCORING_CORAL, () -> true);
 		addTrigger(SCORING_CORAL, INTAKING_CORAL, () -> {
 			boolean triggered = SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE && Elevator.getInstance().nearTarget();
 			if (triggered && orderInRoutine != scoringLocationChooser.getSelected().length) {
 				orderInRoutine += 1;
+				setManagerStateAlready = false;
 			}
 			return triggered;
 		});
@@ -76,7 +78,10 @@ public class AutoManager extends Subsystem<AutoStates> {
 	@Override
 	public void runState() {
 		// Setting Manager State
-		SubsystemManager.getInstance().setState(getState().getManagerState().get());
+		if (!setManagerStateAlready) {
+			SubsystemManager.getInstance().setState(getState().getManagerState().get());
+			setManagerStateAlready = true;
+		}
 
 		// Config for scoring location
 		SubsystemManager.getInstance().setLeftSourceTargeted(intakingLocationChooser.getSelected());

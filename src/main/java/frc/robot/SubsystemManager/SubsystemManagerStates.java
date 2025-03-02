@@ -31,7 +31,7 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		ClimberStates.DOWN
 	),
 	AUTO_ALIGN_FAR(
-		"Aligning Close",
+		"Aligning Far",
 		() -> ElevatorStates.IDLE,
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
