@@ -7,6 +7,7 @@ import org.team7525.subsystem.SubsystemStates;
 public enum AutoStates implements SubsystemStates {
 	INTAKING_CORAL("Intaking Coral", () -> SubsystemManagerStates.INTAKING_CORALER),
 	SCORING_CORAL("Scoring Coral", () -> SubsystemManagerStates.AUTO_ALIGN_FAR),
+	GOING_DOWN("Going Down", () -> SubsystemManagerStates.INTAKING_CORALER_AA_OFF),
 	IDLE("Idle", () -> SubsystemManagerStates.IDLE);
 
 	Supplier<SubsystemManagerStates> state;

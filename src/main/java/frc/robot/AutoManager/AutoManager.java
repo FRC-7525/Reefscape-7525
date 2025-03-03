@@ -33,7 +33,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 
 		scoringLocationChooser.setDefaultOption("Left Side 6", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) });
 
-		addTrigger(SCORING_CORAL, INTAKING_CORAL, () -> {
+		addTrigger(SCORING_CORAL, GOING_DOWN, () -> {
 			if (getStateTime() < 0.5) {
 				return false;
 			}
@@ -44,6 +44,15 @@ public class AutoManager extends Subsystem<AutoStates> {
 			}
 			return triggered;
 		});
+		
+		addTrigger(GOING_DOWN, INTAKING_CORAL, () -> {
+			boolean triggered = Elevator.getInstance().nearTarget() && getStateTime() > 0.2;
+			if (triggered) {
+				setManagerStateAlready = false;
+			}
+			return triggered;
+		});
+
 		addTrigger(INTAKING_CORAL, SCORING_CORAL, () -> {
 			boolean triggered = SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE && getStateTime() > 0.5;
 			if (triggered) {
