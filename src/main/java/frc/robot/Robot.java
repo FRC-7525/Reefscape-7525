@@ -40,7 +40,7 @@ public class Robot extends LoggedRobot {
 			case TESTING:
 				Logger.addDataReceiver(new NT4Publisher());
 				break;
-		}	
+		}
 
 		// Lots and lots of trolling
 		Logger.start();
@@ -85,8 +85,7 @@ public class Robot extends LoggedRobot {
 	}
 
 	@Override
-	public void teleopPeriodic() {
-	}
+	public void teleopPeriodic() {}
 
 	@Override
 	public void disabledInit() {
