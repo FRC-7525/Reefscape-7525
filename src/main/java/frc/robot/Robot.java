@@ -8,8 +8,8 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.AutoManager.AutoManager;
-import frc.robot.FaultManager.FaultManager;
-import frc.robot.GlobalConstants.FaultManagerConstants;
+// import frc.robot.FaultManager.FaultManager;
+// import frc.robot.GlobalConstants.FaultManagerConstants;
 // import frc.robot.MusicManager.MusicManager;
 import frc.robot.SubsystemManager.SubsystemManager;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -22,7 +22,6 @@ import org.team7525.misc.Tracer;
 public class Robot extends LoggedRobot {
 
 	private final SubsystemManager manager = SubsystemManager.getInstance();
-
 	private final AutoManager autoManager = AutoManager.getInstance();
 
 	// private final MusicManager musicManager = MusicManager.getInstance();
@@ -82,6 +81,7 @@ public class Robot extends LoggedRobot {
 		// UN COMMENT FOR MUSIC MANAGER
 		// musicManager.stopMusic();
 		// musicManager.removeAllMotors();
+		autoManager.endAutoRoutine();
 	}
 
 	@Override
@@ -110,6 +110,7 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void testInit() {
+		// UN COMMENT FOR MUSIC MANAGER
 		// musicManager.stopMusic();
 		// musicManager.removeAllMotors();
 	}

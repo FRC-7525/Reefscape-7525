@@ -25,7 +25,7 @@ import org.team7525.autoAlign.RepulsorFieldPlanner.VerticalObstacle;
 
 public final class AutoAlignConstants {
 
-	public static final Distance ROBOT_RADIUS = Meters.of(0.9);
+	public static final Distance ROBOT_RADIUS = Meters.of(1.1);
 	public static final Distance REEF_HITBOX = Meters.of(0.55);
 
 	public static final Angle MIN_HEADING_ANGLE = Degrees.of(-180);
@@ -34,8 +34,9 @@ public final class AutoAlignConstants {
 	// TODO update max speed once robot is built
 	public static final LinearVelocity MAX_SPEED = FeetPerSecond.of(15);
 	public static final boolean USE_GOAL = true;
+	// Sim
 	public static final double DISTANCE_ERROR_MARGIN = 0.1;
-	public static final double ANGLE_ERROR_MARGIN = 0.4;
+	public static final double ANGLE_ERROR_MARGIN = 0.1;
 
 	// public static final double DISTANCE_ERROR_MARGIN = 0.025; real values
 	// public static final double ANGLE_ERROR_MARGIN = 0.1;
@@ -50,14 +51,14 @@ public final class AutoAlignConstants {
 	public static final Supplier<PIDController> TRANSLATIONALY_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(7, 0, 0);
-			case SIM -> new PIDController(2.5, 0, 0);
+			case SIM -> new PIDController(5, 0, 0);
 			default -> new PIDController(1, 0, 0);
 		};
 
 	public static final Supplier<PIDController> TRANSLATIONALX_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(7, 0, 0);
-			case SIM -> new PIDController(2.5, 0, 0);
+			case SIM -> new PIDController(5, 0, 0);
 			default -> new PIDController(1, 0, 0);
 		};
 
@@ -67,7 +68,7 @@ public final class AutoAlignConstants {
 	public static final Supplier<ProfiledPIDController> ROTATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new ProfiledPIDController(10, 0, 0, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ACCELERATION.in(RadiansPerSecondPerSecond)));
-			case SIM -> new ProfiledPIDController(0.1, 0, 0.2, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ACCELERATION.in(RadiansPerSecondPerSecond)));
+			case SIM -> new ProfiledPIDController(10, 0, 0.2, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ACCELERATION.in(RadiansPerSecondPerSecond)));
 			default -> new ProfiledPIDController(0.1, 0, 0.2, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ACCELERATION.in(RadiansPerSecondPerSecond)));
 		};
 
@@ -87,7 +88,7 @@ public final class AutoAlignConstants {
 
 	public static final class obstacles {
 
-		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 4, true, 0.7), new GuidedObstacle(new Translation2d(13.08, 4), 2, true, 0.5));
+		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 6, true, 1.2), new GuidedObstacle(new Translation2d(13.08, 4), 2, true, 0.5));
 
 		public static final List<Obstacle> WALLS = List.of(
 			new HorizontalObstacle(0.0, 0.5, true),

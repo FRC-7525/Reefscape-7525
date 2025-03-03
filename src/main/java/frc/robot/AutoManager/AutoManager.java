@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.SubsystemManager.SubsystemManagerStates;
 import frc.robot.Subsystems.Elevator.Elevator;
+
+import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
 public class AutoManager extends Subsystem<AutoStates> {
@@ -18,6 +20,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 	private final SendableChooser<Integer> scoringLevelChooser = new SendableChooser<>();
 	private int orderInRoutine = 0;
 	private boolean setManagerStateAlready = false;
+	private boolean finishedAuto = false;
 
 	private AutoManager() {
 		super("Auto", AutoStates.SCORING_CORAL);
@@ -38,7 +41,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 				return false;
 			}
 			boolean triggered = SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE && Elevator.getInstance().nearTarget();
-			if (triggered && orderInRoutine -1 != scoringLocationChooser.getSelected().length) {
+			if (triggered && orderInRoutine + 1 != scoringLocationChooser.getSelected().length) {
 				orderInRoutine += 1;
 				setManagerStateAlready = false;
 			}
@@ -52,9 +55,10 @@ public class AutoManager extends Subsystem<AutoStates> {
 			return triggered;
 		});
 		addTrigger(SCORING_CORAL, IDLE, () -> {
-			boolean triggered = orderInRoutine == scoringLocationChooser.getSelected().length -1 && getStateTime() > 0.5;
+			boolean triggered = orderInRoutine == scoringLocationChooser.getSelected().length -1 && getStateTime() > 0.01;
 			if (triggered) {
 				setManagerStateAlready = false;
+				finishedAuto = true;
 			}
 			return triggered;
 		});
@@ -90,8 +94,17 @@ public class AutoManager extends Subsystem<AutoStates> {
 		return instance;
 	}
 
+	public boolean finishedAuto() {
+		return finishedAuto;
+	}
+
+	public void endAutoRoutine() {
+		finishedAuto = true;
+	}
+
 	@Override
 	public void runState() {
+		Logger.recordOutput("Auto/State", getState().getStateString());
 		// Setting Manager State
 		if (!setManagerStateAlready) {
 			SubsystemManager.getInstance().setState(getState().getManagerState().get());
