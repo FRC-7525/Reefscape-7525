@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import edu.wpi.first.math.geometry.Pose2d;
+import frc.robot.Subsystems.ObstacleVision.ObstacleVisionConstants.ObstaclePoseObservation;
 
 public interface ObstacleVisionIO {
     @AutoLog
@@ -12,7 +12,7 @@ public interface ObstacleVisionIO {
 		public boolean connected = false;
 	}
 
-    public ArrayList<Pose2d> getObstaclePoses();
+    public ArrayList<ObstaclePoseObservation> getObstaclePoses();
     
     public void updateInputs(VisionIOInputs inputs);
 }

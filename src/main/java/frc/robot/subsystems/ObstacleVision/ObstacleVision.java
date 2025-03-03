@@ -2,15 +2,23 @@ package frc.robot.Subsystems.ObstacleVision;
 
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 
+import java.util.ArrayList;
+
 import org.team7525.subsystem.Subsystem;
 
+import com.ctre.phoenix6.Utils;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import frc.robot.Subsystems.ObstacleVision.ObstacleVisionConstants.ObstaclePoseObservation;
 
 public class ObstacleVision extends Subsystem<ObstacleVisionStates> {
     private static ObstacleVision instance;
-    
     private ObstacleVisionIO[] io;
+
+    private ArrayList<ObstaclePoseObservation> filteredObstacle;
+
 
     private ObstacleVision(ObstacleVisionIO... io) {
         super("ObstacleVision", ObstacleVisionStates.ON);
@@ -38,9 +46,27 @@ public class ObstacleVision extends Subsystem<ObstacleVisionStates> {
 
     @Override
     protected void runState() {
-        // TODO Auto-generated method stub
-        for (ObstacleVisionIO camera: io) {
-            camera.getObstaclePoses();
+        for (int i = 0; i < filteredObstacle.size(); i++) {
+            if (Math.abs(Utils.fpgaToCurrentTime(filteredObstacle.get(i).timestamp) - Utils.getCurrentTimeSeconds()) > EXPIRATION_TIME)
+                
+            
         }
+
+
+        for (ObstacleVisionIO camera: io) {
+            for (ObstaclePoseObservation observation: camera.getObstaclePoses()) {
+                boolean alreadyObserved = false;
+                for (int i = 0; i < filteredObstacle.size(); i++) {
+                    if (filteredObstacle.get(i).observedPose.getTranslation().getDistance(observation.observedPose.getTranslation()) < 0.4) {
+                        alreadyObserved = true;
+                        filteredObstacle.set(i, observation);
+                        break;
+                    }
+                }
+                if (alreadyObserved) filteredObstacle.add(observation);
+            }
+        }
+
+
     }
 } 

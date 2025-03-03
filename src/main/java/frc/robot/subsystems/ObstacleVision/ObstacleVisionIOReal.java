@@ -10,40 +10,33 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.Subsystems.Drive.Drive;
+import frc.robot.Subsystems.ObstacleVision.ObstacleVisionConstants.ObstaclePoseObservation;
 
 public class ObstacleVisionIOReal implements ObstacleVisionIO {
 
 	private PhotonCamera camera;
 	private Transform3d robotToCamera;
-	private ArrayList<Pose2d> obstacleList;
+	private ArrayList<ObstaclePoseObservation> obstacleList;
 
     public ObstacleVisionIOReal(String cameraName, Transform3d robotToCamera) {
         camera = new PhotonCamera(cameraName);
         this.robotToCamera = robotToCamera;
-        obstacleList = new ArrayList<Pose2d>();
+        obstacleList = new ArrayList<ObstaclePoseObservation>();
     }
 
-    public ArrayList<Pose2d> getObstaclePoses() {
+    public ArrayList<ObstaclePoseObservation> getObstaclePoses() {
+        obstacleList.clear();
         for (var result : camera.getAllUnreadResults()) {
             for (var obstacle : result.getTargets()) {
                 Transform3d cameraToObject = obstacle.getBestCameraToTarget();
                 Pose2d robotPose = Drive.getInstance().getPose();
 
-                // if (robotPose.getTranslation().getDistance(reefPose2d.getTranslation()) > REEF_HITBOX.in(Meters)) continue;
+                Translation2d fieldRelativeObjectTranslation = cameraToObject.plus(robotToCamera).getTranslation().toTranslation2d()
+                .rotateBy(robotPose.getRotation())
+                .rotateBy(robotToCamera.getRotation().toRotation2d());
+                Pose2d obstaclePose = new Pose2d(fieldRelativeObjectTranslation.plus(robotPose.getTranslation()), new Rotation2d());
 
-                Translation2d fieldRelativeObjectTranslation = cameraToObject.plus(robotToCamera).getTranslation().toTranslation2d().rotateBy(robotPose.getRotation());
-                Pose2d obstaclePose = new Pose2d(fieldRelativeObjectTranslation, new Rotation2d());
-
-                // for (int i = 0; i < obstacleList.size(); i++) {
-                //     if (obstacleList.get(i).getTranslation().getDistance(obstaclePose.getTranslation()) < .1) {
-                //         alreadyListed = true;
-                //         obstacleList.set(i, obstaclePose);
-                //         break;
-                //     }
-                // }
-
-                obstacleList.add(obstaclePose);
-                System.out.println("hi");
+                obstacleList.add(new ObstaclePoseObservation(result.getTimestampSeconds(), obstaclePose));
                 Logger.recordOutput("ObjectVision", obstaclePose);
             }
         }
