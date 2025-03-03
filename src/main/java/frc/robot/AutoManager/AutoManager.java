@@ -34,6 +34,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 		scoringLocationChooser.setDefaultOption("Left Side 6", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) });
 
 		addTrigger(SCORING_CORAL, GOING_DOWN, () -> {
+
 			if (getStateTime() < 0.5) {
 				return false;
 			}
