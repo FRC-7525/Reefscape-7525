@@ -41,16 +41,14 @@ public class Robot extends LoggedRobot {
 			case TESTING:
 				Logger.addDataReceiver(new NT4Publisher());
 				break;
-		}
+		}	
 
+		// Lots and lots of trolling
 		Logger.start();
 		CommandsUtil.logCommands();
 		DriverStation.silenceJoystickConnectionWarning(true);
-
 		CommandScheduler.getInstance().unregisterAllSubsystems();
-
-		FaultManager.getInstance().calibrateDeviceOrder(FaultManagerConstants.CANIVORE_DEVICE_ORDER, "CANivore");
-		// Needed so we don't waste time in auto "warming up" the first command
+		// FaultManager.getInstance().calibrateDeviceOrder(FaultManagerConstants.CANIVORE_DEVICE_ORDER, "CANivore");
 		FollowPathCommand.warmupCommand().schedule();
 		System.gc();
 	}
@@ -87,7 +85,8 @@ public class Robot extends LoggedRobot {
 	}
 
 	@Override
-	public void teleopPeriodic() {}
+	public void teleopPeriodic() {
+	}
 
 	@Override
 	public void disabledInit() {

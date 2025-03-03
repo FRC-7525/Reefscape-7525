@@ -34,15 +34,30 @@ public class AutoManager extends Subsystem<AutoStates> {
 		scoringLocationChooser.addOption("Red Side 6", new AutoScoringLocation[] { new AutoScoringLocation(false, 3), new AutoScoringLocation(true, 3) });
 
 		addTrigger(SCORING_CORAL, INTAKING_CORAL, () -> {
+			if (getStateTime() < 0.5) {
+				return false;
+			}
 			boolean triggered = SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE && Elevator.getInstance().nearTarget();
-			if (triggered && orderInRoutine != scoringLocationChooser.getSelected().length) {
+			if (triggered && orderInRoutine -1 != scoringLocationChooser.getSelected().length) {
 				orderInRoutine += 1;
 				setManagerStateAlready = false;
 			}
 			return triggered;
 		});
-		addTrigger(INTAKING_CORAL, SCORING_CORAL, () -> SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE);
-		addTrigger(SCORING_CORAL, IDLE, () -> orderInRoutine == scoringLocationChooser.getSelected().length);
+		addTrigger(INTAKING_CORAL, SCORING_CORAL, () -> {
+			boolean triggered = SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE && getStateTime() > 0.5;
+			if (triggered) {
+				setManagerStateAlready = false;
+			}
+			return triggered;
+		});
+		addTrigger(SCORING_CORAL, IDLE, () -> {
+			boolean triggered = orderInRoutine == scoringLocationChooser.getSelected().length -1 && getStateTime() > 0.5;
+			if (triggered) {
+				setManagerStateAlready = false;
+			}
+			return triggered;
+		});
 
 		SmartDashboard.putData("Level Chooser", scoringLevelChooser);
 		SmartDashboard.putData("Side Chooser", scoringLocationChooser);
