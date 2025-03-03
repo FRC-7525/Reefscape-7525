@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.SubsystemManager.SubsystemManagerStates;
 import frc.robot.Subsystems.Elevator.Elevator;
-
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -53,7 +52,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 			return triggered;
 		});
 		addTrigger(SCORING_CORAL, IDLE, () -> {
-			boolean triggered = orderInRoutine == scoringLocationChooser.getSelected().length -1 && getStateTime() > 0.01;
+			boolean triggered = orderInRoutine == scoringLocationChooser.getSelected().length - 1 && getStateTime() > 0.01;
 			if (triggered) {
 				setManagerStateAlready = false;
 				finishedAuto = true;
