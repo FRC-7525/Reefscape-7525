@@ -32,10 +32,8 @@ public class AutoManager extends Subsystem<AutoStates> {
 		scoringLevelChooser.addOption("L2", 2);
 		scoringLevelChooser.addOption("L1", 1);
 
-		scoringLocationChooser.setDefaultOption("Blue Side 6", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) });
-		scoringLocationChooser.addOption("Blue Side 6", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) });
-		scoringLocationChooser.addOption("Red Side 6", new AutoScoringLocation[] { new AutoScoringLocation(false, 3), new AutoScoringLocation(true, 3) });
-
+		scoringLocationChooser.setDefaultOption("Left Side 6", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) });
+		
 		addTrigger(SCORING_CORAL, INTAKING_CORAL, () -> {
 			if (getStateTime() < 0.5) {
 				return false;
