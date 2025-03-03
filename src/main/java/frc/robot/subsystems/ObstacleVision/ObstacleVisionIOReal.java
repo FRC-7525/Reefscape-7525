@@ -1,8 +1,5 @@
 package frc.robot.Subsystems.ObstacleVision;
 
-import static edu.wpi.first.units.Units.Meters;
-import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.REEF_HITBOX;
-
 import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
@@ -10,16 +7,9 @@ import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Subsystems.Drive.Drive;
-import java.util.ArrayList;
-import org.photonvision.PhotonCamera;
-import org.photonvision.simulation.PhotonCameraSim;
 
 public class ObstacleVisionIOReal implements ObstacleVisionIO {
 
@@ -33,8 +23,12 @@ public class ObstacleVisionIOReal implements ObstacleVisionIO {
         obstacleList = new ArrayList<Pose2d>();
     }
 
-				Translation3d transformRobotRelative = cameraToObject.getTranslation().rotateBy(robotToCamera.getRotation().unaryMinus());
-				Pose2d obstaclePose = robotPose.transformBy(new Transform2d(transformRobotRelative.toTranslation2d(), cameraToObject.getRotation().toRotation2d()));
+    public ArrayList<Pose2d> getObstaclePoses() {
+        for (var result : camera.getAllUnreadResults()) {
+            for (var obstacle : result.getTargets()) {
+                Transform3d cameraToObject = obstacle.getBestCameraToTarget();
+                Pose2d robotPose = Drive.getInstance().getPose();
+
                 // if (robotPose.getTranslation().getDistance(reefPose2d.getTranslation()) > REEF_HITBOX.in(Meters)) continue;
 
                 Translation2d fieldRelativeObjectTranslation = cameraToObject.plus(robotToCamera).getTranslation().toTranslation2d().rotateBy(robotPose.getRotation());
@@ -48,11 +42,12 @@ public class ObstacleVisionIOReal implements ObstacleVisionIO {
                 //     }
                 // }
 
+                obstacleList.add(obstaclePose);
+                System.out.println("hi");
                 Logger.recordOutput("ObjectVision", obstaclePose);
             }
         }
         return obstacleList;
-        
     }
 
     @Override
