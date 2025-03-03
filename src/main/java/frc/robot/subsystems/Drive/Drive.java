@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.AutoManager.AutoManager;
 import frc.robot.FaultManager.FaultManager;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
@@ -150,7 +151,7 @@ public class Drive extends Subsystem<DriveStates> {
 		logOutputs(driveIO.getDrive().getState());
 
 		// Otherwise it will try to force wheels to stop in auto
-		if (!DriverStation.isAutonomous() && AutoAlign.getInstance().getState() == AutoAlignStates.OFF && !WheelRadiusCharacterization.getInstance().isCharacterizationActive()) {
+		if (AutoManager.getInstance().finishedAuto() && AutoAlign.getInstance().getState() == AutoAlignStates.OFF && !WheelRadiusCharacterization.getInstance().isCharacterizationActive()) {
 			getState().driveRobot();
 		}
 
@@ -205,7 +206,11 @@ public class Drive extends Subsystem<DriveStates> {
 			double targetVelocity = Math.hypot(xVelocity, yVelocity);
 
 			// Like yknow when it tips but like it be tipping mad when u stop, yeah this stops it
-			if (Math.abs(currentVelocity) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond) && Math.abs(targetVelocity) <= 0.5) {
+			if (
+				Math.abs(currentVelocity) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond) &&
+				Math.abs(targetVelocity) <= 0.5 &&
+				(Elevator.getInstance().getState() == ElevatorStates.ALGAE_PROCESSOR || Elevator.getInstance().getState() == ElevatorStates.CORAL_STATION || Elevator.getInstance().getState() == ElevatorStates.IDLE)
+			) {
 				Angle angle = Radians.of(Math.atan2(yVelocity, xVelocity));
 				antiTipX = xStoppingTranslationLimiter.calculate(targetVelocity * Math.sin(angle.in(Radians)));
 				antiTipY = yStoppingTranslationLimiter.calculate(targetVelocity * Math.cos(angle.in(Radians)));
