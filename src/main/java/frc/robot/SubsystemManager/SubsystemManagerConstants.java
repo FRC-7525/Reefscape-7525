@@ -18,7 +18,7 @@ public final class SubsystemManagerConstants {
 	public static final double AXIS_RECOGNITION_POINT = 0.8;
 
 	public static final double CORAL_CENTERING_TIME = 0.0;
-	public static final double SCORING_TIME = 0.3;
+	public static final double SCORING_TIME = 0.6;
 
 	public static final Map<Integer, ElevatorStates> REEF_SCORING_LEVELS = Map.of(1, ElevatorStates.L1, 2, ElevatorStates.L2, 3, ElevatorStates.L3, 4, ElevatorStates.L4);
 
