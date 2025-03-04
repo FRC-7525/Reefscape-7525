@@ -41,14 +41,13 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		if (getState() == ElevatorStates.ZEROING) {
 			io.zero();
 			return;
+		} else {
+			io.setHeightGoalpoint(getState().getTargetHeight());
+			io.runElevator();
 		}
 
 		io.updateInputs(inputs);
 		Logger.processInputs(ElevatorConstants.SUBSYSTEM_NAME, inputs);
-
-		io.setHeightGoalpoint(getState().getTargetHeight());
-		io.runElevator();
-
 		Logger.recordOutput("Elevator/Carraige Position", new Pose3d(new Translation3d(0, 0, io.getCarriageHeight().in(Meters)), new Rotation3d()));
 		Logger.recordOutput("Elevator/Stage1 Position", new Pose3d(new Translation3d(0, 0, io.getStageOneHeight().in(Meters)), new Rotation3d()));
 		Logger.recordOutput("Elevator/Carraige Height", io.getCarriageHeight().in(Meters));

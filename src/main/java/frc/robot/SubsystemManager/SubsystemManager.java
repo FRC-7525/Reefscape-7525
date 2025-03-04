@@ -141,14 +141,14 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Zero Elevator
 		// TODO: Test
 		// Not testing all that :laughing cat emoji:
-		// addTrigger(IDLE, ZEROING_ELEVATOR, () -> {
-		// 	boolean pressed = OPERATOR_CONTROLLER.getRawButtonPressed(4);
-		// 	if (pressed) {
-		// 		elevator.resetMotorsZeroed();
-		// 	}
-		// 	return pressed;
-		// });
-		// addTrigger(ZEROING_ELEVATOR, IDLE, () -> () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || elevator.motorsZeroed());
+		addTrigger(IDLE, ZEROING_ELEVATOR, () -> {
+			boolean pressed = OPERATOR_CONTROLLER.getRawButtonPressed(4);
+			if (pressed) {
+				elevator.resetMotorsZeroed();
+			}
+			return pressed;
+		});
+		addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || elevator.motorsZeroed());
 	}
 
 	public static SubsystemManager getInstance() {
