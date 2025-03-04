@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static frc.robot.SubsystemManager.SubsystemManagerStates.IDLE;
+
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -12,9 +14,6 @@ import frc.robot.AutoManager.AutoManager;
 // import frc.robot.GlobalConstants.FaultManagerConstants;
 // import frc.robot.MusicManager.MusicManager;
 import frc.robot.SubsystemManager.SubsystemManager;
-
-import static frc.robot.SubsystemManager.SubsystemManagerStates.IDLE;
-
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -67,7 +66,6 @@ public class Robot extends LoggedRobot {
 	public void autonomousInit() {
 		autoManager.setFinishedAuto(false);
 		autoManager.setOrderInRoutine(0);
-
 		// musicManager.stopMusic();
 		// musicManager.removeAllMotors();
 	}
@@ -89,7 +87,6 @@ public class Robot extends LoggedRobot {
 		// musicManager.removeAllMotors();
 		autoManager.setFinishedAuto(true);
 		manager.setState(IDLE);
-		
 	}
 
 	@Override
