@@ -196,7 +196,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	}
 
 	public void setScoringReefLeft(boolean scoringReefLeft) {
-		this.scoringReefLeft = false;
+		this.scoringReefLeft = scoringReefLeft;
 	}
 
 	public double getTime() {

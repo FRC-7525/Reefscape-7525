@@ -32,7 +32,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 		scoringLevelChooser.addOption("L1", 1);
 
 		scoringLocationChooser.setDefaultOption("Left Side 6", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) });
-		scoringLocationChooser.addOption("Left Side 3 ", new AutoScoringLocation[] { new AutoScoringLocation(false, 5), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 6) });
+		scoringLocationChooser.addOption("Left Side 3 ", new AutoScoringLocation[] { new AutoScoringLocation(false, 5), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 6),  new AutoScoringLocation(true, 1)  });
 
 		addTrigger(SCORING_CORAL, GOING_DOWN, () -> {
 			if (getStateTime() < 0.5) {
@@ -47,7 +47,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 		});
 
 		addTrigger(GOING_DOWN, INTAKING_CORAL, () -> {
-			boolean triggered = Elevator.getInstance().nearTarget() && getStateTime() > 0.2;
+			boolean triggered = Elevator.getInstance().nearEnoughTarget() && getStateTime() > 0.2;
 			if (triggered) {
 				setManagerStateAlready = false;
 			}

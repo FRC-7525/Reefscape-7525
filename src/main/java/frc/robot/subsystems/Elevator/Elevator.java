@@ -2,7 +2,7 @@ package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.Subsystems.Elevator.ElevatorConstants.SUBSYSTEM_NAME;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -59,6 +59,10 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
 	public boolean nearTarget() {
 		return io.nearTarget();
+	}
+
+	public boolean nearEnoughTarget() {
+		return io.getHeight().in(Inches) < NEAR_ENOUGH_POSITION.in(Inches);
 	}
 
 	public Distance getHeight() {
