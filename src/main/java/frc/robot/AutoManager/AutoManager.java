@@ -32,7 +32,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 		scoringLevelChooser.addOption("L1", 1);
 
 		scoringLocationChooser.setDefaultOption("Left Side 6", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) });
-		scoringLocationChooser.addOption("Left Side 3 ", new AutoScoringLocation[] { new AutoScoringLocation(false, 5), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 6) });
+		scoringLocationChooser.addOption("Left Side 3 ", new AutoScoringLocation[] { new AutoScoringLocation(false, 5), new AutoScoringLocation(false, 1), new AutoScoringLocation(true, 1), new AutoScoringLocation(true, 1)});
 
 		addTrigger(SCORING_CORAL, GOING_DOWN, () -> {
 			if (getStateTime() < 0.5) {
@@ -62,7 +62,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 			return triggered;
 		});
 		addTrigger(SCORING_CORAL, IDLE, () -> {
-			boolean triggered = orderInRoutine == scoringLocationChooser.getSelected().length - 1 && getStateTime() > 0.01;
+			boolean triggered = (orderInRoutine +1 == scoringLocationChooser.getSelected().length) && getStateTime() > 0.1;
 			if (triggered) {
 				setManagerStateAlready = false;
 				finishedAuto = true;
