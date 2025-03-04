@@ -12,6 +12,9 @@ import frc.robot.AutoManager.AutoManager;
 // import frc.robot.GlobalConstants.FaultManagerConstants;
 // import frc.robot.MusicManager.MusicManager;
 import frc.robot.SubsystemManager.SubsystemManager;
+
+import static frc.robot.SubsystemManager.SubsystemManagerStates.IDLE;
+
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -62,6 +65,9 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void autonomousInit() {
+		autoManager.setFinishedAuto(false);
+		autoManager.setOrderInRoutine(0);
+
 		// musicManager.stopMusic();
 		// musicManager.removeAllMotors();
 	}
@@ -81,7 +87,9 @@ public class Robot extends LoggedRobot {
 		// UN COMMENT FOR MUSIC MANAGER
 		// musicManager.stopMusic();
 		// musicManager.removeAllMotors();
-		autoManager.endAutoRoutine();
+		autoManager.setFinishedAuto(true);
+		manager.setState(IDLE);
+		
 	}
 
 	@Override

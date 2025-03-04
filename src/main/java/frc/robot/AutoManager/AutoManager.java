@@ -106,10 +106,6 @@ public class AutoManager extends Subsystem<AutoStates> {
 		return finishedAuto;
 	}
 
-	public void endAutoRoutine() {
-		finishedAuto = true;
-	}
-
 	@Override
 	public void runState() {
 		Logger.recordOutput("Auto/State", getState().getStateString());
@@ -127,5 +123,13 @@ public class AutoManager extends Subsystem<AutoStates> {
 		SubsystemManager.getInstance().setOperatorScoringLevel(scoringLevelChooser.getSelected());
 		SubsystemManager.getInstance().setHexagonTargetSide(scoringLocationChooser.getSelected()[orderInRoutine].hexagonTargetSide);
 		SubsystemManager.getInstance().setScoringReefLeft(scoringLocationChooser.getSelected()[orderInRoutine].scoreLeftPeg);
+	}
+
+	public void setOrderInRoutine(int orderNumber) {
+		this.orderInRoutine = 0;
+	}
+
+	public void setFinishedAuto(boolean finishedAuto) {
+		this.finishedAuto = finishedAuto;
 	}
 }
