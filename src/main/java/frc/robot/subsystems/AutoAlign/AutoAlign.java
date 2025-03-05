@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Robot;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private final Drive drive = Drive.getInstance();
 	private final RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner(new ArrayList<>(), new ArrayList<>(), (ROBOT_MODE == RobotMode.SIM));
 
-	private ProfiledPIDController translationXController;
-	private ProfiledPIDController translationYController;
+	private PIDController translationXController;
+	private PIDController translationYController;
 
 	private ProfiledPIDController rotationController;
 
@@ -156,7 +157,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/Interpolated Distance From Reef", interpolatedDistanceFromReef);
 		Logger.recordOutput("AutoAlign/ReefPose", reefPose);
 		Logger.recordOutput("AutoAlign/Repulsor Activated", repulsorActivated);
-		Logger.recordOutput("AutoAlign/Arrows", repulsor.getArrows().toArray(arrowsArray));
+		if (Robot.isSimulation()) {
+			Logger.recordOutput("AutoAlign/Arrows", repulsor.getArrows().toArray(arrowsArray));
+		}
 	}
 
 	public boolean nearGoal() {

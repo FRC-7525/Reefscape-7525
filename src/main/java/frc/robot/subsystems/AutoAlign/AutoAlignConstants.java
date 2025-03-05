@@ -14,7 +14,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
-import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.GlobalConstants;
@@ -40,8 +39,8 @@ public final class AutoAlignConstants {
 	// public static final double DISTANCE_ERROR_MARGIN = 0.1;
 	// public static final double ANGLE_ERROR_MARGIN = 0.1;
 
-	public static final double DISTANCE_ERROR_MARGIN = 0.01; // real values: dist erro was 0.02
-	public static final double ANGLE_ERROR_MARGIN = 0.005;
+	public static final double DISTANCE_ERROR_MARGIN = 0.01; 
+	public static final double ANGLE_ERROR_MARGIN = 0.05;
 
 	public static final double GOAL_STRENGTH = 0.65;
 	static final double FIELD_LENGTH = 16.42;
@@ -55,18 +54,18 @@ public final class AutoAlignConstants {
 	public static final LinearVelocity MAX_TRANSLATIONAL_VELOCITY = FeetPerSecond.of(10);
 	public static final LinearAcceleration MAX_TRANSLATIONAL_ACCEL = MetersPerSecondPerSecond.of(7);
 	// TODO tune these
-	public static final Supplier<ProfiledPIDController> TRANSLATIONALY_CONTROLLER = () ->
+	public static final Supplier<PIDController> TRANSLATIONALY_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new ProfiledPIDController(30, 0, .1, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-			case SIM -> new ProfiledPIDController(5, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-			default -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
+			case REAL -> new PIDController(14, 0, 0);
+			case SIM -> new PIDController(5, 0, 0);
+			default -> new PIDController(14, 0, 0);
 		};
 
-	public static final Supplier<ProfiledPIDController> TRANSLATIONALX_CONTROLLER = () ->
+	public static final Supplier<PIDController> TRANSLATIONALX_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new ProfiledPIDController(30, 0, .1, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-			case SIM -> new ProfiledPIDController(5, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-			default -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
+			case REAL -> new PIDController(14, 0, 0);
+			case SIM -> new PIDController(5, 0, 0);
+			default -> new PIDController(14, 0, 0);
 		};
 
 	public static final Supplier<ProfiledPIDController> ROTATIONAL_CONTROLLER = () ->
@@ -78,7 +77,7 @@ public final class AutoAlignConstants {
 
 	public static final Supplier<ProfiledPIDController> REPULSOR_TRANSLATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new ProfiledPIDController(5, 0, 0.1, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
+			case REAL -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
 			case SIM -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
 			default -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
 		};

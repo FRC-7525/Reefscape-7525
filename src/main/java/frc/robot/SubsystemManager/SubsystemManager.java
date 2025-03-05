@@ -4,7 +4,6 @@ import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 import static frc.robot.SubsystemManager.SubsystemManagerStates.*;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Subsystems.Algaer.Algaer;

@@ -5,7 +5,6 @@ import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.Subsystems.Drive.DriveConstants.*;
 import static frc.robot.Subsystems.Drive.TunerConstants.*;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import org.team7525.subsystem.SubsystemStates;
 
 /**
