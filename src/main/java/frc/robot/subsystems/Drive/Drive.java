@@ -151,7 +151,7 @@ public class Drive extends Subsystem<DriveStates> {
 		logOutputs(driveIO.getDrive().getState());
 
 		// Otherwise it will try to force wheels to stop in auto
-		if (AutoManager.getInstance().finishedAuto() && AutoAlign.getInstance().getState() == AutoAlignStates.OFF && !WheelRadiusCharacterization.getInstance().isCharacterizationActive()) {
+		if (AutoAlign.getInstance().getState() == AutoAlignStates.OFF && !WheelRadiusCharacterization.getInstance().isCharacterizationActive()) {
 			getState().driveRobot();
 		}
 
@@ -201,7 +201,7 @@ public class Drive extends Subsystem<DriveStates> {
 		double antiTipX = xVelocity;
 		double antiTipY = yVelocity;
 
-		if (useDecelerationLimit) {
+		if (useDecelerationLimit && !DriverStation.isAutonomous()) {
 			double currentVelocity = Drive.getInstance().getVelocity().in(MetersPerSecond);
 			double targetVelocity = Math.hypot(xVelocity, yVelocity);
 
@@ -231,8 +231,8 @@ public class Drive extends Subsystem<DriveStates> {
 		driveIO.setControl(
 			new SwerveRequest.FieldCentric()
 				.withDeadband(DEADBAND)
-				.withVelocityX(useDecelerationLimit ? antiTipX : xVelocity)
-				.withVelocityY(useDecelerationLimit ? antiTipY : yVelocity)
+				.withVelocityX(useDecelerationLimit && !DriverStation.isAutonomous()  ? antiTipX : xVelocity)
+				.withVelocityY(useDecelerationLimit && !DriverStation.isAutonomous() ? antiTipY : yVelocity)
 				.withRotationalRate(omega)
 				.withDriveRequestType(SwerveModule.DriveRequestType.Velocity)
 				.withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo)

@@ -18,6 +18,8 @@ import org.littletonrobotics.junction.Logger;
 import org.team7525.misc.Tracer;
 import org.team7525.subsystem.Subsystem;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+
 public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 	private static SubsystemManager instance = new SubsystemManager();
@@ -100,7 +102,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 			this.leftSourceSelected = left ? true : (right ? false : leftSourceSelected);
 			return left || right;
 		});
-		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, autoAlign::nearGoal);
+
+		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoal());
 
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);

@@ -32,7 +32,7 @@ public enum SubsystemManagerStates implements SubsystemStates {
 	),
 	AUTO_ALIGN_FAR(
 		"Aligning Far",
-		() -> ElevatorStates.TRANSITIONING,
+		() -> SubsystemManager.getInstance().getOperatorReefScoringLevel() < 3 ? ElevatorStates.IDLE : ElevatorStates.TRANSITIONING,
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
 		() -> REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())),
