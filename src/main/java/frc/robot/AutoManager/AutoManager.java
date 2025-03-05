@@ -23,6 +23,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 
 	private AutoManager() {
 		super("Auto", AutoStates.SCORING_CORAL);
+		Logger.recordOutput("Auto/State", getState().getStateString());
 		intakingLocationChooser.setDefaultOption("Right", false);
 		intakingLocationChooser.addOption("Left", true);
 
@@ -32,13 +33,15 @@ public class AutoManager extends Subsystem<AutoStates> {
 		scoringLevelChooser.addOption("L1", 1);
 
 		scoringLocationChooser.setDefaultOption("Left Side 6", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) });
+		scoringLocationChooser.addOption("Left Side 3 ", new AutoScoringLocation[] { new AutoScoringLocation(false, 5), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 6) });
+		scoringLocationChooser.addOption("Right Side 3 ", new AutoScoringLocation[] { new AutoScoringLocation(true, 3), new AutoScoringLocation(false, 2), new AutoScoringLocation(true, 2) });
 
 		addTrigger(SCORING_CORAL, GOING_DOWN, () -> {
 			if (getStateTime() < 0.5) {
 				return false;
 			}
 			boolean triggered = SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE && Elevator.getInstance().nearTarget();
-			if (triggered && orderInRoutine + 1 != scoringLocationChooser.getSelected().length) {
+			if (triggered) {
 				orderInRoutine += 1;
 				setManagerStateAlready = false;
 			}
@@ -46,7 +49,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 		});
 
 		addTrigger(GOING_DOWN, INTAKING_CORAL, () -> {
-			boolean triggered = Elevator.getInstance().nearTarget() && getStateTime() > 0.2;
+			boolean triggered = Elevator.getInstance().nearEnoughTarget() && getStateTime() > 0.2;
 			if (triggered) {
 				setManagerStateAlready = false;
 			}
@@ -61,7 +64,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 			return triggered;
 		});
 		addTrigger(SCORING_CORAL, IDLE, () -> {
-			boolean triggered = orderInRoutine == scoringLocationChooser.getSelected().length - 1 && getStateTime() > 0.01;
+			boolean triggered = orderInRoutine == scoringLocationChooser.getSelected().length && getStateTime() > 0.01;
 			if (triggered) {
 				setManagerStateAlready = false;
 				finishedAuto = true;
@@ -104,13 +107,10 @@ public class AutoManager extends Subsystem<AutoStates> {
 		return finishedAuto;
 	}
 
-	public void endAutoRoutine() {
-		finishedAuto = true;
-	}
-
 	@Override
 	public void runState() {
 		Logger.recordOutput("Auto/State", getState().getStateString());
+		Logger.recordOutput("Auto/order number", orderInRoutine);
 		// Setting Manager State
 		if (!setManagerStateAlready) {
 			SubsystemManager.getInstance().setState(getState().getManagerState().get());
@@ -118,10 +118,19 @@ public class AutoManager extends Subsystem<AutoStates> {
 		}
 
 		// Config for scoring location
+		if (orderInRoutine >= scoringLocationChooser.getSelected().length) return;
 		SubsystemManager.getInstance().setLeftSourceTargeted(intakingLocationChooser.getSelected());
 		SubsystemManager.getInstance().setDriverReefScoringLevel(scoringLevelChooser.getSelected());
 		SubsystemManager.getInstance().setOperatorScoringLevel(scoringLevelChooser.getSelected());
 		SubsystemManager.getInstance().setHexagonTargetSide(scoringLocationChooser.getSelected()[orderInRoutine].hexagonTargetSide);
 		SubsystemManager.getInstance().setScoringReefLeft(scoringLocationChooser.getSelected()[orderInRoutine].scoreLeftPeg);
+	}
+
+	public void setOrderInRoutine(int orderNumber) {
+		this.orderInRoutine = 0;
+	}
+
+	public void setFinishedAuto(boolean finishedAuto) {
+		this.finishedAuto = finishedAuto;
 	}
 }

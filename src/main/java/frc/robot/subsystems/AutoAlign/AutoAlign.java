@@ -27,13 +27,13 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private final Drive drive = Drive.getInstance();
 	private final RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner(new ArrayList<>(), new ArrayList<>(), (ROBOT_MODE == RobotMode.SIM));
 
-	private PIDController translationXController;
-	private PIDController translationYController;
+	private ProfiledPIDController translationXController;
+	private ProfiledPIDController translationYController;
 
 	private ProfiledPIDController rotationController;
 
-	private PIDController repulsionTranslationController;
-	private PIDController repulsionRotationController;
+	private ProfiledPIDController repulsionTranslationController;
+	private ProfiledPIDController repulsionRotationController;
 
 	private Pose2d targetPose;
 	private Pose2d goalPose;
@@ -58,6 +58,10 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		repulsorActivated = false;
 		targetPose = new Pose2d();
 		goalPose = new Pose2d();
+
+		this.translationXController.setTolerance(0.01);
+		this.translationYController.setTolerance(0.01);
+		this.repulsionRotationController.setTolerance(0.1);
 	}
 
 	public static AutoAlign getInstance() {
@@ -156,7 +160,14 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	public boolean nearGoal() {
-		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
+		Logger.recordOutput("AutoTest/Rotation Error Repulsor", repulsionRotationController.getPositionError());
+		Logger.recordOutput("AutoTest/Rotation Error Regular", rotationController.getPositionError());
+		Logger.recordOutput("AutoTest/Translation Error", drive.getPose().getTranslation().getDistance(goalPose.getTranslation()));
+		Logger.recordOutput(
+			"AutoTest/NearGoal",
+			drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getPositionError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN)
+		);
+		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getPositionError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
 	}
 
 	public boolean readyForClose() {
