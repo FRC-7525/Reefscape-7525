@@ -163,7 +163,10 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoTest/Rotation Error Repulsor", repulsionRotationController.getPositionError());
 		Logger.recordOutput("AutoTest/Rotation Error Regular", rotationController.getPositionError());
 		Logger.recordOutput("AutoTest/Translation Error", drive.getPose().getTranslation().getDistance(goalPose.getTranslation()));
-		Logger.recordOutput("AutoTest/NearGoal", drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getPositionError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
+		Logger.recordOutput(
+			"AutoTest/NearGoal",
+			drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getPositionError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN)
+		);
 		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getPositionError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
 	}
 

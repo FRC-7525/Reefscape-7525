@@ -47,9 +47,7 @@ public final class AutoAlignConstants {
 	static final double FIELD_LENGTH = 16.42;
 	static final double FIELD_WIDTH = 8.16;
 
-	public static final Pose2d REEF_POSE = DriverStation.getAlliance().isPresent()
-			&& DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d())
-					: new Pose2d(4.49, 4, new Rotation2d());
+	public static final Pose2d REEF_POSE = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
 
 	public static final AngularVelocity MAX_ANGULAR_VELOCITY = RotationsPerSecond.of(2);
 	public static final AngularAcceleration MAX_ANGULAR_ACCELERATION = RotationsPerSecondPerSecond.of(1);
@@ -57,63 +55,52 @@ public final class AutoAlignConstants {
 	public static final LinearVelocity MAX_TRANSLATIONAL_VELOCITY = FeetPerSecond.of(10);
 	public static final LinearAcceleration MAX_TRANSLATIONAL_ACCEL = MetersPerSecondPerSecond.of(7);
 	// TODO tune these
-	public static final Supplier<ProfiledPIDController> TRANSLATIONALY_CONTROLLER = () -> switch (GlobalConstants.ROBOT_MODE) {
-		case REAL -> new ProfiledPIDController(30, 0, .1, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond),
-				MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-		case SIM -> new ProfiledPIDController(5, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond),
-				MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-		default -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond),
-				MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-	};
+	public static final Supplier<ProfiledPIDController> TRANSLATIONALY_CONTROLLER = () ->
+		switch (GlobalConstants.ROBOT_MODE) {
+			case REAL -> new ProfiledPIDController(30, 0, .1, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
+			case SIM -> new ProfiledPIDController(5, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
+			default -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
+		};
 
-	public static final Supplier<ProfiledPIDController> TRANSLATIONALX_CONTROLLER = () -> switch (GlobalConstants.ROBOT_MODE) {
-		case REAL -> new ProfiledPIDController(30, 0, .1, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond),
-				MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-		case SIM -> new ProfiledPIDController(5, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond),
-				MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-		default -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond),
-				MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-	};
+	public static final Supplier<ProfiledPIDController> TRANSLATIONALX_CONTROLLER = () ->
+		switch (GlobalConstants.ROBOT_MODE) {
+			case REAL -> new ProfiledPIDController(30, 0, .1, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
+			case SIM -> new ProfiledPIDController(5, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
+			default -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
+		};
 
-	public static final Supplier<ProfiledPIDController> ROTATIONAL_CONTROLLER = () -> switch (GlobalConstants.ROBOT_MODE) {
-		case REAL -> new ProfiledPIDController(7, 0, 0, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond),
-				MAX_ANGULAR_ACCELERATION.in(RadiansPerSecondPerSecond)));
-		case SIM -> new ProfiledPIDController(10, 0, 0.2, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond),
-				MAX_ANGULAR_ACCELERATION.in(RadiansPerSecondPerSecond)));
-		default -> new ProfiledPIDController(0.1, 0, 0.2, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond),
-				MAX_ANGULAR_ACCELERATION.in(RadiansPerSecondPerSecond)));
-	};
+	public static final Supplier<ProfiledPIDController> ROTATIONAL_CONTROLLER = () ->
+		switch (GlobalConstants.ROBOT_MODE) {
+			case REAL -> new ProfiledPIDController(7, 0, 0, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ANGULAR_ACCELERATION.in(RadiansPerSecondPerSecond)));
+			case SIM -> new ProfiledPIDController(10, 0, 0.2, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ANGULAR_ACCELERATION.in(RadiansPerSecondPerSecond)));
+			default -> new ProfiledPIDController(0.1, 0, 0.2, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ANGULAR_ACCELERATION.in(RadiansPerSecondPerSecond)));
+		};
 
-	public static final Supplier<ProfiledPIDController> REPULSOR_TRANSLATIONAL_CONTROLLER = () -> switch (GlobalConstants.ROBOT_MODE) {
-		case REAL -> new ProfiledPIDController(5, 0, 0.1, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond),
-		MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-		case SIM -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond),
-		MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-		default -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond),
-		MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
-	};
+	public static final Supplier<ProfiledPIDController> REPULSOR_TRANSLATIONAL_CONTROLLER = () ->
+		switch (GlobalConstants.ROBOT_MODE) {
+			case REAL -> new ProfiledPIDController(5, 0, 0.1, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
+			case SIM -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
+			default -> new ProfiledPIDController(1, 0, 0, new Constraints(MAX_TRANSLATIONAL_VELOCITY.in(MetersPerSecond), MAX_TRANSLATIONAL_ACCEL.in(MetersPerSecondPerSecond)));
+		};
 
-	public static final Supplier<ProfiledPIDController> REPULSOR_ROTATIONAL_CONTROLLER = () -> switch (GlobalConstants.ROBOT_MODE) {
-		case REAL -> new ProfiledPIDController(7, 0, 0.15, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond),
-		MAX_ANGULAR_ACCELERATION.in(RadiansPerSecondPerSecond)));
-		case SIM -> new ProfiledPIDController(20, 0, 0, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond),
-		MAX_ANGULAR_ACCELERATION.in(RadiansPerSecondPerSecond)));
-		default -> new ProfiledPIDController(10, 0, 0, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond),
-		MAX_ANGULAR_ACCELERATION.in(RadiansPerSecondPerSecond)));
-	};
+	public static final Supplier<ProfiledPIDController> REPULSOR_ROTATIONAL_CONTROLLER = () ->
+		switch (GlobalConstants.ROBOT_MODE) {
+			case REAL -> new ProfiledPIDController(7, 0, 0.15, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ANGULAR_ACCELERATION.in(RadiansPerSecondPerSecond)));
+			case SIM -> new ProfiledPIDController(20, 0, 0, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ANGULAR_ACCELERATION.in(RadiansPerSecondPerSecond)));
+			default -> new ProfiledPIDController(10, 0, 0, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ANGULAR_ACCELERATION.in(RadiansPerSecondPerSecond)));
+		};
 
 	public static final class obstacles {
 
-		public static final List<Obstacle> FIELD_OBSTACLES = List.of(
-				new GuidedObstacle(new Translation2d(4.49, 4), 6, true, 1.2),
-				new GuidedObstacle(new Translation2d(13.08, 4), 2, true, 0.5));
+		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 6, true, 1.2), new GuidedObstacle(new Translation2d(13.08, 4), 2, true, 0.5));
 
 		public static final List<Obstacle> WALLS = List.of(
-				new HorizontalObstacle(0.0, 0.5, true),
-				new HorizontalObstacle(FIELD_WIDTH, 0.5, false),
-				new VerticalObstacle(0.0, 0.5, true),
-				new VerticalObstacle(FIELD_LENGTH, 0.5, false),
-				new VerticalObstacle(7.55, 0.5, false),
-				new VerticalObstacle(10, 0.5, true));
+			new HorizontalObstacle(0.0, 0.5, true),
+			new HorizontalObstacle(FIELD_WIDTH, 0.5, false),
+			new VerticalObstacle(0.0, 0.5, true),
+			new VerticalObstacle(FIELD_LENGTH, 0.5, false),
+			new VerticalObstacle(7.55, 0.5, false),
+			new VerticalObstacle(10, 0.5, true)
+		);
 	}
 }

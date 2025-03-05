@@ -4,6 +4,7 @@ import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 import static frc.robot.SubsystemManager.SubsystemManagerStates.*;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Subsystems.Algaer.Algaer;
@@ -17,8 +18,6 @@ import frc.robot.Subsystems.Vision.Vision;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.misc.Tracer;
 import org.team7525.subsystem.Subsystem;
-
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 
 public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 

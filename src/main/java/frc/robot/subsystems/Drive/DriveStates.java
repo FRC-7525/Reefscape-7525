@@ -5,9 +5,8 @@ import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.Subsystems.Drive.DriveConstants.*;
 import static frc.robot.Subsystems.Drive.TunerConstants.*;
 
-import org.team7525.subsystem.SubsystemStates;
-
 import edu.wpi.first.wpilibj.DriverStation;
+import org.team7525.subsystem.SubsystemStates;
 
 /**
  * An enumeration representing different drive states for a robot's drive subsystem.

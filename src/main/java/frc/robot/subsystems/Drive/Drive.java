@@ -231,7 +231,7 @@ public class Drive extends Subsystem<DriveStates> {
 		driveIO.setControl(
 			new SwerveRequest.FieldCentric()
 				.withDeadband(DEADBAND)
-				.withVelocityX(useDecelerationLimit && !DriverStation.isAutonomous()  ? antiTipX : xVelocity)
+				.withVelocityX(useDecelerationLimit && !DriverStation.isAutonomous() ? antiTipX : xVelocity)
 				.withVelocityY(useDecelerationLimit && !DriverStation.isAutonomous() ? antiTipY : yVelocity)
 				.withRotationalRate(omega)
 				.withDriveRequestType(SwerveModule.DriveRequestType.Velocity)
