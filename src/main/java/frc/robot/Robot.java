@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import static frc.robot.SubsystemManager.SubsystemManagerStates.IDLE;
+
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -62,6 +64,8 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void autonomousInit() {
+		autoManager.setFinishedAuto(false);
+		autoManager.setOrderInRoutine(0);
 		// musicManager.stopMusic();
 		// musicManager.removeAllMotors();
 	}
@@ -81,7 +85,8 @@ public class Robot extends LoggedRobot {
 		// UN COMMENT FOR MUSIC MANAGER
 		// musicManager.stopMusic();
 		// musicManager.removeAllMotors();
-		autoManager.endAutoRoutine();
+		autoManager.setFinishedAuto(true);
+		manager.setState(IDLE);
 	}
 
 	@Override

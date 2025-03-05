@@ -4,6 +4,7 @@ import edu.wpi.first.units.measure.Distance;
 import org.team7525.subsystem.SubsystemStates;
 
 public enum ElevatorStates implements SubsystemStates {
+	TRANSITIONING("Transitioning Elevator Level", ElevatorConstants.TRANSITION_HEIGHT),
 	L4("L4", ElevatorConstants.L4_HEIGHT),
 	L3("L3", ElevatorConstants.L3_HEIGHT),
 	L2("L2", ElevatorConstants.L2_HEIGHT),

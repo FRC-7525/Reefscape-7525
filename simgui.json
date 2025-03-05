@@ -63,7 +63,10 @@
         "left": 534,
         "right": 3466,
         "top": 291,
-        "width": 17.54825210571289
+        "width": 17.54825210571289,
+        "window": {
+          "visible": true
+        }
       },
       "/SmartDashboard/Intaking Chooser": {
         "window": {
@@ -125,30 +128,23 @@
   "NetworkTables": {
     "transitory": {
       "AdvantageKit": {
-        "Coraler": {
+        "Elevator": {
           "open": true
         },
         "RealOutputs": {
           "Auto": {
             "open": true
           },
-          "AutoAlign": {
+          "AutoTest": {
             "open": true
           },
           "Board": {
             "open": true
           },
-          "Drive": {
-            "open": true
-          },
-          "Manager": {
-            "open": true
-          },
           "Vision": {
             "Camera0": {
               "open": true
-            },
-            "open": true
+            }
           },
           "open": true
         },
@@ -158,9 +154,6 @@
         "VisionSystemSim-Vision": {
           "open": true
         }
-      },
-      "photonvision": {
-        "open": true
       }
     }
   },

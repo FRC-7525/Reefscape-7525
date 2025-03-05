@@ -24,6 +24,7 @@ public final class ElevatorConstants {
 	public static final int RIGHT_MOTOR_CANID = 13;
 
 	public static final Distance POSITION_TOLERANCE = Meter.of(0.2);
+	public static final Distance NEAR_ENOUGH_POSITION = Inches.of(10);
 	public static final LinearVelocity VELOCITY_TOLERANCE = MetersPerSecond.of(0.1);
 	// TODO: Set to smaller numbers once we have robot (low max vel/acc for testing, real should be around 100)
 	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
@@ -35,9 +36,10 @@ public final class ElevatorConstants {
 	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-4);
 	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(15.0);
 
-	public static final Distance L4_HEIGHT = Inches.of(24);
-	public static final Distance L3_HEIGHT = Inches.of(14);
-	public static final Distance L2_HEIGHT = Inches.of(6);
+	public static final Distance TRANSITION_HEIGHT = Inches.of(12);
+	public static final Distance L4_HEIGHT = Inches.of(23.5);
+	public static final Distance L3_HEIGHT = Inches.of(12);
+	public static final Distance L2_HEIGHT = Inches.of(4);
 	public static final Distance L1_HEIGHT = Inches.of(0);
 	public static final Distance IDLE_HEIGHT = Inches.of(0);
 	public static final Distance ALGAE_LOW_HEIGHT = Inches.of(13.5);
