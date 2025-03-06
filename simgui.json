@@ -144,6 +144,9 @@
           "Board": {
             "open": true
           },
+          "Manager": {
+            "open": true
+          },
           "Vision": {
             "Camera0": {
               "open": true

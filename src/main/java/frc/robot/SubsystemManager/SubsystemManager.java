@@ -133,8 +133,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Auto ONLY transition
 		addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
+		addTrigger(INTAKING_CORALER_AA_OFF, INTAKING_CORALER, () -> DriverStation.isAutonomous() && !AutoAlign.getInstance().nearGoal());
 
-		// Scoring Reef Auto Alig	n
+		// Scoring Reef Auto Align
 		// See if odo is good enough to ALWAYS automatically score, otherwise we just have driver click y after minior adjustments
 		addTrigger(IDLE, AUTO_ALIGN_FAR, DRIVER_CONTROLLER::getYButtonPressed);
 		addTrigger(AUTO_ALIGN_FAR, AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
