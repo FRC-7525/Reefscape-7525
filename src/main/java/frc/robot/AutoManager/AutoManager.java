@@ -32,9 +32,13 @@ public class AutoManager extends Subsystem<AutoStates> {
 		scoringLevelChooser.addOption("L2", 2);
 		scoringLevelChooser.addOption("L1", 1);
 
-		scoringLocationChooser.setDefaultOption("Left Side 6", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) });
-		scoringLocationChooser.addOption("Left Side 3 ", new AutoScoringLocation[] { new AutoScoringLocation(false, 5), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 6) });
-		scoringLocationChooser.addOption("Right Side 3 ", new AutoScoringLocation[] { new AutoScoringLocation(true, 3), new AutoScoringLocation(false, 2), new AutoScoringLocation(true, 2) });
+		scoringLocationChooser.setDefaultOption("I J K L A B| 6 Piece | Left", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) });
+		scoringLocationChooser.addOption("J K L | 3 Piece | Left", new AutoScoringLocation[] { new AutoScoringLocation(false, 5), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 6) });
+		scoringLocationChooser.addOption("E D C | 3 Piece | Right", new AutoScoringLocation[] { new AutoScoringLocation(true, 3), new AutoScoringLocation(false, 2), new AutoScoringLocation(true, 2) });
+		scoringLocationChooser.addOption("D C | 2 Piece | Right", new AutoScoringLocation[] { new AutoScoringLocation(false, 2), new AutoScoringLocation(true, 2) });
+		scoringLocationChooser.addOption("K L | 2 Piece | Left", new AutoScoringLocation[] { new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 6) });
+		scoringLocationChooser.addOption("G | 1 Piece | Move Forward", new AutoScoringLocation[] { new AutoScoringLocation(true, 4) });
+		
 
 		addTrigger(SCORING_CORAL, GOING_DOWN, () -> {
 			if (getStateTime() < 0.5) {
@@ -73,7 +77,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 		});
 
 		SmartDashboard.putData("Level Chooser", scoringLevelChooser);
-		SmartDashboard.putData("Side Chooser", scoringLocationChooser);
+		SmartDashboard.putData("Auto Chooser", scoringLocationChooser);
 		SmartDashboard.putData("Intaking Chooser", intakingLocationChooser);
 	}
 
