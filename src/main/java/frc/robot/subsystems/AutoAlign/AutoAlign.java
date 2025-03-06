@@ -85,10 +85,10 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	@Override
 	protected void runState() {
 		logOutput();
-		if (ROBOT_MODE == RobotMode.SIM) {
-			reefPose = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
-			isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
-		}
+		// if (ROBOT_MODE == RobotMode.SIM) {
+		// 	reefPose = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
+		// 	isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
+		// }
 
 		if (getState() == AutoAlignStates.OFF) return;
 
@@ -122,7 +122,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		yApplied = translationYController.calculate(drivePose.getY(), targetPose.getY());
 
 		double rotationApplied = rotationController.calculate(drivePose.getRotation().getRadians(), targetPose.getRotation().getRadians());
-		if (negativeChooser.getSelected()) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false, false); // was negative
+		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false, false); // was negative
 		else drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false, false);
 	}
 
@@ -136,7 +136,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		Logger.recordOutput("TESTING VX", targetSpeeds.vxMetersPerSecond);
 		Logger.recordOutput("TESTING VY", targetSpeeds.vyMetersPerSecond);
-		if (negativeChooser.getSelected()) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false); // was negative
+		if (isRedAlliance) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false); // was negative
 		else drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
 	}
 

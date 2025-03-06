@@ -22,7 +22,8 @@
       "/SmartDashboard/Level Chooser": "String Chooser",
       "/SmartDashboard/Side Chooser": "String Chooser",
       "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d",
-      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d",
+      "/SmartDashboard/is Negative": "String Chooser"
     },
     "windows": {
       "/SmartDashboard/Field": {
