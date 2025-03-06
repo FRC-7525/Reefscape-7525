@@ -46,6 +46,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private double xApplied = 0;
 	private double yApplied = 0;
 
+	private double previousDistance;
+	private double timer;
+
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
 		// PID Config
@@ -58,6 +61,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		repulsorActivated = false;
 		targetPose = new Pose2d();
 		goalPose = new Pose2d();
+
+		previousDistance = -1;
+		timer = 0;
 	}
 
 	public static AutoAlign getInstance() {
@@ -157,6 +163,17 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	public boolean nearGoal() {
 		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
+	}
+
+	public boolean timedOut() {
+		if (previousDistance == -1) previousDistance = drive.getPose().getTranslation().getDistance(goalPose.getTranslation());
+
+		if (Math.abs(drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) - previousDistance) > MOVEMENT_THRESHOLD) {
+			timer = getStateTime();
+		}
+
+		previousDistance = drive.getPose().getTranslation().getDistance(goalPose.getTranslation());
+		return getStateTime() - timer > TIMEOUT_THRESHOLD;
 	}
 
 	public boolean readyForClose() {

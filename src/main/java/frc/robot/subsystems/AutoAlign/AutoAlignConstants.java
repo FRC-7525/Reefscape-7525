@@ -38,6 +38,10 @@ public final class AutoAlignConstants {
 	public static final double DISTANCE_ERROR_MARGIN = 0.1;
 	public static final double ANGLE_ERROR_MARGIN = 0.1;
 
+	//TODO: TUNE TUNE TUNE
+	public static final double MOVEMENT_THRESHOLD = 0.1;
+	public static final double TIMEOUT_THRESHOLD = 0.5;
+
 	// public static final double DISTANCE_ERROR_MARGIN = 0.025; real values
 	// public static final double ANGLE_ERROR_MARGIN = 0.1;
 
