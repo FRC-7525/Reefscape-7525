@@ -8,11 +8,15 @@ import choreo.trajectory.SwerveSample;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
@@ -35,6 +39,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private PIDController repulsionTranslationController;
 	private PIDController repulsionRotationController;
 
+	private Debouncer autoAlignDebouncer;
+
 	private Pose2d targetPose;
 	private Pose2d goalPose;
 	private Pose2d reefPose = REEF_POSE;
@@ -46,6 +52,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private double xApplied = 0;
 	private double yApplied = 0;
 
+		private final SendableChooser<Boolean> negativeChooser = new SendableChooser<>();
+
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
 		// PID Config
@@ -55,9 +63,16 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		this.repulsionTranslationController = REPULSOR_TRANSLATIONAL_CONTROLLER.get();
 		this.repulsionRotationController = REPULSOR_ROTATIONAL_CONTROLLER.get();
 
+		autoAlignDebouncer = new Debouncer(0.5, DebounceType.kRising);
+
 		repulsorActivated = false;
 		targetPose = new Pose2d();
 		goalPose = new Pose2d();
+
+		negativeChooser.setDefaultOption("Positive", false);
+		negativeChooser.addOption("Negative", true);
+
+		SmartDashboard.putData("is Negative", negativeChooser);
 	}
 
 	public static AutoAlign getInstance() {
@@ -107,7 +122,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		yApplied = translationYController.calculate(drivePose.getY(), targetPose.getY());
 
 		double rotationApplied = rotationController.calculate(drivePose.getRotation().getRadians(), targetPose.getRotation().getRadians());
-		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false, false);
+		if (negativeChooser.getSelected()) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false, false); // was negative
 		else drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false, false);
 	}
 
@@ -121,7 +136,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		Logger.recordOutput("TESTING VX", targetSpeeds.vxMetersPerSecond);
 		Logger.recordOutput("TESTING VY", targetSpeeds.vyMetersPerSecond);
-		if (isRedAlliance) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
+		if (negativeChooser.getSelected()) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false); // was negative
 		else drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
 	}
 
@@ -156,7 +171,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	public boolean nearGoal() {
-		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
+		return autoAlignDebouncer.calculate(drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
 	}
 
 	public boolean readyForClose() {
