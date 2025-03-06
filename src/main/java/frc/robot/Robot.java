@@ -15,7 +15,6 @@ import frc.robot.AutoManager.AutoManager;
 // import frc.robot.MusicManager.MusicManager;
 import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.Subsystems.Drive.Drive;
-
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
@@ -44,17 +43,17 @@ public class Robot extends LoggedRobot {
 			case TESTING:
 				Logger.addDataReceiver(new NT4Publisher());
 				break;
-			}
-			
-			// Lots and lots of trolling
-			Logger.start();
-			CommandsUtil.logCommands();
-			DriverStation.silenceJoystickConnectionWarning(true);
-			CommandScheduler.getInstance().unregisterAllSubsystems();
-			// FaultManager.getInstance().calibrateDeviceOrder(FaultManagerConstants.CANIVORE_DEVICE_ORDER, "CANivore");
-			FollowPathCommand.warmupCommand().schedule();
-			System.gc();
-			Drive.getInstance().zeroGyro();
+		}
+
+		// Lots and lots of trolling
+		Logger.start();
+		CommandsUtil.logCommands();
+		DriverStation.silenceJoystickConnectionWarning(true);
+		CommandScheduler.getInstance().unregisterAllSubsystems();
+		// FaultManager.getInstance().calibrateDeviceOrder(FaultManagerConstants.CANIVORE_DEVICE_ORDER, "CANivore");
+		FollowPathCommand.warmupCommand().schedule();
+		System.gc();
+		Drive.getInstance().zeroGyro();
 	}
 
 	@Override

@@ -52,7 +52,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private double xApplied = 0;
 	private double yApplied = 0;
 
-		private final SendableChooser<Boolean> negativeChooser = new SendableChooser<>();
+	private final SendableChooser<Boolean> negativeChooser = new SendableChooser<>();
 
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
