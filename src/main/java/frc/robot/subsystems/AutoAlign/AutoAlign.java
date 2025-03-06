@@ -46,7 +46,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private double xApplied = 0;
 	private double yApplied = 0;
 
-	private double previousDistance;
+	private Pose2d previousPose;
 	private double timer;
 
 	private AutoAlign() {
@@ -62,7 +62,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		targetPose = new Pose2d();
 		goalPose = new Pose2d();
 
-		previousDistance = -1;
+		previousPose = null;
 		timer = 0;
 	}
 
@@ -166,13 +166,14 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	public boolean timedOut() {
-		if (previousDistance == -1) previousDistance = drive.getPose().getTranslation().getDistance(goalPose.getTranslation());
+		if (previousPose == null) previousPose = drive.getPose();
 
-		if (Math.abs(drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) - previousDistance) > MOVEMENT_THRESHOLD) {
+		//TODO: Implement rotational threshold???? idk if required
+		if (drive.getPose().getTranslation().getDistance(previousPose.getTranslation()) > MOVEMENT_THRESHOLD) {
 			timer = getStateTime();
 		}
 
-		previousDistance = drive.getPose().getTranslation().getDistance(goalPose.getTranslation());
+		previousPose = drive.getPose();
 		return getStateTime() - timer > TIMEOUT_THRESHOLD;
 	}
 
