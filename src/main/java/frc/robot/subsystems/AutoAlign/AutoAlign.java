@@ -175,16 +175,13 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	public boolean nearGoal() {
-		return drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meters)
-		&& (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN.in(Radians)
-		|| Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN.in(Radians));
+		return drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meters) && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN.in(Radians) || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN.in(Radians));
 	}
 
 	public boolean nearGoalSource() {
-		return autoAlignDebouncer.calculate(drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meter)
-		&& (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN.in(Radians)
-		|| Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN.in(Radians)));
-
+		return autoAlignDebouncer.calculate(
+			drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meter) && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN.in(Radians) || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN.in(Radians))
+		);
 	}
 
 	public boolean readyForClose() {
