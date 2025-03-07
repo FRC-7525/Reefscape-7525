@@ -85,10 +85,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	@Override
 	protected void runState() {
 		logOutput();
-		// if (ROBOT_MODE == RobotMode.SIM) {
-		// 	reefPose = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
-		// 	isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
-		// }
+		reefPose = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
+		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 
 		if (getState() == AutoAlignStates.OFF) return;
 
