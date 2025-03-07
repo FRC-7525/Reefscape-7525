@@ -109,6 +109,11 @@ public class AutoManager extends Subsystem<AutoStates> {
 		return instance;
 	}
 
+	public void resetAuto() {
+		orderInRoutine = 0;
+		finishedAuto = false;
+	}
+
 	public boolean finishedAuto() {
 		return finishedAuto;
 	}

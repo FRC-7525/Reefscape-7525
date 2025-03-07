@@ -75,7 +75,7 @@ public final class AutoAlignConstants {
 	public static final Supplier<PIDController> REPULSOR_TRANSLATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
 			case REAL -> new PIDController(5, 0, 0);
-			case SIM -> new PIDController(1, 0, 0);
+			case SIM -> new PIDController(5, 0, 0);
 			default -> new PIDController(1, 0, 0);
 		};
 
