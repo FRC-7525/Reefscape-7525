@@ -39,15 +39,7 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		() -> LEDStates.AUTOALIGN,
 		ClimberStates.DOWN
 	),
-	AA_BACK_INTO_SOURCE(
-		"Backing Into Source",
-		() -> ElevatorStates.IDLE,
-		CoralerStates.INAKING,
-		AlgaerStates.IDLE, 
-		() -> SOURCE_TARGET_MAP.get(SubsystemManager.getInstance().getLeftSourceSelected()),
-		() -> LEDStates.INTAKING,
-		ClimberStates.DOWN
-	),
+	AA_BACK_INTO_SOURCE("Backing Into Source", () -> ElevatorStates.IDLE, CoralerStates.INAKING, AlgaerStates.IDLE, () -> SOURCE_TARGET_MAP.get(SubsystemManager.getInstance().getLeftSourceSelected()), () -> LEDStates.INTAKING, ClimberStates.DOWN),
 	INTAKING_CORALER(
 		"Intaking at Coral Station",
 		() -> ElevatorStates.IDLE,

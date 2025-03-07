@@ -163,7 +163,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 			return pressed;
 		});
 		addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || elevator.motorsZeroed());
-	
+
 		//TODO: TESTING DELETE WHEN MERGING
 		addTrigger(IDLE, AA_BACK_INTO_SOURCE, () -> DRIVER_CONTROLLER.getAButtonPressed());
 	}

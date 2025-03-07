@@ -122,7 +122,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		yApplied = translationYController.calculate(drivePose.getY(), targetPose.getY());
 
 		if (getState() == AutoAlignStates.BACKING_INTO_LEFT_SOURCE || getState() == AutoAlignStates.BACKING_INTO_RIGHT_SOURCE) {
-			Translation2d interpTranslation = goalPose.getTranslation().interpolate(drive.getPose().getTranslation(), 1/goalPose.getTranslation().getDistance(drive.getPose().getTranslation()));
+			Translation2d interpTranslation = goalPose.getTranslation().interpolate(drive.getPose().getTranslation(), 1 / goalPose.getTranslation().getDistance(drive.getPose().getTranslation()));
 
 			xApplied = translationXController.calculate(drivePose.getX(), interpTranslation.getMeasureX().in(Meters));
 			yApplied = translationYController.calculate(drivePose.getY(), interpTranslation.getMeasureY().in(Meters));
