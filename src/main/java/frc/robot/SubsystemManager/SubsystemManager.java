@@ -104,8 +104,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoalSource());
 		addTrigger(INTAKING_CORALER, IDLE, coraler::hasGamepiece);
 
-
-
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
 		addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
