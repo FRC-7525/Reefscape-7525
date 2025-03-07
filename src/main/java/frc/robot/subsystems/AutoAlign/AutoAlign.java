@@ -122,8 +122,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		yApplied = translationYController.calculate(drivePose.getY(), targetPose.getY());
 
 		if (getState() == AutoAlignStates.BACKING_INTO_LEFT_SOURCE || getState() == AutoAlignStates.BACKING_INTO_RIGHT_SOURCE) {
-			xApplied += Math.sin(goalPose.getRotation().getRadians());
-			yApplied += Math.cos(goalPose.getRotation().getRadians());
+			xApplied = BACKING_VELOCITY * Math.sin(goalPose.getRotation().getRadians());
+			yApplied = BACKING_VELOCITY * Math.cos(goalPose.getRotation().getRadians());
 		}
 
 		double rotationApplied = rotationController.calculate(drivePose.getRotation().getRadians(), targetPose.getRotation().getRadians());

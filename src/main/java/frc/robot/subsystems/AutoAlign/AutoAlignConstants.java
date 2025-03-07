@@ -44,6 +44,9 @@ public final class AutoAlignConstants {
 	public static final double MOVEMENT_THRESHOLD = 0.032;
 	public static final double TIMEOUT_THRESHOLD = 1;
 
+	//TODO: TUNE TUNE TUNE
+	public static final double BACKING_VELOCITY = 0.1;
+
 	public static final double GOAL_STRENGTH = 0.65;
 	static final double FIELD_LENGTH = 16.42;
 	static final double FIELD_WIDTH = 8.16;
