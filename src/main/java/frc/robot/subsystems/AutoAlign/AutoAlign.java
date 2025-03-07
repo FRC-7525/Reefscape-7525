@@ -46,7 +46,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private double xApplied = 0;
 	private double yApplied = 0;
 
-	private Pose2d previousPose;
 	private double timer;
 
 	private AutoAlign() {
@@ -62,8 +61,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		targetPose = new Pose2d();
 		goalPose = new Pose2d();
 
-		previousPose = null;
-		timer = 0;
+		timer = -1;
 	}
 
 	public static AutoAlign getInstance() {
@@ -166,11 +164,16 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	public boolean timedOut() {
+		if (timer == -1) return false;
+
 		if (getStateTime() > 0.01 && drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < MOVEMENT_THRESHOLD) {
 			timer = getStateTime();
 		}
 
-		return getStateTime() - timer > TIMEOUT_THRESHOLD && DriverStation.isAutonomous();
+		if (getStateTime() - timer > TIMEOUT_THRESHOLD) {
+			timer = -1;
+			return true;
+		} else return false;
 	}
 
 	public boolean readyForClose() {

@@ -141,7 +141,12 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, autoAlign::nearGoal);
 		//If the robot barely moves from its position for a certain time threshold, just move onto the next state
 		//TODO: Barely tested and tuned, comment out if bum
-		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, autoAlign::timedOut);
+		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, () -> {
+			return autoAlign.timedOut() && DriverStation.isAutonomous();
+		});
+		addTrigger(AUTO_ALIGN_CLOSE, SCORING_REEF_MANUAL, () -> {
+			return autoAlign.timedOut() && !DriverStation.isAutonomous();
+		});
 		// Zero Elevator
 		// TODO: Test
 		// Not testing all that :laughing cat emoji:
@@ -219,10 +224,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 			Logger.recordOutput(SUBSYSTEM_NAME + "/ALLIANCE COLOR", "RED");
 		} else {
 			Logger.recordOutput(SUBSYSTEM_NAME + "/ALLIANCE COLOR", "BLUE");
-		}
-
-		if (getState().getStateString().equals("Transitioning Scoring")) {
-			System.out.println("scoring");
 		}
 
 		// Set States, drive and vision are rogue so you don't need to set state
