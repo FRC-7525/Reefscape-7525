@@ -101,7 +101,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 			return left || right;
 		});
 
-		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoal());
+		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoalSource());
 
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
@@ -133,7 +133,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Auto ONLY transition
 		addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
-		addTrigger(INTAKING_CORALER_AA_OFF, INTAKING_CORALER, () -> DriverStation.isAutonomous() && !AutoAlign.getInstance().nearGoal());
+		addTrigger(INTAKING_CORALER_AA_OFF, INTAKING_CORALER, () -> DriverStation.isAutonomous() && !AutoAlign.getInstance().nearGoalSource()); // TODO check if this needs to be removed after during comp
 
 		// Scoring Reef Auto Align
 		// See if odo is good enough to ALWAYS automatically score, otherwise we just have driver click y after minior adjustments

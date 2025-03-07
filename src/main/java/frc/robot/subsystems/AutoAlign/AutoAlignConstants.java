@@ -38,8 +38,9 @@ public final class AutoAlignConstants {
 	// public static final double DISTANCE_ERROR_MARGIN = 0.1;
 	// public static final double ANGLE_ERROR_MARGIN = 0.1;
 
-	public static final double DISTANCE_ERROR_MARGIN = 0.025; // Real values
-	public static final double ANGLE_ERROR_MARGIN = 0.1;
+	public static final Distance TRANSLATIONAL_COMPONENT_ERROR_MARGIN = Meters.of(0.01);
+	public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.025); // Real values
+	public static final Angle ANGLE_ERROR_MARGIN = Radians.of(0.05);
 
 	public static final double MOVEMENT_THRESHOLD = 0.032;
 	public static final double TIMEOUT_THRESHOLD = 1;
