@@ -37,7 +37,7 @@ public final class ElevatorConstants {
 	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(30.0);
 
 	public static final Distance TRANSITION_HEIGHT = Inches.of(12);
-	public static final Distance L4_HEIGHT = Inches.of(23.8);
+	public static final Distance L4_HEIGHT = Inches.of(23.9);
 	public static final Distance L3_HEIGHT = Inches.of(12);
 	public static final Distance L2_HEIGHT = Inches.of(4);
 	public static final Distance L1_HEIGHT = Inches.of(0);
