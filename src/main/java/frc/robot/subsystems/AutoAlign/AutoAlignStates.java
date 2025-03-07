@@ -12,17 +12,17 @@ import org.team7525.subsystem.SubsystemStates;
 public enum AutoAlignStates implements SubsystemStates {
 	OFF("OFF, No Aligning!", PosePair.of(new Pose2d(1, 1, new Rotation2d()), new Pose2d(2, 1, new Rotation2d())), Meters.of(0.0)),
 
-	L1("Driving to Reef Left 1", PosePair.of(new Pose2d(14.347, 3.88, Rotation2d.fromDegrees(180)), new Pose2d(3.209, 4.163, Rotation2d.fromDegrees(0))), Meters.of(.5)),
+	L1("Driving to Reef Left 1", PosePair.of(new Pose2d(14.417, 3.88, Rotation2d.fromDegrees(180)), new Pose2d(3.126, 4.163, Rotation2d.fromDegrees(0))), Meters.of(.5)),
 
-	R1("Driving to Reef Right 1", PosePair.of(new Pose2d(14.347, 4.209, Rotation2d.fromDegrees(180)), new Pose2d(3.209, 3.828, Rotation2d.fromDegrees(0))), Meters.of(0.5)),
+	R1("Driving to Reef Right 1", PosePair.of(new Pose2d(14.417, 4.209, Rotation2d.fromDegrees(180)), new Pose2d(3.126, 3.828, Rotation2d.fromDegrees(0))), Meters.of(0.5)),
 
-	L2("Driving to Reef Left 2", PosePair.of(new Pose2d(13.829, 5.074, Rotation2d.fromDegrees(240)), new Pose2d(3.731, 2.971, Rotation2d.fromDegrees(60))), Meters.of(0.5)),
+	L2("Driving to Reef Left 2", PosePair.of(new Pose2d(13.869, 5.105, Rotation2d.fromDegrees(240)), new Pose2d(3.686, 2.925, Rotation2d.fromDegrees(60))), Meters.of(0.5)),
 
-	R2("Driving to Reef Right 2", PosePair.of(new Pose2d(13.546, 5.236, Rotation2d.fromDegrees(240)), new Pose2d(4.021, 2.803, Rotation2d.fromDegrees(60))), Meters.of(0.5)),
+	R2("Driving to Reef Right 2", PosePair.of(new Pose2d(13.546, 5.236, Rotation2d.fromDegrees(240)), new Pose2d(3.958, 2.760, Rotation2d.fromDegrees(60))), Meters.of(0.5)),
 
-	L3("Driving to Reef Left 3", PosePair.of(new Pose2d(12.540, 5.209, Rotation2d.fromDegrees(300)), new Pose2d(5.010, 2.832, Rotation2d.fromDegrees(120))), Meters.of(0.5)),
+	L3("Driving to Reef Left 3", PosePair.of(new Pose2d(12.540, 5.209, Rotation2d.fromDegrees(300)), new Pose2d(5.038, 2.776, Rotation2d.fromDegrees(120))), Meters.of(0.5)),
 
-	R3("Driving to Reef Right 3", PosePair.of(new Pose2d(12.253, 5.048, Rotation2d.fromDegrees(300)), new Pose2d(5.291, 2.998, Rotation2d.fromDegrees(120))), Meters.of(0.5)),
+	R3("Driving to Reef Right 3", PosePair.of(new Pose2d(12.253, 5.048, Rotation2d.fromDegrees(300)), new Pose2d(5.316, 2.934, Rotation2d.fromDegrees(120))), Meters.of(0.5)),
 
 	L4("Driving to Reef Left 4", PosePair.of(new Pose2d(11.769, 4.158, Rotation2d.fromDegrees(0)), new Pose2d(5.78, 3.889, Rotation2d.fromDegrees(180))), Meters.of(0.5)),
 
