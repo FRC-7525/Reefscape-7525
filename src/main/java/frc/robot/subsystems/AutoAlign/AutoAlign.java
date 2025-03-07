@@ -164,9 +164,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	public boolean timedOut() {
-		if (timer == -1) return false;
-
-		if (getStateTime() > 0.01 && drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < MOVEMENT_THRESHOLD) {
+		if (timer != -1 && getStateTime() > 0.01 && drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < MOVEMENT_THRESHOLD) {
 			timer = getStateTime();
 		}
 
