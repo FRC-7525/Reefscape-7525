@@ -221,6 +221,10 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 			Logger.recordOutput(SUBSYSTEM_NAME + "/ALLIANCE COLOR", "BLUE");
 		}
 
+		if (getState().getStateString().equals("Transitioning Scoring")) {
+			System.out.println("scoring");
+		}
+
 		// Set States, drive and vision are rogue so you don't need to set state
 		elevator.setState(getState().getElevatorStateSupplier().get());
 		coraler.setState(getState().getCoralerState());

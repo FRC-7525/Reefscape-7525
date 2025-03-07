@@ -170,7 +170,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		//TODO: Implement rotational threshold???? idk if required
 		if (drive.getPose().getTranslation().getDistance(previousPose.getTranslation()) > MOVEMENT_THRESHOLD) {
-			timer = getStateTime();
+			timer = getStateTime();	
 		}
 
 		previousPose = drive.getPose();

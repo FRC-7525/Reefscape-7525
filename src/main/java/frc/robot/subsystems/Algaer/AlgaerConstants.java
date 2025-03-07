@@ -19,8 +19,8 @@ public final class AlgaerConstants {
 	public static final String SUBSYSTEM_NAME = "Algaer";
 
 	public static final double INTAKING_SPEED = -0.3;
-	public static final double PROCESSING_SPEED = 0.5;
-	public static final double HOLDING_SPEED = -0.05;
+	public static final double PROCESSING_SPEED = 0.3; //Used to be 0.5
+	public static final double HOLDING_SPEED = -0.15;
 	public static final double IDLE_SPEED = 0;
 	public static final double SCORING_NET = 1;
 
