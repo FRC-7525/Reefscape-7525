@@ -42,8 +42,8 @@ public final class AutoAlignConstants {
 	public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.025); // Real values
 	public static final Angle ANGLE_ERROR_MARGIN = Radians.of(0.05);
 
-	public static final double MOVEMENT_THRESHOLD = 0.032;
-	public static final double TIMEOUT_THRESHOLD = 1;
+	public static final double MOVEMENT_THRESHOLD = 0.2;
+	public static final double TIMEOUT_THRESHOLD = 1.2;
 
 	public static final double GOAL_STRENGTH = 0.65;
 	static final double FIELD_LENGTH = 16.42;

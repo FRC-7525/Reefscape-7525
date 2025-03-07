@@ -37,9 +37,9 @@ public final class ElevatorConstants {
 	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(25.0);
 
 	public static final Distance TRANSITION_HEIGHT = Inches.of(12);
-	public static final Distance L4_HEIGHT = Inches.of(23.9);
-	public static final Distance L3_HEIGHT = Inches.of(12);
-	public static final Distance L2_HEIGHT = Inches.of(4);
+	public static final Distance L4_HEIGHT = Inches.of(23.15);
+	public static final Distance L3_HEIGHT = Inches.of(10.9);
+	public static final Distance L2_HEIGHT = Inches.of(2.9);
 	public static final Distance L1_HEIGHT = Inches.of(0);
 	public static final Distance IDLE_HEIGHT = Inches.of(0);
 	public static final Distance ALGAE_LOW_HEIGHT = Inches.of(14); //13.5 + 0.5
@@ -60,7 +60,7 @@ public final class ElevatorConstants {
 		public static final Distance STARTING_HEIGHT = Inches.of(0);
 
 		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(70, 2, 1, 0.1);
-		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.24, 6.66, 0.03);
+		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.11, 7.09, 0.01);
 
 		// Sim is trolling, idk why
 		public static final Distance POSITION_TOLERANCE_SIM = Inches.of(4);
