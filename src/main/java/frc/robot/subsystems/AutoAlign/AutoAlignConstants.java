@@ -44,6 +44,9 @@ public final class AutoAlignConstants {
 	public static final double MOVEMENT_THRESHOLD = 0.032;
 	public static final double TIMEOUT_THRESHOLD = 1;
 
+	public static final double DISTANCE_ERROR_MARGIN = 0.025; // Real values
+	public static final double ANGLE_ERROR_MARGIN = 0.1;
+
 	public static final double GOAL_STRENGTH = 0.65;
 	static final double FIELD_LENGTH = 16.42;
 	static final double FIELD_WIDTH = 8.16;
@@ -91,7 +94,7 @@ public final class AutoAlignConstants {
 
 	public static final class obstacles {
 
-		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 6, true, 1.2), new GuidedObstacle(new Translation2d(13.08, 4), 2, true, 0.5));
+		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 6, true, 1.2), new GuidedObstacle(new Translation2d(13.08, 4), 6, true, 1.2));
 
 		public static final List<Obstacle> WALLS = List.of(
 			new HorizontalObstacle(0.0, 0.5, true),
