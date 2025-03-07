@@ -121,7 +121,7 @@ public class ElevatorIOReal implements ElevatorIO {
 
 	@Override
 	public void zero() {
-		double ZeroingSpeed = -ElevatorConstants.ZEROING_VELOCITY.in(MetersPerSecond);
+		double ZeroingSpeed = ElevatorConstants.ZEROING_VELOCITY.in(MetersPerSecond);
 		if (leftMotor.getStatorCurrent().getValueAsDouble() > ElevatorConstants.ZEROING_CURRENT_LIMIT.in(Amps)) {
 			ZeroingSpeed = 0;
 			if (!leftMotorZeroed) leftMotor.setPosition(0);
