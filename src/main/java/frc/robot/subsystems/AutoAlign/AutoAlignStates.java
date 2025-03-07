@@ -37,7 +37,10 @@ public enum AutoAlignStates implements SubsystemStates {
 	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(13.867, 2.995, Rotation2d.fromDegrees(120)), new Pose2d(3.681, 5.05, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
 
 	RIGHT_SOURCE("Driving to Source Right", PosePair.of(new Pose2d(16.303, 7.104, Rotation2d.fromDegrees(-126)), new Pose2d(1.110, 1.03, Rotation2d.fromDegrees(54))), Meters.of(1)),
-	LEFT_SOURCE("Driving to Source Left", PosePair.of(new Pose2d(16.418, 1.006, Rotation2d.fromDegrees(126)), new Pose2d(1.236, 7.104, Rotation2d.fromDegrees(306))), Meters.of(1));
+	LEFT_SOURCE("Driving to Source Left", PosePair.of(new Pose2d(16.418, 1.006, Rotation2d.fromDegrees(126)), new Pose2d(1.236, 7.104, Rotation2d.fromDegrees(306))), Meters.of(1)),
+
+	BACKING_INTO_LEFT_SOURCE("Backing into Source Right", PosePair.of(new Pose2d(16.303, 7.104, Rotation2d.fromDegrees(-126)), new Pose2d(1.110, 1.03, Rotation2d.fromDegrees(54))), Meters.of(1)),
+	BACKING_INTO_RIGHT_SOURCE("Backing into Source Left", PosePair.of(new Pose2d(16.418, 1.006, Rotation2d.fromDegrees(126)), new Pose2d(1.236, 7.104, Rotation2d.fromDegrees(306))), Meters.of(1));
 
 	AutoAlignStates(String stateString, PosePair targetPose, Distance distanceForCloseAA) {
 		this.stateString = stateString;
