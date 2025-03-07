@@ -63,6 +63,12 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		this.repulsionTranslationController = REPULSOR_TRANSLATIONAL_CONTROLLER.get();
 		this.repulsionRotationController = REPULSOR_ROTATIONAL_CONTROLLER.get();
 
+		this.translationXController.setTolerance(TRANSLATIONAL_COMPONENT_ERROR_MARGIN.in(Meters));
+		this.translationYController.setTolerance(TRANSLATIONAL_COMPONENT_ERROR_MARGIN.in(Meters));
+		this.repulsionTranslationController.setTolerance(TRANSLATIONAL_COMPONENT_ERROR_MARGIN.in(Meters));
+		this.repulsionRotationController.setTolerance(ANGLE_ERROR_MARGIN.in(Radians));
+		this.rotationController.setTolerance(ANGLE_ERROR_MARGIN.in(Radians));
+
 		autoAlignDebouncer = new Debouncer(0.5, DebounceType.kRising);
 
 		repulsorActivated = false;
@@ -169,15 +175,15 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	public boolean nearGoal() {
-		return drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN
-		&& (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN
-		|| Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN);
+		return drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meters)
+		&& (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN.in(Radians)
+		|| Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN.in(Radians));
 	}
 
 	public boolean nearGoalSource() {
-		return autoAlignDebouncer.calculate(drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN
-		&& (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN
-		|| Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
+		return autoAlignDebouncer.calculate(drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meter)
+		&& (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN.in(Radians)
+		|| Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN.in(Radians)));
 
 	}
 
