@@ -140,6 +140,14 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(IDLE, AUTO_ALIGN_FAR, DRIVER_CONTROLLER::getYButtonPressed);
 		addTrigger(AUTO_ALIGN_FAR, AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
 		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, autoAlign::nearGoal);
+		//If the robot barely moves from its position for a certain time threshold, just move onto the next state
+		//TODO: Barely tested and tuned, comment out if bum
+		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, () -> {
+			return autoAlign.timedOut() && DriverStation.isAutonomous();
+		});
+		addTrigger(AUTO_ALIGN_CLOSE, SCORING_REEF_MANUAL, () -> {
+			return autoAlign.timedOut() && !DriverStation.isAutonomous();
+		});
 		// Zero Elevator
 		// TODO: Test
 		// Not testing all that :laughing cat emoji:

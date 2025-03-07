@@ -52,6 +52,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private double xApplied = 0;
 	private double yApplied = 0;
 
+	private double timer;
 	private final SendableChooser<Boolean> negativeChooser = new SendableChooser<>();
 
 	private AutoAlign() {
@@ -69,6 +70,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		targetPose = new Pose2d();
 		goalPose = new Pose2d();
 
+		timer = -1;
 		negativeChooser.setDefaultOption("Positive", false);
 		negativeChooser.addOption("Negative", true);
 
@@ -170,6 +172,17 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	public boolean nearGoal() {
 		return autoAlignDebouncer.calculate(drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
+	}
+
+	public boolean timedOut() {
+		if (getStateTime() > 0.01 && drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < MOVEMENT_THRESHOLD) {
+			timer = getStateTime();
+		}
+
+		if (timer != -1 && getStateTime() - timer > TIMEOUT_THRESHOLD) {
+			timer = -1;
+			return true;
+		} else return false;
 	}
 
 	public boolean readyForClose() {
