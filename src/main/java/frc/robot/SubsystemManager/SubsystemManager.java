@@ -105,7 +105,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(INTAKING_CORALER, AA_BACK_INTO_SOURCE, () -> {
 			return autoAlign.timedOut() && DriverStation.isAutonomous();
 		});
-		// addTrigger(AA_BACK_INTO_SOURCE, IDLE, () -> coraler.hasGamepiece());
+		addTrigger(AA_BACK_INTO_SOURCE, IDLE, () -> coraler.hasGamepiece());
 
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
@@ -163,9 +163,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 			return pressed;
 		});
 		addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || elevator.motorsZeroed());
-
-		//TODO: TESTING DELETE WHEN MERGING
-		addTrigger(IDLE, AA_BACK_INTO_SOURCE, () -> DRIVER_CONTROLLER.getAButtonPressed());
 	}
 
 	public static SubsystemManager getInstance() {
