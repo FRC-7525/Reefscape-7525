@@ -41,6 +41,9 @@ public final class AutoAlignConstants {
 	public static final double DISTANCE_ERROR_MARGIN = 0.025; // Real values
 	public static final double ANGLE_ERROR_MARGIN = 0.1;
 
+	public static final double MOVEMENT_THRESHOLD = 0.1;
+	public static final double TIMEOUT_THRESHOLD = 0.5;
+
 	public static final double GOAL_STRENGTH = 0.65;
 	static final double FIELD_LENGTH = 16.42;
 	static final double FIELD_WIDTH = 8.16;

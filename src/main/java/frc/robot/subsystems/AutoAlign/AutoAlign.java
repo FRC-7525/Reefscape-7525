@@ -166,15 +166,11 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	public boolean timedOut() {
-		if (previousPose == null) previousPose = drive.getPose();
-
-		//TODO: Implement rotational threshold???? idk if required
-		if (drive.getPose().getTranslation().getDistance(previousPose.getTranslation()) > MOVEMENT_THRESHOLD) {
-			timer = getStateTime();	
+		if (getStateTime() > 0.01 && drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < MOVEMENT_THRESHOLD) {
+			timer = getStateTime();
 		}
 
-		previousPose = drive.getPose();
-		return getStateTime() - timer > TIMEOUT_THRESHOLD;
+		return getStateTime() - timer > TIMEOUT_THRESHOLD && DriverStation.isAutonomous();
 	}
 
 	public boolean readyForClose() {
