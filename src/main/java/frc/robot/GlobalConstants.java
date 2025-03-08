@@ -26,7 +26,7 @@ public class GlobalConstants {
 	}
 
 	public static final RobotMode ROBOT_MODE = "Crash".equals(System.getenv("CI_NAME")) ? RobotMode.SIM : RobotMode.REAL;
- 
+
 	public static class Controllers {
 
 		public static final XboxController DRIVER_CONTROLLER = new XboxController(0);
