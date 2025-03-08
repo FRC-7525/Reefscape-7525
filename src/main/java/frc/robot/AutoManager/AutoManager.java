@@ -56,6 +56,8 @@ public class AutoManager extends Subsystem<AutoStates> {
 		});
 
 		addTrigger(GOING_DOWN, INTAKING_CORAL, () -> {
+			if (scoringLocationChooser.getSelected().length == 1) return false;
+
 			boolean triggered = Elevator.getInstance().nearEnoughTarget() && getStateTime() > 0.2;
 			if (triggered) {
 				setManagerStateAlready = false;
