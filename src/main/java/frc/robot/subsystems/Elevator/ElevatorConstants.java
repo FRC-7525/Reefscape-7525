@@ -79,8 +79,8 @@ public final class ElevatorConstants {
 		public static final boolean RIGHT_STRATOR_CURRENT_LIMIT_ENABLED = true;
 		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(100);
 
-		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(40, 3, 1, 0.1);
+		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(55, 0 , 0);
 		// The move is prob to keep this at 0 and not bother tuning
-		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.61, 3.11, 0.06);
+		// public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.61, 3.11, 0.06);
 	}
 }
