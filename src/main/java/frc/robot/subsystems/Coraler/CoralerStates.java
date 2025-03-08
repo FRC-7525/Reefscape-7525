@@ -2,17 +2,17 @@ package frc.robot.Subsystems.Coraler;
 
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
+import frc.robot.SubsystemManager.SubsystemManager;
 import java.util.function.Supplier;
-
 import org.team7525.subsystem.SubsystemStates;
 
-import frc.robot.SubsystemManager.SubsystemManager;
-
 public enum CoralerStates implements SubsystemStates {
-	CORALING("Coraling", () -> {return (SubsystemManager.getInstance().getOperatorReefScoringLevel() == 4 || SubsystemManager.getInstance().getDriverReefScoringLevel() == 4) ? CORALING_VELOCITY_L4 : CORALING_VELOCITY_REGULAR;}),
+	CORALING("Coraling", () -> {
+		return (SubsystemManager.getInstance().getOperatorReefScoringLevel() == 4 || SubsystemManager.getInstance().getDriverReefScoringLevel() == 4) ? CORALING_VELOCITY_L4 : CORALING_VELOCITY_REGULAR;
+	}),
 	INAKING("Inaking", () -> INTAKING_VELOCITY),
 	CENTERING("Centering", () -> CENTERING_VELOCITY),
-	IDLE("Stopped", () ->IDLE_VELOCITY);
+	IDLE("Stopped", () -> IDLE_VELOCITY);
 
 	private String stateString;
 	private double velocity;
