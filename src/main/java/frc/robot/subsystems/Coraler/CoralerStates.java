@@ -7,19 +7,17 @@ import java.util.function.Supplier;
 import org.team7525.subsystem.SubsystemStates;
 
 public enum CoralerStates implements SubsystemStates {
-	CORALING("Coraling", () -> {
-		return (SubsystemManager.getInstance().getOperatorReefScoringLevel() == 4 || SubsystemManager.getInstance().getDriverReefScoringLevel() == 4) ? CORALING_VELOCITY_L4 : CORALING_VELOCITY_REGULAR;
-	}),
+	CORALING("Coraling", () -> {return (SubsystemManager.getInstance().getDriverReefScoringLevel() == 4 || SubsystemManager.getInstance().getOperatorReefScoringLevel() == 4) ? CORALING_VELOCITY_L4 : CORALING_VELOCITY_REGULAR;}),
 	INAKING("Inaking", () -> INTAKING_VELOCITY),
-	CENTERING("Centering", () -> CENTERING_VELOCITY),
+	CENTERING("Centering",  () -> CENTERING_VELOCITY),
 	IDLE("Stopped", () -> IDLE_VELOCITY);
 
 	private String stateString;
-	private double velocity;
+	private Supplier<Double> velocitySupplier;
 
 	CoralerStates(String stateString, Supplier<Double> velocitySupplier) {
 		this.stateString = stateString;
-		this.velocity = velocity;
+		this.velocitySupplier = velocitySupplier;
 	}
 
 	@Override
@@ -27,7 +25,7 @@ public enum CoralerStates implements SubsystemStates {
 		return stateString;
 	}
 
-	public double getVelocity() {
-		return velocity;
+	public Supplier<Double> getVelocitySupplier() {
+		return velocitySupplier;
 	}
 }
