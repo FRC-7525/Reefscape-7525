@@ -7,9 +7,11 @@ import java.util.function.Supplier;
 import org.team7525.subsystem.SubsystemStates;
 
 public enum CoralerStates implements SubsystemStates {
-	CORALING("Coraling", () -> {return (SubsystemManager.getInstance().getDriverReefScoringLevel() == 4 || SubsystemManager.getInstance().getOperatorReefScoringLevel() == 4) ? CORALING_VELOCITY_L4 : CORALING_VELOCITY_REGULAR;}),
+	CORALING("Coraling", () -> {
+		return (SubsystemManager.getInstance().getDriverReefScoringLevel() == 4 || SubsystemManager.getInstance().getOperatorReefScoringLevel() == 4) ? CORALING_VELOCITY_L4 : CORALING_VELOCITY_REGULAR;
+	}),
 	INAKING("Inaking", () -> INTAKING_VELOCITY),
-	CENTERING("Centering",  () -> CENTERING_VELOCITY),
+	CENTERING("Centering", () -> CENTERING_VELOCITY),
 	IDLE("Stopped", () -> IDLE_VELOCITY);
 
 	private String stateString;
