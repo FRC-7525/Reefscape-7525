@@ -10,7 +10,6 @@ import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
-import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -73,6 +72,7 @@ public class ElevatorIOReal implements ElevatorIO {
 		if (ROBOT_MODE == RobotMode.TESTING) {
 			SmartDashboard.putData("Elevator PID controller", pidController);
 		}
+		SmartDashboard.putData("Elevator PID controller", pidController);
 
 		leftMotor.setPosition(Degrees.of(0));
 		rightMotor.setPosition(Degrees.of(0));
@@ -160,5 +160,9 @@ public class ElevatorIOReal implements ElevatorIO {
 	@Override
 	public TalonFX getRightMotor() {
 		return rightMotor;
+	}
+
+	public void resetController() {
+		pidController.reset(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
 	}
 }

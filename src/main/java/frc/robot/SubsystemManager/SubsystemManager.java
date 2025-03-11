@@ -6,9 +6,7 @@ import static frc.robot.SubsystemManager.SubsystemManagerStates.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
-// import frc.robot.Subsystems.Climber.Climber;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -24,12 +22,10 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private static SubsystemManager instance = new SubsystemManager();
 
 	private final Drive drive = Drive.getInstance();
-	// private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
-	private final Coraler coraler = Coraler.getInstance();
+	// private final Coraler coraler = Coraler.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
-	// private final Algaer algaer = Algaer.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
 	private final Passthrough passthrough = Passthrough.getInstance();
 
@@ -90,10 +86,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addRunnableTrigger(() -> this.scoringReefLeft = true, () -> OPERATOR_CONTROLLER.getRawButton(1)); // 1
 		addRunnableTrigger(() -> this.scoringReefLeft = false, () -> OPERATOR_CONTROLLER.getRawButton(3)); // 3
 
-		// // Climbing
-		addTrigger(IDLE, CLIMBING, () -> DRIVER_CONTROLLER.getRightTriggerAxis() > 0.5);
-		addTrigger(CLIMBING, IDLE, () -> DRIVER_CONTROLLER.getRightTriggerAxis() == 0);
-
 		// Intaking at Coral Station
 		// AA
 		addTrigger(IDLE, INTAKING_CORALER, () -> {
@@ -104,11 +96,11 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		});
 
 		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoalSource());
-		addTrigger(INTAKING_CORALER, IDLE, coraler::hasGamepiece);
+		// addTrigger(INTAKING_CORALER, IDLE, coraler::hasGamepiece);
 
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
-		addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
+		// addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
 
 		// Scoring Reef Manual
 		addTrigger(IDLE, TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
@@ -213,8 +205,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 		// Set States, drive and vision are rogue so you don't need to set state
 		elevator.setState(getState().getElevatorStateSupplier().get());
-		coraler.setState(getState().getCoralerState());
-		// algaer.setState(getState().getAlgaerState());
+		// coraler.setState(getState().getCoralerState());
 		autoAlign.setState(getState().getAutoAlignSupplier().get());
 		ledSubsystem.setState(getState().getLedStateSupplier().get());
 		// climber.setState(getState().getClimberState());
@@ -223,9 +214,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Periodics
 		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
 		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
-		Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
+		// Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
 		Tracer.traceFunc("VisionPeriodic", vision::periodic);
-		// Tracer.traceFunc("AlgaerPeriodic", algaer::periodic);
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
 		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
 		// Tracer.traceFunc("ClimberPeriodic", climber::periodic);

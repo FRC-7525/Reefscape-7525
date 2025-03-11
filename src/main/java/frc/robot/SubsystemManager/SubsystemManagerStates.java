@@ -3,9 +3,7 @@ package frc.robot.SubsystemManager;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
 import frc.robot.SubsystemManager.SubsystemManagerConstants.AAReefTarget;
-import frc.robot.Subsystems.Algaer.AlgaerStates;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
-import frc.robot.Subsystems.Climber.ClimberStates;
 import frc.robot.Subsystems.Coraler.CoralerStates;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.LED.LEDStates;
@@ -15,9 +13,6 @@ import org.team7525.subsystem.SubsystemStates;
 
 public enum SubsystemManagerStates implements SubsystemStates {
 	IDLE("Idle", () -> ElevatorStates.IDLE, CoralerStates.IDLE,  () -> AutoAlignStates.OFF, () -> LEDStates.IDLE,  PassthroughStates.OFF),
-	CLIMBING("Climbing", () -> ElevatorStates.IDLE, CoralerStates.IDLE,  () -> AutoAlignStates.OFF, () -> LEDStates.CLIMBING,  PassthroughStates.OFF),
-	GOING_PROCESSOR("Going to Processor", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE,  () -> AutoAlignStates.OFF, () -> LEDStates.ALGAE,  PassthroughStates.OFF),
-	SCORING_PROCESSOR("Scoring at Processor", () -> ElevatorStates.ALGAE_PROCESSOR, CoralerStates.IDLE,  () -> AutoAlignStates.OFF, () -> LEDStates.ALGAE,  PassthroughStates.OFF),
 	AUTO_ALIGN_CLOSE(
 		"Aligning Close",
 		() -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getOperatorReefScoringLevel()),
@@ -32,10 +27,8 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		"Aligning Far",
 		() -> SubsystemManager.getInstance().getOperatorReefScoringLevel() < 3 ? ElevatorStates.IDLE : ElevatorStates.TRANSITIONING,
 		CoralerStates.IDLE,
-		
 		() -> REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())),
 		() -> LEDStates.AUTOALIGN,
-		
 		PassthroughStates.OFF
 	),
 	INTAKING_CORALER(
