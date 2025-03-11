@@ -72,6 +72,7 @@ public class ElevatorIOReal implements ElevatorIO {
 		if (ROBOT_MODE == RobotMode.TESTING) {
 			SmartDashboard.putData("Elevator PID controller", pidController);
 		}
+		SmartDashboard.putData("Elevator PID controller", pidController);
 
 		leftMotor.setPosition(Degrees.of(0));
 		rightMotor.setPosition(Degrees.of(0));
@@ -159,5 +160,9 @@ public class ElevatorIOReal implements ElevatorIO {
 	@Override
 	public TalonFX getRightMotor() {
 		return rightMotor;
+	}
+
+	public void resetController() {
+		pidController.reset(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
 	}
 }

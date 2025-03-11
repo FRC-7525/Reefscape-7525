@@ -22,7 +22,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 	private final Drive drive = Drive.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
-	private final Coraler coraler = Coraler.getInstance();
+	// private final Coraler coraler = Coraler.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
@@ -94,11 +94,11 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		});
 
 		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoalSource());
-		addTrigger(INTAKING_CORALER, IDLE, coraler::hasGamepiece);
+		// addTrigger(INTAKING_CORALER, IDLE, coraler::hasGamepiece);
 
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
-		addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
+		// addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
 
 		// Scoring Reef Manual
 		addTrigger(IDLE, TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
@@ -203,7 +203,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 		// Set States, drive and vision are rogue so you don't need to set state
 		elevator.setState(getState().getElevatorStateSupplier().get());
-		coraler.setState(getState().getCoralerState());
+		// coraler.setState(getState().getCoralerState());
 		autoAlign.setState(getState().getAutoAlignSupplier().get());
 		ledSubsystem.setState(getState().getLedStateSupplier().get());
 		// climber.setState(getState().getClimberState());
@@ -211,7 +211,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Periodics
 		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
 		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
-		Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
+		// Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
 		Tracer.traceFunc("VisionPeriodic", vision::periodic);
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
 		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
