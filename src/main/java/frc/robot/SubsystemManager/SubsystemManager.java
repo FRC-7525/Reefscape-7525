@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
-// import frc.robot.Subsystems.Climber.Climber;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -23,7 +22,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private static SubsystemManager instance = new SubsystemManager();
 
 	private final Drive drive = Drive.getInstance();
-	// private final Climber climber = Climber.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
 	private final Coraler coraler = Coraler.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
@@ -87,10 +85,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Toggling Left or Right Hexagon Side Scoring (auto align)
 		addRunnableTrigger(() -> this.scoringReefLeft = true, () -> OPERATOR_CONTROLLER.getRawButton(1)); // 1
 		addRunnableTrigger(() -> this.scoringReefLeft = false, () -> OPERATOR_CONTROLLER.getRawButton(3)); // 3
-
-		// // Climbing
-		addTrigger(IDLE, CLIMBING, () -> DRIVER_CONTROLLER.getRightTriggerAxis() > 0.5);
-		addTrigger(CLIMBING, IDLE, () -> DRIVER_CONTROLLER.getRightTriggerAxis() == 0);
 
 		// Intaking at Coral Station
 		// AA
