@@ -22,9 +22,15 @@
       "/SmartDashboard/Level Chooser": "String Chooser",
       "/SmartDashboard/Side Chooser": "String Chooser",
       "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d",
-      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d",
+      "/SmartDashboard/is Negative": "String Chooser"
     },
     "windows": {
+      "/SmartDashboard/Auto Chooser": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "Selected AA Pose": {
           "arrowColor": [
@@ -78,11 +84,6 @@
           "visible": true
         }
       },
-      "/SmartDashboard/Side Chooser": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/VisionSystemSim-Vision/Sim Field": {
         "Robot": {
           "style": "Box/Image"
@@ -101,7 +102,10 @@
         "left": 534,
         "right": 3466,
         "top": 291,
-        "width": 17.54825210571289
+        "width": 17.54825210571289,
+        "window": {
+          "visible": true
+        }
       },
       "/SmartDashboard/VisionSystemSim-main/Sim Field": {
         "apriltag": {
@@ -116,7 +120,7 @@
         "visibleTargetPoses": {
           "arrows": false,
           "selectable": false,
-          "style": "Hidden"
+          "style": "Box/Image"
         },
         "width": 17.54825210571289,
         "window": {
@@ -128,9 +132,6 @@
   "NetworkTables": {
     "transitory": {
       "AdvantageKit": {
-        "Elevator": {
-          "open": true
-        },
         "RealOutputs": {
           "Auto": {
             "open": true
@@ -141,19 +142,21 @@
           "Board": {
             "open": true
           },
+          "Manager": {
+            "open": true
+          },
           "Vision": {
             "Camera0": {
               "open": true
             }
-          },
-          "open": true
-        },
-        "open": true
+          }
+        }
       },
       "SmartDashboard": {
         "VisionSystemSim-Vision": {
           "open": true
-        }
+        },
+        "open": true
       }
     }
   },

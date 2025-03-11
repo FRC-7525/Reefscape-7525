@@ -256,6 +256,10 @@ public class Drive extends Subsystem<DriveStates> {
 		driveIO.setControl(new SwerveRequest.SwerveDriveBrake().withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
 	}
 
+	public void zeroGyro() {
+		driveIO.zeroGyro();
+	}
+
 	// SYSId Trash (no hate ofc)
 	public enum SysIdMode {
 		TRANSLATION,

@@ -8,13 +8,16 @@ import choreo.trajectory.SwerveSample;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
-import frc.robot.Robot;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
@@ -33,8 +36,10 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	private ProfiledPIDController rotationController;
 
-	private ProfiledPIDController repulsionTranslationController;
-	private ProfiledPIDController repulsionRotationController;
+	private PIDController repulsionTranslationController;
+	private PIDController repulsionRotationController;
+
+	private Debouncer autoAlignDebouncer;
 
 	private Pose2d targetPose;
 	private Pose2d goalPose;
@@ -47,6 +52,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private double xApplied = 0;
 	private double yApplied = 0;
 
+	private double timer;
+	private final SendableChooser<Boolean> negativeChooser = new SendableChooser<>();
+
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
 		// PID Config
@@ -56,13 +64,23 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		this.repulsionTranslationController = REPULSOR_TRANSLATIONAL_CONTROLLER.get();
 		this.repulsionRotationController = REPULSOR_ROTATIONAL_CONTROLLER.get();
 
+		this.translationXController.setTolerance(TRANSLATIONAL_COMPONENT_ERROR_MARGIN.in(Meters));
+		this.translationYController.setTolerance(TRANSLATIONAL_COMPONENT_ERROR_MARGIN.in(Meters));
+		this.repulsionTranslationController.setTolerance(TRANSLATIONAL_COMPONENT_ERROR_MARGIN.in(Meters));
+		this.repulsionRotationController.setTolerance(ANGLE_ERROR_MARGIN.in(Radians));
+		this.rotationController.setTolerance(ANGLE_ERROR_MARGIN.in(Radians));
+
+		autoAlignDebouncer = new Debouncer(0.5, DebounceType.kRising);
+
 		repulsorActivated = false;
 		targetPose = new Pose2d();
 		goalPose = new Pose2d();
 
-		this.translationXController.setTolerance(0.01);
-		this.translationYController.setTolerance(0.01);
-		this.repulsionRotationController.setTolerance(0.1);
+		timer = -1;
+		negativeChooser.setDefaultOption("Positive", false);
+		negativeChooser.addOption("Negative", true);
+
+		SmartDashboard.putData("is Negative", negativeChooser);
 	}
 
 	public static AutoAlign getInstance() {
@@ -75,10 +93,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	@Override
 	protected void runState() {
 		logOutput();
-		if (ROBOT_MODE == RobotMode.SIM) {
-			reefPose = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
-			isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
-		}
+		reefPose = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
+		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 
 		if (getState() == AutoAlignStates.OFF) return;
 
@@ -112,7 +128,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		yApplied = translationYController.calculate(drivePose.getY(), targetPose.getY());
 
 		double rotationApplied = rotationController.calculate(drivePose.getRotation().getRadians(), targetPose.getRotation().getRadians());
-		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false, false);
+		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false, false); // was negative
 		else drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false, false);
 	}
 
@@ -126,7 +142,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		Logger.recordOutput("TESTING VX", targetSpeeds.vxMetersPerSecond);
 		Logger.recordOutput("TESTING VY", targetSpeeds.vyMetersPerSecond);
-		if (isRedAlliance) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
+		if (isRedAlliance) drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false); // was negative
 		else drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
 	}
 
@@ -157,20 +173,28 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/Interpolated Distance From Reef", interpolatedDistanceFromReef);
 		Logger.recordOutput("AutoAlign/ReefPose", reefPose);
 		Logger.recordOutput("AutoAlign/Repulsor Activated", repulsorActivated);
-		if (Robot.isSimulation()) {
-			Logger.recordOutput("AutoAlign/Arrows", repulsor.getArrows().toArray(arrowsArray));
-		}
+		Logger.recordOutput("AutoAlign/Arrows", repulsor.getArrows().toArray(arrowsArray));
 	}
 
 	public boolean nearGoal() {
-		Logger.recordOutput("AutoTest/Rotation Error Repulsor", repulsionRotationController.getPositionError());
-		Logger.recordOutput("AutoTest/Rotation Error Regular", rotationController.getPositionError());
-		Logger.recordOutput("AutoTest/Translation Error", drive.getPose().getTranslation().getDistance(goalPose.getTranslation()));
-		Logger.recordOutput(
-			"AutoTest/NearGoal",
-			drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getPositionError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN)
+		return drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meters) && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN.in(Radians) || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN.in(Radians));
+	}
+
+	public boolean nearGoalSource() {
+		return autoAlignDebouncer.calculate(
+			drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meter) && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN.in(Radians) || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN.in(Radians))
 		);
-		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN && (Math.abs(repulsionRotationController.getPositionError()) < ANGLE_ERROR_MARGIN || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN));
+	}
+
+	public boolean timedOut() {
+		if (getStateTime() > 0.01 && drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < MOVEMENT_THRESHOLD) {
+			timer = getStateTime();
+		}
+
+		if (timer != -1 && getStateTime() - timer > TIMEOUT_THRESHOLD) {
+			timer = -1;
+			return true;
+		} else return false;
 	}
 
 	public boolean readyForClose() {

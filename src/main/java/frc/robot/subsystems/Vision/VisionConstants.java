@@ -45,7 +45,7 @@ public class VisionConstants {
 	// Other
 	// INSANE skill issue from First
 	// This is comp dependent
-	public static final boolean USE_WELDED_FIELD = false;
+	public static final boolean USE_WELDED_FIELD = true;
 
 	public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFieldLayout.loadField(USE_WELDED_FIELD ? AprilTagFields.k2025ReefscapeWelded : AprilTagFields.k2025ReefscapeAndyMark);
 

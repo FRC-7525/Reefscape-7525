@@ -28,7 +28,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private final Coraler coraler = Coraler.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
-	private final Algaer algaer = Algaer.getInstance();
+	// private final Algaer algaer = Algaer.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
 
 	public Boolean leftSourceSelected = false;
@@ -101,30 +101,31 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 			return left || right;
 		});
 
-		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoal());
+		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoalSource());
+		addTrigger(INTAKING_CORALER, IDLE, coraler::hasGamepiece);
 
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
 		addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
 
 		// // Intaking Algae
-		addTrigger(IDLE, INTAKING_ALGAE_GROUND, DRIVER_CONTROLLER::getBButtonPressed);
-		addTrigger(INTAKING_ALGAE_GROUND, INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD || DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
-		addTrigger(INTAKING_ALGAE_GROUND, INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
-		addTrigger(INTAKING_ALGAE_LOW, INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
-		addTrigger(INTAKING_ALGAE_LOW, INTAKING_ALGAE_GROUND, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
-		addTrigger(INTAKING_ALGAE_HIGH, INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
-		addTrigger(INTAKING_ALGAE_HIGH, INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD || DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
+		// addTrigger(IDLE, INTAKING_ALGAE_GROUND, DRIVER_CONTROLLER::getBButtonPressed);
+		// addTrigger(INTAKING_ALGAE_GROUND, INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD || DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
+		// addTrigger(INTAKING_ALGAE_GROUND, INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
+		// addTrigger(INTAKING_ALGAE_LOW, INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
+		// addTrigger(INTAKING_ALGAE_LOW, INTAKING_ALGAE_GROUND, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
+		// addTrigger(INTAKING_ALGAE_HIGH, INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
+		// addTrigger(INTAKING_ALGAE_HIGH, INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD || DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
 
 		// Go Back Down after intaking
 		addTrigger(INTAKING_ALGAE_HIGH, HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
 		addTrigger(INTAKING_ALGAE_LOW, HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
 		addTrigger(INTAKING_ALGAE_GROUND, HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
 
-		// Scoring Algae at Processor
-		addTrigger(HOLDING_ALGAE, GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
-		addTrigger(GOING_PROCESSOR, SCORING_PROCESSOR, () -> (algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed()));
-		addTrigger(SCORING_PROCESSOR, IDLE, DRIVER_CONTROLLER::getAButtonPressed);
+		// // Scoring Algae at Processor
+		// addTrigger(HOLDING_ALGAE, GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
+		// // addTrigger(GOING_PROCESSOR, SCORING_PROCESSOR, () -> (algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed()));
+		// addTrigger(SCORING_PROCESSOR, IDLE, DRIVER_CONTROLLER::getAButtonPressed);
 
 		// Scoring Reef Manual
 		addTrigger(IDLE, TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
@@ -133,12 +134,21 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Auto ONLY transition
 		addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
+		addTrigger(INTAKING_CORALER_AA_OFF, INTAKING_CORALER, () -> DriverStation.isAutonomous() && !AutoAlign.getInstance().nearGoalSource()); // TODO check if this needs to be removed after during comp
 
-		// Scoring Reef Auto Alig	n
+		// Scoring Reef Auto Align
 		// See if odo is good enough to ALWAYS automatically score, otherwise we just have driver click y after minior adjustments
 		addTrigger(IDLE, AUTO_ALIGN_FAR, DRIVER_CONTROLLER::getYButtonPressed);
 		addTrigger(AUTO_ALIGN_FAR, AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
 		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, autoAlign::nearGoal);
+		//If the robot barely moves from its position for a certain time threshold, just move onto the next state
+		//TODO: Barely tested and tuned, comment out if bum
+		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, () -> {
+			return autoAlign.timedOut() && DriverStation.isAutonomous();
+		});
+		addTrigger(AUTO_ALIGN_CLOSE, SCORING_REEF_MANUAL, () -> {
+			return autoAlign.timedOut() && !DriverStation.isAutonomous();
+		});
 		// Zero Elevator
 		// TODO: Test
 		// Not testing all that :laughing cat emoji:
@@ -221,7 +231,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Set States, drive and vision are rogue so you don't need to set state
 		elevator.setState(getState().getElevatorStateSupplier().get());
 		coraler.setState(getState().getCoralerState());
-		algaer.setState(getState().getAlgaerState());
+		// algaer.setState(getState().getAlgaerState());
 		autoAlign.setState(getState().getAutoAlignSupplier().get());
 		ledSubsystem.setState(getState().getLedStateSupplier().get());
 		// climber.setState(getState().getClimberState());
@@ -231,7 +241,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
 		Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
 		Tracer.traceFunc("VisionPeriodic", vision::periodic);
-		Tracer.traceFunc("AlgaerPeriodic", algaer::periodic);
+		// Tracer.traceFunc("AlgaerPeriodic", algaer::periodic);
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
 		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
 		// Tracer.traceFunc("ClimberPeriodic", climber::periodic);

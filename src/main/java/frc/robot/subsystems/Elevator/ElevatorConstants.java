@@ -29,21 +29,21 @@ public final class ElevatorConstants {
 	// TODO: Set to smaller numbers once we have robot (low max vel/acc for testing, real should be around 100)
 	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
 	// public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(10);
-	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(70);
-	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(70);
+	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(100);
+	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(100);
 
 	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(MAX_VELOCITY.in(MetersPerSecond), MAX_ACCELERATION.in(MetersPerSecondPerSecond));
 	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-4);
-	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(15.0);
+	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(25.0);
 
 	public static final Distance TRANSITION_HEIGHT = Inches.of(12);
-	public static final Distance L4_HEIGHT = Inches.of(23.5);
-	public static final Distance L3_HEIGHT = Inches.of(12);
-	public static final Distance L2_HEIGHT = Inches.of(4);
+	public static final Distance L4_HEIGHT = Inches.of(23.15);
+	public static final Distance L3_HEIGHT = Inches.of(10.9);
+	public static final Distance L2_HEIGHT = Inches.of(2.9);
 	public static final Distance L1_HEIGHT = Inches.of(0);
 	public static final Distance IDLE_HEIGHT = Inches.of(0);
-	public static final Distance ALGAE_LOW_HEIGHT = Inches.of(13.5);
-	public static final Distance ALGAE_HIGH_HEIGHT = Inches.of(21);
+	public static final Distance ALGAE_LOW_HEIGHT = Inches.of(14); //13.5 + 0.5
+	public static final Distance ALGAE_HIGH_HEIGHT = Inches.of(21.5); //21 + 0.5
 	public static final Distance ALGAE_PROCESSOR_HEIGHT = Inches.of(3.5);
 
 	public static final Distance METERS_PER_ROTATION = Meters.of((1 / GEARING) * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right
@@ -60,7 +60,7 @@ public final class ElevatorConstants {
 		public static final Distance STARTING_HEIGHT = Inches.of(0);
 
 		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(70, 2, 1, 0.1);
-		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.24, 6.66, 0.03);
+		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.11, 7.09, 0.01);
 
 		// Sim is trolling, idk why
 		public static final Distance POSITION_TOLERANCE_SIM = Inches.of(4);
@@ -79,8 +79,8 @@ public final class ElevatorConstants {
 		public static final boolean RIGHT_STRATOR_CURRENT_LIMIT_ENABLED = true;
 		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(100);
 
-		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(40, 3, 1, 0.1);
+		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(55, 0, 0);
 		// The move is prob to keep this at 0 and not bother tuning
-		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.61, 3.11, 0.06);
+		// public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.61, 3.11, 0.06);
 	}
 }

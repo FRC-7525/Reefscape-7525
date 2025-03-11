@@ -28,7 +28,7 @@ public class ElevatorIOReal implements ElevatorIO {
 	private TalonFXConfiguration rightConfigurations;
 
 	private ProfiledPIDController pidController;
-	private ElevatorFeedforward ffcontroller;
+	// private ElevatorFeedforward ffcontroller;
 
 	private double leftMotorVoltage;
 	private double rightMotorVoltage;
@@ -68,7 +68,7 @@ public class ElevatorIOReal implements ElevatorIO {
 		pidController.setTolerance(ElevatorConstants.POSITION_TOLERANCE.in(Meters), ElevatorConstants.VELOCITY_TOLERANCE.in(MetersPerSecond));
 		pidController.setIZone(PROFILLED_PID_CONSTANTS.iZone);
 
-		ffcontroller = new ElevatorFeedforward(FF_CONSTANTS.kS, FF_CONSTANTS.kG, FF_CONSTANTS.kV, FF_CONSTANTS.kA);
+		// ffcontroller = new ElevatorFeedforward(FF_CONSTANTS.kS, FF_CONSTANTS.kG, FF_CONSTANTS.kV, FF_CONSTANTS.kA);
 
 		if (ROBOT_MODE == RobotMode.TESTING) {
 			SmartDashboard.putData("Elevator PID controller", pidController);
@@ -110,7 +110,8 @@ public class ElevatorIOReal implements ElevatorIO {
 
 	@Override
 	public void runElevator() {
-		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
+		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
+		//+ ffcontroller.calculate(pidController.getSetpoint().velocity);
 		leftMotor.setVoltage(leftMotorVoltage);
 	}
 
@@ -121,7 +122,7 @@ public class ElevatorIOReal implements ElevatorIO {
 
 	@Override
 	public void zero() {
-		double ZeroingSpeed = -ElevatorConstants.ZEROING_VELOCITY.in(MetersPerSecond);
+		double ZeroingSpeed = ElevatorConstants.ZEROING_VELOCITY.in(MetersPerSecond);
 		if (leftMotor.getStatorCurrent().getValueAsDouble() > ElevatorConstants.ZEROING_CURRENT_LIMIT.in(Amps)) {
 			ZeroingSpeed = 0;
 			if (!leftMotorZeroed) leftMotor.setPosition(0);
