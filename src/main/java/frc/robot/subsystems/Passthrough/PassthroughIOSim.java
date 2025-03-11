@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Passthrough;
 
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static frc.robot.Subsystems.Coraler.CoralerConstants.SET_TO_VOLTS_CF;
 import static frc.robot.Subsystems.Passthrough.PassthroughConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -39,6 +40,6 @@ public class PassthroughIOSim implements PassthroughIO {
 	@Override
 	public void setTargetVelocity(double targetVelocity) {
 		this.targetVelocity = targetVelocity;
-		motorSim.setInputVoltage(targetVelocity * 12);
+		motorSim.setInputVoltage(targetVelocity * SET_TO_VOLTS_CF);
 	}
 }

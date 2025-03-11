@@ -14,5 +14,6 @@ public class PassthroughConstants {
 
 		public static final int NUM_MOTORS = 1;
 		public static final double MOTOR_MOI = 0.00001;
+		public static final double SET_TO_VOLTS_CF = 12;
 	}
 }
