@@ -4,7 +4,6 @@ import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.Subsystems.Algaer.Algaer;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -63,8 +62,6 @@ public class MusicManager {
 
 	public void addAllSubsystemInstruments() {
 		hasInstruments = true;
-		orchestra.addInstrument(Algaer.getInstance().getWheelMotor());
-		Algaer.getInstance().getWheelMotor().getConfigurator().apply(audioConfigs);
 		orchestra.addInstrument(Coraler.getInstance().getMotor());
 		Coraler.getInstance().getMotor().getConfigurator().apply(audioConfigs);
 		orchestra.addInstrument(Elevator.getInstance().getLeftMotor());
