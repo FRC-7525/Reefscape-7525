@@ -3,9 +3,9 @@ package frc.robot.Subsystems.Passthrough;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface PassthroughIO {
-
 	@AutoLog
 	public class PassthroughIOInputs {
+
 		double motorVelocityRPS;
 		double inputVoltage;
 		double targetVelocity;
