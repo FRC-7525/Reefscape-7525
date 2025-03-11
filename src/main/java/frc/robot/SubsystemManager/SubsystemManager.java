@@ -238,7 +238,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		ledSubsystem.setState(getState().getLedStateSupplier().get());
 		// climber.setState(getState().getClimberState());
 		passthrough.setState(getState().getPassthroughState());
-		
 
 		// Periodics
 		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
