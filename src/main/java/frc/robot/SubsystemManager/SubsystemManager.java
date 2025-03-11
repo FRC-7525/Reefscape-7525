@@ -13,6 +13,7 @@ import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.LED.LED;
+import frc.robot.Subsystems.Passthrough.Passthrough;
 import frc.robot.Subsystems.Vision.Vision;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.misc.Tracer;
@@ -30,6 +31,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private final Vision vision = Vision.getInstance();
 	// private final Algaer algaer = Algaer.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
+	private final Passthrough passthrough = Passthrough.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -235,6 +237,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		autoAlign.setState(getState().getAutoAlignSupplier().get());
 		ledSubsystem.setState(getState().getLedStateSupplier().get());
 		// climber.setState(getState().getClimberState());
+		passthrough.setState(getState().getPassthroughState());
+		
 
 		// Periodics
 		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
@@ -245,6 +249,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
 		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
 		// Tracer.traceFunc("ClimberPeriodic", climber::periodic);
+		Tracer.traceFunc("PassthroughPeriodic", passthrough::periodic);
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(5)) { // 5
