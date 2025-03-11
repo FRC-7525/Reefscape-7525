@@ -132,6 +132,9 @@
   "NetworkTables": {
     "transitory": {
       "AdvantageKit": {
+        "Powered Passthrough": {
+          "open": true
+        },
         "RealOutputs": {
           "Auto": {
             "open": true
@@ -149,14 +152,15 @@
             "Camera0": {
               "open": true
             }
-          }
-        }
+          },
+          "open": true
+        },
+        "open": true
       },
       "SmartDashboard": {
         "VisionSystemSim-Vision": {
           "open": true
-        },
-        "open": true
+        }
       }
     }
   },
