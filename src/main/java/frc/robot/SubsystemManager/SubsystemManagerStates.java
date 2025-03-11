@@ -51,13 +51,13 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		() -> SOURCE_TARGET_MAP.get(SubsystemManager.getInstance().getLeftSourceSelected()),
 		() -> LEDStates.INTAKING,
 		ClimberStates.DOWN,
-		PassthroughStates.OFF
+		PassthroughStates.INTAKING
 	),
 	SCOING_NET("Scoring net", () -> ElevatorStates.L4, CoralerStates.IDLE, AlgaerStates.SCORING_NET, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, ClimberStates.DOWN, PassthroughStates.OFF),
 	INTAKING_CORALER_AA_OFF("Intaking Coral Station with Driver Control", () -> ElevatorStates.IDLE, CoralerStates.INAKING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.INTAKING, ClimberStates.DOWN, PassthroughStates.INTAKING),
 	CENTERING_CORALER("Centering Coral", () -> ElevatorStates.IDLE, CoralerStates.CENTERING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.INTAKING, ClimberStates.DOWN, PassthroughStates.INTAKING),
-	SCORING_REEF_MANUAL("Scoring Reef", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getDriverReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, ClimberStates.DOWN, PassthroughStates.INTAKING),
-	SCORING_REEF_AA("Scoring Reef AA", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getOperatorReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, ClimberStates.DOWN, PassthroughStates.INTAKING),
+	SCORING_REEF_MANUAL("Scoring Reef", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getDriverReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, ClimberStates.DOWN, PassthroughStates.OFF),
+	SCORING_REEF_AA("Scoring Reef AA", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getOperatorReefScoringLevel()), CoralerStates.CORALING, AlgaerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, ClimberStates.DOWN, PassthroughStates.OFF),
 	TRANSITIONING_SCORING_REEF(
 		"Transitioning Scoring",
 		() -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getDriverReefScoringLevel()),

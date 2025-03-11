@@ -1,10 +1,13 @@
 package frc.robot.Subsystems.Passthrough;
 
+import static frc.robot.Subsystems.Coraler.CoralerConstants.INTAKING_VELOCITY;
+import static frc.robot.Subsystems.Passthrough.PassthroughConstants.OFF_VELOCITY;
+
 import org.team7525.subsystem.SubsystemStates;
 
 public enum PassthroughStates implements SubsystemStates {
-	OFF("Off", 0),
-	INTAKING("Intaking", 0);
+	OFF("Off", OFF_VELOCITY),
+	INTAKING("Intaking", INTAKING_VELOCITY);
 
 	private String stateString;
 	private double velocity;

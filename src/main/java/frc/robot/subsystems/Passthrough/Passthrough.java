@@ -3,18 +3,19 @@ package frc.robot.Subsystems.Passthrough;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Passthrough.PassthroughConstants.*;
 
-import frc.robot.Subsystems.Passthrough.PassthroughIO.PassthroughIOInputs;
+
+import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
 public class Passthrough extends Subsystem<PassthroughStates> {
 
 	private static Passthrough instance;
 	private final PassthroughIO io;
-	private final PassthroughIOInputs inputs;
+	private final PassthroughIOInputsAutoLogged inputs;
 
 	private Passthrough() {
 		super(SUBSYSTEM_NAME, PassthroughStates.OFF);
-		inputs = new PassthroughIOInputs();
+		inputs = new PassthroughIOInputsAutoLogged();
 		this.io = switch (ROBOT_MODE) {
 			case REAL -> new PassthroughIOReal();
 			case SIM -> new PassthroughIOSim();
@@ -33,5 +34,7 @@ public class Passthrough extends Subsystem<PassthroughStates> {
 	protected void runState() {
 		io.setTargetVelocity(getState().getVelocity());
 		io.updateInput(inputs);
+
+		Logger.processInputs(SUBSYSTEM_NAME, inputs);
 	}
 }
