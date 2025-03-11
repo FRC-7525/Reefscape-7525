@@ -208,7 +208,7 @@ public class Drive extends Subsystem<DriveStates> {
 			if (
 				Math.abs(currentVelocity) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond) &&
 				Math.abs(targetVelocity) <= 0.5 &&
-				(Elevator.getInstance().getState() == ElevatorStates.ALGAE_PROCESSOR || Elevator.getInstance().getState() == ElevatorStates.CORAL_STATION || Elevator.getInstance().getState() == ElevatorStates.IDLE)
+				(Elevator.getInstance().getState() == ElevatorStates.CORAL_STATION || Elevator.getInstance().getState() == ElevatorStates.IDLE)
 			) {
 				Angle angle = Radians.of(Math.atan2(yVelocity, xVelocity));
 				antiTipX = xStoppingTranslationLimiter.calculate(targetVelocity * Math.sin(angle.in(Radians)));
@@ -216,7 +216,7 @@ public class Drive extends Subsystem<DriveStates> {
 				Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", true);
 			} else {
 				// When ur tryna anti tip but you wouldn't tip anyways
-				if (Elevator.getInstance().getState() != ElevatorStates.ALGAE_PROCESSOR || Elevator.getInstance().getState() != ElevatorStates.CORAL_STATION || Elevator.getInstance().getState() != ElevatorStates.IDLE) {
+				if (Elevator.getInstance().getState() != ElevatorStates.CORAL_STATION || Elevator.getInstance().getState() != ElevatorStates.IDLE) {
 					antiTipX = xTranslationLimiter.calculate(xVelocity);
 					antiTipY = yTranslationLimiter.calculate(yVelocity);
 				} else {
