@@ -110,25 +110,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
 		addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
 
-		// // Intaking Algae
-		// addTrigger(IDLE, INTAKING_ALGAE_GROUND, DRIVER_CONTROLLER::getBButtonPressed);
-		// addTrigger(INTAKING_ALGAE_GROUND, INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD || DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
-		// addTrigger(INTAKING_ALGAE_GROUND, INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
-		// addTrigger(INTAKING_ALGAE_LOW, INTAKING_ALGAE_HIGH, () -> DRIVER_CONTROLLER.getPOV() == UP_DPAD);
-		// addTrigger(INTAKING_ALGAE_LOW, INTAKING_ALGAE_GROUND, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
-		// addTrigger(INTAKING_ALGAE_HIGH, INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
-		// addTrigger(INTAKING_ALGAE_HIGH, INTAKING_ALGAE_LOW, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD || DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
-
-		// Go Back Down after intaking
-		addTrigger(INTAKING_ALGAE_HIGH, HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
-		addTrigger(INTAKING_ALGAE_LOW, HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
-		addTrigger(INTAKING_ALGAE_GROUND, HOLDING_ALGAE, DRIVER_CONTROLLER::getBButtonPressed);
-
-		// // Scoring Algae at Processor
-		// addTrigger(HOLDING_ALGAE, GOING_PROCESSOR, DRIVER_CONTROLLER::getAButtonPressed);
-		// // addTrigger(GOING_PROCESSOR, SCORING_PROCESSOR, () -> (algaer.nearTarget() && DRIVER_CONTROLLER.getAButtonPressed()));
-		// addTrigger(SCORING_PROCESSOR, IDLE, DRIVER_CONTROLLER::getAButtonPressed);
-
 		// Scoring Reef Manual
 		addTrigger(IDLE, TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
 		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, DRIVER_CONTROLLER::getYButtonPressed);
