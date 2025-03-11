@@ -25,7 +25,7 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		CoralerStates.IDLE,
 		AlgaerStates.IDLE,
 		() -> REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())),
-		() -> LEDStates.AUTOALIGN	
+		() -> LEDStates.AUTOALIGN
 	),
 	AUTO_ALIGN_FAR(
 		"Aligning Far",
