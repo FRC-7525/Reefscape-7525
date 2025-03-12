@@ -35,7 +35,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.FaultManager.FaultManager;
-import frc.robot.Subsystems.AutoAlign.AutoAlign;
+import frc.robot.Subsystems.AutoAlign.AutoAlignL;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -150,7 +150,7 @@ public class Drive extends Subsystem<DriveStates> {
 		logOutputs(driveIO.getDrive().getState());
 
 		// Otherwise it will try to force wheels to stop in auto
-		if (AutoAlign.getInstance().getState() == AutoAlignStates.OFF && !WheelRadiusCharacterization.getInstance().isCharacterizationActive()) {
+		if (AutoAlignL.getInstance().getState() == AutoAlignStates.OFF && !WheelRadiusCharacterization.getInstance().isCharacterizationActive()) {
 			getState().driveRobot();
 		}
 

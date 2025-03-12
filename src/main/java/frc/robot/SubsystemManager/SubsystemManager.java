@@ -6,7 +6,7 @@ import static frc.robot.SubsystemManager.SubsystemManagerStates.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.Subsystems.AutoAlign.AutoAlign;
+import frc.robot.Subsystems.AutoAlign.AutoAlignL;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -24,7 +24,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private final Drive drive = Drive.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
 	// private final Coraler coraler = Coraler.getInstance();
-	private final AutoAlign autoAlign = AutoAlign.getInstance();
+	private final AutoAlignL autoAlign = AutoAlignL.getInstance();
 	private final Vision vision = Vision.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
 	private final Passthrough passthrough = Passthrough.getInstance();
@@ -109,7 +109,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Auto ONLY transition
 		addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
-		addTrigger(INTAKING_CORALER_AA_OFF, INTAKING_CORALER, () -> DriverStation.isAutonomous() && !AutoAlign.getInstance().nearGoalSource()); // TODO check if this needs to be removed after during comp
+		addTrigger(INTAKING_CORALER_AA_OFF, INTAKING_CORALER, () -> DriverStation.isAutonomous() && !AutoAlignL.getInstance().nearGoalSource()); // TODO check if this needs to be removed after during comp
 
 		// Scoring Reef Auto Align
 		// See if odo is good enough to ALWAYS automatically score, otherwise we just have driver click y after minior adjustments
