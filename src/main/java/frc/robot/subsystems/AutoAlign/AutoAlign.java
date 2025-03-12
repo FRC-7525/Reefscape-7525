@@ -341,7 +341,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
     }
     
 
-    // TODO: Call this on entrance/exit & impl 254s thingy
+    // TODO: Call this on entrance/exit & impl 254s thingy, once entrance/exit are merged I'll actually do this
     public void resetPID() {
         Pose2d currentPose = drive.getPose();
         ChassisSpeeds currentSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(
