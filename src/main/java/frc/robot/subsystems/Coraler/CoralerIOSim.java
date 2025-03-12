@@ -47,7 +47,8 @@ public class CoralerIOSim implements CoralerIO {
 
 	@Override
 	public boolean currentLimitReached() { //TODO this is so buns find a better way to check this
-		return true;
+		// return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds) && SubsystemManager.getInstance().getState() == SubsystemManagerStates.INTAKING_CORALER_AA_OFF;
+		return false;
 	}
 
 	@Override
