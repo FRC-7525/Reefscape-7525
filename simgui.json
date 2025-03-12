@@ -146,6 +146,9 @@
           "Board": {
             "open": true
           },
+          "Drive": {
+            "open": true
+          },
           "Manager": {
             "open": true
           },

@@ -9,8 +9,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.GlobalConstants;
-import frc.robot.SubsystemManager.SubsystemManager;
-import frc.robot.SubsystemManager.SubsystemManagerStates;
 import frc.robot.Subsystems.Coraler.CoralerConstants.Sim;
 
 public class CoralerIOSim implements CoralerIO {

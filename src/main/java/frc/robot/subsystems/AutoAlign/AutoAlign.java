@@ -29,6 +29,7 @@ import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Subsystems.Drive.Drive;
 
 public class AutoAlign extends Subsystem<AutoAlignStates> {
+    // Note for reviewer - ima put everything in constants once I finalize AA, this is a rough draft expect 200 more LOC
     
     private static AutoAlign instance;
 
@@ -286,9 +287,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
         interpolatedDistanceFromReef = interpolatedPose.getTranslation().getDistance(reefPose.getTranslation());
 
-        boolean willCollide = interpolatedDistanceFromReef < (REEF_HITBOX.in(Meters) + ROBOT_RADIUS.in(Meters)) * 0.7;
+        boolean willCollide = interpolatedDistanceFromReef < (REEF_HITBOX.in(Meters) + ROBOT_RADIUS.in(Meters));
         Logger.recordOutput("AutoAlign/Gona hit reef", willCollide);
-        return willCollide;
+        return willCollide && !(Math.abs(targetPose.getTranslation().getDistance(currentPose.getTranslation())) < 0.3);
     }
 
     // Used for LOS

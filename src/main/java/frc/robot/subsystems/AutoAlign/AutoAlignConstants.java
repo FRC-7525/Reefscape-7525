@@ -3,11 +3,9 @@ package frc.robot.Subsystems.AutoAlign;
 import static edu.wpi.first.units.Units.*;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -40,7 +38,7 @@ public final class AutoAlignConstants {
 	// public static final double ANGLE_ERROR_MARGIN = 0.1;
 
 	public static final Distance TRANSLATIONAL_COMPONENT_ERROR_MARGIN = Meters.of(0.01);
-	public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.025); // Real values
+	public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.01); // previously 0.025
 	public static final Angle ANGLE_ERROR_MARGIN = Radians.of(0.05);
 
 	public static final double MOVEMENT_THRESHOLD = 0.25;
@@ -70,7 +68,7 @@ public final class AutoAlignConstants {
 
 	public static final class obstacles {
 
-		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 20, true, 1.18), new GuidedObstacle(new Translation2d(13.08, 4), 20, true, 1.18));
+		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 20, true, 1.5), new GuidedObstacle(new Translation2d(13.08, 4), 20, true, 1.5));
 
 		public static final List<Obstacle> WALLS = List.of(
 			new HorizontalObstacle(0.0, 0.5, true),
