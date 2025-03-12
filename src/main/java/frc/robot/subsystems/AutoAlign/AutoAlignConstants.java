@@ -26,7 +26,8 @@ import org.team7525.autoAlign.RepulsorFieldPlanner.VerticalObstacle;
 public final class AutoAlignConstants {
 
 	public static final Distance ROBOT_RADIUS = Meters.of(.91);
-	public static final Distance REEF_HITBOX = Inches.of(53.7625); // Reef size = 46.75 in multiplied by 1.15 for safety
+	// public static final Distance REEF_HITBOX = Inches.of(53.7625); // Reef size = 46.75 in multiplied by 1.15 for safety
+	public static final Distance REEF_HITBOX = Inches.of(46.75); // Reef size = 46.75 in multiplied by 1.15 for safety
 
 	public static final Angle MIN_HEADING_ANGLE = Degrees.of(-180);
 	public static final Angle MAX_HEADING_ANGLE = Degrees.of(180);
@@ -45,36 +46,13 @@ public final class AutoAlignConstants {
 	public static final double MOVEMENT_THRESHOLD = 0.25;
 	public static final double TIMEOUT_THRESHOLD = 1.2;
 
-	public static final double GOAL_STRENGTH = 0.65;
+	public static final double GOAL_STRENGTH = 0.1;
 	static final double FIELD_LENGTH = 16.42;
 	static final double FIELD_WIDTH = 8.16;
 
 	public static final Pose2d REEF_POSE = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
-
-	// TODO tune these
-	public static final Supplier<PIDController> TRANSLATIONALY_CONTROLLER = () ->
-		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new PIDController(7, 0, 0);
-			case SIM -> new PIDController(5, 0, 0);
-			default -> new PIDController(1, 0, 0);
-		};
-
-	public static final Supplier<PIDController> TRANSLATIONALX_CONTROLLER = () ->
-		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new PIDController(7, 0, 0);
-			case SIM -> new PIDController(5, 0, 0);
-			default -> new PIDController(1, 0, 0);
-		};
-
 	public static final AngularVelocity MAX_ANGULAR_VELOCITY = RotationsPerSecond.of(2);
 	public static final AngularAcceleration MAX_ACCELERATION = RotationsPerSecondPerSecond.of(1);
-
-	public static final Supplier<ProfiledPIDController> ROTATIONAL_CONTROLLER = () ->
-		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new ProfiledPIDController(10, 0, 0, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ACCELERATION.in(RadiansPerSecondPerSecond)));
-			case SIM -> new ProfiledPIDController(10, 0, 0.2, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ACCELERATION.in(RadiansPerSecondPerSecond)));
-			default -> new ProfiledPIDController(0.1, 0, 0.2, new Constraints(MAX_ANGULAR_VELOCITY.in(RadiansPerSecond), MAX_ACCELERATION.in(RadiansPerSecondPerSecond)));
-		};
 
 	public static final Supplier<PIDController> REPULSOR_TRANSLATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
@@ -92,7 +70,7 @@ public final class AutoAlignConstants {
 
 	public static final class obstacles {
 
-		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 6, true, 1.2), new GuidedObstacle(new Translation2d(13.08, 4), 6, true, 1.2));
+		public static final List<Obstacle> FIELD_OBSTACLES = List.of(new GuidedObstacle(new Translation2d(4.49, 4), 20, true, 1.18), new GuidedObstacle(new Translation2d(13.08, 4), 20, true, 1.18));
 
 		public static final List<Obstacle> WALLS = List.of(
 			new HorizontalObstacle(0.0, 0.5, true),

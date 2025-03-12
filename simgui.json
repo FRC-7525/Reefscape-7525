@@ -17,9 +17,13 @@
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Alerts": "Alerts",
       "/SmartDashboard/Auto Chooser": "String Chooser",
+      "/SmartDashboard/FF Rot Controller": "ProfiledPIDController",
+      "/SmartDashboard/FF TRans": "ProfiledPIDController",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Intaking Chooser": "String Chooser",
       "/SmartDashboard/Level Chooser": "String Chooser",
+      "/SmartDashboard/Repulsor Rot": "PIDController",
+      "/SmartDashboard/Repulsor Trans": "PIDController",
       "/SmartDashboard/Side Chooser": "String Chooser",
       "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d",
       "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d",
@@ -102,10 +106,7 @@
         "left": 534,
         "right": 3466,
         "top": 291,
-        "width": 17.54825210571289,
-        "window": {
-          "visible": true
-        }
+        "width": 17.54825210571289
       },
       "/SmartDashboard/VisionSystemSim-main/Sim Field": {
         "apriltag": {

@@ -6,7 +6,7 @@ import static frc.robot.SubsystemManager.SubsystemManagerStates.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.Subsystems.AutoAlign.AutoAlignL;
+import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -23,8 +23,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 	private final Drive drive = Drive.getInstance();
 	private final Elevator elevator = Elevator.getInstance();
-	// private final Coraler coraler = Coraler.getInstance();
-	private final AutoAlignL autoAlign = AutoAlignL.getInstance();
+	private final Coraler coraler = Coraler.getInstance();
+	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
 	private final LED ledSubsystem = LED.getInstance();
 	private final Passthrough passthrough = Passthrough.getInstance();
@@ -95,12 +95,12 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 			return left || right;
 		});
 
-		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoalSource());
+		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoal());
 		// addTrigger(INTAKING_CORALER, IDLE, coraler::hasGamepiece);
 
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
-		// addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
+		addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
 
 		// Scoring Reef Manual
 		addTrigger(IDLE, TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
@@ -109,7 +109,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Auto ONLY transition
 		addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
-		addTrigger(INTAKING_CORALER_AA_OFF, INTAKING_CORALER, () -> DriverStation.isAutonomous() && !AutoAlignL.getInstance().nearGoalSource()); // TODO check if this needs to be removed after during comp
+		// Uncomment if excessive overshoot
+		// addTrigger(INTAKING_CORALER_AA_OFF, INTAKING_CORALER, () -> DriverStation.isAutonomous() && !AutoAlign.getInstance().nearGoal()); // TODO check if this needs to be removed after during comp
 
 		// Scoring Reef Auto Align
 		// See if odo is good enough to ALWAYS automatically score, otherwise we just have driver click y after minior adjustments
@@ -205,20 +206,18 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 		// Set States, drive and vision are rogue so you don't need to set state
 		elevator.setState(getState().getElevatorStateSupplier().get());
-		// coraler.setState(getState().getCoralerState());
+		coraler.setState(getState().getCoralerState());
 		autoAlign.setState(getState().getAutoAlignSupplier().get());
 		ledSubsystem.setState(getState().getLedStateSupplier().get());
-		// climber.setState(getState().getClimberState());
 		passthrough.setState(getState().getPassthroughState());
 
 		// Periodics
 		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
 		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
-		// Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
+		Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
 		Tracer.traceFunc("VisionPeriodic", vision::periodic);
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
 		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
-		// Tracer.traceFunc("ClimberPeriodic", climber::periodic);
 		Tracer.traceFunc("PassthroughPeriodic", passthrough::periodic);
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
