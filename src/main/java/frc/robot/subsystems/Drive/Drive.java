@@ -81,7 +81,6 @@ public class Drive extends Subsystem<DriveStates> {
 			case TESTING -> new DriveIOReal();
 		};
 
-
 		//Add Devices to Fault Manager
 		faultManager.addDevice(driveIO.getDrive().getPigeon2(), "Pigeon 2", "CANivore");
 		faultManager.addDevice(driveIO.getDrive().getModule(0).getDriveMotor(), "Front Left Drive Kraken", "CANivore");
