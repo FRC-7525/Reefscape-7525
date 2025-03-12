@@ -13,6 +13,7 @@ import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -44,9 +45,11 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private Pose2d targetPose;
 	private Pose2d goalPose;
 	private Pose2d reefPose = REEF_POSE;
-	private boolean isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 	private Pose2d interpolatedPose;
+	private boolean isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 	private double interpolatedDistanceFromReef;
+
+	private	boolean enteredBrainDead;
 	private boolean repulsorActivated;
 
 	private double xApplied = 0;
@@ -70,9 +73,13 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		this.repulsionRotationController.setTolerance(ANGLE_ERROR_MARGIN.in(Radians));
 		this.rotationController.setTolerance(ANGLE_ERROR_MARGIN.in(Radians));
 
+		rotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Radian), MAX_HEADING_ANGLE.in(Radian));
+		repulsionRotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Radians), MAX_HEADING_ANGLE.in(Radians));
+
 		autoAlignDebouncer = new Debouncer(0.5, DebounceType.kRising);
 
 		repulsorActivated = false;
+		enteredBrainDead = false;
 		targetPose = new Pose2d();
 		goalPose = new Pose2d();
 
@@ -92,12 +99,11 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	@Override
 	protected void runState() {
-		logOutput();
 		reefPose = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
 		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
-
+		
 		if (getState() == AutoAlignStates.OFF) return;
-
+		
 		goalPose = getState().getTargetPose();
 		targetPose = getState().getTargetPose();
 		if (!readyForClose()) {
@@ -115,26 +121,29 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 			repulsor.setGoal(targetPose.getTranslation());
 			repulsorAutoAlign(drive.getPose(), repulsor.getCmd(drive.getPose(), drive.getRobotRelativeSpeeds(), MAX_SPEED.in(MetersPerSecond), USE_GOAL, targetPose.getRotation()));
 		}
+		logOutput();
 	}
-
+	
 	private void braindeadAutoAlign() {
-		rotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Radian), MAX_HEADING_ANGLE.in(Radian));
 		Pose2d drivePose = drive.getPose();
 
-		// idk why applied needs to be negative but it works if it is negative 💀
-		// update: it's negative because otto is a bum and can't set up his sim properly
+		if (!enteredBrainDead) {
+			translationXController.reset();
+		}
 
 		xApplied = translationXController.calculate(drivePose.getX(), targetPose.getX());
 		yApplied = translationYController.calculate(drivePose.getY(), targetPose.getY());
 
 		double rotationApplied = rotationController.calculate(drivePose.getRotation().getRadians(), targetPose.getRotation().getRadians());
+
+
+
+
 		if (isRedAlliance) drive.driveFieldRelative(-xApplied, -yApplied, rotationApplied, false, false); // was negative
 		else drive.driveFieldRelative(xApplied, yApplied, rotationApplied, false, false);
 	}
 
 	private void repulsorAutoAlign(Pose2d pose, SwerveSample sample) {
-		repulsionRotationController.enableContinuousInput(MIN_HEADING_ANGLE.in(Radians), MAX_HEADING_ANGLE.in(Radians));
-
 		var targetSpeeds = sample.getChassisSpeeds();
 		targetSpeeds.vxMetersPerSecond += repulsionTranslationController.calculate(pose.getX(), sample.x);
 		targetSpeeds.vyMetersPerSecond += repulsionTranslationController.calculate(pose.getY(), sample.y);
@@ -163,19 +172,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		return MathUtil.clamp((numeratorX + numeratorY) / denominator, 0, 1);
 	}
-
-	private void logOutput() {
-		Pose2d[] arrowsArray = new Pose2d[] {};
-
-		Logger.recordOutput("AutoAlign/State", getState().getStateString());
-		Logger.recordOutput("AutoAlign/Target Pose", targetPose);
-		Logger.recordOutput("AutoAlign/Interpolated Pose", interpolatedPose);
-		Logger.recordOutput("AutoAlign/Interpolated Distance From Reef", interpolatedDistanceFromReef);
-		Logger.recordOutput("AutoAlign/ReefPose", reefPose);
-		Logger.recordOutput("AutoAlign/Repulsor Activated", repulsorActivated);
-		Logger.recordOutput("AutoAlign/Arrows", repulsor.getArrows().toArray(arrowsArray));
-	}
-
+	
 	public boolean nearGoal() {
 		return drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meters) && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN.in(Radians) || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN.in(Radians));
 	}
@@ -183,21 +180,46 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	public boolean nearGoalSource() {
 		return autoAlignDebouncer.calculate(
 			drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meter) && (Math.abs(repulsionRotationController.getError()) < ANGLE_ERROR_MARGIN.in(Radians) || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN.in(Radians))
-		);
+			);
 	}
-
+	
 	public boolean timedOut() {
 		if (getStateTime() > 0.01 && drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < MOVEMENT_THRESHOLD) {
 			timer = getStateTime();
 		}
-
+		
 		if (timer != -1 && getStateTime() - timer > TIMEOUT_THRESHOLD) {
 			timer = -1;
 			return true;
 		} else return false;
 	}
+	
+	public void resetPID() { //TODO call this every time entering AA far
+		Pose2d currentPose = drive.getPose();
+		ChassisSpeeds currentSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
 
+		translationXController.reset();
+		translationYController.reset();
+		rotationController.reset(currentSpeed.omegaRadiansPerSecond);
+		repulsionTranslationController.reset();
+		repulsionRotationController.reset();
+
+		enteredBrainDead = false;
+	}
+	
 	public boolean readyForClose() {
 		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < getState().getDistanceForCloseAA().in(Meters));
+	}
+
+	private void logOutput() {
+		Pose2d[] arrowsArray = new Pose2d[] {};
+	
+		Logger.recordOutput("AutoAlign/State", getState().getStateString());
+		Logger.recordOutput("AutoAlign/Target Pose", targetPose);
+		Logger.recordOutput("AutoAlign/Interpolated Pose", interpolatedPose);
+		Logger.recordOutput("AutoAlign/Interpolated Distance From Reef", interpolatedDistanceFromReef);
+		Logger.recordOutput("AutoAlign/ReefPose", reefPose);
+		Logger.recordOutput("AutoAlign/Repulsor Activated", repulsorActivated);
+		Logger.recordOutput("AutoAlign/Arrows", repulsor.getArrows().toArray(arrowsArray));
 	}
 }
