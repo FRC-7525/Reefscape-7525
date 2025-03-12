@@ -301,6 +301,15 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
         return MathUtil.clamp((numeratorX + numeratorY) / denominator, 0, 1);
     }
+
+    // near goal for source cause u need less tolerance
+    public boolean nearGoalSource() {
+        return drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < 
+                DISTANCE_ERROR_MARGIN.in(Meters) * 2 && 
+                (Math.abs(repulsorRotationalController.getError()) < (ANGLE_ERROR_MARGIN.in(Radians) * 2)|| 
+                Math.abs(rotationController.getPositionError()) < (ANGLE_ERROR_MARGIN.in(Radians) * 2));
+ 
+    }
     
     // Near setpoint for final transition
     public boolean nearGoal() {
