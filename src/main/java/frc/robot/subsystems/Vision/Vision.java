@@ -1,15 +1,18 @@
 package frc.robot.Subsystems.Vision;
 
+import static edu.wpi.first.units.Units.Degree;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.Drive.Drive;
+import frc.robot.Subsystems.Vision.VisionIO.PoseObservation;
 import frc.robot.Subsystems.Vision.VisionIO.PoseObservationType;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +24,11 @@ public class Vision extends SubsystemBase {
 	private final VisionIO[] io;
 	private final VisionIOInputsAutoLogged[] inputs;
 	private final Alert[] disconnectedAlerts;
+
+	List<Pose3d> allTagPoses = new LinkedList<>();
+	List<Pose3d> allRobotPoses = new LinkedList<>();
+	List<Pose3d> allRobotPosesAccepted = new LinkedList<>();
+	List<Pose3d> allRobotPosesRejected = new LinkedList<>();
 
 	private static Vision instance;
 
@@ -40,7 +48,10 @@ public class Vision extends SubsystemBase {
 						new VisionIOPhotonVisionSim(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA, Drive.getInstance()::getPose),
 						new VisionIOPhotonVisionSim(BACK_RIGHT_CAM_NAME, ROBOT_TO_BACK_RIGHT_CAMERA, Drive.getInstance()::getPose),
 					};
-					case TESTING -> new VisionIO[] { new VisionIOPhotonVision(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA), new VisionIOPhotonVision(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA) };
+					case TESTING -> new VisionIO[] { 
+						new VisionIOPhotonVision(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA),
+						new VisionIOPhotonVision(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA)
+					};
 				}
 			);
 		}
@@ -79,13 +90,17 @@ public class Vision extends SubsystemBase {
 			io[i].updateInputs(inputs[i]);
 			Logger.processInputs("Vision/Camera" + Integer.toString(i), inputs[i]);
 		}
-
+		
 		// Initialize logging values
-		List<Pose3d> allTagPoses = new LinkedList<>();
-		List<Pose3d> allRobotPoses = new LinkedList<>();
-		List<Pose3d> allRobotPosesAccepted = new LinkedList<>();
-		List<Pose3d> allRobotPosesRejected = new LinkedList<>();
+		allTagPoses = new LinkedList<>();
+		allRobotPoses = new LinkedList<>();
+		allRobotPosesAccepted = new LinkedList<>();
+		allRobotPosesRejected = new LinkedList<>();
 
+		processVision();
+	}
+
+	private void processVision() {
 		// Loop over cameras
 		for (int cameraIndex = 0; cameraIndex < io.length; cameraIndex++) {
 			// Update disconnected alert
@@ -108,16 +123,7 @@ public class Vision extends SubsystemBase {
 			// Loop over pose observations
 			for (var observation : inputs[cameraIndex].poseObservations) {
 				// Check whether to reject pose
-				boolean rejectPose =
-					observation.tagCount() == 0 || // Must have at least one tag
-					(observation.tagCount() == 1 && observation.ambiguity() > maxAmbiguity) || // Cannot be high ambiguity
-					Math.abs(observation.pose().getZ()) > maxZError || // Must have realistic Z coordinate
-					// Must be within the field boundaries
-					observation.pose().getX() <
-					0.0 ||
-					observation.pose().getX() > APRIL_TAG_FIELD_LAYOUT.getFieldLength() ||
-					observation.pose().getY() < 0.0 ||
-					observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth();
+				boolean rejectPose = shouldBeRejected(observation);
 
 				Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/Tag Count", observation.tagCount() == 0);
 				Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/Ambiguous", (observation.tagCount() == 1 && observation.ambiguity() > maxAmbiguity));
@@ -133,9 +139,7 @@ public class Vision extends SubsystemBase {
 				}
 
 				// Skip if rejected
-				if (rejectPose) {
-					continue;
-				}
+				if (rejectPose) continue;
 
 				// Calculate standard deviations
 				double stdDevFactor = Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
@@ -149,6 +153,8 @@ public class Vision extends SubsystemBase {
 					linearStdDev *= cameraStdDevFactors[cameraIndex];
 					angularStdDev *= cameraStdDevFactors[cameraIndex];
 				}
+
+
 
 				// Send vision observation
 				Drive.getInstance().addVisionMeasurement(observation.pose().toPose2d(), observation.timestamp(), VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
@@ -165,11 +171,19 @@ public class Vision extends SubsystemBase {
 			allRobotPosesAccepted.addAll(robotPosesAccepted);
 			allRobotPosesRejected.addAll(robotPosesRejected);
 		}
+	}
 
-		// Log summary data
-		Logger.recordOutput("Vision/Summary/TagPoses", allTagPoses.toArray(new Pose3d[allTagPoses.size()]));
-		Logger.recordOutput("Vision/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[allRobotPoses.size()]));
-		Logger.recordOutput("Vision/Summary/RobotPosesAccepted", allRobotPosesAccepted.toArray(new Pose3d[allRobotPosesAccepted.size()]));
-		Logger.recordOutput("Vision/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
+	private boolean shouldBeRejected(PoseObservation observation) {
+		return 
+			observation.tagCount() == 0 || // Must have at least one tag
+			(observation.tagCount() == 1 && observation.ambiguity() > maxAmbiguity) || // Cannot be high ambiguity
+			Math.abs(observation.pose().getZ()) > maxZError || // Must have realistic Z coordinate
+			// Must be within the field boundaries
+			observation.pose().getX() < 0.0 ||
+			observation.pose().getX() > APRIL_TAG_FIELD_LAYOUT.getFieldLength() ||
+			observation.pose().getY() < 0.0 ||
+			observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth() ||
+			((observation.pose().getRotation().toRotation2d().getDegrees() - Drive.getInstance().getPose().getRotation().getDegrees() + 180) % 360) - 180 > GYRO_REPROJECTION_MARGIN.in(Degree) || // Must be somewhat accurate to gyro
+			Math.abs(Units.radiansToDegrees(Drive.getInstance().getRobotRelativeSpeeds().omegaRadiansPerSecond)) > 60 ; // Robot must not be rotating rapidly
 	}
 }

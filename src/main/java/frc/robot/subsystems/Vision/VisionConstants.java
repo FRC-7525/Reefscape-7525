@@ -7,6 +7,10 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Angle;
+
+import static edu.wpi.first.units.Units.Degree;
+
 import org.team7525.misc.VisionUtil.CameraResolution;
 
 public class VisionConstants {
@@ -63,6 +67,7 @@ public class VisionConstants {
 	// Basic filtering thresholds
 	public static final double maxAmbiguity = 0.3;
 	public static final double maxZError = 0.75;
+	public static final Angle GYRO_REPROJECTION_MARGIN = Degree.of(5);
 
 	// Standard deviation baselines, for 1 meter distance and 1 tag
 	// (Adjusted automatically based on distance and # of tags)
