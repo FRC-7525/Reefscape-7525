@@ -1,9 +1,9 @@
-package frc.robot.Subsystems.Elevator;
+package frc.robot.subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.SIMULATION_PERIOD;
-import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
-import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.*;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.*;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.Sim.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
@@ -123,5 +123,10 @@ public class ElevatorIOSim implements ElevatorIO {
 	@Override
 	public TalonFX getRightMotor() {
 		return rightMotor;
+	}
+
+	@Override
+	public void resetController() {
+		pidController.reset(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
 	}
 }

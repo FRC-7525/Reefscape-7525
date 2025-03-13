@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Drive;
+package frc.robot.subsystems.Drive;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -11,7 +11,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
-import frc.robot.Subsystems.Drive.Drive.SysIdMode;
+import frc.robot.subsystems.Drive.Drive.SysIdMode;
 
 public class DriveConstants {
 

@@ -1,6 +1,6 @@
-package frc.robot.Subsystems.Drive;
+package frc.robot.subsystems.Drive;
 
-import static frc.robot.Subsystems.Drive.TunerConstants.*;
+import static frc.robot.subsystems.Drive.TunerConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -9,7 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
+import frc.robot.subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 
 /**
  * This class implements the DriveIO interface and provides the real implementation for controlling the drivetrain.

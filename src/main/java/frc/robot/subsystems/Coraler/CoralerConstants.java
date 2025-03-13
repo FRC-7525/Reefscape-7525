@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Coraler;
+package frc.robot.subsystems.Coraler;
 
 import static edu.wpi.first.units.Units.*;
 

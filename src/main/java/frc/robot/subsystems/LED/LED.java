@@ -1,6 +1,6 @@
-package frc.robot.Subsystems.LED;
+package frc.robot.subsystems.LED;
 
-import static frc.robot.Subsystems.LED.LEDConstants.SUBSYSTEM_NAME;
+import static frc.robot.subsystems.LED.LEDConstants.SUBSYSTEM_NAME;
 
 import frc.robot.GlobalConstants;
 import org.littletonrobotics.junction.Logger;

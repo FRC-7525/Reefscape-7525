@@ -1,7 +1,7 @@
-package frc.robot.Subsystems.Vision;
+package frc.robot.subsystems.Vision;
 
 import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.Subsystems.Vision.VisionConstants.*;
+import static frc.robot.subsystems.Vision.VisionConstants.*;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -9,8 +9,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Subsystems.Drive.Drive;
-import frc.robot.Subsystems.Vision.VisionIO.PoseObservationType;
+import frc.robot.subsystems.Drive.Drive;
+import frc.robot.subsystems.Vision.VisionIO.PoseObservationType;
 import java.util.LinkedList;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;

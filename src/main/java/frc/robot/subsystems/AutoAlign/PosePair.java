@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.AutoAlign;
+package frc.robot.subsystems.AutoAlign;
 
 import edu.wpi.first.math.geometry.Pose2d;
 

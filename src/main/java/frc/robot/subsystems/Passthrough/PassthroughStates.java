@@ -1,7 +1,7 @@
-package frc.robot.Subsystems.Passthrough;
+package frc.robot.subsystems.Passthrough;
 
-import static frc.robot.Subsystems.Coraler.CoralerConstants.INTAKING_VELOCITY;
-import static frc.robot.Subsystems.Passthrough.PassthroughConstants.OFF_VELOCITY;
+import static frc.robot.subsystems.Coraler.CoralerConstants.INTAKING_VELOCITY;
+import static frc.robot.subsystems.Passthrough.PassthroughConstants.OFF_VELOCITY;
 
 import org.team7525.subsystem.SubsystemStates;
 

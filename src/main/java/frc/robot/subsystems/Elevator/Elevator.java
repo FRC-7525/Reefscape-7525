@@ -1,8 +1,8 @@
-package frc.robot.Subsystems.Elevator;
+package frc.robot.subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
+import static frc.robot.subsystems.Elevator.ElevatorConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -86,5 +86,10 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
 	public TalonFX getRightMotor() {
 		return io.getRightMotor();
+	}
+
+	@Override
+	public void stateExit() {
+		io.resetController();
 	}
 }

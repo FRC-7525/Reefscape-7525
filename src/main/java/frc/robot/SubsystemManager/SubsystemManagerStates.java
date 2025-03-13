@@ -3,11 +3,11 @@ package frc.robot.SubsystemManager;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 
 import frc.robot.SubsystemManager.SubsystemManagerConstants.AAReefTarget;
-import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
-import frc.robot.Subsystems.Coraler.CoralerStates;
-import frc.robot.Subsystems.Elevator.ElevatorStates;
-import frc.robot.Subsystems.LED.LEDStates;
-import frc.robot.Subsystems.Passthrough.PassthroughStates;
+import frc.robot.subsystems.AutoAlign.AutoAlignStates;
+import frc.robot.subsystems.Coraler.CoralerStates;
+import frc.robot.subsystems.Elevator.ElevatorStates;
+import frc.robot.subsystems.LED.LEDStates;
+import frc.robot.subsystems.Passthrough.PassthroughStates;
 import java.util.function.Supplier;
 import org.team7525.subsystem.SubsystemStates;
 

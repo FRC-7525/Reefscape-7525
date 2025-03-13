@@ -1,7 +1,7 @@
-package frc.robot.Subsystems.Coraler;
+package frc.robot.subsystems.Coraler;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
+import static frc.robot.subsystems.Coraler.CoralerConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
@@ -9,7 +9,8 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.GlobalConstants;
-import frc.robot.Subsystems.Coraler.CoralerConstants.Sim;
+import frc.robot.subsystems.AutoAlign.AutoAlign;
+import frc.robot.subsystems.Coraler.CoralerConstants.Sim;
 
 public class CoralerIOSim implements CoralerIO {
 
@@ -53,6 +54,6 @@ public class CoralerIOSim implements CoralerIO {
 
 	@Override
 	public boolean hasGamepiece() {
-		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds);
+		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds) && AutoAlign.getInstance().nearGoalSource();
 	}
 }

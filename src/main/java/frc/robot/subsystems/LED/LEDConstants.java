@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.LED;
+package frc.robot.subsystems.LED;
 
 public class LEDConstants {
 

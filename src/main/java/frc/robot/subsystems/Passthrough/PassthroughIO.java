@@ -1,4 +1,4 @@
-package frc.robot.Subsystems.Passthrough;
+package frc.robot.subsystems.Passthrough;
 
 import org.littletonrobotics.junction.AutoLog;
 

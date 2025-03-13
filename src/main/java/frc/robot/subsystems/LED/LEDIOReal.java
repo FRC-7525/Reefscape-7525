@@ -1,6 +1,6 @@
-package frc.robot.Subsystems.LED;
+package frc.robot.subsystems.LED;
 
-import static frc.robot.Subsystems.LED.LEDConstants.*;
+import static frc.robot.subsystems.LED.LEDConstants.*;
 
 import edu.wpi.first.wpilibj.PWM;
 

@@ -1,6 +1,6 @@
-package frc.robot.Subsystems.Coraler;
+package frc.robot.subsystems.Coraler;
 
-import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
+import static frc.robot.subsystems.Coraler.CoralerConstants.*;
 
 import frc.robot.SubsystemManager.SubsystemManager;
 import java.util.function.Supplier;
