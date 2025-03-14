@@ -60,10 +60,12 @@ public class VisionIOPhotonVision implements VisionIO {
 				Transform3d fieldToRobot = fieldToCamera.plus(robotToCamera.inverse());
 				Pose3d robotPose = new Pose3d(fieldToRobot.getTranslation(), fieldToRobot.getRotation());
 
-				// Calculate average tag distance
+				// Calculate average tag distance and avg tag area
 				double totalTagDistance = 0.0;
+				double totalTagArea = 0.0;
 				for (var target : result.targets) {
 					totalTagDistance += target.bestCameraToTarget.getTranslation().getNorm();
+					totalTagArea += target.area;
 				}
 
 				// Add tag IDs
@@ -77,7 +79,9 @@ public class VisionIOPhotonVision implements VisionIO {
 						multitagResult.estimatedPose.ambiguity, // Ambiguity
 						multitagResult.fiducialIDsUsed.size(), // Tag count
 						totalTagDistance / result.targets.size(), // Average tag distance
-						PoseObservationType.PHOTONVISION
+						PoseObservationType.PHOTONVISION,
+						totalTagArea / result.targets.size(),
+						tagIds
 					)
 				); // Observation type
 			} else if (!result.targets.isEmpty()) { // Single tag result
@@ -110,7 +114,9 @@ public class VisionIOPhotonVision implements VisionIO {
 							target.poseAmbiguity, // Ambiguity
 							1, // Tag count
 							cameraToTarget.getTranslation().getNorm(), // Average tag distance
-							PoseObservationType.PHOTONVISION
+							PoseObservationType.PHOTONVISION,
+							target.area,
+							Set.of((short) target.fiducialId)
 						)
 					); // Observation type
 				}

@@ -2,21 +2,47 @@ package frc.robot.Subsystems.Vision;
 
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.Subsystems.Vision.VisionConstants.*;
+import static frc.robot.Subsystems.Vision.VisionConstants.APRIL_TAG_FIELD_LAYOUT;
+import static frc.robot.Subsystems.Vision.VisionConstants.BACK_LEFT_CAM_NAME;
+import static frc.robot.Subsystems.Vision.VisionConstants.BACK_RIGHT_CAM_NAME;
+import static frc.robot.Subsystems.Vision.VisionConstants.BLUE_REEF_TAGS;
+import static frc.robot.Subsystems.Vision.VisionConstants.FRONT_LEFT_CAM_NAME;
+import static frc.robot.Subsystems.Vision.VisionConstants.FRONT_RIGHT_CAM_NAME;
+import static frc.robot.Subsystems.Vision.VisionConstants.MAX_ANGULAR_VELOCITY;
+import static frc.robot.Subsystems.Vision.VisionConstants.RED_REEF_TAGS;
+import static frc.robot.Subsystems.Vision.VisionConstants.ROBOT_TO_BACK_LEFT_CAMERA;
+import static frc.robot.Subsystems.Vision.VisionConstants.ROBOT_TO_BACK_RIGHT_CAMERA;
+import static frc.robot.Subsystems.Vision.VisionConstants.ROBOT_TO_FRONT_LEFT_CAMERA;
+import static frc.robot.Subsystems.Vision.VisionConstants.ROBOT_TO_FRONT_RIGHT_CAMERA;
+import static frc.robot.Subsystems.Vision.VisionConstants.angularStdDevBaseline;
+import static frc.robot.Subsystems.Vision.VisionConstants.angularStdDevMegatag2Factor;
+import static frc.robot.Subsystems.Vision.VisionConstants.cameraStdDevFactors;
+import static frc.robot.Subsystems.Vision.VisionConstants.linearStdDevBaseline;
+import static frc.robot.Subsystems.Vision.VisionConstants.linearStdDevMegatag2Factor;
+import static frc.robot.Subsystems.Vision.VisionConstants.maxAmbiguity;
+import static frc.robot.Subsystems.Vision.VisionConstants.maxZError;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Vision.VisionIO.PoseObservation;
 import frc.robot.Subsystems.Vision.VisionIO.PoseObservationType;
-import java.util.LinkedList;
-import java.util.List;
-import org.littletonrobotics.junction.Logger;
 
 public class Vision extends SubsystemBase {
 
@@ -29,6 +55,10 @@ public class Vision extends SubsystemBase {
 	List<Pose3d> allRobotPoses = new LinkedList<>();
 	List<Pose3d> allRobotPosesAccepted = new LinkedList<>();
 	List<Pose3d> allRobotPosesRejected = new LinkedList<>();
+
+
+	Boolean isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
+	Set<Short> allianceReefTag = isRedAlliance ? RED_REEF_TAGS : BLUE_REEF_TAGS;
 
 	private static Vision instance;
 
@@ -142,20 +172,23 @@ public class Vision extends SubsystemBase {
 				if (rejectPose) continue;
 
 				// Calculate standard deviations
-				double stdDevFactor = Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
-				double linearStdDev = linearStdDevBaseline * stdDevFactor;
-				double angularStdDev = angularStdDevBaseline * stdDevFactor;
-				if (observation.type() == PoseObservationType.MEGATAG_2) {
-					linearStdDev *= linearStdDevMegatag2Factor;
-					angularStdDev *= angularStdDevMegatag2Factor;
-				}
-				if (cameraIndex < cameraStdDevFactors.length) {
-					linearStdDev *= cameraStdDevFactors[cameraIndex];
-					angularStdDev *= cameraStdDevFactors[cameraIndex];
-				}
+				// double stdDevFactor = Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
+				// double linearStdDev = linearStdDevBaseline * stdDevFactor;
+				// double angularStdDev = angularStdDevBaseline * stdDevFactor;
+				// if (observation.type() == PoseObservationType.MEGATAG_2) {
+				// 	linearStdDev *= linearStdDevMegatag2Factor;
+				// 	angularStdDev *= angularStdDevMegatag2Factor;
+				// }
+				// if (cameraIndex < cameraStdDevFactors.length) {
+				// 	linearStdDev *= cameraStdDevFactors[cameraIndex];
+				// 	angularStdDev *= cameraStdDevFactors[cameraIndex];
+				// }
+
+				//254 standard dev
+				Matrix<N3, N1> visionStandardDev = calculateStandardDev(observation);
 
 				// Send vision observation
-				Drive.getInstance().addVisionMeasurement(observation.pose().toPose2d(), observation.timestamp(), VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
+				Drive.getInstance().addVisionMeasurement(observation.pose().toPose2d(), observation.timestamp(), visionStandardDev);
 			}
 
 			// Log camera datadata
@@ -184,4 +217,35 @@ public class Vision extends SubsystemBase {
 			observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth() ||
 			Math.abs(Units.radiansToDegrees(Drive.getInstance().getRobotRelativeSpeeds().omegaRadiansPerSecond)) > MAX_ANGULAR_VELOCITY.in(DegreesPerSecond) ; // Robot must not be rotating rapidly
 	}
+
+	public Matrix<N3, N1> calculateStandardDev(PoseObservation observation) {
+		double xyStds;
+		double degStds;
+		if (observation.tagCount() == 1) {
+			double poseDifference = observation.pose().getTranslation().toTranslation2d().getDistance(Drive.getInstance().getPose().getTranslation());
+			if (seenReefTags(observation) && observation.avgTagArea() > 0.2) {
+					xyStds = 0.5;
+				}
+				// 1 target with large area and close to estimated pose
+				else if (observation.avgTagArea() > 0.8 && poseDifference < 0.5) {
+					xyStds = 0.5;
+				}
+				// 1 target farther away and estimated pose is close
+				else if (observation.avgTagArea() > 0.1 && poseDifference < 0.3) {
+					xyStds = 1.0;
+				} else {
+					xyStds = 2.0;
+				}
+				return VecBuilder.fill(xyStds, xyStds, Units.degreesToRadians(50)); // I dont even know, ts so random
+		} else {
+			xyStds = 0.5;
+			degStds = 6;
+			return VecBuilder.fill(xyStds, xyStds, degStds);
+		}
+	}
+			
+	private boolean seenReefTags(PoseObservation observation) {
+		return allianceReefTag.contains(observation.tagsObserved().toArray()[0]);
+	}
+			
 }

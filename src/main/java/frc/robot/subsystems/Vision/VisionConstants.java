@@ -13,8 +13,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import static edu.wpi.first.units.Units.Degree;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Set;
 
 import org.team7525.misc.VisionUtil.CameraResolution;
 
@@ -67,8 +66,10 @@ public class VisionConstants {
 	public static final int AVG_LATENCY_MS = 40;
 	public static final int LATENCY_STD_DEV_MS = 10;
 
-	//April Tag Ignore List
-	public static final ArrayList<Short> APRIL_TAG_IGNORE = new ArrayList<Short>(Arrays.asList((short) 14, (short) 15, (short) 4, (short) 5));
+	//April Tag Lists
+	public static final Set<Short> RED_REEF_TAGS = Set.of((short) 6,  (short)7,  (short)8, (short) 9, (short) 10, (short) 11);
+	public static final Set<Short> BLUE_REEF_TAGS = Set.of((short) 17, (short) 18, (short) 19, (short) 20, (short) 21, (short) 22);
+	public static final Set<Short> APRIL_TAG_IGNORE = Set.of((short) 14, (short) 15, (short) 4, (short) 5);
 
 	// AKIT TEMPLATE STUFF
 
