@@ -1,8 +1,8 @@
-package frc.robot.subsystems.AutoAlign;
+package frc.robot.Subsystems.AutoAlign;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.subsystems.AutoAlign.AutoAlignConstants.*;
+import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
 
 import choreo.trajectory.SwerveSample;
 import edu.wpi.first.math.MathUtil;
@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Robot;
-import frc.robot.subsystems.Drive.Drive;
+import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.autoAlign.RepulsorFieldPlanner;

@@ -1,8 +1,8 @@
-package frc.robot.subsystems.Elevator;
+package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.Sim.DRUM_RADIUS;
-import static frc.robot.subsystems.Elevator.ElevatorConstants.Sim.GEARING;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.DRUM_RADIUS;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.GEARING;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.config.PIDConstants;

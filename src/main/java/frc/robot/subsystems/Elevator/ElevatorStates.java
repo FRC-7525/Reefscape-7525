@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Elevator;
+package frc.robot.Subsystems.Elevator;
 
 import edu.wpi.first.units.measure.Distance;
 import org.team7525.subsystem.SubsystemStates;

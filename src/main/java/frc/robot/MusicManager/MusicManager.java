@@ -4,9 +4,9 @@ import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.subsystems.Coraler.Coraler;
-import frc.robot.subsystems.Drive.Drive;
-import frc.robot.subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Coraler.Coraler;
+import frc.robot.Subsystems.Drive.Drive;
+import frc.robot.Subsystems.Elevator.Elevator;
 import org.team7525.misc.Tracer;
 
 public class MusicManager {

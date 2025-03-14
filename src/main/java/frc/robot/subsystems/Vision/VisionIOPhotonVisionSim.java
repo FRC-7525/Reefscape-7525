@@ -1,6 +1,6 @@
-package frc.robot.subsystems.Vision;
+package frc.robot.Subsystems.Vision;
 
-import static frc.robot.subsystems.Vision.VisionConstants.*;
+import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;

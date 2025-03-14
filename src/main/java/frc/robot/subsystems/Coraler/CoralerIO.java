@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Coraler;
+package frc.robot.Subsystems.Coraler;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import org.littletonrobotics.junction.AutoLog;

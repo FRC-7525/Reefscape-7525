@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Drive;
+package frc.robot.Subsystems.Drive;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -9,7 +9,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import frc.robot.subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
+import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface DriveIO {

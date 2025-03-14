@@ -1,10 +1,10 @@
-package frc.robot.subsystems.Drive;
+package frc.robot.Subsystems.Drive;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.*;
 import static frc.robot.GlobalConstants.Controllers.*;
-import static frc.robot.subsystems.Drive.DriveConstants.*;
-import static frc.robot.subsystems.Drive.TunerConstants.kSpeedAt12Volts;
+import static frc.robot.Subsystems.Drive.DriveConstants.*;
+import static frc.robot.Subsystems.Drive.TunerConstants.kSpeedAt12Volts;
 
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.Utils;
@@ -34,11 +34,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.FaultManager.FaultManager;
-import frc.robot.subsystems.AutoAlign.AutoAlign;
-import frc.robot.subsystems.AutoAlign.AutoAlignStates;
-import frc.robot.subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
-import frc.robot.subsystems.Elevator.Elevator;
-import frc.robot.subsystems.Elevator.ElevatorStates;
+import frc.robot.Subsystems.AutoAlign.AutoAlign;
+import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
+import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
+import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 

@@ -1,4 +1,4 @@
-package frc.robot.subsystems.AutoAlign;
+package frc.robot.Subsystems.AutoAlign;
 
 import static edu.wpi.first.units.Units.*;
 

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.SubsystemManager.SubsystemManagerStates;
-import frc.robot.subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Elevator.Elevator;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 

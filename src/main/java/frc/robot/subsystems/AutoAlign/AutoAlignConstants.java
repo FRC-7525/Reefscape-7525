@@ -1,4 +1,4 @@
-package frc.robot.subsystems.AutoAlign;
+package frc.robot.Subsystems.AutoAlign;
 
 import static edu.wpi.first.units.Units.*;
 
@@ -41,8 +41,8 @@ public final class AutoAlignConstants {
 	// public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.01); // previously 0.025
 	// public static final Angle ANGLE_ERROR_MARGIN = Radians.of(0.05);
 
-	public static final double TIMEOUT_DISTANCE_THRESHOLD = 2; //TODO: CHANGE BACK
-	public static final double TIMEOUT_THRESHOLD = 0.1;
+	public static final double TIMEOUT_DISTANCE_THRESHOLD = 0.05;
+	public static final double TIMEOUT_THRESHOLD = 1;
 
 	public static final double GOAL_STRENGTH = 0.1;
 	static final double FIELD_LENGTH = 16.42;

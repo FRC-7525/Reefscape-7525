@@ -1,8 +1,8 @@
-package frc.robot.subsystems.Coraler;
+package frc.robot.Subsystems.Coraler;
 
 import static edu.wpi.first.units.Units.Seconds;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.subsystems.Coraler.CoralerConstants.*;
+import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.filter.Debouncer;

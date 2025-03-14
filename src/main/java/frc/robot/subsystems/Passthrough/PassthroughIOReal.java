@@ -1,7 +1,7 @@
-package frc.robot.subsystems.Passthrough;
+package frc.robot.Subsystems.Passthrough;
 
 import static edu.wpi.first.units.Units.RotationsPerSecond;
-import static frc.robot.subsystems.Passthrough.PassthroughConstants.WHEEL_MOTOR_CAN_ID;
+import static frc.robot.Subsystems.Passthrough.PassthroughConstants.WHEEL_MOTOR_CAN_ID;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;

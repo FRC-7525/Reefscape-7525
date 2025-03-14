@@ -1,7 +1,7 @@
-package frc.robot.subsystems.Passthrough;
+package frc.robot.Subsystems.Passthrough;
 
 import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.subsystems.Passthrough.PassthroughConstants.*;
+import static frc.robot.Subsystems.Passthrough.PassthroughConstants.*;
 
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;

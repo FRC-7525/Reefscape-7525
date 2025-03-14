@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Elevator;
+package frc.robot.Subsystems.Elevator;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 

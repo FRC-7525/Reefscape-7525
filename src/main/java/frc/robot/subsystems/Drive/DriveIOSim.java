@@ -1,6 +1,6 @@
-package frc.robot.subsystems.Drive;
+package frc.robot.Subsystems.Drive;
 
-import static frc.robot.subsystems.Drive.DriveConstants.*;
+import static frc.robot.Subsystems.Drive.DriveConstants.*;
 
 import com.ctre.phoenix6.Utils;
 import edu.wpi.first.wpilibj.Notifier;

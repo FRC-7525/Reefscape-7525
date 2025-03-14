@@ -1,4 +1,4 @@
-package frc.robot.subsystems.Passthrough;
+package frc.robot.Subsystems.Passthrough;
 
 public class PassthroughConstants {
 

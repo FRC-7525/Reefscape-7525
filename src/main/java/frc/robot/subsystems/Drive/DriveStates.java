@@ -1,9 +1,9 @@
-package frc.robot.subsystems.Drive;
+package frc.robot.Subsystems.Drive;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.Controllers.*;
-import static frc.robot.subsystems.Drive.DriveConstants.*;
-import static frc.robot.subsystems.Drive.TunerConstants.*;
+import static frc.robot.Subsystems.Drive.DriveConstants.*;
+import static frc.robot.Subsystems.Drive.TunerConstants.*;
 
 import org.team7525.subsystem.SubsystemStates;
 

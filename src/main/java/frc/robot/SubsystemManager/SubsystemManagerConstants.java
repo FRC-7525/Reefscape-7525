@@ -1,8 +1,8 @@
 package frc.robot.SubsystemManager;
 
-import frc.robot.subsystems.AutoAlign.AutoAlignStates;
-import frc.robot.subsystems.Elevator.ElevatorStates;
-import frc.robot.subsystems.LED.LEDStates;
+import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
+import frc.robot.Subsystems.Elevator.ElevatorStates;
+import frc.robot.Subsystems.LED.LEDStates;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
