@@ -2,9 +2,7 @@ package frc.robot.Subsystems.Vision;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-
 import java.util.Set;
-
 import org.littletonrobotics.junction.AutoLog;
 
 public interface VisionIO {

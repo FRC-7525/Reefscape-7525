@@ -22,12 +22,6 @@ import static frc.robot.Subsystems.Vision.VisionConstants.linearStdDevMegatag2Fa
 import static frc.robot.Subsystems.Vision.VisionConstants.maxAmbiguity;
 import static frc.robot.Subsystems.Vision.VisionConstants.maxZError;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -43,6 +37,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Vision.VisionIO.PoseObservation;
 import frc.robot.Subsystems.Vision.VisionIO.PoseObservationType;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import org.littletonrobotics.junction.Logger;
 
 public class Vision extends SubsystemBase {
 
@@ -55,7 +53,6 @@ public class Vision extends SubsystemBase {
 	List<Pose3d> allRobotPoses = new LinkedList<>();
 	List<Pose3d> allRobotPosesAccepted = new LinkedList<>();
 	List<Pose3d> allRobotPosesRejected = new LinkedList<>();
-
 
 	Boolean isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 	Set<Short> allianceReefTag = isRedAlliance ? RED_REEF_TAGS : BLUE_REEF_TAGS;
@@ -78,10 +75,7 @@ public class Vision extends SubsystemBase {
 						// new VisionIOPhotonVisionSim(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA, Drive.getInstance()::getPose),
 						// new VisionIOPhotonVisionSim(BACK_RIGHT_CAM_NAME, ROBOT_TO_BACK_RIGHT_CAMERA, Drive.getInstance()::getPose),
 					};
-					case TESTING -> new VisionIO[] { 
-						new VisionIOPhotonVision(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA),
-						new VisionIOPhotonVision(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA)
-					};
+					case TESTING -> new VisionIO[] { new VisionIOPhotonVision(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA), new VisionIOPhotonVision(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA) };
 				}
 			);
 		}
@@ -120,7 +114,7 @@ public class Vision extends SubsystemBase {
 			io[i].updateInputs(inputs[i]);
 			Logger.processInputs("Vision/Camera" + Integer.toString(i), inputs[i]);
 		}
-		
+
 		// Initialize logging values
 		allTagPoses = new LinkedList<>();
 		allRobotPoses = new LinkedList<>();
@@ -206,16 +200,18 @@ public class Vision extends SubsystemBase {
 
 	private boolean shouldBeRejected(PoseObservation observation) {
 		Logger.recordOutput("Test", Math.abs(Units.radiansToDegrees(Drive.getInstance().getRobotRelativeSpeeds().omegaRadiansPerSecond)));
-		return 
+		return (
 			observation.tagCount() == 0 || // Must have at least one tag
 			(observation.tagCount() == 1 && observation.ambiguity() > maxAmbiguity) || // Cannot be high ambiguity
 			Math.abs(observation.pose().getZ()) > maxZError || // Must have realistic Z coordinate
 			// Must be within the field boundaries
-			observation.pose().getX() < 0.0 ||
+			observation.pose().getX() <
+			0.0 ||
 			observation.pose().getX() > APRIL_TAG_FIELD_LAYOUT.getFieldLength() ||
 			observation.pose().getY() < 0.0 ||
 			observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth() ||
-			Math.abs(Units.radiansToDegrees(Drive.getInstance().getRobotRelativeSpeeds().omegaRadiansPerSecond)) > MAX_ANGULAR_VELOCITY.in(DegreesPerSecond) ; // Robot must not be rotating rapidly
+			Math.abs(Units.radiansToDegrees(Drive.getInstance().getRobotRelativeSpeeds().omegaRadiansPerSecond)) > MAX_ANGULAR_VELOCITY.in(DegreesPerSecond)
+		); // Robot must not be rotating rapidly
 	}
 
 	public Matrix<N3, N1> calculateStandardDev(PoseObservation observation) {
@@ -224,28 +220,27 @@ public class Vision extends SubsystemBase {
 		if (observation.tagCount() == 1) {
 			double poseDifference = observation.pose().getTranslation().toTranslation2d().getDistance(Drive.getInstance().getPose().getTranslation());
 			if (seenReefTags(observation) && observation.avgTagArea() > 0.2) {
-					xyStds = 0.5;
-				}
-				// 1 target with large area and close to estimated pose
-				else if (observation.avgTagArea() > 0.8 && poseDifference < 0.5) {
-					xyStds = 0.5;
-				}
-				// 1 target farther away and estimated pose is close
-				else if (observation.avgTagArea() > 0.1 && poseDifference < 0.3) {
-					xyStds = 1.0;
-				} else {
-					xyStds = 2.0;
-				}
-				return VecBuilder.fill(xyStds, xyStds, Units.degreesToRadians(50)); // I dont even know, ts so random
+				xyStds = 0.5;
+			}
+			// 1 target with large area and close to estimated pose
+			else if (observation.avgTagArea() > 0.8 && poseDifference < 0.5) {
+				xyStds = 0.5;
+			}
+			// 1 target farther away and estimated pose is close
+			else if (observation.avgTagArea() > 0.1 && poseDifference < 0.3) {
+				xyStds = 1.0;
+			} else {
+				xyStds = 2.0;
+			}
+			return VecBuilder.fill(xyStds, xyStds, Units.degreesToRadians(50)); // I dont even know, ts so random
 		} else {
 			xyStds = 0.5;
 			degStds = 6;
 			return VecBuilder.fill(xyStds, xyStds, degStds);
 		}
 	}
-			
+
 	private boolean seenReefTags(PoseObservation observation) {
 		return allianceReefTag.contains(observation.tagsObserved().toArray()[0]);
 	}
-			
 }

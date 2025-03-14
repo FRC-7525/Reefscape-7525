@@ -1,5 +1,8 @@
 package frc.robot.Subsystems.Vision;
 
+import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -9,12 +12,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
-
-import static edu.wpi.first.units.Units.Degree;
-import static edu.wpi.first.units.Units.DegreesPerSecond;
-
 import java.util.Set;
-
 import org.team7525.misc.VisionUtil.CameraResolution;
 
 public class VisionConstants {
@@ -67,7 +65,7 @@ public class VisionConstants {
 	public static final int LATENCY_STD_DEV_MS = 10;
 
 	//April Tag Lists
-	public static final Set<Short> RED_REEF_TAGS = Set.of((short) 6,  (short)7,  (short)8, (short) 9, (short) 10, (short) 11);
+	public static final Set<Short> RED_REEF_TAGS = Set.of((short) 6, (short) 7, (short) 8, (short) 9, (short) 10, (short) 11);
 	public static final Set<Short> BLUE_REEF_TAGS = Set.of((short) 17, (short) 18, (short) 19, (short) 20, (short) 21, (short) 22);
 	public static final Set<Short> APRIL_TAG_IGNORE = Set.of((short) 14, (short) 15, (short) 4, (short) 5);
 
