@@ -8,8 +8,13 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 
 import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.team7525.misc.VisionUtil.CameraResolution;
 
@@ -62,12 +67,16 @@ public class VisionConstants {
 	public static final int AVG_LATENCY_MS = 40;
 	public static final int LATENCY_STD_DEV_MS = 10;
 
+	//April Tag Ignore List
+	public static final ArrayList<Short> APRIL_TAG_IGNORE = new ArrayList<Short>(Arrays.asList((short) 14, (short) 15, (short) 4, (short) 5));
+
 	// AKIT TEMPLATE STUFF
 
 	// Basic filtering thresholds
 	public static final double maxAmbiguity = 0.3;
 	public static final double maxZError = 0.75;
 	public static final Angle GYRO_REPROJECTION_MARGIN = Degree.of(5);
+	public static final AngularVelocity MAX_ANGULAR_VELOCITY = DegreesPerSecond.of(200);
 
 	// Standard deviation baselines, for 1 meter distance and 1 tag
 	// (Adjusted automatically based on distance and # of tags)

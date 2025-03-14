@@ -47,6 +47,9 @@ public class VisionIOPhotonVision implements VisionIO {
 			if (result.multitagResult.isPresent()) { // Multitag result
 				var multitagResult = result.multitagResult.get();
 
+				// Skips whenever a camera only sees barge tags
+				if (multitagResult.fiducialIDsUsed.size() == 1 && APRIL_TAG_IGNORE.contains(multitagResult.fiducialIDsUsed.get(0))) continue;
+
 				// Calculate robot pose
 				Transform3d fieldToCamera = multitagResult.estimatedPose.best;
 				Transform3d fieldToRobot = fieldToCamera.plus(robotToCamera.inverse());

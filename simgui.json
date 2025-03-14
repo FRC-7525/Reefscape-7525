@@ -106,7 +106,10 @@
         "left": 534,
         "right": 3466,
         "top": 291,
-        "width": 17.54825210571289
+        "width": 17.54825210571289,
+        "window": {
+          "visible": true
+        }
       },
       "/SmartDashboard/VisionSystemSim-main/Sim Field": {
         "apriltag": {
@@ -133,9 +136,6 @@
   "NetworkTables": {
     "transitory": {
       "AdvantageKit": {
-        "Powered Passthrough": {
-          "open": true
-        },
         "RealOutputs": {
           "Auto": {
             "open": true
@@ -155,7 +155,8 @@
           "Vision": {
             "Camera0": {
               "open": true
-            }
+            },
+            "open": true
           },
           "open": true
         },

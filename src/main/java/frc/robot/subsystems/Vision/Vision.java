@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Vision;
 
 import static edu.wpi.first.units.Units.Degree;
+import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
@@ -174,6 +175,7 @@ public class Vision extends SubsystemBase {
 	}
 
 	private boolean shouldBeRejected(PoseObservation observation) {
+		Logger.recordOutput("Test", Math.abs(Units.radiansToDegrees(Drive.getInstance().getRobotRelativeSpeeds().omegaRadiansPerSecond)));
 		return 
 			observation.tagCount() == 0 || // Must have at least one tag
 			(observation.tagCount() == 1 && observation.ambiguity() > maxAmbiguity) || // Cannot be high ambiguity
@@ -184,6 +186,6 @@ public class Vision extends SubsystemBase {
 			observation.pose().getY() < 0.0 ||
 			observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth() ||
 			((observation.pose().getRotation().toRotation2d().getDegrees() - Drive.getInstance().getPose().getRotation().getDegrees() + 180) % 360) - 180 > GYRO_REPROJECTION_MARGIN.in(Degree) || // Must be somewhat accurate to gyro
-			Math.abs(Units.radiansToDegrees(Drive.getInstance().getRobotRelativeSpeeds().omegaRadiansPerSecond)) > 60 ; // Robot must not be rotating rapidly
+			Math.abs(Units.radiansToDegrees(Drive.getInstance().getRobotRelativeSpeeds().omegaRadiansPerSecond)) > MAX_ANGULAR_VELOCITY.in(DegreesPerSecond) ; // Robot must not be rotating rapidly
 	}
 }
