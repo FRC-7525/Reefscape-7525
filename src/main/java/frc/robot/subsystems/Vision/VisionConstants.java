@@ -60,7 +60,7 @@ public class VisionConstants {
 	public static final int CAMERA_WIDTH = 1200;
 	public static final int CAMERA_HEIGHT = 800;
 	public static final Rotation2d CAMERA_FOV = Rotation2d.fromDegrees(84.47);
-	public static final double CALIB_ERROR_AVG = 0.25;
+	public static final double CALIB_ERROR_AVG = 2;
 	public static final double CALIB_ERROR_STD_DEV = 0.08;
 	public static final int CAMERA_FPS = 40;
 	public static final int AVG_LATENCY_MS = 40;
