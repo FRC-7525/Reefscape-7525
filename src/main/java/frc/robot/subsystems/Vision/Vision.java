@@ -1,6 +1,5 @@
 package frc.robot.Subsystems.Vision;
 
-import static edu.wpi.first.units.Units.Degree;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Vision.VisionConstants.*;
@@ -45,9 +44,9 @@ public class Vision extends SubsystemBase {
 					};
 					case SIM -> new VisionIO[] {
 						new VisionIOPhotonVisionSim(FRONT_LEFT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA, Drive.getInstance()::getPose),
-						new VisionIOPhotonVisionSim(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_RIGHT_CAMERA, Drive.getInstance()::getPose),
-						new VisionIOPhotonVisionSim(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA, Drive.getInstance()::getPose),
-						new VisionIOPhotonVisionSim(BACK_RIGHT_CAM_NAME, ROBOT_TO_BACK_RIGHT_CAMERA, Drive.getInstance()::getPose),
+						// new VisionIOPhotonVisionSim(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_RIGHT_CAMERA, Drive.getInstance()::getPose),
+						// new VisionIOPhotonVisionSim(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA, Drive.getInstance()::getPose),
+						// new VisionIOPhotonVisionSim(BACK_RIGHT_CAM_NAME, ROBOT_TO_BACK_RIGHT_CAMERA, Drive.getInstance()::getPose),
 					};
 					case TESTING -> new VisionIO[] { 
 						new VisionIOPhotonVision(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA),
@@ -155,8 +154,6 @@ public class Vision extends SubsystemBase {
 					angularStdDev *= cameraStdDevFactors[cameraIndex];
 				}
 
-
-
 				// Send vision observation
 				Drive.getInstance().addVisionMeasurement(observation.pose().toPose2d(), observation.timestamp(), VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
 			}
@@ -185,7 +182,6 @@ public class Vision extends SubsystemBase {
 			observation.pose().getX() > APRIL_TAG_FIELD_LAYOUT.getFieldLength() ||
 			observation.pose().getY() < 0.0 ||
 			observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth() ||
-			((observation.pose().getRotation().toRotation2d().getDegrees() - Drive.getInstance().getPose().getRotation().getDegrees() + 180) % 360) - 180 > GYRO_REPROJECTION_MARGIN.in(Degree) || // Must be somewhat accurate to gyro
 			Math.abs(Units.radiansToDegrees(Drive.getInstance().getRobotRelativeSpeeds().omegaRadiansPerSecond)) > MAX_ANGULAR_VELOCITY.in(DegreesPerSecond) ; // Robot must not be rotating rapidly
 	}
 }
