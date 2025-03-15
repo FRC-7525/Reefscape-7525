@@ -162,6 +162,7 @@ public class ElevatorIOReal implements ElevatorIO {
 		return rightMotor;
 	}
 
+	@Override
 	public void resetController() {
 		pidController.reset(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
 	}

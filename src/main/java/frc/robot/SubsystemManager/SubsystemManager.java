@@ -223,7 +223,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Tracer.traceFunc("PassthroughPeriodic", passthrough::periodic);
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(5)) { // 5
+		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(5)) {
 			setState(SubsystemManagerStates.IDLE);
 		}
 	}

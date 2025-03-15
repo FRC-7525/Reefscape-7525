@@ -34,15 +34,15 @@ public final class AutoAlignConstants {
 	public static final LinearVelocity MAX_SPEED = FeetPerSecond.of(15);
 	public static final boolean USE_GOAL = true;
 	// Sim
-	// public static final double DISTANCE_ERROR_MARGIN = 0.1;
-	// public static final double ANGLE_ERROR_MARGIN = 0.1;
+	public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.1);
+	public static final Angle ANGLE_ERROR_MARGIN = Radians.of(0.1);
 
 	public static final Distance TRANSLATIONAL_COMPONENT_ERROR_MARGIN = Meters.of(0.01);
-	public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.01); // previously 0.025
-	public static final Angle ANGLE_ERROR_MARGIN = Radians.of(0.05);
+	// public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.01); // previously 0.025
+	// public static final Angle ANGLE_ERROR_MARGIN = Radians.of(0.05);
 
-	public static final double MOVEMENT_THRESHOLD = 0.25;
-	public static final double TIMEOUT_THRESHOLD = 1.2;
+	public static final double TIMEOUT_DISTANCE_THRESHOLD = 0.05;
+	public static final double TIMEOUT_THRESHOLD = 1;
 
 	public static final double GOAL_STRENGTH = 0.1;
 	static final double FIELD_LENGTH = 16.42;

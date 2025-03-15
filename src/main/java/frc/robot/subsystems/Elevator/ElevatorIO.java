@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Elevator;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.units.measure.Distance;
 import org.littletonrobotics.junction.AutoLog;
 
@@ -43,4 +44,6 @@ public interface ElevatorIO {
 	public TalonFX getLeftMotor();
 
 	public TalonFX getRightMotor();
+
+	public void resetController();
 }

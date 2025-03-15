@@ -87,4 +87,9 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	public TalonFX getRightMotor() {
 		return io.getRightMotor();
 	}
+
+	@Override
+	public void stateExit() {
+		io.resetController();
+	}
 }

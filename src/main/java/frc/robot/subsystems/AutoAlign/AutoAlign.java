@@ -127,7 +127,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 			repulsorActivated = true;
 			executeRepulsorAutoAlign(currentPose);
 		}
-
 		logOutput();
 	}
 
@@ -242,7 +241,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	// We never really tested ts
 	public boolean timedOut() {
-		if (getStateTime() > 0.01 && drive.getPose().getTranslation().getDistance(targetPose.getTranslation()) < MOVEMENT_THRESHOLD) {
+		if (getStateTime() > 0.01 && drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) > TIMEOUT_DISTANCE_THRESHOLD) {
+			timer = getStateTime();
+		} else if (timer == -1 && getStateTime() > 0.01) { //Sometimes autoalign close starts within the threshold and so timer never gets set
 			timer = getStateTime();
 		}
 
@@ -265,9 +266,10 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private void logOutput() {
 		if (!Robot.isReal()) {
 			Pose2d[] arrowsArray = new Pose2d[] {};
-			Logger.recordOutput("AutoAlign/Arros", arrowsArray);
+			Logger.recordOutput("AutoAlign/Arrows", arrowsArray);
 		}
-		Logger.recordOutput("AutoAlgin/UsingRepulsor", repulsorActivated);
+
+		Logger.recordOutput("AutoAlign/UsingRepulsor", repulsorActivated);
 		Logger.recordOutput("AutoAlign/InterpolatedDistanceFromReef", interpolatedDistanceFromReef);
 		Logger.recordOutput("AutoAlign/InterpolatedPose", interpolatedPose);
 		Logger.recordOutput("AutoAlign/TargetPose", targetPose);
@@ -276,5 +278,10 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/EnteredBrainDead", enteredBrainDead);
 		Logger.recordOutput("AutoAlign/DriveErrorAbs", driveErrorAbs);
 		Logger.recordOutput("AutoAlign/ThetaErrorAbs", thetaErrorAbs);
+	}
+
+	@Override
+	protected void stateExit() {
+		resetPID();
 	}
 }
