@@ -4,7 +4,12 @@ import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import frc.robot.Subsystems.Drive.Drive;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,15 +52,20 @@ public class VisionIOPhotonVision implements VisionIO {
 			if (result.multitagResult.isPresent()) { // Multitag result
 				var multitagResult = result.multitagResult.get();
 
+				// Skips whenever a camera only sees barge tags
+				if (multitagResult.fiducialIDsUsed.size() == 1 && APRIL_TAG_IGNORE.contains(multitagResult.fiducialIDsUsed.get(0))) continue;
+
 				// Calculate robot pose
 				Transform3d fieldToCamera = multitagResult.estimatedPose.best;
 				Transform3d fieldToRobot = fieldToCamera.plus(robotToCamera.inverse());
 				Pose3d robotPose = new Pose3d(fieldToRobot.getTranslation(), fieldToRobot.getRotation());
 
-				// Calculate average tag distance
+				// Calculate average tag distance and avg tag area
 				double totalTagDistance = 0.0;
+				double totalTagArea = 0.0;
 				for (var target : result.targets) {
 					totalTagDistance += target.bestCameraToTarget.getTranslation().getNorm();
+					totalTagArea += target.area;
 				}
 
 				// Add tag IDs
@@ -69,7 +79,9 @@ public class VisionIOPhotonVision implements VisionIO {
 						multitagResult.estimatedPose.ambiguity, // Ambiguity
 						multitagResult.fiducialIDsUsed.size(), // Tag count
 						totalTagDistance / result.targets.size(), // Average tag distance
-						PoseObservationType.PHOTONVISION
+						PoseObservationType.PHOTONVISION,
+						totalTagArea / result.targets.size(),
+						tagIds
 					)
 				); // Observation type
 			} else if (!result.targets.isEmpty()) { // Single tag result
@@ -83,9 +95,16 @@ public class VisionIOPhotonVision implements VisionIO {
 					Transform3d fieldToCamera = fieldToTarget.plus(cameraToTarget.inverse());
 					Transform3d fieldToRobot = fieldToCamera.plus(robotToCamera.inverse());
 					Pose3d robotPose = new Pose3d(fieldToRobot.getTranslation(), fieldToRobot.getRotation());
-
+					
 					// Add tag ID
 					tagIds.add((short) target.fiducialId);
+
+					// TODO May need to comment this out. I might not have implemented gyro reprojection correctly.
+					final Pose3d robotToCameraPoseOffset = Pose3d.kZero.transformBy(robotToCamera);
+					Translation2d tagToRobotOffset = robotToCameraPoseOffset.transformBy(cameraToTarget).toPose2d().getTranslation();
+					tagToRobotOffset = tagToRobotOffset.rotateBy(Drive.getInstance().getPose().getRotation());
+					robotPose = new Pose3d(new Translation3d(tagPose.get().getTranslation().toTranslation2d().minus(tagToRobotOffset)), new Rotation3d(Drive.getInstance().getPose().getRotation()));
+
 
 					// Add observation
 					poseObservations.add(
@@ -95,7 +114,9 @@ public class VisionIOPhotonVision implements VisionIO {
 							target.poseAmbiguity, // Ambiguity
 							1, // Tag count
 							cameraToTarget.getTranslation().getNorm(), // Average tag distance
-							PoseObservationType.PHOTONVISION
+							PoseObservationType.PHOTONVISION,
+							target.area,
+							Set.of((short) target.fiducialId)
 						)
 					); // Observation type
 				}
