@@ -4,11 +4,6 @@
       "window": {
         "visible": false
       }
-    },
-    "RoboRIO": {
-      "window": {
-        "visible": true
-      }
     }
   },
   "NTProvider": {
@@ -77,11 +72,6 @@
         }
       },
       "/SmartDashboard/Intaking Chooser": {
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Level Chooser": {
         "window": {
           "visible": true
         }
@@ -176,8 +166,7 @@
       "Subscribers": {
         "open": true
       }
-    },
-    "visible": true
+    }
   },
   "Plot": {
     "Plot <0>": {

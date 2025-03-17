@@ -201,7 +201,16 @@ public class Vision extends SubsystemBase {
 	}
 
 	private boolean shouldBeRejected(PoseObservation observation) {
-		Logger.recordOutput("Test", Math.abs(Units.radiansToDegrees(Drive.getInstance().getRobotRelativeSpeeds().omegaRadiansPerSecond)));
+		boolean observedBarge = false;
+
+		for (Short tagsObserved : observation.tagsObserved()) {
+			if (APRIL_TAG_IGNORE.contains(tagsObserved)) {
+				observedBarge = true;
+				break;
+			}
+			if (observedBarge) break;
+		}
+
 		return 
 			observation.tagCount() == 0 || // Must have at least one tag
 			(observation.tagCount() == 1 && observation.ambiguity() > maxAmbiguity) || // Cannot be high ambiguity
@@ -211,6 +220,7 @@ public class Vision extends SubsystemBase {
 			observation.pose().getX() > APRIL_TAG_FIELD_LAYOUT.getFieldLength() ||
 			observation.pose().getY() < 0.0 ||
 			observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth() ||
+			observedBarge ||
 			Math.abs(Units.radiansToDegrees(Drive.getInstance().getRobotRelativeSpeeds().omegaRadiansPerSecond)) > MAX_ANGULAR_VELOCITY.in(DegreesPerSecond) ; // Robot must not be rotating rapidly
 	}
 
