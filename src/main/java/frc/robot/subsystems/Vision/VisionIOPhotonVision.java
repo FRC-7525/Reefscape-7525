@@ -14,6 +14,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
 import org.photonvision.PhotonCamera;
 
 /** IO implementation for real PhotonVision hardware. */
@@ -21,6 +22,7 @@ public class VisionIOPhotonVision implements VisionIO {
 
 	protected final PhotonCamera camera;
 	protected final Transform3d robotToCamera;
+	protected boolean shouldReproject;
 
 	/**
 	 * Creates a new VisionIOPhotonVision.
@@ -31,6 +33,7 @@ public class VisionIOPhotonVision implements VisionIO {
 	public VisionIOPhotonVision(String name, Transform3d robotToCamera) {
 		camera = new PhotonCamera(name);
 		this.robotToCamera = robotToCamera;
+		shouldReproject = true;
 	}
 
 	@Override
@@ -100,10 +103,12 @@ public class VisionIOPhotonVision implements VisionIO {
 					tagIds.add((short) target.fiducialId);
 
 					// TODO May need to comment this out. I might not have implemented gyro reprojection correctly.
-					final Pose3d robotToCameraPoseOffset = Pose3d.kZero.transformBy(robotToCamera);
-					Translation2d tagToRobotOffset = robotToCameraPoseOffset.transformBy(cameraToTarget).toPose2d().getTranslation();
-					tagToRobotOffset = tagToRobotOffset.rotateBy(Drive.getInstance().getPose().getRotation());
-					robotPose = new Pose3d(new Translation3d(tagPose.get().getTranslation().toTranslation2d().minus(tagToRobotOffset)), new Rotation3d(Drive.getInstance().getPose().getRotation()));
+					if (shouldReproject) {
+						final Pose3d robotToCameraPoseOffset = Pose3d.kZero.transformBy(robotToCamera);
+						Translation2d tagToRobotOffset = robotToCameraPoseOffset.transformBy(cameraToTarget).toPose2d().getTranslation();
+						tagToRobotOffset = tagToRobotOffset.rotateBy(Drive.getInstance().getPose().getRotation());
+						robotPose = new Pose3d(new Translation3d(tagPose.get().getTranslation().toTranslation2d().minus(tagToRobotOffset)), new Rotation3d(Drive.getInstance().getPose().getRotation()));
+					}
 
 
 					// Add observation
@@ -135,5 +140,11 @@ public class VisionIOPhotonVision implements VisionIO {
 		for (int id : tagIds) {
 			inputs.tagIds[i++] = id;
 		}
+
+		inputs.reprojectionEnabled = shouldReproject;
+	}
+
+	public void setReproject(boolean shouldReproject) {
+		this.shouldReproject = shouldReproject;
 	}
 }

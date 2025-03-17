@@ -2,25 +2,7 @@ package frc.robot.Subsystems.Vision;
 
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
-import static frc.robot.Subsystems.Vision.VisionConstants.APRIL_TAG_FIELD_LAYOUT;
-import static frc.robot.Subsystems.Vision.VisionConstants.BACK_LEFT_CAM_NAME;
-import static frc.robot.Subsystems.Vision.VisionConstants.BACK_RIGHT_CAM_NAME;
-import static frc.robot.Subsystems.Vision.VisionConstants.BLUE_REEF_TAGS;
-import static frc.robot.Subsystems.Vision.VisionConstants.FRONT_LEFT_CAM_NAME;
-import static frc.robot.Subsystems.Vision.VisionConstants.FRONT_RIGHT_CAM_NAME;
-import static frc.robot.Subsystems.Vision.VisionConstants.MAX_ANGULAR_VELOCITY;
-import static frc.robot.Subsystems.Vision.VisionConstants.RED_REEF_TAGS;
-import static frc.robot.Subsystems.Vision.VisionConstants.ROBOT_TO_BACK_LEFT_CAMERA;
-import static frc.robot.Subsystems.Vision.VisionConstants.ROBOT_TO_BACK_RIGHT_CAMERA;
-import static frc.robot.Subsystems.Vision.VisionConstants.ROBOT_TO_FRONT_LEFT_CAMERA;
-import static frc.robot.Subsystems.Vision.VisionConstants.ROBOT_TO_FRONT_RIGHT_CAMERA;
-import static frc.robot.Subsystems.Vision.VisionConstants.angularStdDevBaseline;
-import static frc.robot.Subsystems.Vision.VisionConstants.angularStdDevMegatag2Factor;
-import static frc.robot.Subsystems.Vision.VisionConstants.cameraStdDevFactors;
-import static frc.robot.Subsystems.Vision.VisionConstants.linearStdDevBaseline;
-import static frc.robot.Subsystems.Vision.VisionConstants.linearStdDevMegatag2Factor;
-import static frc.robot.Subsystems.Vision.VisionConstants.maxAmbiguity;
-import static frc.robot.Subsystems.Vision.VisionConstants.maxZError;
+import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,10 +21,11 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Vision.VisionIO.PoseObservation;
-import frc.robot.Subsystems.Vision.VisionIO.PoseObservationType;
 
 public class Vision extends SubsystemBase {
 
@@ -50,6 +33,7 @@ public class Vision extends SubsystemBase {
 	private final VisionIO[] io;
 	private final VisionIOInputsAutoLogged[] inputs;
 	private final Alert[] disconnectedAlerts;
+	private final SendableChooser<Boolean> reprojection = new SendableChooser<Boolean>();
 
 	List<Pose3d> allTagPoses = new LinkedList<>();
 	List<Pose3d> allRobotPoses = new LinkedList<>();
@@ -69,7 +53,7 @@ public class Vision extends SubsystemBase {
 					case REAL -> new VisionIO[] {
 						new VisionIOPhotonVision(FRONT_LEFT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA),
 						new VisionIOPhotonVision(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_RIGHT_CAMERA),
-						// new VisionIOPhotonVision(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA),
+						new VisionIOPhotonVision(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA),
 						new VisionIOPhotonVision(BACK_RIGHT_CAM_NAME, ROBOT_TO_BACK_RIGHT_CAMERA),
 					};
 					case SIM -> new VisionIO[] {
@@ -102,6 +86,11 @@ public class Vision extends SubsystemBase {
 		for (int i = 0; i < inputs.length; i++) {
 			disconnectedAlerts[i] = new Alert("Vision camera " + Integer.toString(i) + " is disconnected.", AlertType.kWarning);
 		}
+
+		reprojection.setDefaultOption("Enabled", true);
+		reprojection.addOption("Disabled", false);
+
+		SmartDashboard.putData("Reproject", reprojection);
 	}
 
 	/**
@@ -117,9 +106,11 @@ public class Vision extends SubsystemBase {
 	@Override
 	public void periodic() {
 		for (int i = 0; i < io.length; i++) {
+			io[i].setReproject(reprojection.getSelected());
 			io[i].updateInputs(inputs[i]);
 			Logger.processInputs("Vision/Camera" + Integer.toString(i), inputs[i]);
 		}
+
 		
 		// Initialize logging values
 		allTagPoses = new LinkedList<>();
@@ -128,6 +119,11 @@ public class Vision extends SubsystemBase {
 		allRobotPosesRejected = new LinkedList<>();
 
 		processVision();
+		// Log summary data
+		Logger.recordOutput("Vision/Summary/TagPoses", allTagPoses.toArray(new Pose3d[allTagPoses.size()]));
+		Logger.recordOutput("Vision/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[allRobotPoses.size()]));
+		Logger.recordOutput("Vision/Summary/RobotPosesAccepted", allRobotPosesAccepted.toArray(new Pose3d[allRobotPosesAccepted.size()]));
+		Logger.recordOutput("Vision/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
 	}
 
 	private void processVision() {

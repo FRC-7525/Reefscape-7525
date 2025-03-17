@@ -7,10 +7,8 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 
-import static edu.wpi.first.units.Units.Degree;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 
 import java.util.Set;
@@ -76,7 +74,6 @@ public class VisionConstants {
 	// Basic filtering thresholds
 	public static final double maxAmbiguity = 0.3;
 	public static final double maxZError = 0.75;
-	public static final Angle GYRO_REPROJECTION_MARGIN = Degree.of(5);
 	public static final AngularVelocity MAX_ANGULAR_VELOCITY = DegreesPerSecond.of(200);
 
 	// Standard deviation baselines, for 1 meter distance and 1 tag
