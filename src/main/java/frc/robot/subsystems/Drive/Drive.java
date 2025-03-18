@@ -14,7 +14,6 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.ctre.phoenix6.swerve.SwerveRequest.ApplyFieldSpeeds;
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
@@ -81,9 +80,6 @@ public class Drive extends Subsystem<DriveStates> {
 			case SIM -> new DriveIOSim();
 			case TESTING -> new DriveIOReal();
 		};
-
-		// Setup Path Planner
-		configurePathPlanner();
 
 		//Add Devices to Fault Manager
 		faultManager.addDevice(driveIO.getDrive().getPigeon2(), "Pigeon 2", "CANivore");
@@ -401,21 +397,6 @@ public class Drive extends Subsystem<DriveStates> {
 				// .withWheelForceFeedforwardsX(moduleForcesX)
 				// .withWheelForceFeedforwardsY(moduleForcesY)
 			);
-	}
-
-	public void configurePathPlanner() {
-		AutoBuilder.configure(
-			this::getPose, // Robot pose supplier
-			this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-			this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-			this::driveRobotRelativeWithFF, // Method that will drive the robot given ROBOT
-			// RELATIVE ChassisSpeeds. Also optionally outputs
-			// individual module feedforwards
-			PATH_PLANNER_PID,
-			ROBOT_CONFIG, // The robot configuration
-			() -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
-			this // Reference to this subsystem to set requirements
-		);
 	}
 
 	public void addVisionMeasurement(Pose2d visionPose, double timestamp, Matrix<N3, N1> visionMeasurementStdDevs) {

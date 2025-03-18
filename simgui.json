@@ -12,11 +12,13 @@
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Alerts": "Alerts",
       "/SmartDashboard/Auto Chooser": "String Chooser",
+      "/SmartDashboard/FF Rot Controller": "ProfiledPIDController",
+      "/SmartDashboard/FF TRans": "ProfiledPIDController",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Intaking Chooser": "String Chooser",
       "/SmartDashboard/Level Chooser": "String Chooser",
-      "/SmartDashboard/Reproject": "String Chooser",
-      "/SmartDashboard/SendableChooser[1]": "String Chooser",
+      "/SmartDashboard/Repulsor Rot": "PIDController",
+      "/SmartDashboard/Repulsor Trans": "PIDController",
       "/SmartDashboard/Side Chooser": "String Chooser",
       "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d",
       "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d",
@@ -137,6 +139,12 @@
             "open": true
           },
           "Board": {
+            "open": true
+          },
+          "Drive": {
+            "open": true
+          },
+          "Manager": {
             "open": true
           },
           "Vision": {

@@ -9,6 +9,7 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.GlobalConstants;
+import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.CoralerConstants.Sim;
 
 public class CoralerIOSim implements CoralerIO {
@@ -47,11 +48,12 @@ public class CoralerIOSim implements CoralerIO {
 
 	@Override
 	public boolean currentLimitReached() { //TODO this is so buns find a better way to check this
-		return true;
+		// return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds) && SubsystemManager.getInstance().getState() == SubsystemManagerStates.INTAKING_CORALER_AA_OFF;
+		return false;
 	}
 
 	@Override
 	public boolean hasGamepiece() {
-		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds);
+		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds) && AutoAlign.getInstance().nearGoalSource();
 	}
 }

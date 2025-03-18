@@ -124,4 +124,9 @@ public class ElevatorIOSim implements ElevatorIO {
 	public TalonFX getRightMotor() {
 		return rightMotor;
 	}
+
+	@Override
+	public void resetController() {
+		pidController.reset(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
+	}
 }

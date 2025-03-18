@@ -50,7 +50,6 @@ public class AutoManager extends Subsystem<AutoStates> {
 			boolean triggered = SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE && Elevator.getInstance().nearTarget();
 			if (triggered) {
 				orderInRoutine += 1;
-				setManagerStateAlready = false;
 			}
 			return triggered;
 		});
@@ -59,23 +58,16 @@ public class AutoManager extends Subsystem<AutoStates> {
 			if (scoringLocationChooser.getSelected().length == 1) return false;
 
 			boolean triggered = Elevator.getInstance().nearEnoughTarget() && getStateTime() > 0.2;
-			if (triggered) {
-				setManagerStateAlready = false;
-			}
 			return triggered;
 		});
 
 		addTrigger(INTAKING_CORAL, SCORING_CORAL, () -> {
 			boolean triggered = SubsystemManager.getInstance().getState() == SubsystemManagerStates.IDLE && getStateTime() > 0.5;
-			if (triggered) {
-				setManagerStateAlready = false;
-			}
 			return triggered;
 		});
 		addTrigger(SCORING_CORAL, IDLE, () -> {
 			boolean triggered = orderInRoutine == scoringLocationChooser.getSelected().length && getStateTime() > 0.01;
 			if (triggered) {
-				setManagerStateAlready = false;
 				finishedAuto = true;
 			}
 			return triggered;
@@ -146,5 +138,10 @@ public class AutoManager extends Subsystem<AutoStates> {
 
 	public void setFinishedAuto(boolean finishedAuto) {
 		this.finishedAuto = finishedAuto;
+	}
+
+	@Override
+	protected void stateExit() {
+		setManagerStateAlready = false;
 	}
 }
