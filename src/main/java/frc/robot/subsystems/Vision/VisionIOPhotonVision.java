@@ -9,12 +9,10 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.Subsystems.Drive.Drive;
-
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
 import org.photonvision.PhotonCamera;
 
 /** IO implementation for real PhotonVision hardware. */
@@ -96,7 +94,7 @@ public class VisionIOPhotonVision implements VisionIO {
 					Transform3d fieldToCamera = fieldToTarget.plus(cameraToTarget.inverse());
 					Transform3d fieldToRobot = fieldToCamera.plus(robotToCamera.inverse());
 					Pose3d robotPose = new Pose3d(fieldToRobot.getTranslation(), fieldToRobot.getRotation());
-					
+
 					// Add tag ID
 					tagIds.add((short) target.fiducialId);
 
@@ -107,7 +105,6 @@ public class VisionIOPhotonVision implements VisionIO {
 						tagToRobotOffset = tagToRobotOffset.rotateBy(Drive.getInstance().getPose().getRotation());
 						robotPose = new Pose3d(new Translation3d(tagPose.get().getTranslation().toTranslation2d().minus(tagToRobotOffset)), new Rotation3d(Drive.getInstance().getPose().getRotation()));
 					}
-
 
 					// Add observation
 					poseObservations.add(
