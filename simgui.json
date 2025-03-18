@@ -4,11 +4,6 @@
       "window": {
         "visible": false
       }
-    },
-    "RoboRIO": {
-      "window": {
-        "visible": true
-      }
     }
   },
   "NTProvider": {
@@ -83,7 +78,7 @@
           "visible": true
         }
       },
-      "/SmartDashboard/Level Chooser": {
+      "/SmartDashboard/Reproject": {
         "window": {
           "visible": true
         }
@@ -136,9 +131,6 @@
   "NetworkTables": {
     "transitory": {
       "AdvantageKit": {
-        "Powered Passthrough": {
-          "open": true
-        },
         "RealOutputs": {
           "Auto": {
             "open": true
@@ -158,16 +150,16 @@
           "Vision": {
             "Camera0": {
               "open": true
-            }
-          },
-          "open": true
-        },
-        "open": true
+            },
+            "open": true
+          }
+        }
       },
       "SmartDashboard": {
         "VisionSystemSim-Vision": {
           "open": true
-        }
+        },
+        "open": true
       }
     }
   },
@@ -182,8 +174,7 @@
       "Subscribers": {
         "open": true
       }
-    },
-    "visible": true
+    }
   },
   "Plot": {
     "Plot <0>": {
