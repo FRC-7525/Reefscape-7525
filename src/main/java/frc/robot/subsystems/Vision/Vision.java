@@ -33,7 +33,6 @@ public class Vision extends SubsystemBase {
 	private final VisionIO[] io;
 	private final VisionIOInputsAutoLogged[] inputs;
 	private final Alert[] disconnectedAlerts;
-	private final SendableChooser<Boolean> reprojection = new SendableChooser<Boolean>();
 
 	List<Pose3d> allTagPoses = new LinkedList<>();
 	List<Pose3d> allRobotPoses = new LinkedList<>();
@@ -86,11 +85,6 @@ public class Vision extends SubsystemBase {
 		for (int i = 0; i < inputs.length; i++) {
 			disconnectedAlerts[i] = new Alert("Vision camera " + Integer.toString(i) + " is disconnected.", AlertType.kWarning);
 		}
-
-		reprojection.setDefaultOption("Enabled", true);
-		reprojection.addOption("Disabled", false);
-
-		SmartDashboard.putData("Reproject", reprojection);
 	}
 
 	/**
@@ -105,8 +99,11 @@ public class Vision extends SubsystemBase {
 
 	@Override
 	public void periodic() {
+
+		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
+		allianceReefTag = isRedAlliance ? RED_REEF_TAGS : BLUE_REEF_TAGS;
+
 		for (int i = 0; i < io.length; i++) {
-			io[i].setReproject(reprojection.getSelected());
 			io[i].updateInputs(inputs[i]);
 			Logger.processInputs("Vision/Camera" + Integer.toString(i), inputs[i]);
 		}

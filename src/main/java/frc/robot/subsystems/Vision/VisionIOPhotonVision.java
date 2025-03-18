@@ -22,7 +22,6 @@ public class VisionIOPhotonVision implements VisionIO {
 
 	protected final PhotonCamera camera;
 	protected final Transform3d robotToCamera;
-	protected boolean shouldReproject;
 
 	/**
 	 * Creates a new VisionIOPhotonVision.
@@ -33,7 +32,6 @@ public class VisionIOPhotonVision implements VisionIO {
 	public VisionIOPhotonVision(String name, Transform3d robotToCamera) {
 		camera = new PhotonCamera(name);
 		this.robotToCamera = robotToCamera;
-		shouldReproject = true;
 	}
 
 	@Override
@@ -103,7 +101,7 @@ public class VisionIOPhotonVision implements VisionIO {
 					tagIds.add((short) target.fiducialId);
 
 					// TODO May need to comment this out. I might not have implemented gyro reprojection correctly.
-					if (shouldReproject) {
+					if (USE_GYRO_REPROJECTION) {
 						final Pose3d robotToCameraPoseOffset = Pose3d.kZero.transformBy(robotToCamera);
 						Translation2d tagToRobotOffset = robotToCameraPoseOffset.transformBy(cameraToTarget).toPose2d().getTranslation();
 						tagToRobotOffset = tagToRobotOffset.rotateBy(Drive.getInstance().getPose().getRotation());
@@ -141,10 +139,6 @@ public class VisionIOPhotonVision implements VisionIO {
 			inputs.tagIds[i++] = id;
 		}
 
-		inputs.reprojectionEnabled = shouldReproject;
-	}
-
-	public void setReproject(boolean shouldReproject) {
-		this.shouldReproject = shouldReproject;
+		inputs.reprojectionEnabled = USE_GYRO_REPROJECTION;
 	}
 }
