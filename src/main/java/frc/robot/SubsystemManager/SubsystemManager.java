@@ -26,8 +26,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	// private final Coraler coraler = Coraler.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
-	private final LED ledSubsystem = LED.getInstance();
-	private final Passthrough passthrough = Passthrough.getInstance();
+	// private final LED ledSubsystem = LED.getInstance();
+	// private final Passthrough passthrough = Passthrough.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -204,22 +204,22 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		}
 
 		// Set States, drive and vision are rogue so you don't need to set state
-		elevator.setState(getState().getElevatorStateSupplier().get());
+		// elevator.setState(getState().getElevatorStateSupplier().get());
 		// coraler.setState(getState().getCoralerState());
 		autoAlign.setState(getState().getAutoAlignSupplier().get());
-		ledSubsystem.setState(getState().getLedStateSupplier().get());
+		// ledSubsystem.setState(getState().getLedStateSupplier().get());
 		// climber.setState(getState().getClimberState());
-		passthrough.setState(getState().getPassthroughState());
+		// passthrough.setState(getState().getPassthroughState());
 
 		// Periodics
 		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
-		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
+		// Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
 		// Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
 		Tracer.traceFunc("VisionPeriodic", vision::periodic);
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
-		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
+		// Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
 		// Tracer.traceFunc("ClimberPeriodic", climber::periodic);
-		Tracer.traceFunc("PassthroughPeriodic", passthrough::periodic);
+		// Tracer.traceFunc("PassthroughPeriodic", passthrough::periodic);
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(5)) { // 5
