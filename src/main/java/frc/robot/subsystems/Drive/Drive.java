@@ -199,7 +199,6 @@ public class Drive extends Subsystem<DriveStates> {
 		if (useDecelerationLimit && !DriverStation.isAutonomous()) {
 			double currentVelocity = Drive.getInstance().getVelocity().in(MetersPerSecond);
 			double targetVelocity = Math.hypot(xVelocity, yVelocity);
-
 			// Like yknow when it tips but like it be tipping mad when u stop, yeah this stops it
 			// if (Math.abs(currentVelocity) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond) && Math.abs(targetVelocity) <= 0.5 && (Elevator.getInstance().getState() == ElevatorStates.CORAL_STATION || Elevator.getInstance().getState() == ElevatorStates.IDLE)) {
 			// 	Angle angle = Radians.of(Math.atan2(yVelocity, xVelocity));
