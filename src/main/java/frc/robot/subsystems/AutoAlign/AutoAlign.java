@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Robot;
+import frc.robot.Subsystems.AutoAlign.AATypeManager.AATypeManager;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
@@ -100,7 +101,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	@Override
 	protected void runState() {
-		if (getState() == AutoAlignStates.OFF) return;
+		AATypeManager.getInstance().periodic();
 
 		// Update alliance and reef position
 		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
@@ -114,29 +115,18 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		// Update current pose information
 		Pose2d currentPose = drive.getPose();
 
-		// Special handling if not ready for close-range alignment
+		// Angle at reef iirc
 		if (!readyForClose()) {
 			Translation2d temp = reefPose.getTranslation().minus(currentPose.getTranslation());
 			targetPose = new Pose2d(targetPose.getTranslation(), Rotation2d.fromRadians(Math.atan2(temp.getY(), temp.getX())));
 		}
-
-		// Check for collision risk with the reef
-		if (enteredFeedForwardAA || !willCollide()) {
-			System.out.println("HIIIIII");
-			enteredFeedForwardAA = true;
-			repulsorActivated = false;
-			executeScaledFeedforwardAutoAlign(currentPose);
-		} else {
-			repulsorActivated = true;
-			executeRepulsorAutoAlign(currentPose);
-		}
-		logOutput();
 	}
 
 	// ACTUALLY DRIVING
 
 	// 254's implementation of the braindead auto-align
-	private void executeScaledFeedforwardAutoAlign(Pose2d currentPose) {
+	public void executeScaledFeedforwardAutoAlign() {
+		Pose2d currentPose = drive.getPose();
 		// Apply scalar drive with feedforward
 		double currentDistance = currentPose.getTranslation().getDistance(targetPose.getTranslation());
 		double ffScaler = MathUtil.clamp((currentDistance - ffMinRadius) / (ffMaxRadius - ffMinRadius), 0.0, 1.0);
@@ -172,7 +162,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		}
 	}
 
-	private void executeRepulsorAutoAlign(Pose2d currentPose) {
+	public void executeRepulsorAutoAlign() {
+		Pose2d currentPose = drive.getPose();
 		// Set repulsor goal and get command
 		repulsor.setGoal(targetPose.getTranslation());
 		SwerveSample sample = repulsor.getCmd(currentPose, drive.getRobotRelativeSpeeds(), MAX_SPEED.in(MetersPerSecond), USE_GOAL, targetPose.getRotation());
@@ -209,11 +200,11 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		return willCollide;
 	}
 
-	private boolean willCollide() {
+	public boolean closeEnoughToIgnore() {
 		Pose2d currentPose = drive.getPose();
 		boolean withinDistance = Math.abs(targetPose.getTranslation().getDistance(currentPose.getTranslation())) < 0.3;
 		Logger.recordOutput("AutoAlign/within DIstnace", !withinDistance);	
-		return !withinDistance;
+		return withinDistance;
 	}
 	
 	
