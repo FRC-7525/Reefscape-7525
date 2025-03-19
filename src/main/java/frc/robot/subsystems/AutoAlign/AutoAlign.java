@@ -56,7 +56,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private Pose2d interpolatedPose;
 	private boolean isRedAlliance;
 	private double interpolatedDistanceFromReef;
-	private boolean enteredBrainDead;
+	private boolean enteredFeedForwardAA;
 	private boolean repulsorActivated;
 	private double timer = -1;
 
@@ -86,7 +86,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		this.lastSetpointTranslation = new Translation2d();
 		this.autoAlignDebouncer = new Debouncer(0.5, DebounceType.kRising);
 		this.repulsorActivated = false;
-		this.enteredBrainDead = false;
+		this.enteredFeedForwardAA = false;
 		this.targetPose = new Pose2d();
 		this.goalPose = new Pose2d();
 	}
@@ -121,7 +121,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		}
 
 		// Check for collision risk with the reef
-		if (!checkForReefCollision()) {
+		if (enteredFeedForwardAA || !checkForReefCollision()) {
+			enteredFeedForwardAA = true;
 			repulsorActivated = false;
 			executeScaledFeedforwardAutoAlign(currentPose);
 		} else {
@@ -260,8 +261,12 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	public void resetPID() {
 		Pose2d currentPose = drive.getPose();
 		ChassisSpeeds currentSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
+		enteredFeedForwardAA = false;
 
-		rotationController.reset(currentSpeed.omegaRadiansPerSecond);
+		// translationalController.reset(0);
+		rotationController.reset(currentSpeed.omegaRadiansPerSecond); // this was here originally
+		repulsorTranslationController.reset();
+		repulsorRotationalController.reset();
 	}
 
 	private void logOutput() {
@@ -276,7 +281,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/TargetPose", targetPose);
 		Logger.recordOutput("AutoAlign/GoalPose", goalPose);
 		Logger.recordOutput("AutoAlign/IsRedAlliance", isRedAlliance);
-		Logger.recordOutput("AutoAlign/EnteredBrainDead", enteredBrainDead);
+		Logger.recordOutput("AutoAlign/EnteredFeedForwardAA", enteredFeedForwardAA);
 		Logger.recordOutput("AutoAlign/DriveErrorAbs", driveErrorAbs);
 		Logger.recordOutput("AutoAlign/ThetaErrorAbs", thetaErrorAbs);
 	}
