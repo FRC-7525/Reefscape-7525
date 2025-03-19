@@ -25,7 +25,7 @@ public final class AutoAlignConstants {
 
 	public static final Distance ROBOT_RADIUS = Meters.of(.91);
 	// public static final Distance REEF_HITBOX = Inches.of(53.7625); // Reef size = 46.75 in multiplied by 1.15 for safety
-	public static final Distance REEF_HITBOX = Inches.of(46.75); // Reef size = 46.75 in multiplied by 1.15 for safety
+	public static final Distance REEF_HITBOX = Inches.of(50.75); // Reef size = 46.75 in multiplied by 1.15 for safety
 
 	public static final Angle MIN_HEADING_ANGLE = Degrees.of(-180);
 	public static final Angle MAX_HEADING_ANGLE = Degrees.of(180);

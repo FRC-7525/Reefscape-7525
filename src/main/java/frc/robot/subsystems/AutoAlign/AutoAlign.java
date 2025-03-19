@@ -57,7 +57,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private Pose2d interpolatedPose;
 	private boolean isRedAlliance;
 	private double interpolatedDistanceFromReef;
-	private boolean enteredFeedForwardAA;
 	private boolean repulsorActivated;
 	private double timer = -1;
 
@@ -87,7 +86,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		this.lastSetpointTranslation = new Translation2d();
 		this.autoAlignDebouncer = new Debouncer(0.5, DebounceType.kRising);
 		this.repulsorActivated = false;
-		this.enteredFeedForwardAA = false;
 		this.targetPose = new Pose2d();
 		this.goalPose = new Pose2d();
 	}
@@ -114,6 +112,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		// Update current pose information
 		Pose2d currentPose = drive.getPose();
+		logOutput();
 
 		// Angle at reef iirc
 		if (!readyForClose()) {
@@ -186,7 +185,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	// LOS
 	// TODO: Profile this to see how resource intensive it is
-	private boolean checkForReefCollision() {
+	public boolean willCollideWithReef() {
 		Pose2d currentPose = drive.getPose();
 
 		double t = calculateClosestPoint(currentPose, targetPose);
@@ -262,26 +261,25 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	public void resetPID() {
 		Pose2d currentPose = drive.getPose();
 		ChassisSpeeds currentSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
-		enteredFeedForwardAA = false;
 
 		// translationalController.reset(0);
-		rotationController.reset(currentSpeed.omegaRadiansPerSecond); // this was here originally
+		// rotationController.reset(currentSpeed.omegaRadiansPerSecond); // this was here originally
 		// repulsorTranslationController.reset();
 		// repulsorRotationalController.reset();
-		translationalController.reset(
-                currentPose.getTranslation().getDistance(currentPose.getTranslation()),
-                Math.min(
-                        0.0,
-                        -new Translation2d(currentSpeed.vxMetersPerSecond,
-                                currentSpeed.vyMetersPerSecond)
-                                .rotateBy(
-                                    	currentPose
-                                                .getTranslation()
-                                                .getAngle()
-                                                .unaryMinus())
-                                .getX()));
-        rotationController.reset(currentPose.getRotation().getRadians(), currentSpeed.omegaRadiansPerSecond);
-        lastSetpointTranslation = currentPose.getTranslation();
+		// translationalController.reset(
+        //         currentPose.getTranslation().getDistance(currentPose.getTranslation()),
+        //         Math.min(
+        //                 0.0,
+        //                 -new Translation2d(currentSpeed.vxMetersPerSecond,
+        //                         currentSpeed.vyMetersPerSecond)
+        //                         .rotateBy(
+        //                             	currentPose
+        //                                         .getTranslation()
+        //                                         .getAngle()
+        //                                         .unaryMinus())
+        //                         .getX()));
+        // rotationController.reset(currentPose.getRotation().getRadians(), currentSpeed.omegaRadiansPerSecond);
+        // lastSetpointTranslation = currentPose.getTranslation();
 	}
 
 	private void logOutput() {
@@ -296,7 +294,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/TargetPose", targetPose);
 		Logger.recordOutput("AutoAlign/GoalPose", goalPose);
 		Logger.recordOutput("AutoAlign/IsRedAlliance", isRedAlliance);
-		Logger.recordOutput("AutoAlign/EnteredFeedForwardAA", enteredFeedForwardAA);
 		Logger.recordOutput("AutoAlign/DriveErrorAbs", driveErrorAbs);
 		Logger.recordOutput("AutoAlign/ThetaErrorAbs", thetaErrorAbs);
 	}
