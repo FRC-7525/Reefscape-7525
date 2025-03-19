@@ -201,22 +201,22 @@ public class Drive extends Subsystem<DriveStates> {
 			double targetVelocity = Math.hypot(xVelocity, yVelocity);
 
 			// Like yknow when it tips but like it be tipping mad when u stop, yeah this stops it
-			if (Math.abs(currentVelocity) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond) && Math.abs(targetVelocity) <= 0.5 && (Elevator.getInstance().getState() == ElevatorStates.CORAL_STATION || Elevator.getInstance().getState() == ElevatorStates.IDLE)) {
-				Angle angle = Radians.of(Math.atan2(yVelocity, xVelocity));
-				antiTipX = xStoppingTranslationLimiter.calculate(targetVelocity * Math.sin(angle.in(Radians)));
-				antiTipY = yStoppingTranslationLimiter.calculate(targetVelocity * Math.cos(angle.in(Radians)));
-				Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", true);
-			} else {
-				// When ur tryna anti tip but you wouldn't tip anyways
-				if (Elevator.getInstance().getState() != ElevatorStates.CORAL_STATION || Elevator.getInstance().getState() != ElevatorStates.IDLE) {
-					antiTipX = xTranslationLimiter.calculate(xVelocity);
-					antiTipY = yTranslationLimiter.calculate(yVelocity);
-				} else {
-					antiTipX = xElevatorUpTranslationLimiter.calculate(xVelocity);
-					antiTipY = yElevatorUpTranslationLimiter.calculate(yVelocity);
-				}
-				Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", false);
-			}
+			// if (Math.abs(currentVelocity) > TIPPING_LIMITER_THRESHOLD.in(MetersPerSecond) && Math.abs(targetVelocity) <= 0.5 && (Elevator.getInstance().getState() == ElevatorStates.CORAL_STATION || Elevator.getInstance().getState() == ElevatorStates.IDLE)) {
+			// 	Angle angle = Radians.of(Math.atan2(yVelocity, xVelocity));
+			// 	antiTipX = xStoppingTranslationLimiter.calculate(targetVelocity * Math.sin(angle.in(Radians)));
+			// 	antiTipY = yStoppingTranslationLimiter.calculate(targetVelocity * Math.cos(angle.in(Radians)));
+			// 	Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", true);
+			// } else {
+			// 	// When ur tryna anti tip but you wouldn't tip anyways
+			// 	if (Elevator.getInstance().getState() != ElevatorStates.CORAL_STATION || Elevator.getInstance().getState() != ElevatorStates.IDLE) {
+			// 		antiTipX = xTranslationLimiter.calculate(xVelocity);
+			// 		antiTipY = yTranslationLimiter.calculate(yVelocity);
+			// 	} else {
+			// 		antiTipX = xElevatorUpTranslationLimiter.calculate(xVelocity);
+			// 		antiTipY = yElevatorUpTranslationLimiter.calculate(yVelocity);
+			// 	}
+			// 	Logger.recordOutput(SUBSYSTEM_NAME + "/AntiTipApplied", false);
+			// }
 		}
 
 		driveIO.setControl(

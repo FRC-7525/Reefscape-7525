@@ -22,8 +22,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private static SubsystemManager instance = new SubsystemManager();
 
 	private final Drive drive = Drive.getInstance();
-	private final Elevator elevator = Elevator.getInstance();
-	private final Coraler coraler = Coraler.getInstance();
+	// private final Elevator elevator = Elevator.getInstance();
+	// private final Coraler coraler = Coraler.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
 	// private final LED ledSubsystem = LED.getInstance();
@@ -89,20 +89,29 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Intaking at Coral Station
 		// AA
 		addTrigger(IDLE, INTAKING_CORALER, () -> {
-			boolean left = DRIVER_CONTROLLER.getLeftBumperButtonPressed();
-			boolean right = DRIVER_CONTROLLER.getRightBumperButtonPressed();
-			this.leftSourceSelected = left ? true : (right ? false : leftSourceSelected);
-			return left || right;
+			// boolean left = DRIVER_CONTROLLER.getLeftBumperButtonPressed();
+			// boolean right = DRIVER_CONTROLLER.getRightBumperButtonPressed();
+			// this.leftSourceSelected = left ? true : (right ? false : leftSourceSelected);
+
+			if (DRIVER_CONTROLLER.getLeftBumperButtonPressed()) {
+				this.leftSourceSelected = true;
+				return true;
+			} else if (DRIVER_CONTROLLER.getRightBumperButtonPressed()) {
+				this.leftSourceSelected = false;
+				return true;
+			} else {
+				return false;
+			}
 		});
 
 		// TODO: is near goal sorce needed??
 		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoal());
 		// TODO: Breaks sim bc func is messed up in sim :Skull:
-		addTrigger(INTAKING_CORALER, IDLE, coraler::hasGamepiece);
+		// addTrigger(INTAKING_CORALER, IDLE, coraler::hasGamepiece);
 
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
-		addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
+		// addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
 
 		// Scoring Reef Manual
 		addTrigger(IDLE, TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
@@ -110,7 +119,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(SCORING_REEF_MANUAL, IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 		// Auto ONLY transition
 		addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
-		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
+		// addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
 		// Uncomment if excessive overshoot
 		// addTrigger(INTAKING_CORALER_AA_OFF, INTAKING_CORALER, () -> DriverStation.isAutonomous() && !AutoAlign.getInstance().nearGoal()); // TODO check if this needs to be removed after during comp
 
@@ -130,14 +139,14 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Zero Elevator
 		// TODO: Test
 		// Not testing all that :laughing cat emoji:
-		addTrigger(IDLE, ZEROING_ELEVATOR, () -> {
-			boolean pressed = OPERATOR_CONTROLLER.getRawButtonPressed(4);
-			if (pressed) {
-				elevator.resetMotorsZeroed();
-			}
-			return pressed;
-		});
-		addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || elevator.motorsZeroed());
+		// addTrigger(IDLE, ZEROING_ELEVATOR, () -> {
+		// 	boolean pressed = OPERATOR_CONTROLLER.getRawButtonPressed(4);
+		// 	if (pressed) {
+		// 		elevator.resetMotorsZeroed();
+		// 	}
+		// 	return pressed;
+		// });
+		// addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || elevator.motorsZeroed());
 	}
 
 	public static SubsystemManager getInstance() {

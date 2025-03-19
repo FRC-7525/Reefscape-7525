@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -62,9 +63,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
 		// FF impl (if 254 has magic number so can I hehehe)
-		this.rotationController = new ProfiledPIDController(6, 0, 0, new TrapezoidProfile.Constraints(0, 0), 0.02);
+		this.rotationController = new ProfiledPIDController(6, 0, 0, new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 2), 0.02);
 
-		this.translationalController = new ProfiledPIDController(4, 0, 0, new TrapezoidProfile.Constraints(0, 0), 0.02);
+		this.translationalController = new ProfiledPIDController(4, 0, 0, new TrapezoidProfile.Constraints(Units.feetToMeters(9), 7), 0.02);
 
 		this.repulsorTranslationController = REPULSOR_TRANSLATIONAL_CONTROLLER.get();
 		this.repulsorRotationalController = REPULSOR_ROTATIONAL_CONTROLLER.get();
