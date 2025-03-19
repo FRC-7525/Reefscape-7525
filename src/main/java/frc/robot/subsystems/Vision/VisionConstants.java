@@ -63,6 +63,7 @@ public class VisionConstants {
 	public static final int LATENCY_STD_DEV_MS = 10;
 
 	//April Tag Lists
+	public static final Set<Short> SOURCE_TAGS = Set.of((short) 12, (short) 13, (short) 1, (short) 2);
 	public static final Set<Short> RED_REEF_TAGS = Set.of((short) 6, (short) 7, (short) 8, (short) 9, (short) 10, (short) 11);
 	public static final Set<Short> BLUE_REEF_TAGS = Set.of((short) 17, (short) 18, (short) 19, (short) 20, (short) 21, (short) 22);
 	public static final Set<Short> APRIL_TAG_IGNORE = Set.of((short) 14, (short) 15, (short) 4, (short) 5);
