@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.SubsystemManager.SubsystemManager;
+import frc.robot.SubsystemManager.SubsystemManagerStates;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Vision.VisionIO.PoseObservation;
 import java.util.LinkedList;
@@ -191,13 +191,22 @@ public class Vision extends SubsystemBase {
 
 	private boolean shouldBeRejected(PoseObservation observation) {
 		boolean observedBarge = false;
+		boolean observedSource = false;
 
-		for (Short tagsObserved : observation.tagsObserved()) {
-			if (APRIL_TAG_IGNORE.contains(tagsObserved)) {
+		for (Short tagObserved : observation.tagsObserved()) {
+			if (APRIL_TAG_IGNORE.contains(tagObserved)) {
 				observedBarge = true;
 				break;
 			}
 			if (observedBarge) break;
+		}
+
+		for (Short tagObserved : observation.tagsObserved()) {
+			if (SOURCE_TAGS.contains(tagObserved)) {
+				observedSource = true;
+				break;
+			}
+			if (observedSource) break;
 		}
 
 		return (
@@ -210,7 +219,8 @@ public class Vision extends SubsystemBase {
 			observation.pose().getX() > APRIL_TAG_FIELD_LAYOUT.getFieldLength() ||
 			observation.pose().getY() < 0.0 ||
 			observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth() ||
-			observedBarge ||
+			observedBarge || // Barge poses mess up vision
+			(observedSource && SubsystemManager.getInstance().getState() == SubsystemManagerStates.AUTO_ALIGN_CLOSE) || // Source can mess up AA
 			Math.abs(Units.radiansToDegrees(Drive.getInstance().getRobotRelativeSpeeds().omegaRadiansPerSecond)) > MAX_ANGULAR_VELOCITY.in(DegreesPerSecond)
 		); // Robot must not be rotating rapidly
 	}

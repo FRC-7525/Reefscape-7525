@@ -28,9 +28,9 @@ public class VisionIOPhotonVisionSim extends VisionIOPhotonVision {
 		// Add sim camera
 		// TODO: Uh like idrc about this ngl, but we can have a sim thats 4 deg more accurate if we want
 		var cameraProperties = new SimCameraProperties();
-		cameraProperties.setAvgLatencyMs(AVG_LATENCY_MS);
-		cameraProperties.setLatencyStdDevMs(LATENCY_STD_DEV_MS);
-		cameraProperties.setCalibError(CALIB_ERROR_AVG, CALIB_ERROR_STD_DEV);
+		// cameraProperties.setAvgLatencyMs(AVG_LATENCY_MS);
+		// cameraProperties.setLatencyStdDevMs(LATENCY_STD_DEV_MS);
+		// cameraProperties.setCalibError(CALIB_ERROR_AVG, CALIB_ERROR_STD_DEV);
 		cameraProperties.setFPS(CAMERA_FPS);
 		cameraSim = new PhotonCameraSim(camera, cameraProperties);
 		visionSim.addCamera(cameraSim, robotToCamera);

@@ -4,11 +4,7 @@ import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
-import frc.robot.Subsystems.Drive.Drive;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -98,14 +94,6 @@ public class VisionIOPhotonVision implements VisionIO {
 					// Add tag ID
 					tagIds.add((short) target.fiducialId);
 
-					// TODO May need to comment this out. I might not have implemented gyro reprojection correctly.
-					if (USE_GYRO_REPROJECTION) {
-						final Pose3d robotToCameraPoseOffset = Pose3d.kZero.transformBy(robotToCamera);
-						Translation2d tagToRobotOffset = robotToCameraPoseOffset.transformBy(cameraToTarget).toPose2d().getTranslation();
-						tagToRobotOffset = tagToRobotOffset.rotateBy(Drive.getInstance().getPose().getRotation());
-						robotPose = new Pose3d(new Translation3d(tagPose.get().getTranslation().toTranslation2d().minus(tagToRobotOffset)), new Rotation3d(Drive.getInstance().getPose().getRotation()));
-					}
-
 					// Add observation
 					poseObservations.add(
 						new PoseObservation(
@@ -135,7 +123,5 @@ public class VisionIOPhotonVision implements VisionIO {
 		for (int id : tagIds) {
 			inputs.tagIds[i++] = id;
 		}
-
-		inputs.reprojectionEnabled = USE_GYRO_REPROJECTION;
 	}
 }

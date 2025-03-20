@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Robot;
+import frc.robot.Subsystems.AutoAlign.AATypeManager.AATypeManager;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
@@ -56,7 +57,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private Pose2d interpolatedPose;
 	private boolean isRedAlliance;
 	private double interpolatedDistanceFromReef;
-	private boolean enteredBrainDead;
 	private boolean repulsorActivated;
 	private double timer = -1;
 
@@ -86,7 +86,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		this.lastSetpointTranslation = new Translation2d();
 		this.autoAlignDebouncer = new Debouncer(0.5, DebounceType.kRising);
 		this.repulsorActivated = false;
-		this.enteredBrainDead = false;
 		this.targetPose = new Pose2d();
 		this.goalPose = new Pose2d();
 	}
@@ -100,7 +99,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	@Override
 	protected void runState() {
-		if (getState() == AutoAlignStates.OFF) return;
+		AATypeManager.getInstance().periodic();
 
 		// Update alliance and reef position
 		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
@@ -113,28 +112,20 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		// Update current pose information
 		Pose2d currentPose = drive.getPose();
+		logOutput();
 
-		// Special handling if not ready for close-range alignment
+		// Angle at reef iirc
 		if (!readyForClose()) {
 			Translation2d temp = reefPose.getTranslation().minus(currentPose.getTranslation());
 			targetPose = new Pose2d(targetPose.getTranslation(), Rotation2d.fromRadians(Math.atan2(temp.getY(), temp.getX())));
 		}
-
-		// Check for collision risk with the reef
-		if (!checkForReefCollision()) {
-			repulsorActivated = false;
-			executeScaledFeedforwardAutoAlign(currentPose);
-		} else {
-			repulsorActivated = true;
-			executeRepulsorAutoAlign(currentPose);
-		}
-		logOutput();
 	}
 
 	// ACTUALLY DRIVING
 
 	// 254's implementation of the braindead auto-align
-	private void executeScaledFeedforwardAutoAlign(Pose2d currentPose) {
+	public void executeScaledFeedforwardAutoAlign() {
+		Pose2d currentPose = drive.getPose();
 		// Apply scalar drive with feedforward
 		double currentDistance = currentPose.getTranslation().getDistance(targetPose.getTranslation());
 		double ffScaler = MathUtil.clamp((currentDistance - ffMinRadius) / (ffMaxRadius - ffMinRadius), 0.0, 1.0);
@@ -170,7 +161,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		}
 	}
 
-	private void executeRepulsorAutoAlign(Pose2d currentPose) {
+	public void executeRepulsorAutoAlign() {
+		Pose2d currentPose = drive.getPose();
 		// Set repulsor goal and get command
 		repulsor.setGoal(targetPose.getTranslation());
 		SwerveSample sample = repulsor.getCmd(currentPose, drive.getRobotRelativeSpeeds(), MAX_SPEED.in(MetersPerSecond), USE_GOAL, targetPose.getRotation());
@@ -193,7 +185,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	// LOS
 	// TODO: Profile this to see how resource intensive it is
-	private boolean checkForReefCollision() {
+	public boolean willCollideWithReef() {
 		Pose2d currentPose = drive.getPose();
 
 		double t = calculateClosestPoint(currentPose, targetPose);
@@ -203,7 +195,15 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		boolean willCollide = interpolatedDistanceFromReef < (REEF_HITBOX.in(Meters) + ROBOT_RADIUS.in(Meters));
 		Logger.recordOutput("AutoAlign/Gona hit reef", willCollide);
-		return willCollide && !(Math.abs(targetPose.getTranslation().getDistance(currentPose.getTranslation())) < 0.3);
+
+		return willCollide;
+	}
+
+	public boolean closeEnoughToIgnore() {
+		Pose2d currentPose = drive.getPose();
+		boolean withinDistance = Math.abs(targetPose.getTranslation().getDistance(currentPose.getTranslation())) < 0.3;
+		Logger.recordOutput("AutoAlign/within DIstnace", !withinDistance);
+		return withinDistance;
 	}
 
 	// Used for LOS
@@ -260,8 +260,24 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	public void resetPID() {
 		Pose2d currentPose = drive.getPose();
 		ChassisSpeeds currentSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
-
-		rotationController.reset(currentSpeed.omegaRadiansPerSecond);
+		// translationalController.reset(0);
+		// rotationController.reset(currentSpeed.omegaRadiansPerSecond); // this was here originally
+		// repulsorTranslationController.reset();
+		// repulsorRotationalController.reset();
+		// translationalController.reset(
+		//         currentPose.getTranslation().getDistance(currentPose.getTranslation()),
+		//         Math.min(
+		//                 0.0,
+		//                 -new Translation2d(currentSpeed.vxMetersPerSecond,
+		//                         currentSpeed.vyMetersPerSecond)
+		//                         .rotateBy(
+		//                             	currentPose
+		//                                         .getTranslation()
+		//                                         .getAngle()
+		//                                         .unaryMinus())
+		//                         .getX()));
+		// rotationController.reset(currentPose.getRotation().getRadians(), currentSpeed.omegaRadiansPerSecond);
+		// lastSetpointTranslation = currentPose.getTranslation();
 	}
 
 	private void logOutput() {
@@ -276,7 +292,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/TargetPose", targetPose);
 		Logger.recordOutput("AutoAlign/GoalPose", goalPose);
 		Logger.recordOutput("AutoAlign/IsRedAlliance", isRedAlliance);
-		Logger.recordOutput("AutoAlign/EnteredBrainDead", enteredBrainDead);
 		Logger.recordOutput("AutoAlign/DriveErrorAbs", driveErrorAbs);
 		Logger.recordOutput("AutoAlign/ThetaErrorAbs", thetaErrorAbs);
 	}
