@@ -96,7 +96,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	@Override
 	protected void runState() {
-
 		// Update alliance and reef position
 		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 
@@ -257,15 +256,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	public void resetPID() {
 		Pose2d currentPose = drive.getPose();
 		ChassisSpeeds currentSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
-		translationalController.reset(
-			currentPose.getTranslation().getDistance(currentPose.getTranslation()),
-			Math.min(
-				0.0,
-				-new Translation2d(currentSpeed.vxMetersPerSecond, currentSpeed.vyMetersPerSecond)
-					.rotateBy(currentPose.getTranslation().getAngle().unaryMinus())
-					.getX()
-			)
-		);
+		translationalController.reset(currentPose.getTranslation().getDistance(currentPose.getTranslation()), Math.min(0.0, -new Translation2d(currentSpeed.vxMetersPerSecond, currentSpeed.vyMetersPerSecond).rotateBy(currentPose.getTranslation().getAngle().unaryMinus()).getX()));
 	}
 
 	private void logOutput() {
