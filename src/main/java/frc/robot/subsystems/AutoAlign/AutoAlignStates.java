@@ -37,10 +37,9 @@ public enum AutoAlignStates implements SubsystemStates {
 
 	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(13.912, 2.964, Rotation2d.fromDegrees(120)), new Pose2d(3.66, 5.11, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
 
-	//Blue Alliance (1.110, 1.03) Red Alliance (16.303. 7.104)
-	RIGHT_SOURCE("Driving to Source Right", PosePair.of(new Pose2d(16.916, 7.691, Rotation2d.fromDegrees(-126)), new Pose2d(0.878, 0.632, Rotation2d.fromDegrees(54))), Meters.of(1)),
-	//Blue alliance (1.236, 7.104) Red Alliance (16.418, 1.006)
-	LEFT_SOURCE("Driving to Source Left", PosePair.of(new Pose2d(17.004, 0.359, Rotation2d.fromDegrees(126)), new Pose2d(1.175, 7.004, Rotation2d.fromDegrees(306))), Meters.of(1));
+
+	RIGHT_SOURCE("Driving to Source Right", PosePair.of(new Pose2d(16.322, 7.031, Rotation2d.fromDegrees(-126)), new Pose2d(1.18, 1.032, Rotation2d.fromDegrees(54))), Meters.of(1)),
+	LEFT_SOURCE("Driving to Source Left", PosePair.of(new Pose2d(16.476, 1.137, Rotation2d.fromDegrees(126)), new Pose2d(1.283, 7.061, Rotation2d.fromDegrees(306))), Meters.of(1));
 
 	AutoAlignStates(String stateString, PosePair targetPose, Distance distanceForCloseAA) {	
 		this.stateString = stateString;
