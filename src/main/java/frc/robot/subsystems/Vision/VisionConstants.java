@@ -11,11 +11,13 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.AngularVelocity;
 import java.util.Set;
-import org.team7525.misc.VisionUtil.CameraResolution;
 
 public class VisionConstants {
 
-	public static final boolean USE_GYRO_REPROJECTION = false;
+	public enum CameraResolution {
+		HIGH_RESOLUTION,
+		NORMAL
+	}
 
 	// Front Left
 	public static final String FRONT_LEFT_CAM_NAME = "Front Left Camera";
@@ -45,8 +47,9 @@ public class VisionConstants {
 
 	// TODO: What camera resolutions actually are these? Assuming they're high bc
 	// 1080p is high
-	public static final CameraResolution BACK_RESOLUTION = CameraResolution.HIGH_RES;
-	public static final CameraResolution FRONT_RESOLUTION = CameraResolution.HIGH_RES;
+	// we never even use these why are they here
+	public static final CameraResolution BACK_RESOLUTION = CameraResolution.HIGH_RESOLUTION;
+	public static final CameraResolution FRONT_RESOLUTION = CameraResolution.HIGH_RESOLUTION;
 
 	// Other
 	// INSANE skill issue from First
