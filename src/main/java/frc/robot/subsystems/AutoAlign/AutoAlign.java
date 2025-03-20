@@ -194,18 +194,16 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		interpolatedPose = currentPose.interpolate(targetPose, t);
 
 		//Too many instantiations and calculations?
-		List<Translation2d> robotVertices = List.of(
-			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY()),
-			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI * 3 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI * 3 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY()),
-			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI * 5 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI * 5 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY()),
-			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI * 7 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI * 7 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY())
-		);
+		List<Translation2d> interpolatedVertices = new ArrayList<Translation2d>();
+		for (int i = 0; i < ROBOT_VERTICES.size(); i++) {
+			interpolatedVertices.add(ROBOT_VERTICES.get(i).plus(interpolatedPose.getTranslation()).rotateAround(interpolatedPose.getTranslation(), interpolatedPose.getRotation()));
+		}
 
 		List<Translation2d> robotEdges = List.of(
-			robotVertices.get(1).minus(robotVertices.get(0)),
-			robotVertices.get(2).minus(robotVertices.get(1)),
-			robotVertices.get(3).minus(robotVertices.get(2)),
-			robotVertices.get(0).minus(robotVertices.get(3))
+			interpolatedVertices.get(1).minus(interpolatedVertices.get(0)),
+			interpolatedVertices.get(2).minus(interpolatedVertices.get(1)),
+			interpolatedVertices.get(3).minus(interpolatedVertices.get(2)),
+			interpolatedVertices.get(0).minus(interpolatedVertices.get(3))
 		);
 
 		//TODO: Probably better way to implement SAT here
@@ -233,8 +231,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 			bmin = Double.NaN;
 			bmax = Double.NaN;
 
-			for (int j = 0; j < robotVertices.size(); j++) {
-				dot = robotVertices.get(j).getX() * perpendicularStack.get(i).getX() + robotVertices.get(j).getY() * perpendicularStack.get(i).getY();
+			for (int j = 0; j < interpolatedVertices.size(); j++) {
+				dot = interpolatedVertices.get(j).getX() * perpendicularStack.get(i).getX() + interpolatedVertices.get(j).getY() * perpendicularStack.get(i).getY();
 
 				if (amax == Double.NaN || dot > amax) {
 					amax = dot;

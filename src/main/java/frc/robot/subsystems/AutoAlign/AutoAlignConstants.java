@@ -73,6 +73,13 @@ public final class AutoAlignConstants {
 		REEF_VERTICES.get(0).minus(REEF_VERTICES.get(5))
 	);
 
+	public static final List<Translation2d> ROBOT_VERTICES = List.of(
+		new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI / 4), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI / 4)),
+		new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI * 3/ 4), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI * 3 / 4)),
+		new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI * 5 / 4), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI * 5 / 4)),
+		new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI * 7 / 4), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI * 7 / 4))
+	);
+
 	public static final AngularVelocity MAX_ANGULAR_VELOCITY = RotationsPerSecond.of(2);
 	public static final AngularAcceleration MAX_ACCELERATION = RotationsPerSecondPerSecond.of(1);
 
