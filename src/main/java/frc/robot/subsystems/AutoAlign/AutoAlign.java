@@ -24,6 +24,8 @@ import frc.robot.Robot;
 import frc.robot.Subsystems.AutoAlign.AATypeManager.AATypeManager;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.littletonrobotics.junction.Logger;
 import org.team7525.autoAlign.RepulsorFieldPlanner;
 import org.team7525.subsystem.Subsystem;
@@ -191,12 +193,80 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		double t = calculateClosestPoint(currentPose, targetPose);
 		interpolatedPose = currentPose.interpolate(targetPose, t);
 
-		interpolatedDistanceFromReef = interpolatedPose.getTranslation().getDistance(reefPose.getTranslation());
+		//Too many instantiations and calculations?
+		List<Translation2d> robotVertices = List.of(
+			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY()),
+			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI * 3 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI * 3 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY()),
+			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI * 5 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI * 5 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY()),
+			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI * 7 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI * 7 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY())
+		);
 
-		boolean willCollide = interpolatedDistanceFromReef < (REEF_HITBOX.in(Meters) + ROBOT_RADIUS.in(Meters));
-		Logger.recordOutput("AutoAlign/Gona hit reef", willCollide);
+		List<Translation2d> robotEdges = List.of(
+			robotVertices.get(1).minus(robotVertices.get(0)),
+			robotVertices.get(2).minus(robotVertices.get(1)),
+			robotVertices.get(3).minus(robotVertices.get(2)),
+			robotVertices.get(0).minus(robotVertices.get(3))
+		);
 
-		return willCollide;
+		//TODO: Probably better way to implement SAT here
+		Translation2d perpendicularLine = null;
+		List<Translation2d> perpendicularStack = new ArrayList<Translation2d>();
+		double dot = 0;
+		double amin = Double.NaN;
+		double amax = Double.NaN;
+		double bmin = Double.NaN;
+		double bmax = Double.NaN;
+
+		for (int i = 0; i < robotEdges.size(); i++) {
+			perpendicularLine = new Translation2d(robotEdges.get(i).getY(), -robotEdges.get(i).getX());
+			perpendicularStack.add(perpendicularLine);
+		}
+
+		for (int i = 0; i < REEF_EDGES.size(); i++) {
+			perpendicularLine = new Translation2d(REEF_EDGES.get(i).getY(), -REEF_EDGES.get(i).getX());
+			perpendicularStack.add(perpendicularLine);
+		}
+
+		for (int i = 0; i < perpendicularStack.size(); i++) {
+			amin = Double.NaN;
+			amax = Double.NaN;
+			bmin = Double.NaN;
+			bmax = Double.NaN;
+
+			for (int j = 0; j < robotVertices.size(); j++) {
+				dot = robotVertices.get(j).getX() * perpendicularStack.get(i).getX() + robotVertices.get(j).getY() * perpendicularStack.get(i).getY();
+
+				if (amax == Double.NaN || dot > amax) {
+					amax = dot;
+				}
+
+				if (amin == Double.NaN || dot < amin) {
+					amin = dot;
+				}
+			}
+
+			for (int j = 0; j < REEF_VERTICES.size(); j++) {
+				dot = REEF_VERTICES.get(j).getX() * perpendicularStack.get(i).getX() + REEF_VERTICES.get(j).getY() * perpendicularStack.get(i).getY();
+
+				if (bmax == Double.NaN || dot > bmax) {
+					bmax = dot;
+				}
+
+				if (bmin == Double.NaN || dot < bmin) {
+					bmin = dot;
+				}
+			}
+
+			if ((amin < bmax && amin > bmin) || (bmin < amax && bmin > amin)) {
+				continue;
+			} else {
+				Logger.recordOutput("AutoAlign/Gona hit reef", false);
+				return false;
+			}
+		}
+
+		Logger.recordOutput("AutoAlign/Gona hit reef", true);
+		return true;
 	}
 
 	public boolean closeEnoughToIgnore() {
