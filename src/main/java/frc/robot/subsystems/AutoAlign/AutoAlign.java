@@ -195,18 +195,17 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		boolean willCollide = interpolatedDistanceFromReef < (REEF_HITBOX.in(Meters) + ROBOT_RADIUS.in(Meters));
 		Logger.recordOutput("AutoAlign/Gona hit reef", willCollide);
-		
+
 		return willCollide;
 	}
 
 	public boolean closeEnoughToIgnore() {
 		Pose2d currentPose = drive.getPose();
 		boolean withinDistance = Math.abs(targetPose.getTranslation().getDistance(currentPose.getTranslation())) < 0.3;
-		Logger.recordOutput("AutoAlign/within DIstnace", !withinDistance);	
+		Logger.recordOutput("AutoAlign/within DIstnace", !withinDistance);
 		return withinDistance;
 	}
-	
-	
+
 	// Used for LOS
 	private double calculateClosestPoint(Pose2d startPose, Pose2d endPose) {
 		double numeratorX = (reefPose.getX() - startPose.getX()) * (endPose.getX() - startPose.getX());
@@ -261,25 +260,24 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	public void resetPID() {
 		Pose2d currentPose = drive.getPose();
 		ChassisSpeeds currentSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
-
 		// translationalController.reset(0);
 		// rotationController.reset(currentSpeed.omegaRadiansPerSecond); // this was here originally
 		// repulsorTranslationController.reset();
 		// repulsorRotationalController.reset();
 		// translationalController.reset(
-        //         currentPose.getTranslation().getDistance(currentPose.getTranslation()),
-        //         Math.min(
-        //                 0.0,
-        //                 -new Translation2d(currentSpeed.vxMetersPerSecond,
-        //                         currentSpeed.vyMetersPerSecond)
-        //                         .rotateBy(
-        //                             	currentPose
-        //                                         .getTranslation()
-        //                                         .getAngle()
-        //                                         .unaryMinus())
-        //                         .getX()));
-        // rotationController.reset(currentPose.getRotation().getRadians(), currentSpeed.omegaRadiansPerSecond);
-        // lastSetpointTranslation = currentPose.getTranslation();
+		//         currentPose.getTranslation().getDistance(currentPose.getTranslation()),
+		//         Math.min(
+		//                 0.0,
+		//                 -new Translation2d(currentSpeed.vxMetersPerSecond,
+		//                         currentSpeed.vyMetersPerSecond)
+		//                         .rotateBy(
+		//                             	currentPose
+		//                                         .getTranslation()
+		//                                         .getAngle()
+		//                                         .unaryMinus())
+		//                         .getX()));
+		// rotationController.reset(currentPose.getRotation().getRadians(), currentSpeed.omegaRadiansPerSecond);
+		// lastSetpointTranslation = currentPose.getTranslation();
 	}
 
 	private void logOutput() {

@@ -1,4 +1,3 @@
-
 package frc.robot.Subsystems.AutoAlign;
 
 import static edu.wpi.first.units.Units.*;
@@ -37,11 +36,10 @@ public enum AutoAlignStates implements SubsystemStates {
 
 	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(13.912, 2.964, Rotation2d.fromDegrees(120)), new Pose2d(3.66, 5.11, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
 
-
 	RIGHT_SOURCE("Driving to Source Right", PosePair.of(new Pose2d(16.322, 7.031, Rotation2d.fromDegrees(-126)), new Pose2d(1.18, 1.032, Rotation2d.fromDegrees(54))), Meters.of(1)),
 	LEFT_SOURCE("Driving to Source Left", PosePair.of(new Pose2d(16.476, 1.137, Rotation2d.fromDegrees(126)), new Pose2d(1.283, 7.061, Rotation2d.fromDegrees(306))), Meters.of(1));
 
-	AutoAlignStates(String stateString, PosePair targetPose, Distance distanceForCloseAA) {	
+	AutoAlignStates(String stateString, PosePair targetPose, Distance distanceForCloseAA) {
 		this.stateString = stateString;
 		this.targetPose = targetPose;
 		this.distanceForCloseAA = distanceForCloseAA;
