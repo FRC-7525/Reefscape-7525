@@ -15,7 +15,7 @@ import org.team7525.misc.VisionUtil.CameraResolution;
 
 public class VisionConstants {
 
-	public static final boolean USE_GYRO_REPROJECTION = true;
+	public static final boolean USE_GYRO_REPROJECTION = false;
 
 	// Front Left
 	public static final String FRONT_LEFT_CAM_NAME = "Front Left Camera";

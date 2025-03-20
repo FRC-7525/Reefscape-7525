@@ -158,8 +158,19 @@
       "SmartDashboard": {
         "VisionSystemSim-Vision": {
           "open": true
-        },
-        "open": true
+        }
+      },
+      "Tracer": {
+        "open": true,
+        "robot main": {
+          "RobotPeriodic": {
+            "SubsystemManager": {
+              "open": true
+            },
+            "open": true
+          },
+          "open": true
+        }
       }
     }
   },
@@ -174,7 +185,8 @@
       "Subscribers": {
         "open": true
       }
-    }
+    },
+    "visible": true
   },
   "Plot": {
     "Plot <0>": {
