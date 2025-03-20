@@ -15,6 +15,8 @@ import org.team7525.misc.VisionUtil.CameraResolution;
 
 public class VisionConstants {
 
+	public static final boolean USE_GYRO_REPROJECTION = false;
+
 	// Front Left
 	public static final String FRONT_LEFT_CAM_NAME = "Front Left Camera";
 	public static final Translation3d ROBOT_TO_FRONT_LEFT_CAMERA_TRANSLATION = new Translation3d(Units.inchesToMeters(11.697), Units.inchesToMeters(11.81), Units.inchesToMeters(8.859));
