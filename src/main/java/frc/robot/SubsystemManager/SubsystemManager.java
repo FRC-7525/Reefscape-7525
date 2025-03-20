@@ -6,6 +6,7 @@ import static frc.robot.SubsystemManager.SubsystemManagerStates.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.Subsystems.AutoAlign.AATypeManager.AATypeManager;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
@@ -26,6 +27,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	// private final Coraler coraler = Coraler.getInstance();
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
+	private final AATypeManager aaTypeManager = AATypeManager.getInstance();
 	// private final LED ledSubsystem = LED.getInstance();
 	// private final Passthrough passthrough = Passthrough.getInstance();
 
@@ -229,6 +231,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
 		Tracer.traceFunc("VisionPeriodic", vision::periodic);
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
+		Tracer.traceFunc("AATypeManagerPeriodic", aaTypeManager::periodic);
 		// Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
 		// Tracer.traceFunc("ClimberPeriodic", climber::periodic);
 		// Tracer.traceFunc("PassthroughPeriodic", passthrough::periodic);

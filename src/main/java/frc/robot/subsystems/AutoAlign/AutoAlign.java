@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Robot;
-import frc.robot.Subsystems.AutoAlign.AATypeManager.AATypeManager;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
@@ -46,7 +45,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	private Debouncer autoAlignDebouncer;
 
-	private Translation2d lastSetpointTranslation;
 	private double driveErrorAbs;
 	private double thetaErrorAbs;
 	private double ffMinRadius = 0.2, ffMaxRadius = 1.0;
@@ -83,7 +81,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		this.rotationController.enableContinuousInput(-Math.PI, Math.PI);
 		this.repulsorRotationalController.enableContinuousInput(MIN_HEADING_ANGLE.in(Radians), MAX_HEADING_ANGLE.in(Radians));
 
-		this.lastSetpointTranslation = new Translation2d();
 		this.autoAlignDebouncer = new Debouncer(0.5, DebounceType.kRising);
 		this.repulsorActivated = false;
 		this.targetPose = new Pose2d();
@@ -99,8 +96,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	@Override
 	protected void runState() {
-		AATypeManager.getInstance().periodic();
-
 		// Update alliance and reef position
 		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 
@@ -113,6 +108,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		// Update current pose information
 		Pose2d currentPose = drive.getPose();
 		logOutput();
+		Logger.recordOutput("AutoAlign/IsRedAlliance", isRedAlliance);
 
 		// Angle at reef iirc
 		if (!readyForClose()) {
@@ -125,13 +121,15 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	// 254's implementation of the braindead auto-align
 	public void executeScaledFeedforwardAutoAlign() {
+		Logger.recordOutput("AutoAlign/ProfiledVelSetpoint", translationalController.getSetpoint().velocity);
+		Logger.recordOutput("AutoAlign/ProfiledPosSetpoint", translationalController.getSetpoint().position);
 		Pose2d currentPose = drive.getPose();
 		// Apply scalar drive with feedforward
 		double currentDistance = currentPose.getTranslation().getDistance(targetPose.getTranslation());
 		double ffScaler = MathUtil.clamp((currentDistance - ffMinRadius) / (ffMaxRadius - ffMinRadius), 0.0, 1.0);
 
 		driveErrorAbs = currentDistance;
-		translationalController.reset(lastSetpointTranslation.getDistance(targetPose.getTranslation()), translationalController.getSetpoint().velocity);
+		translationalController.reset(currentPose.getTranslation().getDistance(targetPose.getTranslation()), translationalController.getSetpoint().velocity);
 
 		// Calculate translation velocity scalar with PID and FF scaling
 		double translationVelocityScalar = translationalController.getSetpoint().velocity * ffScaler + translationalController.calculate(driveErrorAbs, 0.0);
@@ -139,8 +137,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		if (currentDistance < translationalController.getPositionTolerance()) {
 			translationVelocityScalar = 0;
 		}
-
-		lastSetpointTranslation = new Pose2d(targetPose.getTranslation(), currentPose.getTranslation().minus(targetPose.getTranslation()).getAngle()).transformBy(MathHelpers.transform2dFromTranslation(new Translation2d(translationalController.getSetpoint().position, 0.0))).getTranslation();
 
 		// Calculate rotation velocity with PID and FF scaling
 		double thetaVelocity = rotationController.getSetpoint().velocity * ffScaler + rotationController.calculate(currentPose.getRotation().getRadians(), targetPose.getRotation().getRadians());
@@ -202,7 +198,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	public boolean closeEnoughToIgnore() {
 		Pose2d currentPose = drive.getPose();
 		boolean withinDistance = Math.abs(targetPose.getTranslation().getDistance(currentPose.getTranslation())) < 0.3;
-		Logger.recordOutput("AutoAlign/within DIstnace", !withinDistance);
+		Logger.recordOutput("AutoAlign/Within Distnace", withinDistance);
 		return withinDistance;
 	}
 
@@ -260,24 +256,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	public void resetPID() {
 		Pose2d currentPose = drive.getPose();
 		ChassisSpeeds currentSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
-		// translationalController.reset(0);
-		// rotationController.reset(currentSpeed.omegaRadiansPerSecond); // this was here originally
-		// repulsorTranslationController.reset();
-		// repulsorRotationalController.reset();
-		// translationalController.reset(
-		//         currentPose.getTranslation().getDistance(currentPose.getTranslation()),
-		//         Math.min(
-		//                 0.0,
-		//                 -new Translation2d(currentSpeed.vxMetersPerSecond,
-		//                         currentSpeed.vyMetersPerSecond)
-		//                         .rotateBy(
-		//                             	currentPose
-		//                                         .getTranslation()
-		//                                         .getAngle()
-		//                                         .unaryMinus())
-		//                         .getX()));
-		// rotationController.reset(currentPose.getRotation().getRadians(), currentSpeed.omegaRadiansPerSecond);
-		// lastSetpointTranslation = currentPose.getTranslation();
+		translationalController.reset(currentPose.getTranslation().getDistance(currentPose.getTranslation()), Math.min(0.0, -new Translation2d(currentSpeed.vxMetersPerSecond, currentSpeed.vyMetersPerSecond).rotateBy(currentPose.getTranslation().getAngle().unaryMinus()).getX()));
 	}
 
 	private void logOutput() {
