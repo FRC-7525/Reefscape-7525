@@ -2,6 +2,8 @@ package frc.robot.Subsystems.AutoAlign.AATypeManager;
 
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
+
+import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
 public class AATypeManager extends Subsystem<AATypeManagerStates> {
@@ -26,6 +28,7 @@ public class AATypeManager extends Subsystem<AATypeManagerStates> {
 
 	@Override
 	public void runState() {
+		Logger.recordOutput("AA Type Manager/State", getState().getStateString());
 		getState().runAlignmentRunnable();
 	}
 }
