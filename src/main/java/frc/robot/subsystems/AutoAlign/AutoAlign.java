@@ -25,7 +25,6 @@ import frc.robot.Subsystems.AutoAlign.AATypeManager.AATypeManager;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.littletonrobotics.junction.Logger;
 import org.team7525.autoAlign.RepulsorFieldPlanner;
 import org.team7525.subsystem.Subsystem;
@@ -196,17 +195,12 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		//Too many instantiations and calculations?
 		List<Translation2d> robotVertices = List.of(
 			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY()),
-			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI * 3 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI * 3 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY()),
-			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI * 5 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI * 5 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY()),
-			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos(Math.PI * 7 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin(Math.PI * 7 / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY())
+			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos((Math.PI * 3) / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin((Math.PI * 3) / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY()),
+			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos((Math.PI * 5) / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin((Math.PI * 5) / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY()),
+			new Translation2d(ROBOT_RADIUS.in(Meters) * Math.cos((Math.PI * 7) / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getX(), ROBOT_RADIUS.in(Meters) * Math.sin((Math.PI * 7) / 4 + interpolatedPose.getRotation().getRadians()) + interpolatedPose.getY())
 		);
 
-		List<Translation2d> robotEdges = List.of(
-			robotVertices.get(1).minus(robotVertices.get(0)),
-			robotVertices.get(2).minus(robotVertices.get(1)),
-			robotVertices.get(3).minus(robotVertices.get(2)),
-			robotVertices.get(0).minus(robotVertices.get(3))
-		);
+		List<Translation2d> robotEdges = List.of(robotVertices.get(1).minus(robotVertices.get(0)), robotVertices.get(2).minus(robotVertices.get(1)), robotVertices.get(3).minus(robotVertices.get(2)), robotVertices.get(0).minus(robotVertices.get(3)));
 
 		//TODO: Probably better way to implement SAT here
 		Translation2d perpendicularLine = null;
