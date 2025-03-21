@@ -369,10 +369,10 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		reefVertices = List.of(
 			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos(Math.PI / 6), REEF_HITBOX.in(Meters) * Math.sin(Math.PI / 6)).plus(reefPose.getTranslation()),
 			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI) / 2), REEF_HITBOX.in(Meters) * Math.sin((Math.PI) / 2)).plus(reefPose.getTranslation()),
-			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos(Math.PI * 5 / 6), REEF_HITBOX.in(Meters) * Math.sin(Math.PI * 5 / 6)).plus(reefPose.getTranslation()),
+			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 5) / 6), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 5) / 6)).plus(reefPose.getTranslation()),
 			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 7) / 6), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 7) / 6)).plus(reefPose.getTranslation()),
 			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 3) / 2), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 3) / 2)).plus(reefPose.getTranslation()),
-			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos(Math.PI * 11 / 6), REEF_HITBOX.in(Meters) * Math.sin(Math.PI * 11/6)).plus(reefPose.getTranslation())
+			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 11) / 6), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 11) / 6)).plus(reefPose.getTranslation())
 		);
 		reefEdges = List.of(
 			reefVertices.get(1).minus(reefVertices.get(0)),

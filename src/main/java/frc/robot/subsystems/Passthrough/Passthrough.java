@@ -3,10 +3,9 @@ package frc.robot.Subsystems.Passthrough;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Passthrough.PassthroughConstants.*;
 
+import frc.robot.Subsystems.Passthrough.PassthroughIOInputsAutoLogged;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
-
-import frc.robot.Subsystems.Passthrough.PassthroughIOInputsAutoLogged;
 
 public class Passthrough extends Subsystem<PassthroughStates> {
 

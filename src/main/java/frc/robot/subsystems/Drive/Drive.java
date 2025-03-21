@@ -36,11 +36,10 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.FaultManager.FaultManager;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
+import frc.robot.Subsystems.Drive.DriveIOInputsAutoLogged;
 import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
-import frc.robot.Subsystems.Drive.DriveIOInputsAutoLogged;
-
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 

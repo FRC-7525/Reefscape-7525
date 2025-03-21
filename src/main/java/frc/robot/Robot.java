@@ -103,7 +103,6 @@ public class Robot extends LoggedRobot {
 	@Override
 	public void disabledPeriodic() {
 		AutoAlign.getInstance().setConstants();
-
 		// UN COMMENT FOR MUSIC MANAGER
 		// if (musicManager.playMusicEnabled()) {
 		// 	musicManager.playMusic();

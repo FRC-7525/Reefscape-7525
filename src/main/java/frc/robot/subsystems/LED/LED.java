@@ -4,7 +4,6 @@ import static frc.robot.Subsystems.LED.LEDConstants.SUBSYSTEM_NAME;
 
 import frc.robot.GlobalConstants;
 import frc.robot.Subsystems.LED.LEDIOInputsAutoLogged;
-
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
