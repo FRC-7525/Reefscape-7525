@@ -56,12 +56,12 @@ public final class AutoAlignConstants {
 	public static final Pose2d REEF_POSE = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
 
 	public static final List<Translation2d> REEF_VERTICES = List.of(
-		new Translation2d(REEF_HITBOX.in(Meters) * Math.cos(0) + REEF_POSE.getTranslation().getX(), REEF_HITBOX.in(Meters) * Math.sin(0) + REEF_POSE.getTranslation().getY()),
-		new Translation2d(REEF_HITBOX.in(Meters) * Math.cos(Math.PI / 3) + REEF_POSE.getTranslation().getX(), REEF_HITBOX.in(Meters) * Math.sin(Math.PI / 3) + REEF_POSE.getTranslation().getY()),
-		new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 2) / 3) + REEF_POSE.getTranslation().getX(), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 2) / 3) + REEF_POSE.getTranslation().getY()),
-		new Translation2d(REEF_HITBOX.in(Meters) * Math.cos(Math.PI) + REEF_POSE.getTranslation().getX(), REEF_HITBOX.in(Meters) * Math.sin(Math.PI) + REEF_POSE.getTranslation().getY()),
-		new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 4) / 3) + REEF_POSE.getTranslation().getX(), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 4) / 3) + REEF_POSE.getTranslation().getY()),
-		new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 5) / 3) + REEF_POSE.getTranslation().getX(), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 5) / 3) + REEF_POSE.getTranslation().getY())
+		new Translation2d(REEF_HITBOX.in(Meters) * Math.cos(0), REEF_HITBOX.in(Meters) * Math.sin(0)).plus(REEF_POSE.getTranslation()),
+		new Translation2d(REEF_HITBOX.in(Meters) * Math.cos(Math.PI / 3), REEF_HITBOX.in(Meters) * Math.sin(Math.PI / 3)).plus(REEF_POSE.getTranslation()),
+		new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 2) / 3), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 2) / 3)).plus(REEF_POSE.getTranslation()),
+		new Translation2d(REEF_HITBOX.in(Meters) * Math.cos(Math.PI), REEF_HITBOX.in(Meters) * Math.sin(Math.PI)).plus(REEF_POSE.getTranslation()),
+		new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 4) / 3), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 4) / 3)).plus(REEF_POSE.getTranslation()),
+		new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 5) / 3), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 5) / 3)).plus(REEF_POSE.getTranslation())
 	);
 
 	public static final List<Translation2d> REEF_EDGES = List.of(

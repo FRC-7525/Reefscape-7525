@@ -6,6 +6,8 @@ import static frc.robot.Subsystems.Passthrough.PassthroughConstants.*;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
+import frc.robot.Subsystems.Passthrough.PassthroughIOInputsAutoLogged;
+
 public class Passthrough extends Subsystem<PassthroughStates> {
 
 	private static Passthrough instance;
