@@ -6,8 +6,8 @@ import static frc.robot.SubsystemManager.SubsystemManagerStates.*;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.Subsystems.AutoAlign.AATypeManager.AATypeManager;
 import frc.robot.Robot;
+import frc.robot.Subsystems.AutoAlign.AATypeManager.AATypeManager;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;

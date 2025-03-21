@@ -16,7 +16,7 @@ public class VisionConstants {
 
 	public enum CameraResolution {
 		HIGH_RESOLUTION,
-		NORMAL
+		NORMAL,
 	}
 
 	// Front Left
