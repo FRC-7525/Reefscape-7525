@@ -16,11 +16,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Robot;
+import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
@@ -53,7 +52,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private Pose2d goalPose;
 	private Pose2d reefPose = REEF_POSE;
 	private Pose2d interpolatedPose;
-	private boolean isRedAlliance;
 	private double interpolatedDistanceFromReef;
 	private boolean repulsorActivated;
 	private double timer = -1;
@@ -97,9 +95,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	@Override
 	protected void runState() {
 		// Update alliance and reef position
-		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
-
-		reefPose = isRedAlliance ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
+		reefPose = Robot.isRedAlliance ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
 
 		// Get the target pose from the current state
 		goalPose = getState().getTargetPose();
@@ -108,7 +104,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		// Update current pose information
 		Pose2d currentPose = drive.getPose();
 		logOutput();
-		Logger.recordOutput("AutoAlign/IsRedAlliance", isRedAlliance);
 
 		// Angle at reef iirc
 		if (!readyForClose()) {
@@ -150,7 +145,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		var translationVelocity = MathHelpers.pose2dFromRotation(currentPose.getTranslation().minus(targetPose.getTranslation()).getAngle()).transformBy(MathHelpers.transform2dFromTranslation(new Translation2d(translationVelocityScalar, 0.0))).getTranslation();
 
 		// Apply drive commands with alliance compensation
-		if (isRedAlliance) {
+		if (Robot.isRedAlliance) {
 			drive.driveFieldRelative(-translationVelocity.getX(), -translationVelocity.getY(), thetaVelocity, false, false);
 		} else {
 			drive.driveFieldRelative(translationVelocity.getX(), translationVelocity.getY(), thetaVelocity, false, false);
@@ -170,7 +165,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		targetSpeeds.omegaRadiansPerSecond += repulsorRotationalController.calculate(currentPose.getRotation().getRadians(), sample.heading);
 
 		// No more race conditions :Sob:
-		if (isRedAlliance) {
+		if (Robot.isRedAlliance) {
 			drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
 		} else {
 			drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
@@ -270,7 +265,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/InterpolatedPose", interpolatedPose);
 		Logger.recordOutput("AutoAlign/TargetPose", targetPose);
 		Logger.recordOutput("AutoAlign/GoalPose", goalPose);
-		Logger.recordOutput("AutoAlign/IsRedAlliance", isRedAlliance);
 		Logger.recordOutput("AutoAlign/DriveErrorAbs", driveErrorAbs);
 		Logger.recordOutput("AutoAlign/ThetaErrorAbs", thetaErrorAbs);
 	}

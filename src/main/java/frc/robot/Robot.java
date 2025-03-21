@@ -8,6 +8,7 @@ import static frc.robot.SubsystemManager.SubsystemManagerStates.IDLE;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.AutoManager.AutoManager;
 // import frc.robot.FaultManager.FaultManager;
@@ -26,6 +27,8 @@ public class Robot extends LoggedRobot {
 
 	private final SubsystemManager manager = SubsystemManager.getInstance();
 	private final AutoManager autoManager = AutoManager.getInstance();
+	
+	public static boolean isRedAlliance = true;
 
 	// private final MusicManager musicManager = MusicManager.getInstance();
 	// private final FaultManager faultManager = FaultManager.getInstance();
@@ -101,6 +104,7 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void disabledPeriodic() {
+		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 		// UN COMMENT FOR MUSIC MANAGER
 		// if (musicManager.playMusicEnabled()) {
 		// 	musicManager.playMusic();
@@ -112,6 +116,11 @@ public class Robot extends LoggedRobot {
 
 		// UN COMMENT FOR FAULT MANAGER
 		// Tracer.traceFunc("FaultManager", faultManager::periodic);
+	}
+
+	@Override
+	public void disabledExit() {
+		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 	}
 
 	@Override
