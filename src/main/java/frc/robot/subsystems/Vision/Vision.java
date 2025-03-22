@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.SubsystemManager.SubsystemManagerStates;
 import frc.robot.Subsystems.Drive.Drive;
@@ -37,8 +38,7 @@ public class Vision extends SubsystemBase {
 	List<Pose3d> allRobotPosesAccepted = new LinkedList<>();
 	List<Pose3d> allRobotPosesRejected = new LinkedList<>();
 
-	Boolean isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
-	Set<Short> allianceReefTag = isRedAlliance ? RED_REEF_TAGS : BLUE_REEF_TAGS;
+	Set<Short> allianceReefTag = Robot.isRedAlliance ? RED_REEF_TAGS : BLUE_REEF_TAGS;
 
 	private static Vision instance;
 
@@ -93,8 +93,7 @@ public class Vision extends SubsystemBase {
 
 	@Override
 	public void periodic() {
-		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
-		allianceReefTag = isRedAlliance ? RED_REEF_TAGS : BLUE_REEF_TAGS;
+		allianceReefTag = Robot.isRedAlliance ? RED_REEF_TAGS : BLUE_REEF_TAGS;
 
 		for (int i = 0; i < io.length; i++) {
 			io[i].updateInputs(inputs[i]);

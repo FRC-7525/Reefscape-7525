@@ -5,7 +5,6 @@ import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.DRUM_RADIUS;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.GEARING;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.pathplanner.lib.config.PIDConstants;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
@@ -14,6 +13,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Mass;
+import org.team7525.coefficients.PIDCoefficients;
 import org.team7525.controlConstants.FFConstants;
 
 public final class ElevatorConstants {
@@ -56,7 +56,7 @@ public final class ElevatorConstants {
 		public static final boolean SIMULATE_GRAVITY = true;
 		public static final Distance STARTING_HEIGHT = Inches.of(0);
 
-		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(70, 2, 1, 0.1);
+		public static final PIDCoefficients PROFILLED_PID_CONSTANTS = new PIDCoefficients(70, 2, 1, 0.1);
 		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.11, 7.09, 0.01);
 
 		// Sim is trolling, idk why
@@ -76,7 +76,7 @@ public final class ElevatorConstants {
 		public static final boolean RIGHT_STRATOR_CURRENT_LIMIT_ENABLED = true;
 		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(100);
 
-		public static final PIDConstants PROFILLED_PID_CONSTANTS = new PIDConstants(55, 0, 0);
+		public static final PIDCoefficients PROFILLED_PID_CONSTANTS = new PIDCoefficients(55, 0, 0, 0);
 		// The move is prob to keep this at 0 and not bother tuning
 		// public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.61, 3.11, 0.06);
 	}
