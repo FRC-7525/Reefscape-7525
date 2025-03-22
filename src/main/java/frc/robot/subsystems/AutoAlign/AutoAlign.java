@@ -191,7 +191,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Pose2d currentPose = drive.getPose();
 
 		double t = calculateClosestPoint(currentPose, targetPose);
-		interpolatedPose = currentPose.interpolate(targetPose, t);
+		interpolatedPose = new Pose2d(currentPose.getTranslation().plus(targetPose.getTranslation().minus(currentPose.getTranslation()).times(t)), new Rotation2d());
 
 		//Too many instantiations and calculations?
 		List<Translation2d> interpolatedVertices = new ArrayList<Translation2d>();
