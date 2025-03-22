@@ -15,6 +15,7 @@ import frc.robot.AutoManager.AutoManager;
 // import frc.robot.GlobalConstants.FaultManagerConstants;
 // import frc.robot.MusicManager.MusicManager;
 import frc.robot.SubsystemManager.SubsystemManager;
+import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Drive.Drive;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -105,6 +106,7 @@ public class Robot extends LoggedRobot {
 	@Override
 	public void disabledPeriodic() {
 		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
+		AutoAlign.getInstance().setConstants();
 		// UN COMMENT FOR MUSIC MANAGER
 		// if (musicManager.playMusicEnabled()) {
 		// 	musicManager.playMusic();

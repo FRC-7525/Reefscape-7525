@@ -21,6 +21,7 @@ import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.SubsystemManager.SubsystemManagerStates;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Vision.VisionIO.PoseObservation;
+import frc.robot.Subsystems.Vision.VisionIOInputsAutoLogged;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;

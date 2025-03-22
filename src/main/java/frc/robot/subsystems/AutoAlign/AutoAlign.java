@@ -22,6 +22,7 @@ import frc.robot.Robot;
 import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
+import java.util.List;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.autoAlign.RepulsorFieldPlanner;
 import org.team7525.subsystem.Subsystem;
@@ -48,9 +49,12 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private double thetaErrorAbs;
 	private double ffMinRadius = 0.2, ffMaxRadius = 1.0;
 
+	private Pose2d reefPose = REEF_POSE;
+	private List<Translation2d> reefVertices = REEF_VERTICES;
+	private List<Translation2d> reefEdges = REEF_EDGES;
+
 	private Pose2d targetPose;
 	private Pose2d goalPose;
-	private Pose2d reefPose = REEF_POSE;
 	private Pose2d interpolatedPose;
 	private double interpolatedDistanceFromReef;
 	private boolean repulsorActivated;
@@ -94,9 +98,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	@Override
 	protected void runState() {
-		// Update alliance and reef position
-		reefPose = Robot.isRedAlliance ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
-
 		// Get the target pose from the current state
 		goalPose = getState().getTargetPose();
 		targetPose = goalPose;
@@ -180,14 +181,80 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Pose2d currentPose = drive.getPose();
 
 		double t = calculateClosestPoint(currentPose, targetPose);
-		interpolatedPose = currentPose.interpolate(targetPose, t);
+		interpolatedPose = new Pose2d(currentPose.getTranslation().plus(targetPose.getTranslation().minus(currentPose.getTranslation()).times(t)), new Rotation2d());
 
-		interpolatedDistanceFromReef = interpolatedPose.getTranslation().getDistance(reefPose.getTranslation());
+		//Too many instantiations and calculations?
+		List<Translation2d> interpolatedVertices = new ArrayList<Translation2d>();
+		for (int i = 0; i < ROBOT_VERTICES.size(); i++) {
+			interpolatedVertices.add(ROBOT_VERTICES.get(i).plus(interpolatedPose.getTranslation()).rotateAround(interpolatedPose.getTranslation(), interpolatedPose.getRotation()));
+		}
 
-		boolean willCollide = interpolatedDistanceFromReef < (REEF_HITBOX.in(Meters) + ROBOT_RADIUS.in(Meters));
-		Logger.recordOutput("AutoAlign/Gona hit reef", willCollide);
+		List<Translation2d> robotEdges = List.of(
+			interpolatedVertices.get(1).minus(interpolatedVertices.get(0)),
+			interpolatedVertices.get(2).minus(interpolatedVertices.get(1)),
+			interpolatedVertices.get(3).minus(interpolatedVertices.get(2)),
+			interpolatedVertices.get(0).minus(interpolatedVertices.get(3))
+		);
 
-		return willCollide;
+		//TODO: Probably better way to implement SAT here
+		Translation2d perpendicularLine = null;
+		List<Translation2d> perpendicularStack = new ArrayList<Translation2d>();
+		double dot = 0;
+		double amin = Double.NaN;
+		double amax = Double.NaN;
+		double bmin = Double.NaN;
+		double bmax = Double.NaN;
+
+		for (int i = 0; i < robotEdges.size(); i++) {
+			perpendicularLine = new Translation2d(-robotEdges.get(i).getY(), robotEdges.get(i).getX());
+			perpendicularStack.add(perpendicularLine);
+		}
+
+		for (int i = 0; i < reefEdges.size(); i++) {
+			perpendicularLine = new Translation2d(-reefEdges.get(i).getY(), reefEdges.get(i).getX());
+			perpendicularStack.add(perpendicularLine);
+		}
+
+		for (int i = 0; i < perpendicularStack.size(); i++) {
+			amin = Double.NaN;
+			amax = Double.NaN;
+			bmin = Double.NaN;
+			bmax = Double.NaN;
+
+			for (int j = 0; j < interpolatedVertices.size(); j++) {
+				dot = interpolatedVertices.get(j).getX() * perpendicularStack.get(i).getX() + interpolatedVertices.get(j).getY() * perpendicularStack.get(i).getY();
+
+				if (Double.isNaN(amax) || dot > amax) {
+					amax = dot;
+				}
+
+				if (Double.isNaN(amin) || dot < amin) {
+					amin = dot;
+				}
+			}
+
+			for (int j = 0; j < reefVertices.size(); j++) {
+				dot = reefVertices.get(j).getX() * perpendicularStack.get(i).getX() + reefVertices.get(j).getY() * perpendicularStack.get(i).getY();
+
+				if (Double.isNaN(bmax) || dot > bmax) {
+					bmax = dot;
+				}
+
+				if (Double.isNaN(bmin) || dot < bmin) {
+					bmin = dot;
+				}
+			}
+
+			if ((amin < bmax && amin > bmin) || (bmin < amax && bmin > amin)) {
+				continue;
+			} else {
+				Logger.recordOutput("AutoAlign/Gona hit reef", false);
+				return false;
+			}
+		}
+
+		Logger.recordOutput("AutoAlign/Gona hit reef", true);
+		return true;
 	}
 
 	public boolean closeEnoughToIgnore() {
@@ -267,6 +334,26 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/GoalPose", goalPose);
 		Logger.recordOutput("AutoAlign/DriveErrorAbs", driveErrorAbs);
 		Logger.recordOutput("AutoAlign/ThetaErrorAbs", thetaErrorAbs);
+	}
+
+	public void setConstants() {
+		reefPose = Robot.isRedAlliance ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
+		reefVertices = List.of(
+			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos(Math.PI / 6), REEF_HITBOX.in(Meters) * Math.sin(Math.PI / 6)).plus(reefPose.getTranslation()),
+			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI) / 2), REEF_HITBOX.in(Meters) * Math.sin((Math.PI) / 2)).plus(reefPose.getTranslation()),
+			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 5) / 6), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 5) / 6)).plus(reefPose.getTranslation()),
+			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 7) / 6), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 7) / 6)).plus(reefPose.getTranslation()),
+			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 3) / 2), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 3) / 2)).plus(reefPose.getTranslation()),
+			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI * 11) / 6), REEF_HITBOX.in(Meters) * Math.sin((Math.PI * 11) / 6)).plus(reefPose.getTranslation())
+		);
+		reefEdges = List.of(
+			reefVertices.get(1).minus(reefVertices.get(0)),
+			reefVertices.get(2).minus(reefVertices.get(1)),
+			reefVertices.get(3).minus(reefVertices.get(2)),
+			reefVertices.get(4).minus(reefVertices.get(3)),
+			reefVertices.get(5).minus(reefVertices.get(4)),
+			reefVertices.get(0).minus(reefVertices.get(5))
+		);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import frc.robot.Subsystems.Coraler.CoralerIOInputsAutoLogged;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
