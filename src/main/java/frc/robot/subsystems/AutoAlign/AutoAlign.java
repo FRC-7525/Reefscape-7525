@@ -276,8 +276,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	// near goal for source cause u need less tolerance
 	public boolean nearGoalSource() {
 		return (
-			drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meters) * 2 &&
-			(Math.abs(repulsorRotationalController.getError()) < (ANGLE_ERROR_MARGIN.in(Radians) * 2) || Math.abs(rotationController.getPositionError()) < (ANGLE_ERROR_MARGIN.in(Radians) * 2))
+			drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meters) * 4 && (Math.abs(repulsorRotationalController.getError()) < (ANGLE_ERROR_MARGIN.in(Radians)) || Math.abs(rotationController.getPositionError()) < (ANGLE_ERROR_MARGIN.in(Radians)))
 		);
 	}
 
