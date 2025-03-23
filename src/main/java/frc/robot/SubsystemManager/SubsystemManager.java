@@ -108,7 +108,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		});
 
 		// TODO: is near goal sorce needed??
-		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoal());
+		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoalSource());
 		// TODO: Breaks sim bc func is messed up in sim :Skull:
 		addTrigger(INTAKING_CORALER, IDLE, coraler::hasGamepiece);
 
