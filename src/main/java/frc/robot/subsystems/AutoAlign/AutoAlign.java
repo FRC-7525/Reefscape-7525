@@ -65,7 +65,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		// FF impl (if 254 has magic number so can I hehehe)
 		this.rotationController = new ProfiledPIDController(6, 0, 0, new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 2), 0.02);
 
-		this.translationalController = new ProfiledPIDController(4, 0, 0, new TrapezoidProfile.Constraints(Units.feetToMeters(9), 7), 0.02);
+		this.translationalController = new ProfiledPIDController(3, 0, 0.1, new TrapezoidProfile.Constraints(Units.feetToMeters(9), 7), 0.02);
 
 		this.repulsorTranslationController = REPULSOR_TRANSLATIONAL_CONTROLLER.get();
 		this.repulsorRotationalController = REPULSOR_ROTATIONAL_CONTROLLER.get();
