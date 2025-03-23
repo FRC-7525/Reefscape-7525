@@ -4,6 +4,8 @@ import static frc.robot.GlobalConstants.Controllers.*;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
 import static frc.robot.SubsystemManager.SubsystemManagerStates.*;
 
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Robot;
@@ -38,6 +40,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public int operatorReefScoringLevel = 1;
 	public int hexagonTargetSide = 1;
 	public boolean scoringReefLeft = false;
+	private Debouncer bouncing = new Debouncer(0.1, DebounceType.kBoth);
 
 	private SubsystemManager() {
 		super(SUBSYSTEM_NAME, SubsystemManagerStates.IDLE);
@@ -110,11 +113,13 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// TODO: is near goal sorce needed??
 		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoalSource());
 		// TODO: Breaks sim bc func is messed up in sim :Skull:
-		addTrigger(INTAKING_CORALER, IDLE, coraler::hasGamepiece);
+		// addTrigger(INTAKING_CORALER, IDLE, () -> bouncing.calculate(coraler.hasGamepiece()));
+		addTrigger(INTAKING_CORALER, IDLE, coraler::currentSenseGamepiece);
 
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
-		addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.hasGamepiece());
+		// addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || bouncing.calculate(coraler.hasGamepiece()));
+		addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.currentSenseGamepiece());
 
 		// Scoring Reef Manual
 		addTrigger(IDLE, TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);

@@ -4,10 +4,10 @@ public class PassthroughConstants {
 
 	public static final String SUBSYSTEM_NAME = "Powered Passthrough";
 
-	public static final int WHEEL_MOTOR_CAN_ID = 1;
+	public static final int WHEEL_MOTOR_CAN_ID = 29;
 	public static final double GEARING = 1;
 
-	public static final double INTAKING_VELOCITY = 0.3;
+	public static final double INTAKING_VELOCITY = -0.3;
 	public static final double OFF_VELOCITY = 0;
 
 	public static class Sim {
