@@ -23,7 +23,7 @@ import org.team7525.autoAlign.RepulsorFieldPlanner.VerticalObstacle;
 
 public final class AutoAlignConstants {
 
-	public static final Distance ROBOT_RADIUS = Meters.of(.91);
+	public static final Distance ROBOT_RADIUS = Meters.of(1.001);
 	// public static final Distance REEF_HITBOX = Inches.of(53.7625); // Reef size = 46.75 in multiplied by 1.15 for safety
 	// public static final Distance REEF_HITBOX = Inches.of(50.75); // Reef size = 46.75 in multiplied by 1.15 for safety
 
