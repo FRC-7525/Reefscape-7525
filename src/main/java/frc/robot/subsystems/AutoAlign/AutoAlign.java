@@ -27,6 +27,8 @@ import org.littletonrobotics.junction.Logger;
 import org.team7525.autoAlign.RepulsorFieldPlanner;
 import org.team7525.subsystem.Subsystem;
 
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+
 public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	// Note for reviewer - ima put everything in constants once I finalize AA, this is a rough draft expect 200 more LOC
@@ -59,6 +61,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private double interpolatedDistanceFromReef;
 	private boolean repulsorActivated;
 	private double timer = -1;
+	private double enteredRegularTimestamp = 0;
 
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
@@ -127,10 +130,11 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		driveErrorAbs = currentDistance;
 		translationalController.reset(currentPose.getTranslation().getDistance(targetPose.getTranslation()), translationalController.getSetpoint().velocity);
-
+		
 		// Calculate translation velocity scalar with PID and FF scaling
-		double translationVelocityScalar = translationalController.getSetpoint().velocity * ffScaler + translationalController.calculate(driveErrorAbs, 0.0);
-
+		double temp = translationalController.calculate(driveErrorAbs, 0.0);
+		double translationVelocityScalar = ((getStateTime() - enteredRegularTimestamp) > .2 ? translationalController.getSetpoint().velocity * ffScaler : -1.3) + temp;
+		Logger.recordOutput("AutoAlign/Translation Velocity Scalar", translationVelocityScalar);
 		if (currentDistance < translationalController.getPositionTolerance()) {
 			translationVelocityScalar = 0;
 		}
@@ -145,6 +149,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		// Calculate final translation velocity
 		var translationVelocity = MathHelpers.pose2dFromRotation(currentPose.getTranslation().minus(targetPose.getTranslation()).getAngle()).transformBy(MathHelpers.transform2dFromTranslation(new Translation2d(translationVelocityScalar, 0.0))).getTranslation();
+		Logger.recordOutput("AutoAlign/TranslationRegular", translationVelocity);
 
 		// Apply drive commands with alliance compensation
 		if (Robot.isRedAlliance) {
@@ -166,6 +171,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		targetSpeeds.vyMetersPerSecond += repulsorTranslationController.calculate(currentPose.getY(), sample.y);
 		targetSpeeds.omegaRadiansPerSecond += repulsorRotationalController.calculate(currentPose.getRotation().getRadians(), sample.heading);
 
+		Logger.recordOutput("AutoAlign/TranslationRepulsor X", targetSpeeds.vxMetersPerSecond);
+		Logger.recordOutput("AutoAlign/TranslationRepulsor Y", targetSpeeds.vyMetersPerSecond);
 		// No more race conditions :Sob:
 		if (Robot.isRedAlliance) {
 			drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
@@ -357,9 +364,10 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	public void transitionToRegular() {
 		Pose2d currentPose = drive.getPose();
 		ChassisSpeeds robotSpeed = ChassisSpeeds.fromFieldRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
-		// translationalController.reset(currentPose.getTranslation().getDistance(targetPose.()), Math.hypot(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond));
+		// translationalController.reset(currentPose.getTranslation().getDistance(targetPose.getTranslation()), Math.hypot(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond));
 		translationalController.reset(repulsorTranslationController.getError(), Math.hypot(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond));
 		rotationController.reset(currentPose.getRotation().getRadians(), 0);
+		enteredRegularTimestamp = getStateTime();
 	}
 
 	@Override
