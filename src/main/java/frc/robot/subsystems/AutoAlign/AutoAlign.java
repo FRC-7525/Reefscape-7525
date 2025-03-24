@@ -63,14 +63,15 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
 		// FF impl (if 254 has magic number so can I hehehe)
-		this.rotationController = new ProfiledPIDController(6, 0, 0, new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 2), 0.02);
+		this.rotationController = new ProfiledPIDController(3, 0, 0, new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 2), 0.02);
 
-		this.translationalController = new ProfiledPIDController(3, 0, 0.1, new TrapezoidProfile.Constraints(Units.feetToMeters(9), 7), 0.02);
+		this.translationalController = new ProfiledPIDController(20, 1, 0, new TrapezoidProfile.Constraints(Units.feetToMeters(9), 7), 0.02);
 
 		this.repulsorTranslationController = REPULSOR_TRANSLATIONAL_CONTROLLER.get();
 		this.repulsorRotationalController = REPULSOR_ROTATIONAL_CONTROLLER.get();
 
-		this.repulsorTranslationController.setTolerance(TRANSLATIONAL_COMPONENT_ERROR_MARGIN.in(Meters));
+		this.repulsorTranslationController.setTolerance(DISTANCE_ERROR_MARGIN.in(Meters));
+		this.translationalController.setTolerance(DISTANCE_ERROR_MARGIN.in(Meter));
 		this.repulsorRotationalController.setTolerance(ANGLE_ERROR_MARGIN.in(Radians));
 		this.rotationController.setTolerance(ANGLE_ERROR_MARGIN.in(Radians));
 
@@ -259,7 +260,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	public boolean closeEnoughToIgnore() {
 		Pose2d currentPose = drive.getPose();
-		boolean withinDistance = Math.abs(targetPose.getTranslation().getDistance(currentPose.getTranslation())) < 0.3;
+		boolean withinDistance = Math.abs(targetPose.getTranslation().getDistance(currentPose.getTranslation())) < 0.4;
 		Logger.recordOutput("AutoAlign/Within Distnace", withinDistance);
 		return withinDistance;
 	}
@@ -275,9 +276,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	// near goal for source cause u need less tolerance
 	public boolean nearGoalSource() {
-		return (
-			drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meters) * 4 && (Math.abs(repulsorRotationalController.getError()) < (ANGLE_ERROR_MARGIN.in(Radians)) || Math.abs(rotationController.getPositionError()) < (ANGLE_ERROR_MARGIN.in(Radians)))
-		);
+		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meters) && (Math.abs(repulsorRotationalController.getError()) < (ANGLE_ERROR_MARGIN.in(Radians)) || Math.abs(rotationController.getPositionError()) < (ANGLE_ERROR_MARGIN.in(Radians))));
 	}
 
 	// Near setpoint for final transition
@@ -353,6 +352,14 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 			reefVertices.get(5).minus(reefVertices.get(4)),
 			reefVertices.get(0).minus(reefVertices.get(5))
 		);
+	}
+
+	public void transitionToRegular() {
+		Pose2d currentPose = drive.getPose();
+		ChassisSpeeds robotSpeed = ChassisSpeeds.fromFieldRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
+		// translationalController.reset(currentPose.getTranslation().getDistance(targetPose.()), Math.hypot(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond));
+		translationalController.reset(repulsorTranslationController.getError(), Math.hypot(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond));
+		rotationController.reset(currentPose.getRotation().getRadians(), 0);
 	}
 
 	@Override

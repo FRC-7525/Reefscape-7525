@@ -27,9 +27,10 @@ public class CoralerConstants {
 		};
 
 	// States
-	public static final double CORALING_VELOCITY_L4 = 0.4;
-	public static final double CORALING_VELOCITY_REGULAR = 0.2;
-	public static final double INTAKING_VELOCITY = 0.2;
+	public static final double CORALING_VELOCITY_L4 = 0.3;
+	public static final double CORALING_VELOCITY_L3_L2 = 0.2;
+	public static final double CORALING_VELOCITY_L1 = 0.1;
+	public static final double INTAKING_VELOCITY = 0.35;
 	public static final double CENTERING_VELOCITY = 0.2;
 	public static final double IDLE_VELOCITY = 0;
 

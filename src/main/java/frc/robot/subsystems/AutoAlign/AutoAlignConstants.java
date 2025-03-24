@@ -39,10 +39,10 @@ public final class AutoAlignConstants {
 	public static final LinearVelocity MAX_SPEED = FeetPerSecond.of(15);
 	public static final boolean USE_GOAL = true;
 	// Sim
-	public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.0508);
-	public static final Angle ANGLE_ERROR_MARGIN = Radians.of(0.1);
+	public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.0208);
+	public static final Angle ANGLE_ERROR_MARGIN = Radians.of(0.05);
 
-	public static final Distance TRANSLATIONAL_COMPONENT_ERROR_MARGIN = Meters.of(0.15937); //2x^2 = dist error margin. solved for x
+	// public static final Distance TRANSLATIONAL_COMPONENT_ERROR_MARGIN = Meters.of(0.15937); //2x^2 = dist error margin. solved for x
 	// public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.01); // previously 0.025
 	// public static final Angle ANGLE_ERROR_MARGIN = Radians.of(0.05);
 
@@ -92,7 +92,7 @@ public final class AutoAlignConstants {
 
 	public static final Supplier<PIDController> REPULSOR_ROTATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new PIDController(5, 0, 0);
+			case REAL -> new PIDController(3, 0, 0);
 			case SIM -> new PIDController(20, 0, 0);
 			default -> new PIDController(10, 0, 0);
 		};

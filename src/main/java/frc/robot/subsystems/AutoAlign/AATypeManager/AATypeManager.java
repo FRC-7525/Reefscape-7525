@@ -33,4 +33,11 @@ public class AATypeManager extends Subsystem<AATypeManagerStates> {
 		Logger.recordOutput("AA Type Manager/State", getState().getStateString());
 		getState().runAlignmentRunnable();
 	}
+
+	@Override
+	protected void stateExit() {
+		if (getState() == AATypeManagerStates.REPULSOR) {
+			AutoAlign.getInstance().transitionToRegular();
+		}
+	}
 }
