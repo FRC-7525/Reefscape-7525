@@ -19,15 +19,12 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Robot;
-import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.Subsystems.Drive.Drive;
 import java.util.ArrayList;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.autoAlign.RepulsorFieldPlanner;
 import org.team7525.subsystem.Subsystem;
-
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 
 public class AutoAlign extends Subsystem<AutoAlignStates> {
 
