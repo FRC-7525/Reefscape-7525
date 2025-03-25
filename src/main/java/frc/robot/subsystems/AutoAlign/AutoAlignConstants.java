@@ -40,7 +40,7 @@ public final class AutoAlignConstants {
 	public static final boolean USE_GOAL = true;
 	// Sim
 	public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.0208);
-	public static final Angle ANGLE_ERROR_MARGIN = Radians.of(0.05);
+	public static final Angle ANGLE_ERROR_MARGIN = Degrees.of(1.5); // was 0.05 radians
 
 	// public static final Distance TRANSLATIONAL_COMPONENT_ERROR_MARGIN = Meters.of(0.15937); //2x^2 = dist error margin. solved for x
 	// public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.01); // previously 0.025
@@ -101,8 +101,8 @@ public final class AutoAlignConstants {
 
 		public static final List<Obstacle> FIELD_OBSTACLES = List.of(
 			// was 1.5 radius
-			new GuidedObstacle(new Translation2d(4.49, 4), 20, true, 2),
-			new GuidedObstacle(new Translation2d(13.08, 4), 20, true, 2)
+			new GuidedObstacle(new Translation2d(4.48945, 4.025901), 20, true, 2),
+			new GuidedObstacle(new Translation2d(13.10655, 4.025901), 20, true, 2)
 		);
 
 		public static final List<Obstacle> WALLS = List.of(
