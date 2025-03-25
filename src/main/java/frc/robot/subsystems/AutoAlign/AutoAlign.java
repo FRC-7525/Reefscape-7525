@@ -5,6 +5,7 @@ import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
 
 import choreo.trajectory.SwerveSample;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -127,7 +128,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		driveErrorAbs = currentDistance;
 		translationalController.reset(currentPose.getTranslation().getDistance(targetPose.getTranslation()), translationalController.getSetpoint().velocity);
-		
+
 		// Calculate translation velocity scalar with PID and FF scaling
 		double temp = translationalController.calculate(driveErrorAbs, 0.0);
 		double translationVelocityScalar = ((getStateTime() - enteredRegularTimestamp) > .2 ? translationalController.getSetpoint().velocity * ffScaler : -1.3) + temp;
