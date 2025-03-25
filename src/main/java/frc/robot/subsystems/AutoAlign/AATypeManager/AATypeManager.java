@@ -31,6 +31,7 @@ public class AATypeManager extends Subsystem<AATypeManagerStates> {
 	@Override
 	public void runState() {
 		Logger.recordOutput("AA Type Manager/State", getState().getStateString());
+		Logger.recordOutput("AutoAlign/UsingRepulsor", getState() == AATypeManagerStates.REPULSOR);
 		getState().runAlignmentRunnable();
 	}
 
