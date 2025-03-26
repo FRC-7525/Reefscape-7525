@@ -59,7 +59,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private double interpolatedDistanceFromReef;
 	private boolean repulsorActivated;
 	private double timer = -1;
-	private double enteredRegularTimestamp = 0;
 
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
@@ -130,9 +129,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		translationalController.reset(currentPose.getTranslation().getDistance(targetPose.getTranslation()), translationalController.getSetpoint().velocity);
 
 		// Calculate translation velocity scalar with PID and FF scaling
-		double temp = translationalController.calculate(driveErrorAbs, 0.0);
-		double translationVelocityScalar = ((getStateTime() - enteredRegularTimestamp) > .2 ? translationalController.getSetpoint().velocity * ffScaler : -1.3) + temp;
-		Logger.recordOutput("AutoAlign/Translation Velocity Scalar", translationVelocityScalar);
+		double translationVelocityScalar = (translationalController.getSetpoint().velocity * ffScaler) + translationalController.calculate(driveErrorAbs, 0.0);
 		if (currentDistance < translationalController.getPositionTolerance()) {
 			translationVelocityScalar = 0;
 		}
@@ -147,7 +144,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		// Calculate final translation velocity
 		var translationVelocity = MathHelpers.pose2dFromRotation(currentPose.getTranslation().minus(targetPose.getTranslation()).getAngle()).transformBy(MathHelpers.transform2dFromTranslation(new Translation2d(translationVelocityScalar, 0.0))).getTranslation();
-		Logger.recordOutput("AutoAlign/TranslationRegular", translationVelocity);
 
 		// Apply drive commands with alliance compensation
 		if (Robot.isRedAlliance) {
@@ -340,7 +336,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	public void setConstants() {
-		reefPose = Robot.isRedAlliance ? new Pose2d(13.08, 4, new Rotation2d()) : new Pose2d(4.49, 4, new Rotation2d());
+		reefPose = Robot.isRedAlliance ? new Pose2d(13.10655, 4.025901, new Rotation2d()) : new Pose2d(4.48945, 4.025901, new Rotation2d());
 		reefVertices = List.of(
 			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos(Math.PI / 6), REEF_HITBOX.in(Meters) * Math.sin(Math.PI / 6)).plus(reefPose.getTranslation()),
 			new Translation2d(REEF_HITBOX.in(Meters) * Math.cos((Math.PI) / 2), REEF_HITBOX.in(Meters) * Math.sin((Math.PI) / 2)).plus(reefPose.getTranslation()),
@@ -361,11 +357,16 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	public void transitionToRegular() {
 		Pose2d currentPose = drive.getPose();
-		ChassisSpeeds robotSpeed = ChassisSpeeds.fromFieldRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
+		ChassisSpeeds robotSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
 		// translationalController.reset(currentPose.getTranslation().getDistance(targetPose.getTranslation()), Math.hypot(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond));
 		translationalController.reset(repulsorTranslationController.getError(), Math.hypot(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond));
 		rotationController.reset(currentPose.getRotation().getRadians(), 0);
-		enteredRegularTimestamp = getStateTime();
+
+		// ily 254
+		translationalController.reset(
+			currentPose.getTranslation().getDistance(targetPose.getTranslation()),
+			Math.min(0.0, -new Translation2d(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond).rotateBy(targetPose.getTranslation().minus(currentPose.getTranslation()).getAngle().unaryMinus()).getX())
+		);
 	}
 
 	@Override
