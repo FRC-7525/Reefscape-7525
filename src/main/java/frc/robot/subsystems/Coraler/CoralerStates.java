@@ -8,10 +8,8 @@ import org.team7525.subsystem.SubsystemStates;
 
 public enum CoralerStates implements SubsystemStates {
 	CORALING("Coraling", () -> {
-		if (SubsystemManager.getInstance().getDriverReefScoringLevel() == 4 || SubsystemManager.getInstance().getOperatorReefScoringLevel() == 4)
-			return CORALING_VELOCITY_L4;
-		else if (SubsystemManager.getInstance().getOperatorReefScoringLevel() != 1 && SubsystemManager.getInstance().getDriverReefScoringLevel() != 1 )
-			return CORALING_VELOCITY_L3_L2;
+		if (SubsystemManager.getInstance().getDriverReefScoringLevel() == 4 || SubsystemManager.getInstance().getOperatorReefScoringLevel() == 4) return CORALING_VELOCITY_L4;
+		else if (SubsystemManager.getInstance().getOperatorReefScoringLevel() != 1 && SubsystemManager.getInstance().getDriverReefScoringLevel() != 1) return CORALING_VELOCITY_L3_L2;
 		else return CORALING_VELOCITY_L1;
 	}),
 	INAKING("Inaking", () -> INTAKING_VELOCITY),
