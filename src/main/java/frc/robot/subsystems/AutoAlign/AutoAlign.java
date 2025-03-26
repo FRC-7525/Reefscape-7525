@@ -365,17 +365,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		// ily 254
 		translationalController.reset(
 			currentPose.getTranslation().getDistance(targetPose.getTranslation()),
-			Math.min(
-					0.0,
-					-new Translation2d(robotSpeed.vxMetersPerSecond,
-							robotSpeed.vyMetersPerSecond)
-							.rotateBy(
-									targetPose
-											.getTranslation()
-											.minus(currentPose.getTranslation())
-											.getAngle()
-											.unaryMinus())
-							.getX()));
+			Math.min(0.0, -new Translation2d(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond).rotateBy(targetPose.getTranslation().minus(currentPose.getTranslation()).getAngle().unaryMinus()).getX())
+		);
 	}
 
 	@Override
