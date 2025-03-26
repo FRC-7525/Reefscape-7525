@@ -14,7 +14,7 @@ import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Coraler.Coraler;
 import frc.robot.Subsystems.Drive.Drive;
 import frc.robot.Subsystems.Elevator.Elevator;
-// import frc.robot.Subsystems.LED.LED;
+import frc.robot.Subsystems.LED.LED;
 import frc.robot.Subsystems.Passthrough.Passthrough;
 import frc.robot.Subsystems.Vision.Vision;
 import org.littletonrobotics.junction.Logger;
@@ -31,7 +31,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private final AutoAlign autoAlign = AutoAlign.getInstance();
 	private final Vision vision = Vision.getInstance();
 	private final AATypeManager aaTypeManager = AATypeManager.getInstance();
-	// private final LED ledSubsystem = LED.getInstance();
+	private final LED ledSubsystem = LED.getInstance();
 	private final Passthrough passthrough = Passthrough.getInstance();
 
 	public Boolean leftSourceSelected = false;
@@ -227,17 +227,17 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		elevator.setState(getState().getElevatorStateSupplier().get());
 		coraler.setState(getState().getCoralerState());
 		autoAlign.setState(getState().getAutoAlignSupplier().get());
-		// ledSubsystem.setState(getState().getLedStateSupplier().get());
+		ledSubsystem.setState(getState().getLedStateSupplier().get());
 		passthrough.setState(getState().getPassthroughState());
 
 		// Periodics
 		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
-		// Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
+		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
 		Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
 		Tracer.traceFunc("VisionPeriodic", vision::periodic);
 		Tracer.traceFunc("DrivePeriodic", drive::periodic);
 		Tracer.traceFunc("AATypeManagerPeriodic", aaTypeManager::periodic);
-		// Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
+		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
 		Tracer.traceFunc("PassthroughPeriodic", passthrough::periodic);
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
