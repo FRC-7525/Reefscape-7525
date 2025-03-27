@@ -189,7 +189,11 @@ public class Drive extends Subsystem<DriveStates> {
 		//Reduces angular velocity if elevator is above certain height
 		//TODO: Needs to be tuned
 		final double height = Elevator.getInstance().getHeight().in(Inches);
-		angularVelocity *= (ElevatorConstants.L4_HEIGHT.in(Inches) - height) / ElevatorConstants.L4_HEIGHT.in(Inches);
+		double scaleFactor = (ElevatorConstants.L4_HEIGHT.in(Inches) * ANGULAR_VELOCITY_SCALE_FACTOR - height) / (ElevatorConstants.L4_HEIGHT.in(Inches) * ANGULAR_VELOCITY_SCALE_FACTOR);
+
+		if (scaleFactor > MIN_SCALE_FACTOR) scaleFactor = MIN_SCALE_FACTOR;
+
+		angularVelocity *= scaleFactor;
 
 		double omega = angularVelocity;
 		if (useHeadingCorrection) {
