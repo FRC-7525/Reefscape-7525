@@ -189,7 +189,7 @@ public class Drive extends Subsystem<DriveStates> {
 		if (Elevator.getInstance().getState() == ElevatorStates.L4) {
 			angularVelocity *= 0.1;
 		}
-		
+
 		double omega = angularVelocity;
 		if (useHeadingCorrection) {
 			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
