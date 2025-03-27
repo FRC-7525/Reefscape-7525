@@ -141,7 +141,7 @@
           "Board": {
             "open": true
           },
-          "Drive": {
+          "Elevator": {
             "open": true
           },
           "Manager": {
@@ -152,8 +152,10 @@
               "open": true
             },
             "open": true
-          }
-        }
+          },
+          "open": true
+        },
+        "open": true
       },
       "SmartDashboard": {
         "VisionSystemSim-Vision": {
@@ -161,7 +163,6 @@
         }
       },
       "Tracer": {
-        "open": true,
         "robot main": {
           "RobotPeriodic": {
             "SubsystemManager": {

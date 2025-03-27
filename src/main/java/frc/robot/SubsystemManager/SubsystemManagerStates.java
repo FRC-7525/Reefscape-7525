@@ -1,10 +1,13 @@
 package frc.robot.SubsystemManager;
 
+import static edu.wpi.first.units.Units.Meters;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.*;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.L3_HEIGHT;
 
 import frc.robot.SubsystemManager.SubsystemManagerConstants.AAReefTarget;
 import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Coraler.CoralerStates;
+import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import frc.robot.Subsystems.LED.LEDStates;
 import frc.robot.Subsystems.Passthrough.PassthroughStates;
@@ -29,7 +32,14 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		() -> LEDStates.AUTOALIGN,
 		PassthroughStates.OFF
 	),
-	INTAKING_CORALER("Intaking at Coral Station", () -> ElevatorStates.IDLE, CoralerStates.INAKING, () -> SOURCE_TARGET_MAP.get(SubsystemManager.getInstance().getLeftSourceSelected()), () -> LEDStates.INTAKING, PassthroughStates.INTAKING),
+	INTAKING_CORALER(
+		"Intaking at Coral Station",
+		() -> ElevatorStates.IDLE,
+		CoralerStates.INAKING,
+		() -> (Elevator.getInstance().getHeight().in(Meters) < L3_HEIGHT.in(Meters)) ? SOURCE_TARGET_MAP.get(SubsystemManager.getInstance().getLeftSourceSelected()) : AutoAlignStates.OFF,
+		() -> LEDStates.INTAKING,
+		PassthroughStates.INTAKING
+	),
 	INTAKING_CORALER_AA_OFF("Intaking Coral Station with Driver Control", () -> ElevatorStates.IDLE, CoralerStates.INAKING, () -> AutoAlignStates.OFF, () -> LEDStates.INTAKING, PassthroughStates.INTAKING),
 	SCORING_REEF_MANUAL("Scoring Reef", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getDriverReefScoringLevel()), CoralerStates.CORALING, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, PassthroughStates.OFF),
 	SCORING_REEF_AA("Scoring Reef AA", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getOperatorReefScoringLevel()), CoralerStates.CORALING, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, PassthroughStates.OFF),
