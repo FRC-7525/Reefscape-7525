@@ -191,7 +191,8 @@ public class Drive extends Subsystem<DriveStates> {
 		final double height = Elevator.getInstance().getHeight().in(Inches);
 		double scaleFactor = ((ElevatorConstants.L3_HEIGHT.in(Inches) - height + (ElevatorConstants.L4_HEIGHT.in(Inches) - ElevatorConstants.L3_HEIGHT.in(Inches)) * ANGULAR_VELOCITY_SCALE_FACTOR)) / (ElevatorConstants.L4_HEIGHT.in(Inches) - ElevatorConstants.L3_HEIGHT.in(Inches) * ANGULAR_VELOCITY_SCALE_FACTOR);
 
-		if (scaleFactor > MIN_SCALE_FACTOR) scaleFactor = MIN_SCALE_FACTOR;
+		if (scaleFactor > 1) scaleFactor = 1;
+		if (scaleFactor < MIN_SCALE_FACTOR) scaleFactor = MIN_SCALE_FACTOR;
 
 		angularVelocity *= scaleFactor;
 
