@@ -185,6 +185,11 @@ public class Drive extends Subsystem<DriveStates> {
 	 * @param useHeadingCorrection Whether to use the heading correction controller.
 	 */
 	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity, boolean useHeadingCorrection, boolean useDecelerationLimit) {
+		//Reduces angular velocity if elevator is above certain height
+		if (Elevator.getInstance().getState() == ElevatorStates.L4) {
+			angularVelocity *= 0.1;
+		}
+		
 		double omega = angularVelocity;
 		if (useHeadingCorrection) {
 			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
