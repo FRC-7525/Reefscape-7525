@@ -39,6 +39,7 @@ import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Drive.DriveIOInputsAutoLogged;
 import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Elevator.ElevatorConstants;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
@@ -186,9 +187,9 @@ public class Drive extends Subsystem<DriveStates> {
 	 */
 	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity, boolean useHeadingCorrection, boolean useDecelerationLimit) {
 		//Reduces angular velocity if elevator is above certain height
-		if (Elevator.getInstance().getState() == ElevatorStates.L4) {
-			angularVelocity *= 0.1;
-		}
+		//TODO: Needs to be tuned
+		final double height = Elevator.getInstance().getHeight().in(Inches);
+		angularVelocity *= (ElevatorConstants.L4_HEIGHT.in(Inches) - height) / ElevatorConstants.L4_HEIGHT.in(Inches);
 		
 		double omega = angularVelocity;
 		if (useHeadingCorrection) {
