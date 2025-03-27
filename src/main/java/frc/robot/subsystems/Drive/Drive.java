@@ -190,7 +190,7 @@ public class Drive extends Subsystem<DriveStates> {
 		//TODO: Needs to be tuned
 		final double height = Elevator.getInstance().getHeight().in(Inches);
 		angularVelocity *= (ElevatorConstants.L4_HEIGHT.in(Inches) - height) / ElevatorConstants.L4_HEIGHT.in(Inches);
-		
+
 		double omega = angularVelocity;
 		if (useHeadingCorrection) {
 			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {
