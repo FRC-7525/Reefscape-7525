@@ -281,7 +281,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	}
 
 	public boolean nearGoalSource2() {
-		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN2.in(Meters) && (Math.abs(repulsorRotationalController.getError()) < (ANGLE_ERROR_MARGIN.in(Radians)) || Math.abs(rotationController.getPositionError()) < (ANGLE_ERROR_MARGIN.in(Radians))));
+		return (
+			drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN2.in(Meters) && (Math.abs(repulsorRotationalController.getError()) < (ANGLE_ERROR_MARGIN.in(Radians)) || Math.abs(rotationController.getPositionError()) < (ANGLE_ERROR_MARGIN.in(Radians)))
+		);
 	}
 
 	// Near setpoint for final transition
