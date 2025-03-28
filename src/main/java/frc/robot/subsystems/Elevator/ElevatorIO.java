@@ -47,4 +47,6 @@ public interface ElevatorIO {
 	public void resetController();
 
 	public void zeroing();
+
+	public boolean nearZero();
 }

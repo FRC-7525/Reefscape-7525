@@ -33,6 +33,7 @@ public class ElevatorIOReal implements ElevatorIO {
 	private double rightMotorVoltage;
 
 	private boolean leftMotorZeroed;
+	private double timer = -1;
 
 	public ElevatorIOReal() {
 		leftMotor = new TalonFX(LEFT_MOTOR_CANID);
@@ -164,7 +165,12 @@ public class ElevatorIOReal implements ElevatorIO {
 
 	@Override
 	public void zeroing() {
-		leftMotor.set(-0.05);
-		rightMotor.set(-0.05);
+		leftMotor.set(-0.15);
+		rightMotor.set(-0.15);
+	}
+
+	@Override
+	public boolean nearZero() {
+		return Math.abs(getHeight().in(Meters)) < 0.5;
 	}
 }
