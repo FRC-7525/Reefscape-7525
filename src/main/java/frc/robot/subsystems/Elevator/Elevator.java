@@ -106,6 +106,5 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	@Override
 	public void stateExit() {
 		io.resetController();
-
 	}
 }
