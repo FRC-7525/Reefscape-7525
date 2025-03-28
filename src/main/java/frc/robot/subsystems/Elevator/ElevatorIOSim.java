@@ -134,4 +134,9 @@ public class ElevatorIOSim implements ElevatorIO {
 	public void zeroing() {
 		return;
 	}
+
+	@Override
+	public boolean nearZero() {
+		return true;
+	}
 }
