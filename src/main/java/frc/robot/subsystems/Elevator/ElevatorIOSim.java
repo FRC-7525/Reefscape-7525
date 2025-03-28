@@ -129,4 +129,9 @@ public class ElevatorIOSim implements ElevatorIO {
 	public void resetController() {
 		pidController.reset(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
 	}
+
+	@Override
+	public void zeroing() {
+		return;
+	}
 }
