@@ -150,7 +150,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Not testing all that :laughing cat emoji:
 		addTrigger(IDLE, ZEROING_ELEVATOR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4));
 		addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || elevator.zeroed());
-
 	}
 
 	public static SubsystemManager getInstance() {
@@ -274,6 +273,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		super.periodic();
 		clearButtonPressCache();
 	}
+
 	@Override
 	protected void stateExit() {
 		if (getState() == INTAKING_CORALER || getState() == INTAKING_CORALER_AA_OFF) {
