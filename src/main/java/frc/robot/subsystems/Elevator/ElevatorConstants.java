@@ -29,18 +29,18 @@ public final class ElevatorConstants {
 	// TODO: Set to smaller numbers once we have robot (low max vel/acc for testing, real should be around 100)
 	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
 	// public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(10);
-	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(100);
-	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(70);
+	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(60);
+	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(100);
 
 	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(MAX_VELOCITY.in(MetersPerSecond), MAX_ACCELERATION.in(MetersPerSecondPerSecond));
 	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-4);
 	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(25.0);
 
 	public static final Distance TRANSITION_HEIGHT = Inches.of(12);
-	public static final Distance L4_HEIGHT = Inches.of(26);
-	public static final Distance L3_HEIGHT = Inches.of(18);
-	public static final Distance L2_HEIGHT = Inches.of(11.5);
-	public static final Distance L1_HEIGHT = Inches.of(12.3); // was 5
+	public static final Distance L4_HEIGHT = Inches.of(25.5);
+	public static final Distance L3_HEIGHT = Inches.of(17);
+	public static final Distance L2_HEIGHT = Inches.of(12.3);
+	public static final Distance L1_HEIGHT = Inches.of(10); // was 5
 	public static final Distance IDLE_HEIGHT = Inches.of(0);
 
 	public static final Distance METERS_PER_ROTATION = Meters.of((1 / GEARING) * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right

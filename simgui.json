@@ -131,6 +131,9 @@
   "NetworkTables": {
     "transitory": {
       "AdvantageKit": {
+        "Drive": {
+          "open": true
+        },
         "RealOutputs": {
           "Auto": {
             "open": true
@@ -141,7 +144,7 @@
           "Board": {
             "open": true
           },
-          "Elevator": {
+          "Drive": {
             "open": true
           },
           "Manager": {
@@ -150,8 +153,7 @@
           "Vision": {
             "Camera0": {
               "open": true
-            },
-            "open": true
+            }
           },
           "open": true
         },

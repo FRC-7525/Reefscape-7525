@@ -14,7 +14,7 @@ public class CoralerConstants {
 
 	public static final double GEARING = 1;
 
-	public static final Time DEBOUNCE_TIME = Seconds.of(0.075);
+	public static final Time DEBOUNCE_TIME = Seconds.of(0.04);
 
 	public static final double SET_TO_VOLTS_CF = 12;
 
@@ -28,13 +28,14 @@ public class CoralerConstants {
 
 	// States
 	public static final double CORALING_VELOCITY_L4 = 0.3;
-	public static final double CORALING_VELOCITY_L3_L2 = 0.4;
+	public static final double CORALING_VELOCITY_L3_L2 = 0.15;
 	public static final double CORALING_VELOCITY_L1 = 0.4;
-	public static final double INTAKING_VELOCITY = 0.35;
+	public static final double INTAKING_VELOCITY = 0.15;
 	public static final double CENTERING_VELOCITY = 0.2;
 	public static final double IDLE_VELOCITY = 0;
+	public static final double OUTTAKING_VELOCITY = -0.2;
 
-	public static final double STATOR_CURRENT_SENSING_LIMIT = 35;
+	public static final double STATOR_CURRENT_SENSING_LIMIT = 23;
 
 	public static final Distance CLOSE_DISTANCE = Meter.of(0.05);
 

@@ -2,6 +2,16 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+
+// Brown Power
+// Blue ground
+// Black Sensor
+
+
+//Talon
+//Red power
+//Black ground
+//White sensor
 package frc.robot;
 
 import static frc.robot.SubsystemManager.SubsystemManagerStates.IDLE;
