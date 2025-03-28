@@ -5,7 +5,6 @@ import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -14,7 +13,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.measure.Distance;
 import frc.robot.Subsystems.Elevator.ElevatorIOInputsAutoLogged;
 import kotlin.reflect.KType;
-
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -27,6 +25,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 
 	private boolean doneZeroing = false;
 	private Debouncer zeroDebouncer = new Debouncer(0.5, DebounceType.kRising);
+
 	private Elevator() {
 		super(SUBSYSTEM_NAME, ElevatorStates.IDLE);
 		this.io = switch (ROBOT_MODE) {
