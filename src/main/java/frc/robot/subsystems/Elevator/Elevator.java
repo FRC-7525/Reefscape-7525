@@ -40,7 +40,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	@Override
 	protected void runState() {
 		if (getState() == ElevatorStates.ZEROING) {
-			io.zero();
+			io.zeroing();
 			return;
 		} else {
 			io.setHeightGoalpoint(getState().getTargetHeight());
@@ -92,5 +92,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	@Override
 	public void stateExit() {
 		io.resetController();
+
+		if (getState() == ElevatorStates.ZEROING) io.zero();
 	}
 }

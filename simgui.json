@@ -144,7 +144,7 @@
           "Board": {
             "open": true
           },
-          "Drive": {
+          "Elevator": {
             "open": true
           },
           "Manager": {
@@ -153,7 +153,6 @@
           "Vision": {
             "Camera0": {
               "open": true
-            }
           },
           "open": true
         },

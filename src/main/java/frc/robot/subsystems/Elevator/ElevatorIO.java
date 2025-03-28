@@ -45,4 +45,6 @@ public interface ElevatorIO {
 	public TalonFX getRightMotor();
 
 	public void resetController();
+
+	public void zeroing();
 }
