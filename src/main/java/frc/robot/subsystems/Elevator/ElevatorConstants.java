@@ -23,7 +23,7 @@ public final class ElevatorConstants {
 	public static final int LEFT_MOTOR_CANID = 12;
 	public static final int RIGHT_MOTOR_CANID = 13;
 
-	public static final Distance POSITION_TOLERANCE = Meter.of(0.2);
+	public static final Distance POSITION_TOLERANCE = Meter.of(0.1);
 	public static final Distance NEAR_ENOUGH_POSITION = Inches.of(10);
 	public static final LinearVelocity VELOCITY_TOLERANCE = MetersPerSecond.of(0.1);
 	// TODO: Set to smaller numbers once we have robot (low max vel/acc for testing, real should be around 100)
@@ -37,8 +37,8 @@ public final class ElevatorConstants {
 	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(25.0);
 
 	public static final Distance TRANSITION_HEIGHT = Inches.of(12);
-	public static final Distance L4_HEIGHT = Inches.of(25.5);
-	public static final Distance L3_HEIGHT = Inches.of(17);
+	public static final Distance L4_HEIGHT = Inches.of(27);
+	public static final Distance L3_HEIGHT = Inches.of(18);
 	public static final Distance L2_HEIGHT = Inches.of(12.3);
 	public static final Distance L1_HEIGHT = Inches.of(10); // was 5
 	public static final Distance IDLE_HEIGHT = Inches.of(0);
@@ -56,7 +56,7 @@ public final class ElevatorConstants {
 		public static final boolean SIMULATE_GRAVITY = true;
 		public static final Distance STARTING_HEIGHT = Inches.of(0);
 
-		public static final PIDCoefficients PROFILLED_PID_CONSTANTS = new PIDCoefficients(60, 0, 0, 0.1);
+		public static final PIDCoefficients PROFILLED_PID_CONSTANTS = new PIDCoefficients(60, 2, 0, 0.2);
 		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.11, 7.09, 0.01);
 
 		// Sim is trolling, idk why

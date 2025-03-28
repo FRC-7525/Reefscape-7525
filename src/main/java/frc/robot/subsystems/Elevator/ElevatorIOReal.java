@@ -76,6 +76,7 @@ public class ElevatorIOReal implements ElevatorIO {
 
 		leftMotor.setPosition(Degrees.of(0));
 		rightMotor.setPosition(Degrees.of(0));
+		pidController.setTolerance(POSITION_TOLERANCE.in(Meter));
 
 		rightMotor.setControl(new Follower(LEFT_MOTOR_CANID, false));
 	}

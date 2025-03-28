@@ -28,13 +28,13 @@ public enum AutoAlignStates implements SubsystemStates {
 	//Blue (5.846, 4.208)
 	R4("Driving to Reef Right 4", PosePair.of(new Pose2d(11.717, 3.828, Rotation2d.fromDegrees(0)), new Pose2d(5.802, 4.218, Rotation2d.fromDegrees(180))), Meters.of(0.5)),
 	//Blue (5.285, 5.132)
-	L5("Driving to Reef Left 5", PosePair.of(new Pose2d(12.271, 2.928, Rotation2d.fromDegrees(60)), new Pose2d(5.269, 5.095, Rotation2d.fromDegrees(240))), Meters.of(0.5)),
+	L5("Driving to Reef Left 5", PosePair.of(new Pose2d(12.291, 2.938, Rotation2d.fromDegrees(60)), new Pose2d(5.269, 5.095, Rotation2d.fromDegrees(240))), Meters.of(0.5)),
 	//Blue (5.007, 5.291)
-	R5("Driving to Reef Right 5", PosePair.of(new Pose2d(12.558, 2.764, Rotation2d.fromDegrees(60)), new Pose2d(4.983, 5.258, Rotation2d.fromDegrees(240))), Meters.of(0.5)),
+	R5("Driving to Reef Right 5", PosePair.of(new Pose2d(12.573, 2.778, Rotation2d.fromDegrees(60)), new Pose2d(4.983, 5.258, Rotation2d.fromDegrees(240))), Meters.of(0.5)),
 	//Blue (3.935, 5.27)
-	L6("Driving to Reef Left 6", PosePair.of(new Pose2d(13.602, 2.793, Rotation2d.fromDegrees(120)), new Pose2d(3.950, 5.230, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
+	L6("Driving to Reef Left 6", PosePair.of(new Pose2d(13.590, 2.802, Rotation2d.fromDegrees(120)), new Pose2d(3.950, 5.230, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
 	//Blue (3.66, 5.11)
-	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(13.912, 2.964, Rotation2d.fromDegrees(120)), new Pose2d(3.668, 5.062, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
+	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(13.882, 2.971, Rotation2d.fromDegrees(120)), new Pose2d(3.668, 5.062, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
 	//Blue Alliance (1.472, 0.847) Red Alliance (16.331, 7.004)
 	RIGHT_SOURCE("Driving to Source Right", PosePair.of(new Pose2d(16.519, 7.220, Rotation2d.fromDegrees(-126)), new Pose2d(0.983, 0.818, Rotation2d.fromDegrees(54))), Meters.of(1)),
 	//Blue Alliance (1.511, 7.194) Red Alliance (16.263, 0.983)
