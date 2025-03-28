@@ -100,10 +100,13 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		return zeroDebouncer.calculate(io.nearZero());
 	}
 
+	public double getStateTime() {
+		return getStateTime();
+	}
+
 	@Override
 	public void stateExit() {
 		io.resetController();
 
-		if (getState() == ElevatorStates.ZEROING) io.zero();
 	}
 }
