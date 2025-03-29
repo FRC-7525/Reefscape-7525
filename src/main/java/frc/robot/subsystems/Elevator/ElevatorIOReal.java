@@ -120,8 +120,10 @@ public class ElevatorIOReal implements ElevatorIO {
 
 		if (leftAxis > TRIGGER_THRESHOLD) {
 			leftMotorVoltage = 3 * -leftAxis;
+			System.out.println("left");
 		} else if (rightAxis > TRIGGER_THRESHOLD) {
 			leftMotorVoltage = 6 * rightAxis;
+			System.out.println("right");
 		}
 		leftMotor.setVoltage(leftMotorVoltage);
 	}
