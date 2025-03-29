@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.GlobalConstants.Controllers.DRIVER_CONTROLLER;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.Real.*;
 
@@ -112,6 +113,14 @@ public class ElevatorIOReal implements ElevatorIO {
 	public void runElevator() {
 		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
 		//+ ffcontroller.calculate(pidController.getSetpoint().velocity);
+		double leftAxis = DRIVER_CONTROLLER.getLeftTriggerAxis();
+		double rightAxis = DRIVER_CONTROLLER.getRightTriggerAxis();
+
+		if (leftAxis > TRIGGER_THRESHOLD) {
+			leftMotorVoltage = 3 * -leftAxis;
+		} else if (rightAxis > TRIGGER_THRESHOLD) {
+			leftMotorVoltage = 6 * rightAxis;
+		} 
 		leftMotor.setVoltage(leftMotorVoltage);
 	}
 
