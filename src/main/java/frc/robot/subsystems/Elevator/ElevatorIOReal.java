@@ -1,8 +1,8 @@
 package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.GlobalConstants.Controllers.DRIVER_CONTROLLER;
+import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.Real.*;
 
@@ -120,7 +120,7 @@ public class ElevatorIOReal implements ElevatorIO {
 			leftMotorVoltage = 3 * -leftAxis;
 		} else if (rightAxis > TRIGGER_THRESHOLD) {
 			leftMotorVoltage = 6 * rightAxis;
-		} 
+		}
 		leftMotor.setVoltage(leftMotorVoltage);
 	}
 
