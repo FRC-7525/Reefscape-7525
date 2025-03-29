@@ -114,7 +114,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoalSource());
 		// TODO: Breaks sim bc func is messed up in sim :Skull:
 		addTrigger(INTAKING_CORALER, IDLE, () -> bouncing.calculate(coraler.hasGamepiece()));
-		// addTrigger(INTAKING_CORALER, IDLE, coraler::currentSenseGamepiece);
+		// addTrigger(INTAKING_CORALER, IDLE, () -> coraler.currentSenseGamepiece() && AutoAlign.getInstance().nearGoalSource2() && getStateTime() > 0.5);
+		addTrigger(IDLE, OUTTAKING, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() > 0.8);
 
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
@@ -124,9 +125,10 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Scoring Reef Manual
 		addTrigger(IDLE, TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
 		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, DRIVER_CONTROLLER::getYButtonPressed);
+		addTrigger(SCORING_REEF_MANUAL, ZEROING_ELEVATOR, () -> (DriverStation.isAutonomous() && getStateTime() > SCORING_TIME) || DRIVER_CONTROLLER.getYButtonPressed());
 		addTrigger(SCORING_REEF_MANUAL, IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 		// Auto ONLY transition
-		addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
+		// addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
 		// Uncomment if excessive overshoot
 		// addTrigger(INTAKING_CORALER_AA_OFF, INTAKING_CORALER, () -> DriverStation.isAutonomous() && !AutoAlign.getInstance().nearGoal()); // TODO check if this needs to be removed after during comp
@@ -147,14 +149,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Zero Elevator
 		// TODO: Test
 		// Not testing all that :laughing cat emoji:
-		// addTrigger(IDLE, ZEROING_ELEVATOR, () -> {
-		// 	boolean pressed = OPERATOR_CONTROLLER.getRawButtonPressed(4);
-		// 	if (pressed) {
-		// 		elevator.resetMotorsZeroed();
-		// 	}
-		// 	return pressed;
-		// });
-		// addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || elevator.motorsZeroed());
+		addTrigger(IDLE, ZEROING_ELEVATOR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4));
+		addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || elevator.zeroed());
 	}
 
 	public static SubsystemManager getInstance() {
@@ -277,5 +273,12 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public void periodic() {
 		super.periodic();
 		clearButtonPressCache();
+	}
+
+	@Override
+	protected void stateExit() {
+		if (getState() == INTAKING_CORALER || getState() == INTAKING_CORALER_AA_OFF) {
+			setState(ZEROING_ELEVATOR);
+		}
 	}
 }

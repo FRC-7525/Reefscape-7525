@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.GlobalConstants.Controllers.DRIVER_CONTROLLER;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.Real.*;
@@ -33,6 +34,7 @@ public class ElevatorIOReal implements ElevatorIO {
 	private double rightMotorVoltage;
 
 	private boolean leftMotorZeroed;
+	private double timer = -1;
 
 	public ElevatorIOReal() {
 		leftMotor = new TalonFX(LEFT_MOTOR_CANID);
@@ -76,6 +78,7 @@ public class ElevatorIOReal implements ElevatorIO {
 
 		leftMotor.setPosition(Degrees.of(0));
 		rightMotor.setPosition(Degrees.of(0));
+		pidController.setTolerance(POSITION_TOLERANCE.in(Meter));
 
 		rightMotor.setControl(new Follower(LEFT_MOTOR_CANID, false));
 	}
@@ -112,6 +115,16 @@ public class ElevatorIOReal implements ElevatorIO {
 	public void runElevator() {
 		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
 		//+ ffcontroller.calculate(pidController.getSetpoint().velocity);
+		double leftAxis = DRIVER_CONTROLLER.getLeftTriggerAxis();
+		double rightAxis = DRIVER_CONTROLLER.getRightTriggerAxis();
+
+		if (leftAxis > TRIGGER_THRESHOLD) {
+			leftMotorVoltage = 3 * -leftAxis;
+			System.out.println("left");
+		} else if (rightAxis > TRIGGER_THRESHOLD) {
+			leftMotorVoltage = 6 * rightAxis;
+			System.out.println("right");
+		}
 		leftMotor.setVoltage(leftMotorVoltage);
 	}
 
@@ -122,19 +135,14 @@ public class ElevatorIOReal implements ElevatorIO {
 
 	@Override
 	public void zero() {
-		double ZeroingSpeed = ElevatorConstants.ZEROING_VELOCITY.in(MetersPerSecond);
-		if (leftMotor.getStatorCurrent().getValueAsDouble() > ElevatorConstants.ZEROING_CURRENT_LIMIT.in(Amps)) {
-			ZeroingSpeed = 0;
-			if (!leftMotorZeroed) leftMotor.setPosition(0);
-			leftMotorZeroed = true;
-		}
-		leftMotor.set(ZeroingSpeed);
-		rightMotor.set(ZeroingSpeed);
+		leftMotor.set(0);
+		rightMotor.set(0);
+		leftMotor.setPosition(0);
 	}
 
 	@Override
 	public void resetMotorsZeroed() {
-		leftMotorZeroed = false;
+		return;
 	}
 
 	@Override
@@ -165,5 +173,16 @@ public class ElevatorIOReal implements ElevatorIO {
 	@Override
 	public void resetController() {
 		pidController.reset(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
+	}
+
+	@Override
+	public void zeroing() {
+		leftMotor.set(-0.15);
+		rightMotor.set(-0.15);
+	}
+
+	@Override
+	public boolean nearZero() {
+		return Math.abs(getHeight().in(Meters)) < 0.5;
 	}
 }

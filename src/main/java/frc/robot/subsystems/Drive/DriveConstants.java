@@ -19,6 +19,10 @@ public class DriveConstants {
 
 	public static final Distance WHEEL_BASE = Meters.of(0.5);
 
+	public static final double MIN_SCALE_FACTOR = 0.1;
+	//This changes how fast/how slow the angular velocity scales down as height increases
+	public static final double ANGULAR_VELOCITY_SCALE_FACTOR = 1.0;
+
 	// TODO: Change based on PP constants
 	public static final LinearAcceleration MAX_LINEAR_ACCELERATION = MetersPerSecondPerSecond.of(11.7);
 

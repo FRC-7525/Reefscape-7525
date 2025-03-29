@@ -14,7 +14,8 @@ public enum CoralerStates implements SubsystemStates {
 	}),
 	INAKING("Inaking", () -> INTAKING_VELOCITY),
 	CENTERING("Centering", () -> CENTERING_VELOCITY),
-	IDLE("Stopped", () -> IDLE_VELOCITY);
+	IDLE("Stopped", () -> IDLE_VELOCITY),
+	OUTTAKING("OUTTAKING", () -> OUTTAKING_VELOCITY);
 
 	private String stateString;
 	private Supplier<Double> velocitySupplier;

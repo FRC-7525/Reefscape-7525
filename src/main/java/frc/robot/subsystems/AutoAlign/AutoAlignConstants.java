@@ -40,6 +40,7 @@ public final class AutoAlignConstants {
 	public static final boolean USE_GOAL = true;
 	// Sim
 	public static final Distance DISTANCE_ERROR_MARGIN = Meters.of(0.0208);
+	public static final Distance DISTANCE_ERROR_MARGIN2 = Meters.of(0.5);
 	public static final Angle ANGLE_ERROR_MARGIN = Degrees.of(1.5); // was 0.05 radians
 
 	// public static final Distance TRANSLATIONAL_COMPONENT_ERROR_MARGIN = Meters.of(0.15937); //2x^2 = dist error margin. solved for x
