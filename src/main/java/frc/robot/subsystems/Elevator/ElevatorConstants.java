@@ -32,6 +32,8 @@ public final class ElevatorConstants {
 	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(60);
 	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(100);
 
+	public static final double TRIGGER_THRESHOLD = 0.1;
+
 	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(MAX_VELOCITY.in(MetersPerSecond), MAX_ACCELERATION.in(MetersPerSecondPerSecond));
 	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-3.5);
 	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(25.0);

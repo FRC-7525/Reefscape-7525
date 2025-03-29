@@ -11,30 +11,18 @@ import org.team7525.subsystem.SubsystemStates;
 
 public enum AutoAlignStates implements SubsystemStates {
 	OFF("OFF, No Aligning!", PosePair.of(new Pose2d(1, 1, new Rotation2d()), new Pose2d(2, 1, new Rotation2d())), Meters.of(0.0)),
-	//Blue (3.209, 4.163)
-	L1("Driving to Reef Left 1", PosePair.of(new Pose2d(14.409, 3.869, Rotation2d.fromDegrees(180)), new Pose2d(3.186, 4.176, Rotation2d.fromDegrees(0))), Meters.of(.5)),
-	//Blue (3.209, 3.828)
-	R1("Driving to Reef Right 1", PosePair.of(new Pose2d(14.407, 4.197, Rotation2d.fromDegrees(180)), new Pose2d(3.186, 3.833, Rotation2d.fromDegrees(0))), Meters.of(0.5)),
-	//Blue (3.686, 2.925)
-	L2("Driving to Reef Left 2", PosePair.of(new Pose2d(13.869, 5.105, Rotation2d.fromDegrees(240)), new Pose2d(3.701, 2.974, Rotation2d.fromDegrees(60))), Meters.of(0.5)),
-	//Blue (3.958 2.760)
-	R2("Driving to Reef Right 2", PosePair.of(new Pose2d(13.546, 5.236, Rotation2d.fromDegrees(240)), new Pose2d(3.984, 2.798, Rotation2d.fromDegrees(60))), Meters.of(0.5)),
-	//Blue (5.038, 2.776)
-	L3("Driving to Reef Left 3", PosePair.of(new Pose2d(12.540, 5.209, Rotation2d.fromDegrees(300)), new Pose2d(5.018, 2.814, Rotation2d.fromDegrees(120))), Meters.of(0.5)),
-	//Blue (5.316, 2.934)
-	R3("Driving to Reef Right 3", PosePair.of(new Pose2d(12.253, 5.048, Rotation2d.fromDegrees(300)), new Pose2d(5.301, 2.979, Rotation2d.fromDegrees(120))), Meters.of(0.5)),
-	//Blue (5.845, 3.884)
-	L4("Driving to Reef Left 4", PosePair.of(new Pose2d(11.717, 4.156, Rotation2d.fromDegrees(0)), new Pose2d(5.796, 3.885, Rotation2d.fromDegrees(180))), Meters.of(0.5)),
-	//Blue (5.846, 4.208)
-	R4("Driving to Reef Right 4", PosePair.of(new Pose2d(11.717, 3.828, Rotation2d.fromDegrees(0)), new Pose2d(5.802, 4.218, Rotation2d.fromDegrees(180))), Meters.of(0.5)),
-	//Blue (5.285, 5.132)
-	L5("Driving to Reef Left 5", PosePair.of(new Pose2d(12.291, 2.938, Rotation2d.fromDegrees(60)), new Pose2d(5.269, 5.095, Rotation2d.fromDegrees(240))), Meters.of(0.5)),
-	//Blue (5.007, 5.291)
-	R5("Driving to Reef Right 5", PosePair.of(new Pose2d(12.573, 2.778, Rotation2d.fromDegrees(60)), new Pose2d(4.983, 5.258, Rotation2d.fromDegrees(240))), Meters.of(0.5)),
-	//Blue (3.935, 5.27)
-	L6("Driving to Reef Left 6", PosePair.of(new Pose2d(13.590, 2.802, Rotation2d.fromDegrees(120)), new Pose2d(3.950, 5.230, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
-	//Blue (3.66, 5.11)
-	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(13.882, 2.971, Rotation2d.fromDegrees(120)), new Pose2d(3.668, 5.062, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
+	L1("Driving to Reef Left 1", PosePair.of(new Pose2d(14.409, 3.869, Rotation2d.fromDegrees(180)), new Pose2d(3.209, 4.163, Rotation2d.fromDegrees(0))), Meters.of(.5)),
+	R1("Driving to Reef Right 1", PosePair.of(new Pose2d(14.407, 4.197, Rotation2d.fromDegrees(180)), new Pose2d(3.209, 3.828, Rotation2d.fromDegrees(0))), Meters.of(0.5)),
+	L2("Driving to Reef Left 2", PosePair.of(new Pose2d(13.869, 5.105, Rotation2d.fromDegrees(240)), new Pose2d(3.686, 2.925, Rotation2d.fromDegrees(60))), Meters.of(0.5)),
+	R2("Driving to Reef Right 2", PosePair.of(new Pose2d(13.546, 5.236, Rotation2d.fromDegrees(240)), new Pose2d(3.958, 2.760, Rotation2d.fromDegrees(60))), Meters.of(0.5)),
+	L3("Driving to Reef Left 3", PosePair.of(new Pose2d(12.540, 5.209, Rotation2d.fromDegrees(300)), new Pose2d(5.038, 2.776, Rotation2d.fromDegrees(120))), Meters.of(0.5)),
+	R3("Driving to Reef Right 3", PosePair.of(new Pose2d(12.253, 5.048, Rotation2d.fromDegrees(300)), new Pose2d(5.316, 2.934, Rotation2d.fromDegrees(120))), Meters.of(0.5)),
+	L4("Driving to Reef Left 4", PosePair.of(new Pose2d(11.717, 4.156, Rotation2d.fromDegrees(0)), new Pose2d(5.845, 3.884, Rotation2d.fromDegrees(180))), Meters.of(0.5)),
+	R4("Driving to Reef Right 4", PosePair.of(new Pose2d(11.717, 3.828, Rotation2d.fromDegrees(0)), new Pose2d(5.846, 4.208, Rotation2d.fromDegrees(180))), Meters.of(0.5)),
+	L5("Driving to Reef Left 5", PosePair.of(new Pose2d(12.271, 2.928, Rotation2d.fromDegrees(60)), new Pose2d(5.285, 5.132, Rotation2d.fromDegrees(240))), Meters.of(0.5)),
+	R5("Driving to Reef Right 5", PosePair.of(new Pose2d(12.558, 2.764, Rotation2d.fromDegrees(60)), new Pose2d(5.007, 5.291, Rotation2d.fromDegrees(240))), Meters.of(0.5)),
+	L6("Driving to Reef Left 6", PosePair.of(new Pose2d(13.602, 2.793, Rotation2d.fromDegrees(120)), new Pose2d(3.935, 5.27, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
+	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(13.912, 2.964, Rotation2d.fromDegrees(120)), new Pose2d(3.66, 5.11, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
 	//Blue Alliance (1.472, 0.847) Red Alliance (16.331, 7.004)
 	RIGHT_SOURCE("Driving to Source Right", PosePair.of(new Pose2d(16.519, 7.220, Rotation2d.fromDegrees(-126)), new Pose2d(0.983, 0.818, Rotation2d.fromDegrees(54))), Meters.of(1)),
 	//Blue Alliance (1.511, 7.194) Red Alliance (16.263, 0.983)
