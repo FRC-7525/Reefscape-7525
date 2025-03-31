@@ -4,12 +4,18 @@ import static edu.wpi.first.units.Units.DegreesPerSecond;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.AngularVelocity;
+import frc.robot.RobotState;
+
 import java.util.Set;
 
 public class VisionConstants {
@@ -18,6 +24,10 @@ public class VisionConstants {
 		HIGH_RESOLUTION,
 		NORMAL,
 	}
+
+	public record VisionMeasurment (Pose2d pose, double timestamp, Matrix<N3, N1> standardDev) {}
+
+	
 
 	// Front Left
 	public static final String FRONT_LEFT_CAM_NAME = "Front Left Camera";
@@ -42,6 +52,26 @@ public class VisionConstants {
 	public static final Translation3d ROBOT_TO_BACK_RIGHT_CAMERA_TRALSLATION = new Translation3d(Units.inchesToMeters(-11.697), Units.inchesToMeters(-11.81), Units.inchesToMeters(8.859));
 	public static final Rotation3d ROBOT_TO_BACK_RIGHT_CAMERA_ROTATION = new Rotation3d(0, Math.toRadians(-10), Math.toRadians(180));
 	public static final Transform3d ROBOT_TO_BACK_RIGHT_CAMERA = new Transform3d(ROBOT_TO_BACK_RIGHT_CAMERA_TRALSLATION, ROBOT_TO_BACK_RIGHT_CAMERA_ROTATION);
+
+	public static final VisionIO[] FRONT_SIM_IOS = new VisionIO[] {
+		new VisionIOPhotonVisionSim(FRONT_LEFT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA, RobotState::getPose),
+		new VisionIOPhotonVisionSim(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_RIGHT_CAMERA, RobotState::getPose),
+	};
+
+	public static  final VisionIO[] BACK_SIM_IOS = new VisionIO[] {
+		new VisionIOPhotonVisionSim(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA, RobotState::getPose),
+		new VisionIOPhotonVisionSim(BACK_RIGHT_CAM_NAME, ROBOT_TO_BACK_RIGHT_CAMERA, RobotState::getPose),
+	};
+
+	public static final VisionIO[] FRONT_REAL_IOS = new VisionIO[] {
+		new VisionIOPhotonVision(FRONT_LEFT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA),
+		new VisionIOPhotonVision(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_RIGHT_CAMERA),
+	};
+
+	public static final VisionIO[] BACK_REAL_IOS = new VisionIO[] {
+		new VisionIOPhotonVision(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA),
+		new VisionIOPhotonVision(BACK_RIGHT_CAM_NAME, ROBOT_TO_BACK_RIGHT_CAMERA),
+	};
 
 	public static final double CAMERA_DEBOUNCE_TIME = 0.5;
 

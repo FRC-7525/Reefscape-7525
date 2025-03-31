@@ -7,16 +7,8 @@ import static frc.robot.SubsystemManager.SubsystemManagerStates.*;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.Robot;
-import frc.robot.Subsystems.AutoAlign.AATypeManager.AATypeManager;
-import frc.robot.Subsystems.AutoAlign.AutoAlign;
-import frc.robot.Subsystems.Coraler.Coraler;
-import frc.robot.Subsystems.Drive.Drive;
-import frc.robot.Subsystems.Elevator.Elevator;
-import frc.robot.Subsystems.LED.LED;
-import frc.robot.Subsystems.Passthrough.Passthrough;
-import frc.robot.Subsystems.Vision.Vision;
+import frc.robot.RobotState;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.misc.Tracer;
 import org.team7525.subsystem.Subsystem;
@@ -24,15 +16,6 @@ import org.team7525.subsystem.Subsystem;
 public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 	private static SubsystemManager instance = new SubsystemManager();
-
-	private final Drive drive = Drive.getInstance();
-	private final Elevator elevator = Elevator.getInstance();
-	private final Coraler coraler = Coraler.getInstance();
-	private final AutoAlign autoAlign = AutoAlign.getInstance();
-	private final Vision vision = Vision.getInstance();
-	private final AATypeManager aaTypeManager = AATypeManager.getInstance();
-	private final LED ledSubsystem = LED.getInstance();
-	private final Passthrough passthrough = Passthrough.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -111,15 +94,15 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		});
 
 		// TODO: is near goal sorce needed??
-		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> autoAlign.nearGoalSource());
+		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> RobotState.getAutoAlign().nearGoalSource());
 		// TODO: Breaks sim bc func is messed up in sim :Skull:
-		addTrigger(INTAKING_CORALER, IDLE, () -> bouncing.calculate(coraler.hasGamepiece()));
+		addTrigger(INTAKING_CORALER, IDLE, () -> bouncing.calculate(RobotState.getCoraler().hasGamepiece()));
 		// addTrigger(INTAKING_CORALER, IDLE, () -> coraler.currentSenseGamepiece() && AutoAlign.getInstance().nearGoalSource2() && getStateTime() > 0.5);
 		addTrigger(IDLE, OUTTAKING, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() > 0.8);
 
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);
-		addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || bouncing.calculate(coraler.hasGamepiece()));
+		addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || bouncing.calculate(RobotState.getCoraler().hasGamepiece()));
 		// addTrigger(INTAKING_CORALER_AA_OFF, IDLE, () -> DRIVER_CONTROLLER.getXButtonPressed() || coraler.currentSenseGamepiece());
 
 		// Scoring Reef Manual
@@ -129,28 +112,28 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(SCORING_REEF_MANUAL, IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 		// Auto ONLY transition
 		// addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
-		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && elevator.nearTarget());
+		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && RobotState.getElevator().nearTarget());
 		// Uncomment if excessive overshoot
 		// addTrigger(INTAKING_CORALER_AA_OFF, INTAKING_CORALER, () -> DriverStation.isAutonomous() && !AutoAlign.getInstance().nearGoal()); // TODO check if this needs to be removed after during comp
 
 		// Scoring Reef Auto Align
 		// See if odo is good enough to ALWAYS automatically score, otherwise we just have driver click y after minior adjustments
 		addTrigger(IDLE, AUTO_ALIGN_FAR, DRIVER_CONTROLLER::getYButtonPressed);
-		addTrigger(AUTO_ALIGN_FAR, AUTO_ALIGN_CLOSE, autoAlign::readyForClose);
-		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, autoAlign::nearGoal);
+		addTrigger(AUTO_ALIGN_FAR, AUTO_ALIGN_CLOSE, RobotState.getAutoAlign()::readyForClose);
+		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, RobotState.getAutoAlign()::nearGoal);
 		//If the robot barely moves from its position for a certain time threshold, just move onto the next state
 		//TODO: Barely tested and tuned, comment out if bum
 		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, () -> {
-			return autoAlign.timedOut() && DriverStation.isAutonomous();
+			return RobotState.getAutoAlign().timedOut() && DriverStation.isAutonomous();
 		});
 		addTrigger(AUTO_ALIGN_CLOSE, SCORING_REEF_MANUAL, () -> {
-			return autoAlign.timedOut() && !DriverStation.isAutonomous();
+			return RobotState.getAutoAlign().timedOut() && !DriverStation.isAutonomous();
 		});
 		// Zero Elevator
 		// TODO: Test
 		// Not testing all that :laughing cat emoji:
 		addTrigger(IDLE, ZEROING_ELEVATOR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4));
-		addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || elevator.zeroed());
+		addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || RobotState.getElevator().zeroed());
 	}
 
 	public static SubsystemManager getInstance() {
@@ -220,21 +203,22 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		}
 
 		// Set States, drive and vision are rogue so you don't need to set state
-		elevator.setState(getState().getElevatorStateSupplier().get());
-		coraler.setState(getState().getCoralerState());
-		autoAlign.setState(getState().getAutoAlignSupplier().get());
-		ledSubsystem.setState(getState().getLedStateSupplier().get());
-		passthrough.setState(getState().getPassthroughState());
+		RobotState.getElevator().setState(getState().getElevatorStateSupplier().get());
+		RobotState.getCoraler().setState(getState().getCoralerState());
+		RobotState.getAutoAlign().setState(getState().getAutoAlignSupplier().get());
+		RobotState.getLED().setState(getState().getLedStateSupplier().get());
+		RobotState.getPassthrough().setState(getState().getPassthroughState());
 
 		// Periodics
-		Tracer.traceFunc("AutoAlignPeriodic", autoAlign::periodic);
-		Tracer.traceFunc("ElevatorPeriodic", elevator::periodic);
-		Tracer.traceFunc("CoralerPeriodic", coraler::periodic);
-		Tracer.traceFunc("VisionPeriodic", vision::periodic);
-		Tracer.traceFunc("DrivePeriodic", drive::periodic);
-		Tracer.traceFunc("AATypeManagerPeriodic", aaTypeManager::periodic);
-		Tracer.traceFunc("LEDPeriodic", ledSubsystem::periodic);
-		Tracer.traceFunc("PassthroughPeriodic", passthrough::periodic);
+		Tracer.traceFunc("AutoAlignPeriodic", RobotState.getAutoAlign()::periodic);
+		Tracer.traceFunc("ElevatorPeriodic", RobotState.getElevator()::periodic);
+		Tracer.traceFunc("CoralerPeriodic", RobotState.getCoraler()::periodic);
+		Tracer.traceFunc("FrontVisionPeriodic", RobotState.getFrontVision()::periodic);
+		Tracer.traceFunc("BackVisionPeriodic", RobotState.getBackVision()::periodic);
+		Tracer.traceFunc("DrivePeriodic", RobotState.getDrive()::periodic);
+		Tracer.traceFunc("AATypeManagerPeriodic", RobotState.getAATypeManager()::periodic);
+		Tracer.traceFunc("LEDPeriodic", RobotState.getLED()::periodic);
+		Tracer.traceFunc("PassthroughPeriodic", RobotState.getPassthrough()::periodic);
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(5)) {
