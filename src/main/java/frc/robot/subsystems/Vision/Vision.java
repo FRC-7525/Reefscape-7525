@@ -22,9 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
-
 import org.littletonrobotics.junction.Logger;
-
 
 public class Vision {
 
@@ -86,8 +84,8 @@ public class Vision {
 
 		processVision();
 		// Log summary data
-		Logger.recordOutput(subsystemName+ "/Summary/TagPoses", allTagPoses.toArray(new Pose3d[allTagPoses.size()]));
-		Logger.recordOutput(subsystemName+ "/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[allRobotPoses.size()]));
+		Logger.recordOutput(subsystemName + "/Summary/TagPoses", allTagPoses.toArray(new Pose3d[allTagPoses.size()]));
+		Logger.recordOutput(subsystemName + "/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[allRobotPoses.size()]));
 		Logger.recordOutput(subsystemName + "/Summary/RobotPosesAccepted", allRobotPosesAccepted.toArray(new Pose3d[allRobotPosesAccepted.size()]));
 		Logger.recordOutput(subsystemName + "/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
 	}
@@ -117,10 +115,10 @@ public class Vision {
 				// Check whether to reject pose
 				boolean rejectPose = shouldBeRejected(observation);
 
-				Logger.recordOutput(subsystemName +"/Camera" + Integer.toString(cameraIndex) + "/Tag Count", observation.tagCount() == 0);
-				Logger.recordOutput(subsystemName +"/Camera" + Integer.toString(cameraIndex) + "/Ambiguous", (observation.tagCount() == 1 && observation.ambiguity() > maxAmbiguity));
-				Logger.recordOutput(subsystemName +"/Camera" + Integer.toString(cameraIndex) + "/Outside of Field X", observation.pose().getX() < 0.0 || observation.pose().getX() > APRIL_TAG_FIELD_LAYOUT.getFieldLength());
-				Logger.recordOutput(subsystemName+ "/Camera" + Integer.toString(cameraIndex) + "/Outside of Field Y", observation.pose().getY() < 0.0 || observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth());
+				Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/Tag Count", observation.tagCount() == 0);
+				Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/Ambiguous", (observation.tagCount() == 1 && observation.ambiguity() > maxAmbiguity));
+				Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/Outside of Field X", observation.pose().getX() < 0.0 || observation.pose().getX() > APRIL_TAG_FIELD_LAYOUT.getFieldLength());
+				Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/Outside of Field Y", observation.pose().getY() < 0.0 || observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth());
 
 				// Add pose to log
 				robotPoses.add(observation.pose());
@@ -149,18 +147,16 @@ public class Vision {
 				//254 standard dev
 				Matrix<N3, N1> visionStandardDev = calculateStandardDev(observation);
 
-
 				// Send vision observation
 				estimatorConsumer.accept(new VisionMeasurment(observation.pose().toPose2d(), observation.timestamp(), visionStandardDev));
-
 				// Drive.getInstance().addVisionMeasurement(observation.pose().toPose2d(), observation.timestamp(), visionStandardDev);
 			}
 
 			// Log camera datadata
 			Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/TagPoses", tagPoses.toArray(new Pose3d[tagPoses.size()]));
 			Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/RobotPoses", robotPoses.toArray(new Pose3d[robotPoses.size()]));
-			Logger.recordOutput(subsystemName +"/Camera" + Integer.toString(cameraIndex) + "/RobotPosesAccepted", robotPosesAccepted.toArray(new Pose3d[robotPosesAccepted.size()]));
-			Logger.recordOutput(subsystemName +"/Camera" + Integer.toString(cameraIndex) + "/RobotPosesRejected", robotPosesRejected.toArray(new Pose3d[robotPosesRejected.size()]));
+			Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/RobotPosesAccepted", robotPosesAccepted.toArray(new Pose3d[robotPosesAccepted.size()]));
+			Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/RobotPosesRejected", robotPosesRejected.toArray(new Pose3d[robotPosesRejected.size()]));
 
 			allTagPoses.addAll(tagPoses);
 			allRobotPoses.addAll(robotPoses);

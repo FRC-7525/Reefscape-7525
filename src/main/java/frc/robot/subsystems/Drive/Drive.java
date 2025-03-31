@@ -133,22 +133,12 @@ public class Drive extends Subsystem<DriveStates> {
 
 		angularVelocity *= scaleFactor;
 
-		driveIO.setControl(
-			new SwerveRequest.FieldCentric()
-				.withDeadband(DEADBAND)
-				.withVelocityX(xVelocity)
-				.withVelocityY(yVelocity)
-				.withRotationalRate(angularVelocity)
-				.withDriveRequestType(SwerveModule.DriveRequestType.Velocity)
-				.withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo)
-		);
+		driveIO.setControl(new SwerveRequest.FieldCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(angularVelocity).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
 	}
 
-	
 	public void driveRobotRelative(double xVelocity, double yVelocity, double angularVelocity) {
 		driveIO.setControl(new SwerveRequest.RobotCentric().withDeadband(DEADBAND).withVelocityX(xVelocity).withVelocityY(yVelocity).withRotationalRate(angularVelocity).withDriveRequestType(SwerveModule.DriveRequestType.Velocity).withSteerRequestType(SwerveModule.SteerRequestType.MotionMagicExpo));
 	}
-
 
 	public void zeroGyro() {
 		driveIO.zeroGyro();
