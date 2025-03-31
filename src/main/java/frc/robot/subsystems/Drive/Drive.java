@@ -39,6 +39,7 @@ import frc.robot.Subsystems.AutoAlign.AutoAlignStates;
 import frc.robot.Subsystems.Drive.DriveIOInputsAutoLogged;
 import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Elevator.ElevatorConstants;
 import frc.robot.Subsystems.Elevator.ElevatorStates;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
@@ -185,6 +186,17 @@ public class Drive extends Subsystem<DriveStates> {
 	 * @param useHeadingCorrection Whether to use the heading correction controller.
 	 */
 	public void driveFieldRelative(double xVelocity, double yVelocity, double angularVelocity, boolean useHeadingCorrection, boolean useDecelerationLimit) {
+		//Reduces angular velocity if elevator is above certain height
+		//TODO: Needs to be tuned
+		final double height = Elevator.getInstance().getHeight().in(Inches);
+		double scaleFactor =
+			((ElevatorConstants.L3_HEIGHT.in(Inches) - height + (ElevatorConstants.L4_HEIGHT.in(Inches) - ElevatorConstants.L3_HEIGHT.in(Inches)) * ANGULAR_VELOCITY_SCALE_FACTOR)) / (ElevatorConstants.L4_HEIGHT.in(Inches) - ElevatorConstants.L3_HEIGHT.in(Inches) * ANGULAR_VELOCITY_SCALE_FACTOR);
+
+		if (scaleFactor > 1) scaleFactor = 1;
+		if (scaleFactor < MIN_SCALE_FACTOR) scaleFactor = MIN_SCALE_FACTOR;
+
+		angularVelocity *= scaleFactor;
+
 		double omega = angularVelocity;
 		if (useHeadingCorrection) {
 			if (Math.abs(omega) == 0.0 && (Math.abs(xVelocity) > DEADBAND || Math.abs(yVelocity) > DEADBAND)) {

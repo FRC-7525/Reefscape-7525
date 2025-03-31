@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.GlobalConstants.Controllers.DRIVER_CONTROLLER;
 import static frc.robot.GlobalConstants.SIMULATION_PERIOD;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.Sim.*;
@@ -79,6 +80,13 @@ public class ElevatorIOSim implements ElevatorIO {
 	@Override
 	public void runElevator() {
 		appliedVoltage = pidController.calculate(leftMotor.getPosition().getValue().in(Rotations) * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
+		double leftAxis = DRIVER_CONTROLLER.getLeftTriggerAxis();
+		double rightAxis = DRIVER_CONTROLLER.getRightTriggerAxis();
+		if (leftAxis > TRIGGER_THRESHOLD) {
+			appliedVoltage = 3 * -leftAxis;
+		} else if (rightAxis > TRIGGER_THRESHOLD) {
+			appliedVoltage = 6 * rightAxis;
+		}
 		elevatorSim.setInput(appliedVoltage);
 		elevatorSim.update(SIMULATION_PERIOD);
 		Logger.recordOutput("Elevator/applied volts", appliedVoltage);
@@ -128,5 +136,15 @@ public class ElevatorIOSim implements ElevatorIO {
 	@Override
 	public void resetController() {
 		pidController.reset(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
+	}
+
+	@Override
+	public void zeroing() {
+		return;
+	}
+
+	@Override
+	public boolean nearZero() {
+		return true;
 	}
 }
