@@ -29,10 +29,10 @@ public class RobotState {
 
 	private RobotState() {
 		driveProvider = Drive::getInstance;
+        autoAlignProvider = AutoAlign::getInstance;
 		ledProvider = LED::getInstance;
 		coralerProvider = Coraler::getInstance;
 		elevatorProvider = Elevator::getInstance;
-		autoAlignProvider = AutoAlign::getInstance;
 		passthroughProvider = Passthrough::getInstance;
 		aaTypeManager = AATypeManager::getInstance;
 		frontVisionProvider = () -> new Vision("Front Vision", visionMeasurment -> System.out.println("TODO: steal 6328"), ROBOT_MODE == RobotMode.REAL ? FRONT_REAL_IOS : FRONT_SIM_IOS);
