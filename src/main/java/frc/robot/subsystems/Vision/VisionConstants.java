@@ -30,7 +30,6 @@ public class VisionConstants {
 
 	public static final AprilTagFieldLayout APRIL_TAG_FIELD_LAYOUT = AprilTagFieldLayout.loadField(USE_WELDED_FIELD ? AprilTagFields.k2025ReefscapeWelded : AprilTagFields.k2025ReefscapeAndyMark);
 
-
 	public record VisionMeasurment(Pose2d pose, double timestamp, Matrix<N3, N1> standardDev) {}
 
 	// Front Left
@@ -73,7 +72,6 @@ public class VisionConstants {
 	public static final CameraResolution BACK_RESOLUTION = CameraResolution.HIGH_RESOLUTION;
 	public static final CameraResolution FRONT_RESOLUTION = CameraResolution.HIGH_RESOLUTION;
 
-	
 	public static final int CAMERA_WIDTH = 1200;
 	public static final int CAMERA_HEIGHT = 800;
 	public static final Rotation2d CAMERA_FOV = Rotation2d.fromDegrees(84.47);
