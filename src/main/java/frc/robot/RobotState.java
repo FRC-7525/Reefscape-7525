@@ -27,17 +27,7 @@ public class RobotState {
 		T get();
 	}
 
-	private RobotState() {
-		driveProvider = Drive::getInstance;
-        autoAlignProvider = AutoAlign::getInstance;
-		ledProvider = LED::getInstance;
-		coralerProvider = Coraler::getInstance;
-		elevatorProvider = Elevator::getInstance;
-		passthroughProvider = Passthrough::getInstance;
-		aaTypeManager = AATypeManager::getInstance;
-		frontVisionProvider = () -> new Vision("Front Vision", visionMeasurment -> System.out.println("TODO: steal 6328"), ROBOT_MODE == RobotMode.REAL ? FRONT_REAL_IOS : FRONT_SIM_IOS);
-		backVisionProvider = () -> new Vision("Back Vision", visionMeasurment -> getDrive().addVisionMeasurement(visionMeasurment.pose(), visionMeasurment.timestamp(), visionMeasurment.standardDev()), ROBOT_MODE == RobotMode.REAL ? BACK_REAL_IOS : BACK_SIM_IOS);
-	}
+	private RobotState() {}
 
 	public RobotState getState() {
 		if (instance == null) {
@@ -48,38 +38,65 @@ public class RobotState {
 
 	// if u want to access subsystems directly
 	public static Drive getDrive() {
+        if (driveProvider == null) {
+            driveProvider = Drive::getInstance;
+        }
 		return (Drive) driveProvider.get();
 	}
 
 	public static LED getLED() {
+        if (ledProvider == null) {
+            ledProvider = LED::getInstance;
+        }
 		return (LED) ledProvider.get();
 	}
 
 	public static Coraler getCoraler() {
+        if (coralerProvider == null) {
+            coralerProvider = Coraler::getInstance;
+        }
 		return (Coraler) coralerProvider.get();
 	}
 
 	public static Elevator getElevator() {
+        if (elevatorProvider == null) {
+            elevatorProvider = Elevator::getInstance;
+        }
 		return (Elevator) elevatorProvider.get();
 	}
 
 	public static AutoAlign getAutoAlign() {
+        if (autoAlignProvider == null) {
+            autoAlignProvider = AutoAlign::getInstance;
+        }
 		return (AutoAlign) autoAlignProvider.get();
 	}
 
 	public static Passthrough getPassthrough() {
+        if (passthroughProvider == null) {
+            passthroughProvider = Passthrough::getInstance;
+        }
 		return (Passthrough) passthroughProvider.get();
 	}
 
 	public static Vision getFrontVision() {
+        if (frontVisionProvider == null) {
+            frontVisionProvider = () -> new Vision("Front Vision", visionMeasurment -> System.out.println("TODO: steal 6328"), ROBOT_MODE == RobotMode.REAL ? FRONT_REAL_IOS : FRONT_SIM_IOS);
+        }
 		return (Vision) frontVisionProvider.get();
 	}
 
 	public static Vision getBackVision() {
+        if (backVisionProvider == null) {
+            backVisionProvider = () -> new Vision("Back Vision", visionMeasurment -> getDrive().addVisionMeasurement(visionMeasurment.pose(), visionMeasurment.timestamp(), visionMeasurment.standardDev()), ROBOT_MODE == RobotMode.REAL ? BACK_REAL_IOS : BACK_SIM_IOS);
+        }
 		return (Vision) backVisionProvider.get();
 	}
 
 	public static AATypeManager getAATypeManager() {
+        if (aaTypeManager == null) {
+            aaTypeManager = AATypeManager::getInstance;
+        }
 		return (AATypeManager) aaTypeManager.get();
 	}
 
