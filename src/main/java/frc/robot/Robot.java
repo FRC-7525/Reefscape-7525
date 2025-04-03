@@ -1,15 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
-// Brown Power
-// Blue ground
-// Black Sensor
-
-//Talon
-//Red power
-//Black ground
-//White sensor
 package frc.robot;
 
 import static frc.robot.SubsystemManager.SubsystemManagerStates.IDLE;
@@ -19,9 +7,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.AutoManager.AutoManager;
-// import frc.robot.FaultManager.FaultManager;
-// import frc.robot.GlobalConstants.FaultManagerConstants;
-// import frc.robot.MusicManager.MusicManager;
 import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
 import frc.robot.Subsystems.Drive.Drive;
@@ -38,9 +23,6 @@ public class Robot extends LoggedRobot {
 	private final AutoManager autoManager = AutoManager.getInstance();
 
 	public static boolean isRedAlliance = true;
-
-	// private final MusicManager musicManager = MusicManager.getInstance();
-	// private final FaultManager faultManager = FaultManager.getInstance();
 
 	@Override
 	public void robotInit() {
@@ -62,7 +44,6 @@ public class Robot extends LoggedRobot {
 		CommandsUtil.logCommands();
 		DriverStation.silenceJoystickConnectionWarning(true);
 		CommandScheduler.getInstance().unregisterAllSubsystems();
-		// FaultManager.getInstance().calibrateDeviceOrder(FaultManagerConstants.CANIVORE_DEVICE_ORDER, "CANivore");
 		FollowPathCommand.warmupCommand().schedule();
 		System.gc();
 		Drive.getInstance().zeroGyro();
@@ -80,8 +61,6 @@ public class Robot extends LoggedRobot {
 	public void autonomousInit() {
 		autoManager.setFinishedAuto(false);
 		autoManager.setOrderInRoutine(0);
-		// musicManager.stopMusic();
-		// musicManager.removeAllMotors();
 	}
 
 	@Override
@@ -96,9 +75,6 @@ public class Robot extends LoggedRobot {
 
 	@Override
 	public void teleopInit() {
-		// UN COMMENT FOR MUSIC MANAGER
-		// musicManager.stopMusic();
-		// musicManager.removeAllMotors();
 		autoManager.setFinishedAuto(true);
 		manager.setState(IDLE);
 	}
@@ -115,37 +91,10 @@ public class Robot extends LoggedRobot {
 	public void disabledPeriodic() {
 		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 		AutoAlign.getInstance().setConstants();
-		// UN COMMENT FOR MUSIC MANAGER
-		// if (musicManager.playMusicEnabled()) {
-		// 	musicManager.playMusic();
-		// }
-
-		// if (!musicManager.hasInstruments() && musicManager.playMusicEnabled()) {
-		// 	musicManager.addAllSubsystemInstruments();
-		// }
-
-		// UN COMMENT FOR FAULT MANAGER
-		// Tracer.traceFunc("FaultManager", faultManager::periodic);
 	}
 
 	@Override
 	public void disabledExit() {
 		isRedAlliance = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red;
 	}
-
-	@Override
-	public void testInit() {
-		// UN COMMENT FOR MUSIC MANAGER
-		// musicManager.stopMusic();
-		// musicManager.removeAllMotors();
-	}
-
-	@Override
-	public void testPeriodic() {}
-
-	@Override
-	public void simulationInit() {}
-
-	@Override
-	public void simulationPeriodic() {}
 }

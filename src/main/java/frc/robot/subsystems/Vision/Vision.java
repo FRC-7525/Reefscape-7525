@@ -1,7 +1,6 @@
 package frc.robot.Subsystems.Vision;
 
 import static edu.wpi.first.units.Units.DegreesPerSecond;
-import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Vision.VisionConstants.*;
 
 import edu.wpi.first.math.Matrix;
@@ -13,26 +12,26 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.SubsystemManager.SubsystemManager;
 import frc.robot.SubsystemManager.SubsystemManagerStates;
 import frc.robot.Subsystems.Drive.Drive;
+import frc.robot.Subsystems.Vision.VisionConstants.VisionMeasurment;
 import frc.robot.Subsystems.Vision.VisionIO.PoseObservation;
-import frc.robot.Subsystems.Vision.VisionIOInputsAutoLogged;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import org.littletonrobotics.junction.Logger;
 
-public class Vision extends SubsystemBase {
+public class Vision {
 
 	// Akit my savior
 	private final VisionIO[] io;
 	private final VisionIOInputsAutoLogged[] inputs;
 	private final Alert[] disconnectedAlerts;
+	private final Consumer<VisionMeasurment> estimatorConsumer;
+	private String subsystemName;
 
 	List<Pose3d> allTagPoses = new LinkedList<>();
 	List<Pose3d> allRobotPoses = new LinkedList<>();
@@ -41,33 +40,10 @@ public class Vision extends SubsystemBase {
 
 	Set<Short> allianceReefTag = Robot.isRedAlliance ? RED_REEF_TAGS : BLUE_REEF_TAGS;
 
-	private static Vision instance;
-
-	public static Vision getInstance() {
-		if (instance == null) {
-			instance = new Vision(
-				switch (ROBOT_MODE) {
-					case REAL -> new VisionIO[] {
-						new VisionIOPhotonVision(FRONT_LEFT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA),
-						new VisionIOPhotonVision(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_RIGHT_CAMERA),
-						// new VisionIOPhotonVision(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA),
-						// new VisionIOPhotonVision(BACK_RIGHT_CAM_NAME, ROBOT_TO_BACK_RIGHT_CAMERA),
-					};
-					case SIM -> new VisionIO[] {
-						new VisionIOPhotonVisionSim(FRONT_LEFT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA, Drive.getInstance()::getPose),
-						// new VisionIOPhotonVisionSim(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_RIGHT_CAMERA, Drive.getInstance()::getPose),
-						// new VisionIOPhotonVisionSim(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA, Drive.getInstance()::getPose),
-						// new VisionIOPhotonVisionSim(BACK_RIGHT_CAM_NAME, ROBOT_TO_BACK_RIGHT_CAMERA, Drive.getInstance()::getPose),
-					};
-					case TESTING -> new VisionIO[] { new VisionIOPhotonVision(FRONT_RIGHT_CAM_NAME, ROBOT_TO_FRONT_LEFT_CAMERA), new VisionIOPhotonVision(BACK_LEFT_CAM_NAME, ROBOT_TO_BACK_LEFT_CAMERA) };
-				}
-			);
-		}
-		return instance;
-	}
-
-	private Vision(VisionIO... io) {
+	public Vision(String subsystemName, Consumer<VisionMeasurment> estimateConsumer, VisionIO... io) {
 		this.io = io;
+		this.subsystemName = subsystemName;
+		this.estimatorConsumer = estimateConsumer;
 
 		// Initialize inputs
 		this.inputs = new VisionIOInputsAutoLogged[io.length];
@@ -92,7 +68,6 @@ public class Vision extends SubsystemBase {
 		return inputs[cameraIndex].latestTargetObservation.tx();
 	}
 
-	@Override
 	public void periodic() {
 		allianceReefTag = Robot.isRedAlliance ? RED_REEF_TAGS : BLUE_REEF_TAGS;
 
@@ -109,10 +84,10 @@ public class Vision extends SubsystemBase {
 
 		processVision();
 		// Log summary data
-		Logger.recordOutput("Vision/Summary/TagPoses", allTagPoses.toArray(new Pose3d[allTagPoses.size()]));
-		Logger.recordOutput("Vision/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[allRobotPoses.size()]));
-		Logger.recordOutput("Vision/Summary/RobotPosesAccepted", allRobotPosesAccepted.toArray(new Pose3d[allRobotPosesAccepted.size()]));
-		Logger.recordOutput("Vision/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
+		Logger.recordOutput(subsystemName + "/Summary/TagPoses", allTagPoses.toArray(new Pose3d[allTagPoses.size()]));
+		Logger.recordOutput(subsystemName + "/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[allRobotPoses.size()]));
+		Logger.recordOutput(subsystemName + "/Summary/RobotPosesAccepted", allRobotPosesAccepted.toArray(new Pose3d[allRobotPosesAccepted.size()]));
+		Logger.recordOutput(subsystemName + "/Summary/RobotPosesRejected", allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
 	}
 
 	private void processVision() {
@@ -140,10 +115,10 @@ public class Vision extends SubsystemBase {
 				// Check whether to reject pose
 				boolean rejectPose = shouldBeRejected(observation);
 
-				Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/Tag Count", observation.tagCount() == 0);
-				Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/Ambiguous", (observation.tagCount() == 1 && observation.ambiguity() > maxAmbiguity));
-				Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/Outside of Field X", observation.pose().getX() < 0.0 || observation.pose().getX() > APRIL_TAG_FIELD_LAYOUT.getFieldLength());
-				Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/Outside of Field Y", observation.pose().getY() < 0.0 || observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth());
+				Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/Tag Count", observation.tagCount() == 0);
+				Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/Ambiguous", (observation.tagCount() == 1 && observation.ambiguity() > maxAmbiguity));
+				Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/Outside of Field X", observation.pose().getX() < 0.0 || observation.pose().getX() > APRIL_TAG_FIELD_LAYOUT.getFieldLength());
+				Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/Outside of Field Y", observation.pose().getY() < 0.0 || observation.pose().getY() > APRIL_TAG_FIELD_LAYOUT.getFieldWidth());
 
 				// Add pose to log
 				robotPoses.add(observation.pose());
@@ -173,14 +148,15 @@ public class Vision extends SubsystemBase {
 				Matrix<N3, N1> visionStandardDev = calculateStandardDev(observation);
 
 				// Send vision observation
-				Drive.getInstance().addVisionMeasurement(observation.pose().toPose2d(), observation.timestamp(), visionStandardDev);
+				estimatorConsumer.accept(new VisionMeasurment(observation.pose().toPose2d(), observation.timestamp(), visionStandardDev));
+				// Drive.getInstance().addVisionMeasurement(observation.pose().toPose2d(), observation.timestamp(), visionStandardDev);
 			}
 
 			// Log camera datadata
-			Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/TagPoses", tagPoses.toArray(new Pose3d[tagPoses.size()]));
-			Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPoses", robotPoses.toArray(new Pose3d[robotPoses.size()]));
-			Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPosesAccepted", robotPosesAccepted.toArray(new Pose3d[robotPosesAccepted.size()]));
-			Logger.recordOutput("Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPosesRejected", robotPosesRejected.toArray(new Pose3d[robotPosesRejected.size()]));
+			Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/TagPoses", tagPoses.toArray(new Pose3d[tagPoses.size()]));
+			Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/RobotPoses", robotPoses.toArray(new Pose3d[robotPoses.size()]));
+			Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/RobotPosesAccepted", robotPosesAccepted.toArray(new Pose3d[robotPosesAccepted.size()]));
+			Logger.recordOutput(subsystemName + "/Camera" + Integer.toString(cameraIndex) + "/RobotPosesRejected", robotPosesRejected.toArray(new Pose3d[robotPosesRejected.size()]));
 
 			allTagPoses.addAll(tagPoses);
 			allRobotPoses.addAll(robotPoses);

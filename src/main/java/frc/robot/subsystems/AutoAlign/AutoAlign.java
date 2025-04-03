@@ -147,9 +147,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 		// Apply drive commands with alliance compensation
 		if (Robot.isRedAlliance) {
-			drive.driveFieldRelative(-translationVelocity.getX(), -translationVelocity.getY(), thetaVelocity, false, false);
+			drive.driveFieldRelative(-translationVelocity.getX(), -translationVelocity.getY(), thetaVelocity);
 		} else {
-			drive.driveFieldRelative(translationVelocity.getX(), translationVelocity.getY(), thetaVelocity, false, false);
+			drive.driveFieldRelative(translationVelocity.getX(), translationVelocity.getY(), thetaVelocity);
 		}
 	}
 
@@ -169,9 +169,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/TranslationRepulsor Y", targetSpeeds.vyMetersPerSecond);
 		// No more race conditions :Sob:
 		if (Robot.isRedAlliance) {
-			drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
+			drive.driveFieldRelative(-targetSpeeds.vxMetersPerSecond, -targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond);
 		} else {
-			drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond, false, false);
+			drive.driveFieldRelative(targetSpeeds.vxMetersPerSecond, targetSpeeds.vyMetersPerSecond, targetSpeeds.omegaRadiansPerSecond);
 		}
 	}
 

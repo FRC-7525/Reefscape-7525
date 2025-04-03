@@ -24,7 +24,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	private ElevatorIOInputsAutoLogged inputs;
 
 	private boolean doneZeroing = false;
-	private Debouncer zeroDebouncer = new Debouncer(0.5, DebounceType.kRising);
+	private Debouncer zeroDebouncer = new Debouncer(CURRENT_ZERO_DEBOUNCE_TIME, DebounceType.kRising);
 
 	private Elevator() {
 		super(SUBSYSTEM_NAME, ElevatorStates.IDLE);
