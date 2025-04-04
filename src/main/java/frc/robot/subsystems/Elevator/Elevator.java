@@ -23,9 +23,6 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	private ElevatorIO io;
 	private ElevatorIOInputsAutoLogged inputs;
 
-	private boolean doneZeroing = false;
-	private Debouncer zeroDebouncer = new Debouncer(CURRENT_ZERO_DEBOUNCE_TIME, DebounceType.kRising);
-
 	private Elevator() {
 		super(SUBSYSTEM_NAME, ElevatorStates.IDLE);
 		this.io = switch (ROBOT_MODE) {
@@ -47,7 +44,6 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	protected void runState() {
 		if (getState() == ElevatorStates.ZEROING) {
 			io.zeroing();
-			return;
 		} else {
 			io.setHeightGoalpoint(getState().getTargetHeight());
 			io.runElevator();
@@ -95,10 +91,6 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		return io.getRightMotor();
 	}
 
-	public boolean zeroed() {
-		return zeroDebouncer.calculate(io.nearZero());
-	}
-
 	public double getStateTime() {
 		return getStateTime();
 	}
@@ -106,5 +98,9 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	@Override
 	public void stateExit() {
 		io.resetController();
+
+		if (getState() == ElevatorStates.ZEROING) {
+			io.zero();
+		}
 	}
 }

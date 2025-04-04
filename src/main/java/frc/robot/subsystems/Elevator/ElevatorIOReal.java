@@ -177,8 +177,8 @@ public class ElevatorIOReal implements ElevatorIO {
 
 	@Override
 	public void zeroing() {
-		leftMotor.set(-0.15);
-		rightMotor.set(-0.15);
+		leftMotor.set(ZEROING_SPEED);
+		rightMotor.set(ZEROING_SPEED);
 	}
 
 	@Override

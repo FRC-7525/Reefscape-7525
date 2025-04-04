@@ -100,7 +100,8 @@ public class ElevatorIOSim implements ElevatorIO {
 
 	@Override
 	public void zero() {
-		return;
+		elevatorSim.setState(0, 0);
+		elevatorSim.update(SIMULATION_PERIOD);
 	}
 
 	@Override
@@ -140,11 +141,12 @@ public class ElevatorIOSim implements ElevatorIO {
 
 	@Override
 	public void zeroing() {
-		return;
+		elevatorSim.setInput(ZEROING_SPEED);
+		elevatorSim.update(SIMULATION_PERIOD);
 	}
 
 	@Override
 	public boolean nearZero() {
-		return true;
+		return Math.abs(getHeight().in(Meters)) < 0.5;
 	}
 }
