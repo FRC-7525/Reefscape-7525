@@ -260,6 +260,5 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	}
 
 	@Override
-	protected void stateExit() {
-	}
+	protected void stateExit() {}
 }
