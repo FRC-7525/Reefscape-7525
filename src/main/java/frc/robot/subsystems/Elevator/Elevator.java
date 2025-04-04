@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
+import static frc.robot.GlobalConstants.Controllers.DRIVER_CONTROLLER;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -45,8 +46,20 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		if (getState() == ElevatorStates.ZEROING) {
 			io.zeroing();
 		} else {
-			io.setHeightGoalpoint(getState().getTargetHeight());
 			io.runElevator();
+		}
+
+		double leftAxis = DRIVER_CONTROLLER.getLeftTriggerAxis();
+		double rightAxis = DRIVER_CONTROLLER.getRightTriggerAxis();
+
+		//This way it guarantees that it will reset to 0 once you exit the state
+		if (getState() != ElevatorStates.IDLE) {
+			//TODO: Could make this a runnable trigger in SubsystemManager but does it matter?
+			if (leftAxis > TRIGGER_THRESHOLD) {
+				io.setHeightGoalpoint(io.getHeight().plus(MANUAL_HEIGHT_CHANGE));
+			} else if (rightAxis > TRIGGER_THRESHOLD) {
+				io.setHeightGoalpoint(io.getHeight().minus(MANUAL_HEIGHT_CHANGE));
+			}
 		}
 
 		io.updateInputs(inputs);
@@ -102,5 +115,11 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		if (getState() == ElevatorStates.ZEROING) {
 			io.zero();
 		}
+	}
+
+	@Override
+	protected void stateInit() {
+		//Only sets height once so that manual control works better
+		io.setHeightGoalpoint(getState().getTargetHeight());
 	}
 }

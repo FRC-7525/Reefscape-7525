@@ -115,16 +115,6 @@ public class ElevatorIOReal implements ElevatorIO {
 	public void runElevator() {
 		leftMotorVoltage = pidController.calculate(leftMotor.getPosition().getValueAsDouble() * METERS_PER_ROTATION.in(Meters));
 		//+ ffcontroller.calculate(pidController.getSetpoint().velocity);
-		double leftAxis = DRIVER_CONTROLLER.getLeftTriggerAxis();
-		double rightAxis = DRIVER_CONTROLLER.getRightTriggerAxis();
-
-		if (leftAxis > TRIGGER_THRESHOLD) {
-			leftMotorVoltage = 3 * -leftAxis;
-			System.out.println("left");
-		} else if (rightAxis > TRIGGER_THRESHOLD) {
-			leftMotorVoltage = 6 * rightAxis;
-			System.out.println("right");
-		}
 		leftMotor.setVoltage(leftMotorVoltage);
 	}
 
