@@ -34,11 +34,15 @@ public final class ElevatorConstants {
 
 	public static final double TRIGGER_THRESHOLD = 0.1;
 
-	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(MAX_VELOCITY.in(MetersPerSecond), MAX_ACCELERATION.in(MetersPerSecondPerSecond));
-	public static final LinearVelocity ZEROING_VELOCITY = InchesPerSecond.of(-3.5);
-	public static final Current ZEROING_CURRENT_LIMIT = Amps.of(25.0);
+	public static final boolean TOGGLE_MANUAL_CONTROL = true;
+	//TODO: Tune for use in real
+	//It seems that if its too small, then the change is within the PID tolerance
+	//and the elevator doesn't bother moving and so it no longer works
+	public static final Distance MANUAL_HEIGHT_CHANGE = Inches.of(0.25);
 
-	public static final double CURRENT_ZERO_DEBOUNCE_TIME = 0.5;
+	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(MAX_VELOCITY.in(MetersPerSecond), MAX_ACCELERATION.in(MetersPerSecondPerSecond));
+	//TODO: Tune in real life so that its not so fast that it slams but also fast enough
+	public static final double ZEROING_SPEED = -0.15;
 
 	public static final Distance TRANSITION_HEIGHT = Inches.of(12);
 	public static final Distance L4_HEIGHT = Inches.of(22);
