@@ -30,7 +30,7 @@ public final class ElevatorConstants {
 	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
 	// public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(10);
 	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(60);
-	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(100);
+	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(	50);
 
 	public static final double TRIGGER_THRESHOLD = 0.1;
 
@@ -41,7 +41,7 @@ public final class ElevatorConstants {
 	public static final double CURRENT_ZERO_DEBOUNCE_TIME = 0.5;
 
 	public static final Distance TRANSITION_HEIGHT = Inches.of(12);
-	public static final Distance L4_HEIGHT = Inches.of(27);
+	public static final Distance L4_HEIGHT = Inches.of(22);
 	public static final Distance L3_HEIGHT = Inches.of(18);
 	public static final Distance L2_HEIGHT = Inches.of(12.3);
 	public static final Distance L1_HEIGHT = Inches.of(10); // was 5
@@ -60,8 +60,8 @@ public final class ElevatorConstants {
 		public static final boolean SIMULATE_GRAVITY = true;
 		public static final Distance STARTING_HEIGHT = Inches.of(0);
 
-		public static final PIDCoefficients PROFILLED_PID_CONSTANTS = new PIDCoefficients(60, 2, 0, 0.2);
-		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.11, 7.09, 0.01);
+		public static final PIDCoefficients PROFILLED_PID_CONSTANTS = new PIDCoefficients(200, 0, 0, 0.2);
+		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.11, 7, 0.01);
 
 		// Sim is trolling, idk why
 		public static final Distance POSITION_TOLERANCE_SIM = Inches.of(4);
@@ -80,8 +80,10 @@ public final class ElevatorConstants {
 		public static final boolean RIGHT_STRATOR_CURRENT_LIMIT_ENABLED = true;
 		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(100);
 
-		public static final PIDCoefficients PROFILLED_PID_CONSTANTS = new PIDCoefficients(15, 0, 0, 0);
+		public static final PIDCoefficients PROFILLED_PID_CONSTANTS = new PIDCoefficients(30, 0, 1, 0);
 		// The move is prob to keep this at 0 and not bother tuning
 		// public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.61, 3.11, 0.06);
+		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.11, 4, 0.01);
+
 	}
 }
