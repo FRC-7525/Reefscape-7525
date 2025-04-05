@@ -53,7 +53,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		double rightAxis = DRIVER_CONTROLLER.getRightTriggerAxis();
 
 		//This way it guarantees that it will reset to 0 once you exit the state
-		if (getState() != ElevatorStates.IDLE) {
+		if (getState() != ElevatorStates.IDLE && TOGGLE_MANUAL_CONTROL) {
 			//TODO: Could make this a runnable trigger in SubsystemManager but does it matter?
 			if (leftAxis > TRIGGER_THRESHOLD) {
 				io.setHeightGoalpoint(io.getHeight().plus(MANUAL_HEIGHT_CHANGE));
