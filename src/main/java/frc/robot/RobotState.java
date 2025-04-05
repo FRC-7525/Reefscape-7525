@@ -81,7 +81,7 @@ public class RobotState {
 
 	public static Vision getFrontVision() {
 		if (frontVisionProvider == null) {
-			frontVisionProvider = () -> new Vision("Front Vision", visionMeasurment -> System.out.println("TODO: steal 6328"), ROBOT_MODE == RobotMode.REAL ? FRONT_REAL_IOS : FRONT_SIM_IOS);
+			frontVisionProvider = () -> new Vision("Front Vision", visionMeasurment -> {}, ROBOT_MODE == RobotMode.REAL ? FRONT_REAL_IOS : FRONT_SIM_IOS);
 		}
 		return (Vision) frontVisionProvider.get();
 	}

@@ -11,6 +11,7 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.simulation.ElevatorSim;
 import org.littletonrobotics.junction.Logger;
@@ -79,14 +80,7 @@ public class ElevatorIOSim implements ElevatorIO {
 
 	@Override
 	public void runElevator() {
-		appliedVoltage = pidController.calculate(leftMotor.getPosition().getValue().in(Rotations) * METERS_PER_ROTATION.in(Meters)) + ffcontroller.calculate(pidController.getSetpoint().velocity);
-		double leftAxis = DRIVER_CONTROLLER.getLeftTriggerAxis();
-		double rightAxis = DRIVER_CONTROLLER.getRightTriggerAxis();
-		if (leftAxis > TRIGGER_THRESHOLD) {
-			appliedVoltage = 3 * -leftAxis;
-		} else if (rightAxis > TRIGGER_THRESHOLD) {
-			appliedVoltage = 6 * rightAxis;
-		}
+		appliedVoltage = pidController.calculate(elevatorSim.getPositionMeters()) + ffcontroller.calculate(pidController.getSetpoint().velocity);
 		elevatorSim.setInput(appliedVoltage);
 		elevatorSim.update(SIMULATION_PERIOD);
 		Logger.recordOutput("Elevator/applied volts", appliedVoltage);
@@ -100,7 +94,8 @@ public class ElevatorIOSim implements ElevatorIO {
 
 	@Override
 	public void zero() {
-		return;
+		elevatorSim.setState(0, 0);
+		elevatorSim.update(SIMULATION_PERIOD);
 	}
 
 	@Override
@@ -140,11 +135,12 @@ public class ElevatorIOSim implements ElevatorIO {
 
 	@Override
 	public void zeroing() {
-		return;
+		elevatorSim.setInput(ZEROING_SPEED);
+		elevatorSim.update(SIMULATION_PERIOD);
 	}
 
 	@Override
 	public boolean nearZero() {
-		return true;
+		return Math.abs(getHeight().in(Meters)) < 0.5;
 	}
 }

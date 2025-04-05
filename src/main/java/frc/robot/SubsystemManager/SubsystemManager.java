@@ -133,7 +133,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// TODO: Test
 		// Not testing all that :laughing cat emoji:
 		addTrigger(IDLE, ZEROING_ELEVATOR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4));
-		addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4) || RobotState.getElevator().zeroed());
+		addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4));
 	}
 
 	public static SubsystemManager getInstance() {
@@ -260,9 +260,5 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	}
 
 	@Override
-	protected void stateExit() {
-		if (getState() == INTAKING_CORALER || getState() == INTAKING_CORALER_AA_OFF) {
-			setState(ZEROING_ELEVATOR);
-		}
-	}
+	protected void stateExit() {}
 }

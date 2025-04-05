@@ -1,6 +1,7 @@
 package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
+import static frc.robot.GlobalConstants.Controllers.DRIVER_CONTROLLER;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
 
@@ -23,9 +24,6 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	private ElevatorIO io;
 	private ElevatorIOInputsAutoLogged inputs;
 
-	private boolean doneZeroing = false;
-	private Debouncer zeroDebouncer = new Debouncer(CURRENT_ZERO_DEBOUNCE_TIME, DebounceType.kRising);
-
 	private Elevator() {
 		super(SUBSYSTEM_NAME, ElevatorStates.IDLE);
 		this.io = switch (ROBOT_MODE) {
@@ -47,10 +45,21 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	protected void runState() {
 		if (getState() == ElevatorStates.ZEROING) {
 			io.zeroing();
-			return;
 		} else {
-			io.setHeightGoalpoint(getState().getTargetHeight());
 			io.runElevator();
+		}
+
+		double leftAxis = DRIVER_CONTROLLER.getLeftTriggerAxis();
+		double rightAxis = DRIVER_CONTROLLER.getRightTriggerAxis();
+
+		//This way it guarantees that it will reset to 0 once you exit the state
+		if (getState() != ElevatorStates.IDLE && TOGGLE_MANUAL_CONTROL) {
+			//TODO: Could make this a runnable trigger in SubsystemManager but does it matter?
+			if (leftAxis > TRIGGER_THRESHOLD) {
+				io.setHeightGoalpoint(io.getHeight().plus(MANUAL_HEIGHT_CHANGE));
+			} else if (rightAxis > TRIGGER_THRESHOLD) {
+				io.setHeightGoalpoint(io.getHeight().minus(MANUAL_HEIGHT_CHANGE));
+			}
 		}
 
 		io.updateInputs(inputs);
@@ -95,10 +104,6 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		return io.getRightMotor();
 	}
 
-	public boolean zeroed() {
-		return zeroDebouncer.calculate(io.nearZero());
-	}
-
 	public double getStateTime() {
 		return getStateTime();
 	}
@@ -106,5 +111,15 @@ public class Elevator extends Subsystem<ElevatorStates> {
 	@Override
 	public void stateExit() {
 		io.resetController();
+
+		if (getState() == ElevatorStates.ZEROING) {
+			io.zero();
+		}
+	}
+
+	@Override
+	protected void stateInit() {
+		//Only sets height once so that manual control works better
+		io.setHeightGoalpoint(getState().getTargetHeight());
 	}
 }
