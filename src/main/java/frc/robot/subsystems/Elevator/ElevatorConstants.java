@@ -30,7 +30,7 @@ public final class ElevatorConstants {
 	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
 	// public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(10);
 	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(60);
-	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(	50);
+	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(50);
 
 	public static final double TRIGGER_THRESHOLD = 0.1;
 
@@ -88,6 +88,5 @@ public final class ElevatorConstants {
 		// The move is prob to keep this at 0 and not bother tuning
 		// public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.61, 3.11, 0.06);
 		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.11, 4, 0.01);
-
 	}
 }
