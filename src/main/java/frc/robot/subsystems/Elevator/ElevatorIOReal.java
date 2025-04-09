@@ -78,7 +78,7 @@ public class ElevatorIOReal implements ElevatorIO {
 		SmartDashboard.putData("Elevator PID controller", pidController);
 
 		leftMotor.setPosition(Degrees.of(0));
-		rightMotor.setPosition(Degrees.of(0));
+		// rightMotor.setPosition(Degrees.of(0));
 		pidController.setTolerance(POSITION_TOLERANCE.in(Meter));
 
 		rightMotor.setControl(new Follower(LEFT_MOTOR_CANID, false));
@@ -126,7 +126,7 @@ public class ElevatorIOReal implements ElevatorIO {
 	@Override
 	public void zero() {
 		leftMotor.set(0);
-		rightMotor.set(0);
+		// rightMotor.set(0);
 		leftMotor.setPosition(0);
 	}
 
@@ -168,7 +168,7 @@ public class ElevatorIOReal implements ElevatorIO {
 	@Override
 	public void zeroing() {
 		leftMotor.set(ZEROING_SPEED);
-		rightMotor.set(ZEROING_SPEED);
+		// rightMotor.set(ZEROING_SPEED);
 	}
 
 	@Override
