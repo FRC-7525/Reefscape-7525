@@ -47,7 +47,7 @@ public class CoralerIOSim implements CoralerIO {
 	}
 
 	@Override
-	public boolean currentLimitReached() { 
+	public boolean currentLimitReached() {
 		return hasGamepiece();
 	}
 
