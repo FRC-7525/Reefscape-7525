@@ -9,6 +9,8 @@ import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Robot;
 import frc.robot.RobotState;
+import frc.robot.Subsystems.Vision.Vision;
+
 import org.littletonrobotics.junction.Logger;
 import org.team7525.misc.Tracer;
 import org.team7525.subsystem.Subsystem;
@@ -16,6 +18,8 @@ import org.team7525.subsystem.Subsystem;
 public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 	private static SubsystemManager instance = new SubsystemManager();
+
+	private Vision vision = Vision.getInstance();
 
 	public Boolean leftSourceSelected = false;
 
@@ -213,6 +217,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Tracer.traceFunc("AutoAlignPeriodic", RobotState.getAutoAlign()::periodic);
 		Tracer.traceFunc("ElevatorPeriodic", RobotState.getElevator()::periodic);
 		Tracer.traceFunc("CoralerPeriodic", RobotState.getCoraler()::periodic);
+		Tracer.traceFunc("VisionPeriodic", vision::periodic);
 		// Tracer.traceFunc("FrontVisionPeriodic", RobotState.getFrontVision()::periodic);
 		// Tracer.traceFunc("BackVisionPeriodic", RobotState.getBackVision()::periodic);
 		Tracer.traceFunc("DrivePeriodic", RobotState.getDrive()::periodic);
