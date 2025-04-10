@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.Robot;
 import frc.robot.RobotState;
 import frc.robot.Subsystems.Vision.Vision;
-
 import org.littletonrobotics.junction.Logger;
 import org.team7525.misc.Tracer;
 import org.team7525.subsystem.Subsystem;
