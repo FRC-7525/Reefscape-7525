@@ -213,8 +213,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Tracer.traceFunc("AutoAlignPeriodic", RobotState.getAutoAlign()::periodic);
 		Tracer.traceFunc("ElevatorPeriodic", RobotState.getElevator()::periodic);
 		Tracer.traceFunc("CoralerPeriodic", RobotState.getCoraler()::periodic);
-		Tracer.traceFunc("FrontVisionPeriodic", RobotState.getFrontVision()::periodic);
-		Tracer.traceFunc("BackVisionPeriodic", RobotState.getBackVision()::periodic);
+		// Tracer.traceFunc("FrontVisionPeriodic", RobotState.getFrontVision()::periodic);
+		// Tracer.traceFunc("BackVisionPeriodic", RobotState.getBackVision()::periodic);
 		Tracer.traceFunc("DrivePeriodic", RobotState.getDrive()::periodic);
 		Tracer.traceFunc("AATypeManagerPeriodic", RobotState.getAATypeManager()::periodic);
 		Tracer.traceFunc("LEDPeriodic", RobotState.getLED()::periodic);
