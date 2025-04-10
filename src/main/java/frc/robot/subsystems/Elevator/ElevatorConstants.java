@@ -30,7 +30,7 @@ public final class ElevatorConstants {
 	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
 	// public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(10);
 	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(60);
-	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(150);
+	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(150)
 
 	public static final double TRIGGER_THRESHOLD = 0.1;
 
@@ -45,10 +45,10 @@ public final class ElevatorConstants {
 	public static final double ZEROING_SPEED = -0.15;
 
 	public static final Distance TRANSITION_HEIGHT = Inches.of(12);
-	public static final Distance L4_HEIGHT = Inches.of(22);
-	public static final Distance L3_HEIGHT = Inches.of(18);
-	public static final Distance L2_HEIGHT = Inches.of(12.3);
-	public static final Distance L1_HEIGHT = Inches.of(10); // was 5
+	public static final Distance L4_HEIGHT = Inches.of(23.2);
+	public static final Distance L3_HEIGHT = Inches.of(15.5);
+	public static final Distance L2_HEIGHT = Inches.of(10);
+	public static final Distance L1_HEIGHT = Inches.of(7.5); // was 5
 	public static final Distance IDLE_HEIGHT = Inches.of(0);
 
 	public static final Distance METERS_PER_ROTATION = Meters.of((1 / GEARING) * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right
