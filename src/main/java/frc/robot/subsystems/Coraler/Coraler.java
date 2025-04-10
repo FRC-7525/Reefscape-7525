@@ -40,7 +40,7 @@ public class Coraler extends Subsystem<CoralerStates> {
 	protected void runState() {
 		io.setVelocity(getState().getVelocitySupplier().get());
 		io.updateInputs(inputs);
-		Logger.processInputs(SUBSYSTEM_NAME, inputs);
+		Logger.processInputs(SUBSYSTEM_NAME, inputs);	
 
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Stator Current", io.getMotor().getStatorCurrent().getValueAsDouble());
 		Logger.recordOutput(SUBSYSTEM_NAME + "/Current Sensed?", this.currentSenseGamepiece());

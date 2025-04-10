@@ -79,19 +79,19 @@ public class RobotState {
 		return (Passthrough) passthroughProvider.get();
 	}
 
-	public static Vision getFrontVision() {
-		if (frontVisionProvider == null) {
-			frontVisionProvider = () -> new Vision("Front Vision", visionMeasurment -> {}, ROBOT_MODE == RobotMode.REAL ? FRONT_REAL_IOS : FRONT_SIM_IOS);
-		}
-		return (Vision) frontVisionProvider.get();
-	}
+	// public static Vision getFrontVision() {
+	// 	if (frontVisionProvider == null) {
+	// 		frontVisionProvider = () -> new Vision("Front Vision", visionMeasurment -> {}, ROBOT_MODE == RobotMode.REAL ? FRONT_REAL_IOS : FRONT_SIM_IOS);
+	// 	}
+	// 	return (Vision) frontVisionProvider.get();
+	// }
 
-	public static Vision getBackVision() {
-		if (backVisionProvider == null) {
-			backVisionProvider = () -> new Vision("Back Vision", visionMeasurment -> getDrive().addVisionMeasurement(visionMeasurment.pose(), visionMeasurment.timestamp(), visionMeasurment.standardDev()), ROBOT_MODE == RobotMode.REAL ? BACK_REAL_IOS : BACK_SIM_IOS);
-		}
-		return (Vision) backVisionProvider.get();
-	}
+	// public static Vision getBackVision() {
+	// 	if (backVisionProvider == null) {
+	// 		backVisionProvider = () -> new Vision("Back Vision", visionMeasurment -> getDrive().addVisionMeasurement(visionMeasurment.pose(), visionMeasurment.timestamp(), visionMeasurment.standardDev()), ROBOT_MODE == RobotMode.REAL ? BACK_REAL_IOS : BACK_SIM_IOS);
+	// 	}
+	// 	return (Vision) backVisionProvider.get();
+	// }
 
 	public static AATypeManager getAATypeManager() {
 		if (aaTypeManager == null) {
