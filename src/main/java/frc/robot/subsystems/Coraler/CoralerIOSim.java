@@ -47,13 +47,12 @@ public class CoralerIOSim implements CoralerIO {
 	}
 
 	@Override
-	public boolean currentLimitReached() { //TODO this is so buns find a better way to check this
-		// return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds) && SubsystemManager.getInstance().getState() == SubsystemManagerStates.INTAKING_CORALER_AA_OFF;
-		return false;
+	public boolean currentLimitReached() {
+		return hasGamepiece();
 	}
 
 	@Override
 	public boolean hasGamepiece() {
-		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds) && AutoAlign.getInstance().nearGoalSource();
+		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds) && AutoAlign.getInstance().nearGoal();
 	}
 }

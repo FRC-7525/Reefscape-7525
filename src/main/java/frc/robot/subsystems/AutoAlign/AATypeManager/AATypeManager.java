@@ -14,9 +14,11 @@ public class AATypeManager extends Subsystem<AATypeManagerStates> {
 		// Start AA
 		addTrigger(AATypeManagerStates.OFF, AATypeManagerStates.REPULSOR, () -> AutoAlign.getInstance().getState() != AutoAlignStates.OFF);
 
+		// Repulsor to regular -> finished
 		addTrigger(AATypeManagerStates.REPULSOR, AATypeManagerStates.REGULAR, () -> AutoAlign.getInstance().closeEnoughToIgnore() || !AutoAlign.getInstance().willCollideWithReef());
 		addTrigger(AATypeManagerStates.REGULAR, AATypeManagerStates.OFF, () -> AutoAlign.getInstance().nearGoal());
 
+		// Stop AA incase AA stops for some reason
 		addTrigger(AATypeManagerStates.REGULAR, AATypeManagerStates.OFF, () -> AutoAlign.getInstance().getState() == AutoAlignStates.OFF);
 		addTrigger(AATypeManagerStates.REPULSOR, AATypeManagerStates.OFF, () -> AutoAlign.getInstance().getState() == AutoAlignStates.OFF);
 	}

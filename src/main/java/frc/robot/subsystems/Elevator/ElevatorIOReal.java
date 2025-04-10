@@ -1,7 +1,6 @@
 package frc.robot.Subsystems.Elevator;
 
 import static edu.wpi.first.units.Units.*;
-import static frc.robot.GlobalConstants.Controllers.DRIVER_CONTROLLER;
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.*;
 import static frc.robot.Subsystems.Elevator.ElevatorConstants.Real.*;
@@ -35,7 +34,6 @@ public class ElevatorIOReal implements ElevatorIO {
 	private double rightMotorVoltage;
 
 	private boolean leftMotorZeroed;
-	private double timer = -1;
 
 	public ElevatorIOReal() {
 		leftMotor = new TalonFX(LEFT_MOTOR_CANID);

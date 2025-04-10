@@ -5,7 +5,6 @@ import static frc.robot.GlobalConstants.ROBOT_MODE;
 import static frc.robot.Subsystems.AutoAlign.AutoAlignConstants.*;
 
 import choreo.trajectory.SwerveSample;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -15,8 +14,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Robot;
@@ -34,16 +31,12 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 	private static AutoAlign instance;
 
 	private final Drive drive = Drive.getInstance();
-
 	private final RepulsorFieldPlanner repulsor = new RepulsorFieldPlanner(new ArrayList<>(), new ArrayList<>(), (ROBOT_MODE == RobotMode.SIM));
-
 	private final ProfiledPIDController rotationController;
 	private final ProfiledPIDController translationalController;
-
-	private PIDController repulsorTranslationController;
-	private PIDController repulsorRotationalController;
-
-	private Debouncer autoAlignDebouncer;
+	private final PIDController repulsorTranslationController;
+	private final PIDController repulsorRotationalController;
+	private final Debouncer autoAlignDebouncer;
 
 	private double driveErrorAbs;
 	private double thetaErrorAbs;
@@ -62,10 +55,8 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
-		// FF impl (if 254 has magic number so can I hehehe)
-		this.rotationController = new ProfiledPIDController(3, 0, 0, new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 2), 0.02);
-
-		this.translationalController = new ProfiledPIDController(20, 1, 0, new TrapezoidProfile.Constraints(Units.feetToMeters(9), 7), 0.02);
+		this.rotationController = SCALED_FF_ROTATIONAL_CONTROLLER.get();
+		this.translationalController = SCALED_FF_TRANSLATIONAL_CONTROLLER.get();
 
 		this.repulsorTranslationController = REPULSOR_TRANSLATIONAL_CONTROLLER.get();
 		this.repulsorRotationalController = REPULSOR_ROTATIONAL_CONTROLLER.get();
@@ -114,9 +105,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		}
 	}
 
-	// ACTUALLY DRIVING
+	// Drive the Robot
 
-	// 254's implementation of the braindead auto-align
+	// 254's implementation of simple PID to pose auto-align
 	public void executeScaledFeedforwardAutoAlign() {
 		Logger.recordOutput("AutoAlign/ProfiledVelSetpoint", translationalController.getSetpoint().velocity);
 		Logger.recordOutput("AutoAlign/ProfiledPosSetpoint", translationalController.getSetpoint().position);
@@ -153,6 +144,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		}
 	}
 
+	// Repulsor field auto align (Drive around obstacles by representing field as vector map, blah blah blah)
 	public void executeRepulsorAutoAlign() {
 		Pose2d currentPose = drive.getPose();
 		// Set repulsor goal and get command
@@ -175,10 +167,9 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		}
 	}
 
-	// UTIL STUFF
+	// UTIL
 
-	// LOS
-	// TODO: Profile this to see how resource intensive it is
+	// LOS calculation, not super resource intensive (as proven with tracer, look at logs)
 	public boolean willCollideWithReef() {
 		Pose2d currentPose = drive.getPose();
 
@@ -259,6 +250,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		return true;
 	}
 
+	// Needed when LOS didnt use raycast calcs, now it should be mostly uneeded
 	public boolean closeEnoughToIgnore() {
 		Pose2d currentPose = drive.getPose();
 		boolean withinDistance = Math.abs(targetPose.getTranslation().getDistance(currentPose.getTranslation())) < 0.4;
@@ -266,7 +258,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		return withinDistance;
 	}
 
-	// Used for LOS
+	// Outer igus
 	private double calculateClosestPoint(Pose2d startPose, Pose2d endPose) {
 		double numeratorX = (reefPose.getX() - startPose.getX()) * (endPose.getX() - startPose.getX());
 		double numeratorY = (reefPose.getY() - startPose.getY()) * (endPose.getY() - startPose.getY());
@@ -275,7 +267,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		return MathUtil.clamp((numeratorX + numeratorY) / denominator, 0, 1);
 	}
 
-	// near goal for source cause u need less tolerance
+	// near goal for source cause u need less tolerance (These should be removed cause they're unused mostly)
 	public boolean nearGoalSource() {
 		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meters) && (Math.abs(repulsorRotationalController.getError()) < (ANGLE_ERROR_MARGIN.in(Radians)) || Math.abs(rotationController.getPositionError()) < (ANGLE_ERROR_MARGIN.in(Radians))));
 	}
@@ -296,14 +288,14 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		return (drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < getState().getDistanceForCloseAA().in(Meters));
 	}
 
-	// IDK is this works lmfao
+	// Largley untested, dont recommend using
 	public boolean nearGoalDebounced() {
 		return autoAlignDebouncer.calculate(
 			drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) < DISTANCE_ERROR_MARGIN.in(Meters) && (Math.abs(repulsorRotationalController.getError()) < ANGLE_ERROR_MARGIN.in(Radians) || Math.abs(rotationController.getPositionError()) < ANGLE_ERROR_MARGIN.in(Radians))
 		);
 	}
 
-	// We never really tested ts
+	// Largley untested dont recommend using
 	public boolean timedOut() {
 		if (getStateTime() > 0.01 && drive.getPose().getTranslation().getDistance(goalPose.getTranslation()) > TIMEOUT_DISTANCE_THRESHOLD) {
 			timer = getStateTime();
@@ -319,13 +311,14 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		}
 	}
 
-	// TODO: Call this on entrance/exit & impl 254s thingy, once entrance/exit are merged I'll actually do this
+	// Ensures smooth transition between repulsor and regular
 	public void resetPID() {
 		Pose2d currentPose = drive.getPose();
 		ChassisSpeeds currentSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
 		translationalController.reset(currentPose.getTranslation().getDistance(currentPose.getTranslation()), Math.min(0.0, -new Translation2d(currentSpeed.vxMetersPerSecond, currentSpeed.vyMetersPerSecond).rotateBy(currentPose.getTranslation().getAngle().unaryMinus()).getX()));
 	}
 
+	// Logging util
 	private void logOutput() {
 		if (!Robot.isReal()) {
 			Pose2d[] arrowsArray = new Pose2d[] {};
@@ -341,6 +334,7 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		Logger.recordOutput("AutoAlign/ThetaErrorAbs", thetaErrorAbs);
 	}
 
+	// Config for constants (cause reef pose changes based on ur alliance)
 	public void setConstants() {
 		reefPose = Robot.isRedAlliance ? new Pose2d(13.10655, 4.025901, new Rotation2d()) : new Pose2d(4.48945, 4.025901, new Rotation2d());
 		reefVertices = List.of(
@@ -361,20 +355,19 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 		);
 	}
 
+	// 254's Controller resetting, they drive error to 0 and we just copied their code so our own solution isnt pph
 	public void transitionToRegular() {
 		Pose2d currentPose = drive.getPose();
 		ChassisSpeeds robotSpeed = ChassisSpeeds.fromRobotRelativeSpeeds(drive.getRobotRelativeSpeeds(), currentPose.getRotation());
-		// translationalController.reset(currentPose.getTranslation().getDistance(targetPose.getTranslation()), Math.hypot(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond));
 		translationalController.reset(repulsorTranslationController.getError(), Math.hypot(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond));
 		rotationController.reset(currentPose.getRotation().getRadians(), 0);
-
-		// ily 254
 		translationalController.reset(
 			currentPose.getTranslation().getDistance(targetPose.getTranslation()),
 			Math.min(0.0, -new Translation2d(robotSpeed.vxMetersPerSecond, robotSpeed.vyMetersPerSecond).rotateBy(targetPose.getTranslation().minus(currentPose.getTranslation()).getAngle().unaryMinus()).getX())
 		);
 	}
 
+	// When you exit a state (repulsor -> Regular) you reset the controllers for a smooth transition
 	@Override
 	protected void stateExit() {
 		resetPID();
