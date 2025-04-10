@@ -55,7 +55,6 @@ public class AutoAlign extends Subsystem<AutoAlignStates> {
 
 	private AutoAlign() {
 		super("AutoAlign", AutoAlignStates.OFF);
-
 		this.rotationController = SCALED_FF_ROTATIONAL_CONTROLLER.get();
 		this.translationalController = SCALED_FF_TRANSLATIONAL_CONTROLLER.get();
 
