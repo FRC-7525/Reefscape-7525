@@ -82,9 +82,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addRunnableTrigger(() -> this.scoringReefLeft = true, () -> OPERATOR_CONTROLLER.getRawButton(1)); // 1
 		addRunnableTrigger(() -> this.scoringReefLeft = false, () -> OPERATOR_CONTROLLER.getRawButton(3)); // 3
 
-		// Intaking at Coral Station
-		// AA
+		// Intaking at Coral Station with AA
 		addTrigger(IDLE, INTAKING_CORALER, () -> {
+			// Is either bumper pressed, if so transition. Configure which source to align to based on which is pressed
 			if (DRIVER_CONTROLLER.getLeftBumperButtonPressed()) {
 				this.leftSourceSelected = true;
 				return true;
@@ -95,7 +95,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 				return false;
 			}
 		});
-
 		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> AutoAlign.getInstance().nearGoalSource());
 		addTrigger(INTAKING_CORALER, IDLE, () -> bouncing.calculate(Coraler.getInstance().hasGamepiece()));
 		addTrigger(IDLE, OUTTAKING, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() > 0.8);
