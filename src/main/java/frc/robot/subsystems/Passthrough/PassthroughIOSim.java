@@ -10,6 +10,7 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import frc.robot.Subsystems.Passthrough.PassthroughConstants.Sim;
 
 public class PassthroughIOSim implements PassthroughIO {
 
@@ -41,5 +42,10 @@ public class PassthroughIOSim implements PassthroughIO {
 	public void setTargetVelocity(double targetVelocity) {
 		this.targetVelocity = targetVelocity;
 		motorSim.setInputVoltage(targetVelocity * SET_TO_VOLTS_CF);
+	}
+
+	@Override
+	public TalonFX getMotor() {
+		return motor;
 	}
 }

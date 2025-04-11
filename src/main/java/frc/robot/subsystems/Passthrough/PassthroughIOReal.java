@@ -29,4 +29,9 @@ public class PassthroughIOReal implements PassthroughIO {
 		this.targetVelocity = targetVelocity;
 		motor.set(targetVelocity);
 	}
+
+	@Override
+	public TalonFX getMotor() {
+		return motor;
+	}
 }

@@ -6,6 +6,8 @@ import static frc.robot.Subsystems.Passthrough.PassthroughConstants.*;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
 public class Passthrough extends Subsystem<PassthroughStates> {
 
 	private static Passthrough instance;
@@ -27,6 +29,10 @@ public class Passthrough extends Subsystem<PassthroughStates> {
 			instance = new Passthrough();
 		}
 		return instance;
+	}
+
+	public TalonFX getMotor() {
+		return io.getMotor();
 	}
 
 	@Override

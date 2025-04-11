@@ -206,7 +206,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		Tracer.traceFunc("DrivePeriodic", Drive.getInstance()::periodic);
 		Tracer.traceFunc("AATypeManagerPeriodic", AATypeManager.getInstance()::periodic);
 		Tracer.traceFunc("LEDPeriodic", LED.getInstance()::periodic);
-		Tracer.traceFunc("PassthroughPeriodic", Passthrough.getInstance()::periodic);
+		Tracer.traceFunc("PassthroughPeriodic", Passthrough.getInstance()::periodic); 
+
+		SubsystemChecks.run();
 
 		// STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(5)) {
