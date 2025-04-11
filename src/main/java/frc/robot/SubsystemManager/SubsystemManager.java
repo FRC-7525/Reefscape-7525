@@ -32,7 +32,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public boolean scoringReefLeft = false;
 	private final Debouncer bouncing = new Debouncer(0.05, DebounceType.kBoth);
 	private final Debouncer L1Debouncer = new Debouncer(L1_DEBOUNCE_TIME, DebounceType.kBoth);
- 
+
 	private SubsystemManager() {
 		super(SUBSYSTEM_NAME, SubsystemManagerStates.IDLE);
 		// Toggling which level to score at (manual)
