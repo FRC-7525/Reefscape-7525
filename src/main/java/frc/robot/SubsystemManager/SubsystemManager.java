@@ -31,6 +31,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public int hexagonTargetSide = 1;
 	public boolean scoringReefLeft = false;
 	private final Debouncer bouncing = new Debouncer(0.05, DebounceType.kBoth);
+	private final Debouncer L1Debouncer = new Debouncer(L1_DEBOUNCE_TIME, DebounceType.kBoth);
 
 	private SubsystemManager() {
 		super(SUBSYSTEM_NAME, SubsystemManagerStates.IDLE);
@@ -107,6 +108,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(IDLE, TRANSITIONING_SCORING_REEF, () -> DRIVER_CONTROLLER.getPOV() != -1);
 		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, DRIVER_CONTROLLER::getYButtonPressed);
 		addTrigger(SCORING_REEF_MANUAL, IDLE, DRIVER_CONTROLLER::getYButtonPressed);
+		addTrigger(SCORING_L1, IDLE, DRIVER_CONTROLLER::getYButtonPressed);
+
+		addTrigger(SCORING_REEF_MANUAL, SCORING_L1, () -> driverReefScoringLevel == 1 && L1Debouncer.calculate(!Coraler.getInstance().hasGamepiece()));
 
 		// Auto ONLY transition for alignment
 		addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);

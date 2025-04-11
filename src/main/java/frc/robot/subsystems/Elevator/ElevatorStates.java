@@ -11,7 +11,8 @@ public enum ElevatorStates implements SubsystemStates {
 	L1("L1", ElevatorConstants.L1_HEIGHT),
 	CORAL_STATION("Coral Station", ElevatorConstants.L1_HEIGHT),
 	ZEROING("Zeroing", ElevatorConstants.IDLE_HEIGHT),
-	IDLE("Idle", ElevatorConstants.IDLE_HEIGHT);
+	IDLE("Idle", ElevatorConstants.IDLE_HEIGHT),
+	L1_SCORING("L1 Scoring", ElevatorConstants.L1_SCORING_HEIGHT);
 
 	ElevatorStates(String stateString, Distance targetHeight) {
 		this.targetHeight = targetHeight;
