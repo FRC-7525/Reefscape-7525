@@ -52,7 +52,8 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		() -> LED_TO_REEF_LEVEL.get(SubsystemManager.getInstance().getDriverReefScoringLevel()),
 		PassthroughStates.OFF
 	),
-	ZEROING_ELEVATOR("Zeroing Elevator", () -> ElevatorStates.ZEROING, CoralerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.IDLE, PassthroughStates.OFF);
+	ZEROING_ELEVATOR("Zeroing Elevator", () -> ElevatorStates.ZEROING, CoralerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.IDLE, PassthroughStates.OFF),
+	SCORING_L1("Scoring L1", () -> ElevatorStates.L1_SCORING, CoralerStates.CORALING, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, PassthroughStates.OFF);
 
 	SubsystemManagerStates(String stateString, Supplier<ElevatorStates> elevatorStateSupplier, CoralerStates coralerState, Supplier<AutoAlignStates> autoAlignSupplier, Supplier<LEDStates> ledStateSupplier, PassthroughStates passthroughState) {
 		this.stateString = stateString;

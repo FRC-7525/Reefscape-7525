@@ -108,6 +108,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, DRIVER_CONTROLLER::getYButtonPressed);
 		addTrigger(SCORING_REEF_MANUAL, IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 
+		addTrigger(SCORING_REEF_MANUAL, SCORING_L1, () -> driverReefScoringLevel == 1 && bouncing.calculate(!Coraler.getInstance().hasGamepiece()));
+
 		// Auto ONLY transition for alignment
 		addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && Elevator.getInstance().nearTarget());
