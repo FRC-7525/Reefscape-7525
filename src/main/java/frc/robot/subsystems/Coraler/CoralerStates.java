@@ -2,11 +2,10 @@ package frc.robot.Subsystems.Coraler;
 
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.SubsystemManager.SubsystemManager;
 import java.util.function.Supplier;
 import org.team7525.subsystem.SubsystemStates;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public enum CoralerStates implements SubsystemStates {
 	CORALING("Coraling", () -> {
