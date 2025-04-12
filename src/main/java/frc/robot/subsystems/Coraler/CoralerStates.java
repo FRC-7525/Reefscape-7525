@@ -12,6 +12,7 @@ public enum CoralerStates implements SubsystemStates {
 		else if (SubsystemManager.getInstance().getOperatorReefScoringLevel() != 1 && SubsystemManager.getInstance().getDriverReefScoringLevel() != 1) return CORALING_VELOCITY_L3_L2;
 		else return CORALING_VELOCITY_L1;
 	}),
+	SCORING_L1("Scoring L1", () -> CORALING_VELOCITY_L1_SCORING),
 	INAKING("Inaking", () -> INTAKING_VELOCITY),
 	CENTERING("Centering", () -> CENTERING_VELOCITY),
 	IDLE("Stopped", () -> IDLE_VELOCITY),

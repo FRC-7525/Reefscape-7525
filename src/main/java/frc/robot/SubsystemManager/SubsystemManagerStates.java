@@ -53,7 +53,7 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		PassthroughStates.OFF
 	),
 	ZEROING_ELEVATOR("Zeroing Elevator", () -> ElevatorStates.ZEROING, CoralerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.IDLE, PassthroughStates.OFF),
-	SCORING_L1("Scoring L1", () -> ElevatorStates.L1_SCORING, CoralerStates.CORALING, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, PassthroughStates.OFF);
+	SCORING_L1("Scoring L1", () -> ElevatorStates.L1_SCORING, CoralerStates.SCORING_L1, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, PassthroughStates.OFF);
 
 	SubsystemManagerStates(String stateString, Supplier<ElevatorStates> elevatorStateSupplier, CoralerStates coralerState, Supplier<AutoAlignStates> autoAlignSupplier, Supplier<LEDStates> ledStateSupplier, PassthroughStates passthroughState) {
 		this.stateString = stateString;

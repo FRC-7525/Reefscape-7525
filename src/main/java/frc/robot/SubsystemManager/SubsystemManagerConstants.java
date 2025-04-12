@@ -19,7 +19,7 @@ public final class SubsystemManagerConstants {
 
 	public static final double CORAL_CENTERING_TIME = 0.0;
 	public static final double SCORING_TIME = 0.7;
-	public static final double L1_DEBOUNCE_TIME = 0.1; // TODO: TUNE
+	public static final double L1_DEBOUNCE_TIME = 0.08; // TODO: TUNE
 
 	public static final Map<Integer, ElevatorStates> REEF_SCORING_LEVELS = Map.of(1, ElevatorStates.L1, 2, ElevatorStates.L2, 3, ElevatorStates.L3, 4, ElevatorStates.L4);
 
