@@ -196,7 +196,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		}
 
 		// Set States, drive and vision are rogue so you don't need to set state
-		Elevator.getInstance().setState(getState().getElevatorStateSupplier().get());
+		// Elevator.getInstance().setState(getState().getElevatorStateSupplier().get());
 		Coraler.getInstance().setState(getState().getCoralerState());
 		AutoAlign.getInstance().setState(getState().getAutoAlignSupplier().get());
 		LED.getInstance().setState(getState().getLedStateSupplier().get());
@@ -204,7 +204,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 		// Periodics
 		Tracer.traceFunc("AutoAlignPeriodic", AutoAlign.getInstance()::periodic);
-		Tracer.traceFunc("ElevatorPeriodic", Elevator.getInstance()::periodic);
+		// Tracer.traceFunc("ElevatorPeriodic", Elevator.getInstance()::periodic);
 		Tracer.traceFunc("CoralerPeriodic", Coraler.getInstance()::periodic);
 		Tracer.traceFunc("VisionPeriodic", Vision.getInstance()::periodic);
 		Tracer.traceFunc("DrivePeriodic", Drive.getInstance()::periodic);
