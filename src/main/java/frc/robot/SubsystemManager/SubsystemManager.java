@@ -7,6 +7,7 @@ import static frc.robot.SubsystemManager.SubsystemManagerStates.*;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.Subsystems.AutoAlign.AATypeManager.AATypeManager;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
@@ -31,7 +32,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public int hexagonTargetSide = 1;
 	public boolean scoringReefLeft = false;
 	private final Debouncer bouncing = new Debouncer(0.05, DebounceType.kBoth);
-	private final Debouncer L1Debouncer = new Debouncer(L1_DEBOUNCE_TIME, DebounceType.kBoth);
+	private Debouncer L1Debouncer = new Debouncer(L1_DEBOUNCE_TIME, DebounceType.kBoth);
 
 	private SubsystemManager() {
 		super(SUBSYSTEM_NAME, SubsystemManagerStates.IDLE);
@@ -127,6 +128,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		// Elevator Zeroing
 		addTrigger(IDLE, ZEROING_ELEVATOR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4));
 		addTrigger(ZEROING_ELEVATOR, IDLE, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4));
+
+		//TODO: DELETE WHEN DONE TUNING
+		SmartDashboard.putNumber("L1 Debounce Time", L1_DEBOUNCE_TIME);
 	}
 
 	public static SubsystemManager getInstance() {
@@ -216,6 +220,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		if (DRIVER_CONTROLLER.getBackButtonPressed() || OPERATOR_CONTROLLER.getRawButtonPressed(5)) {
 			setState(SubsystemManagerStates.IDLE);
 		}
+
+		//TODO: DELETE WHEN DONE TUNING
+		L1Debouncer = new Debouncer(SmartDashboard.getNumber("L1 Debounce Time", L1_DEBOUNCE_TIME), DebounceType.kBoth);
 	}
 
 	/*

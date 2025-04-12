@@ -6,13 +6,15 @@ import frc.robot.SubsystemManager.SubsystemManager;
 import java.util.function.Supplier;
 import org.team7525.subsystem.SubsystemStates;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public enum CoralerStates implements SubsystemStates {
 	CORALING("Coraling", () -> {
 		if (SubsystemManager.getInstance().getDriverReefScoringLevel() == 4 || SubsystemManager.getInstance().getOperatorReefScoringLevel() == 4) return CORALING_VELOCITY_L4;
 		else if (SubsystemManager.getInstance().getOperatorReefScoringLevel() != 1 && SubsystemManager.getInstance().getDriverReefScoringLevel() != 1) return CORALING_VELOCITY_L3_L2;
-		else return CORALING_VELOCITY_L1;
+		else return SmartDashboard.getNumber("L1 Velocity", CORALING_VELOCITY_L1);
 	}),
-	SCORING_L1("Scoring L1", () -> CORALING_VELOCITY_L1_SCORING),
+	SCORING_L1("Scoring L1", () -> SmartDashboard.getNumber("L1 Scoring Velocity", CORALING_VELOCITY_L1_SCORING)), //TODO: DELETE WHEN DONE TUNING
 	INAKING("Inaking", () -> INTAKING_VELOCITY),
 	CENTERING("Centering", () -> CENTERING_VELOCITY),
 	IDLE("Stopped", () -> IDLE_VELOCITY),
