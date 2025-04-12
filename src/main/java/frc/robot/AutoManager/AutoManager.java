@@ -44,7 +44,6 @@ public class AutoManager extends Subsystem<AutoStates> {
 		scoringLocationChooser.addOption("G | 1 Piece | Move Forward", new AutoScoringLocation[] { new AutoScoringLocation(true, 4) });
 		scoringLocationChooser.addOption("A | 1 Piece | Move Forward", new AutoScoringLocation[] { new AutoScoringLocation(false, 1) });
 
-
 		addTrigger(SCORING_CORAL, GOING_DOWN, () -> {
 			if (getStateTime() < 0.5) {
 				return false;
