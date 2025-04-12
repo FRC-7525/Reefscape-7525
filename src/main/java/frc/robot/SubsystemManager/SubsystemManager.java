@@ -7,7 +7,6 @@ import static frc.robot.SubsystemManager.SubsystemManagerStates.*;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.Subsystems.AutoAlign.AATypeManager.AATypeManager;
 import frc.robot.Subsystems.AutoAlign.AutoAlign;
