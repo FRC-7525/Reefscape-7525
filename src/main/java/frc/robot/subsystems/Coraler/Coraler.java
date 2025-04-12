@@ -55,6 +55,10 @@ public class Coraler extends Subsystem<CoralerStates> {
 		return debouncer.calculate(io.currentLimitReached());
 	}
 
+	public boolean gamepieceLeft() {
+		return io.gamepieceLeft();
+	}
+
 	public boolean hasGamepiece() {
 		return io.hasGamepiece();
 	}

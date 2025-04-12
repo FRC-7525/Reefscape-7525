@@ -2,12 +2,15 @@ package frc.robot.Subsystems.Coraler;
 
 import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.*;
+import static frc.robot.SubsystemManager.SubsystemManagerConstants.L1_DEBOUNCE_TIME;
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.ReverseLimitValue;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Subsystems.Coraler.CoralerConstants.Real;
@@ -19,6 +22,8 @@ public class CoralerIOTalonFX implements CoralerIO {
 	private final PIDController velocityController;
 	// private final DigitalInput beamBreak;
 	private double speedPoint;
+
+	private Debouncer L1Debouncer = new Debouncer(L1_DEBOUNCE_TIME, DebounceType.kBoth);
 
 	public CoralerIOTalonFX() {
 		velocityMotor = new TalonFX(Real.WHEEL_MOTOR_CAN_ID);
@@ -52,6 +57,13 @@ public class CoralerIOTalonFX implements CoralerIO {
 	@Override
 	public boolean currentLimitReached() {
 		return velocityMotor.getStatorCurrent().getValue().in(Amp) > STATOR_CURRENT_SENSING_LIMIT;
+	}
+
+	@Override
+	public boolean gamepieceLeft() {
+		boolean switchTripped = velocityMotor.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
+		Logger.recordOutput("Coraler/Switch Tripper", switchTripped);
+		return L1Debouncer.calculate(!switchTripped);
 	}
 
 	@Override

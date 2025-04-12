@@ -48,8 +48,8 @@ public final class ElevatorConstants {
 	public static final Distance L4_HEIGHT = Inches.of(23.2);
 	public static final Distance L3_HEIGHT = Inches.of(15.5);
 	public static final Distance L2_HEIGHT = Inches.of(12);
-	public static final Distance L1_HEIGHT = Inches.of(6); // was 5
-	public static final Distance L1_SCORING_HEIGHT = Inches.of(8); //TODO: TUNE
+	public static final Distance L1_HEIGHT = Inches.of(5.1); // was 5
+	public static final Distance L1_SCORING_HEIGHT = Inches.of(7.3); //TODO: TUNE
 	public static final Distance IDLE_HEIGHT = Inches.of(0);
 
 	public static final Distance METERS_PER_ROTATION = Meters.of((1 / GEARING) * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right
