@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -29,10 +28,6 @@ public class Elevator extends Subsystem<ElevatorStates> {
 			case TESTING -> new ElevatorIOReal();
 		};
 		inputs = new ElevatorIOInputsAutoLogged();
-
-		//TODO: DELETE WHEN DONE
-		SmartDashboard.putNumber("L1 Height", L1_HEIGHT.in(Inches));
-		SmartDashboard.putNumber("L1 Scoring Height", L1_SCORING_HEIGHT.in(Inches));
 	}
 
 	public static Elevator getInstance() {

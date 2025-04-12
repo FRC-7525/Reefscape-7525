@@ -10,19 +10,18 @@ import java.util.function.Supplier;
 import org.team7525.subsystem.SubsystemStates;
 
 public enum ElevatorStates implements SubsystemStates {
-	TRANSITIONING("Transitioning Elevator Level", () -> ElevatorConstants.TRANSITION_HEIGHT),
-	L4("L4", () -> ElevatorConstants.L4_HEIGHT),
-	L3("L3", () -> ElevatorConstants.L3_HEIGHT),
-	L2("L2", () -> ElevatorConstants.L2_HEIGHT),
-	L1("L1", () -> Inches.of(SmartDashboard.getNumber("L1 Height", L1_HEIGHT.in(Inches)))),
-	CORAL_STATION("Coral Station", () -> ElevatorConstants.L1_HEIGHT),
-	ZEROING("Zeroing", () -> ElevatorConstants.IDLE_HEIGHT),
-	IDLE("Idle", () -> ElevatorConstants.IDLE_HEIGHT),
-	L1_SCORING("L1 Scoring", () -> Inches.of(SmartDashboard.getNumber("L1 Scoring Height", L1_SCORING_HEIGHT.in(Inches))));
+	TRANSITIONING("Transitioning Elevator Level", ElevatorConstants.TRANSITION_HEIGHT),
+	L4("L4", ElevatorConstants.L4_HEIGHT),
+	L3("L3", ElevatorConstants.L3_HEIGHT),
+	L2("L2", ElevatorConstants.L2_HEIGHT),
+	L1("L1", ElevatorConstants.L1_HEIGHT),
+	CORAL_STATION("Coral Station", ElevatorConstants.L1_HEIGHT),
+	ZEROING("Zeroing", ElevatorConstants.IDLE_HEIGHT),
+	IDLE("Idle", ElevatorConstants.IDLE_HEIGHT),
+	L1_SCORING("L1 Scoring", ElevatorConstants.L1_SCORING_HEIGHT);
 
-	//TODO: REVERT OFF OF SUPPLIERS WHEN DONE
-	ElevatorStates(String stateString, Supplier<Distance> targetHeight) {
-		this.targetHeight = targetHeight.get();
+	ElevatorStates(String stateString, Distance targetHeight) {
+		this.targetHeight = targetHeight;
 		this.stateString = stateString;
 	}
 
