@@ -49,7 +49,7 @@ public final class ElevatorConstants {
 	public static final Distance L3_HEIGHT = Inches.of(15.5);
 	public static final Distance L2_HEIGHT = Inches.of(12);
 	public static final Distance L1_HEIGHT = Inches.of(5.1); // was 5
-	public static final Distance L1_SCORING_HEIGHT = Inches.of(7.3); //TODO: TUNE
+	public static final Distance L1_SCORING_HEIGHT = Inches.of(8.7); //TODO: TUNE
 	public static final Distance IDLE_HEIGHT = Inches.of(0);
 
 	public static final Distance METERS_PER_ROTATION = Meters.of((1 / GEARING) * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right
@@ -78,12 +78,12 @@ public final class ElevatorConstants {
 		public static final boolean LEFT_INVERTED = false;
 		public static final NeutralModeValue LEFT_NEUTRAL_MODE = NeutralModeValue.Brake;
 		public static final boolean LEFT_STRATOR_CURRENT_LIMIT_ENABLED = true;
-		public static final Current LEFT_STRATOR_CURRENT_LIMIT = Amps.of(100);
+		public static final Current LEFT_STRATOR_CURRENT_LIMIT = Amps.of(70);
 
 		public static final boolean RIGHT_INVERTED = false;
 		public static final NeutralModeValue RIGHT_NEUTRAL_MODE = NeutralModeValue.Brake;
 		public static final boolean RIGHT_STRATOR_CURRENT_LIMIT_ENABLED = true;
-		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(100);
+		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(70);
 
 		public static final PIDCoefficients PROFILLED_PID_CONSTANTS = new PIDCoefficients(30, 0, 1, 0);
 		// The move is prob to keep this at 0 and not bother tuning

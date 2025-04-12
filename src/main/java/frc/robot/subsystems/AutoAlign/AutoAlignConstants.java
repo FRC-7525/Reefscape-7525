@@ -96,7 +96,7 @@ public final class AutoAlignConstants {
 
 	public static final Supplier<ProfiledPIDController> SCALED_FF_ROTATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new ProfiledPIDController(7, 0, 0, new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 2), 0.02);
+			case REAL -> new ProfiledPIDController(20, 0, 0, new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 2), 0.02);
 			case SIM -> new ProfiledPIDController(20, 0, 0, new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 2), 0.02);
 			default -> new ProfiledPIDController(3, 0, 0, new TrapezoidProfile.Constraints(Math.PI * 2, Math.PI * 2), 0.02);
 		};
@@ -110,7 +110,7 @@ public final class AutoAlignConstants {
 
 	public static final Supplier<PIDController> REPULSOR_ROTATIONAL_CONTROLLER = () ->
 		switch (GlobalConstants.ROBOT_MODE) {
-			case REAL -> new PIDController(3, 0, 0);
+			case REAL -> new PIDController(5, 0, 0);
 			case SIM -> new PIDController(20, 0, 0);
 			default -> new PIDController(10, 0, 0);
 		};
@@ -119,8 +119,8 @@ public final class AutoAlignConstants {
 
 		public static final List<Obstacle> FIELD_OBSTACLES = List.of(
 			// was 1.5 radius
-			new GuidedObstacle(new Translation2d(4.48945, 4.025901), 20, true, 2),
-			new GuidedObstacle(new Translation2d(13.10655, 4.025901), 20, true, 2)
+			new GuidedObstacle(new Translation2d(4.48945, 4.025901), 20, true, 2.4),
+			new GuidedObstacle(new Translation2d(13.10655, 4.025901), 20, true, 2.4)
 		);
 
 		public static final List<Obstacle> WALLS = List.of(
