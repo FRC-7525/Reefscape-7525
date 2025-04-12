@@ -47,7 +47,7 @@ public final class ElevatorConstants {
 	public static final Distance TRANSITION_HEIGHT = Inches.of(12);
 	public static final Distance L4_HEIGHT = Inches.of(23.2);
 	public static final Distance L3_HEIGHT = Inches.of(15.5);
-	public static final Distance L2_HEIGHT = Inches.of(10);
+	public static final Distance L2_HEIGHT = Inches.of(12);
 	public static final Distance L1_HEIGHT = Inches.of(7.5); // was 5
 	public static final Distance L1_SCORING_HEIGHT = Inches.of(10); //TODO: TUNE
 	public static final Distance IDLE_HEIGHT = Inches.of(0);
