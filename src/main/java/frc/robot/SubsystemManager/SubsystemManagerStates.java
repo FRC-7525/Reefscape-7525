@@ -20,7 +20,11 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		"Aligning Close",
 		() -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getOperatorReefScoringLevel()),
 		CoralerStates.IDLE,
-		() -> REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())),
+		() -> {
+			return SubsystemManager.getInstance().getOperatorReefScoringLevel() != 1 ? 
+				REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())) : 
+				L1_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()));
+		},
 		() -> LEDStates.AUTOALIGN,
 		PassthroughStates.OFF
 	),
@@ -28,7 +32,11 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		"Aligning Far",
 		() -> SubsystemManager.getInstance().getOperatorReefScoringLevel() < 3 ? ElevatorStates.IDLE : ElevatorStates.TRANSITIONING,
 		CoralerStates.IDLE,
-		() -> REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())),
+		() -> {
+			return SubsystemManager.getInstance().getOperatorReefScoringLevel() != 1 ? 
+				REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())) : 
+				L1_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()));
+		},
 		() -> LEDStates.AUTOALIGN,
 		PassthroughStates.OFF
 	),
