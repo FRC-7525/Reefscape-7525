@@ -21,9 +21,9 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		() -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getOperatorReefScoringLevel()),
 		CoralerStates.IDLE,
 		() -> {
-			return SubsystemManager.getInstance().getOperatorReefScoringLevel() != 1 ? 
-				REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())) : 
-				L1_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()));
+			return SubsystemManager.getInstance().getOperatorReefScoringLevel() != 1
+				? REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()))
+				: L1_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()));
 		},
 		() -> LEDStates.AUTOALIGN,
 		PassthroughStates.OFF
@@ -33,9 +33,9 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		() -> SubsystemManager.getInstance().getOperatorReefScoringLevel() < 3 ? ElevatorStates.IDLE : ElevatorStates.TRANSITIONING,
 		CoralerStates.IDLE,
 		() -> {
-			return SubsystemManager.getInstance().getOperatorReefScoringLevel() != 1 ? 
-				REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())) : 
-				L1_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()));
+			return SubsystemManager.getInstance().getOperatorReefScoringLevel() != 1
+				? REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()))
+				: L1_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()));
 		},
 		() -> LEDStates.AUTOALIGN,
 		PassthroughStates.OFF
