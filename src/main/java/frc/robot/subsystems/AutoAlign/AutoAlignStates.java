@@ -25,11 +25,11 @@ public enum AutoAlignStates implements SubsystemStates {
 	R6("Driving to Reef Right 6", PosePair.of(new Pose2d(13.912, 2.964, Rotation2d.fromDegrees(120)), new Pose2d(3.66, 5.11, Rotation2d.fromDegrees(300))), Meters.of(0.5)),
 
 	L1_1("Driving to Reef 1 for L1", PosePair.of(new Pose2d(14.39824, 4.0125, Rotation2d.fromDegrees(187)), new Pose2d(3.15, 4.013, Rotation2d.fromDegrees(7))), Meters.of(0.5)),
-	L1_2("Driving to Reef 2 for L1", PosePair.of(new Pose2d(13.72851, 2.8525, Rotation2d.fromDegrees(247)), new Pose2d(3.81973, 2.8525, Rotation2d.fromDegrees(67))), Meters.of(0.5)),
-	L1_3("Driving to Reef 3 for L1", PosePair.of(new Pose2d(12.38907, 2.8525, Rotation2d.fromDegrees(307)), new Pose2d(5.15918, 2.8525, Rotation2d.fromDegrees(127))), Meters.of(0.5)),
+	L1_2("Driving to Reef 2 for L1", PosePair.of(new Pose2d(13.72851, 5.1725, Rotation2d.fromDegrees(247)), new Pose2d(3.81973, 2.8525, Rotation2d.fromDegrees(67))), Meters.of(0.5)),
+	L1_3("Driving to Reef 3 for L1", PosePair.of(new Pose2d(12.38907, 5.1725, Rotation2d.fromDegrees(307)), new Pose2d(5.15918, 2.8525, Rotation2d.fromDegrees(127))), Meters.of(0.5)),
 	L1_4("Driving to Reef 4 for L1", PosePair.of(new Pose2d(11.71934, 4.0125, Rotation2d.fromDegrees(7)), new Pose2d(5.8289, 4.0125, Rotation2d.fromDegrees(187))), Meters.of(0.5)),
-	L1_5("Driving to Reef 5 for L1", PosePair.of(new Pose2d(12.38907, 5.1725, Rotation2d.fromDegrees(67)), new Pose2d(5.15918, 5.1725, Rotation2d.fromDegrees(247))), Meters.of(0.5)),
-	L1_6("Driving to Reef 6 for L1", PosePair.of(new Pose2d(13.72851, 5.1725, Rotation2d.fromDegrees(127)), new Pose2d(3.81973, 5.1725, Rotation2d.fromDegrees(307))), Meters.of(0.5)),
+	L1_5("Driving to Reef 5 for L1", PosePair.of(new Pose2d(12.38907, 2.8525, Rotation2d.fromDegrees(67)), new Pose2d(5.15918, 5.1725, Rotation2d.fromDegrees(247))), Meters.of(0.5)),
+	L1_6("Driving to Reef 6 for L1", PosePair.of(new Pose2d(13.72851, 2.8525, Rotation2d.fromDegrees(127)), new Pose2d(3.81973, 5.1725, Rotation2d.fromDegrees(307))), Meters.of(0.5)),
 	//Blue Alliance (1.472, 0.847) Red Alliance (16.331, 7.004)
 	RIGHT_SOURCE("Driving to Source Right", PosePair.of(new Pose2d(16.519, 7.220, Rotation2d.fromDegrees(-126)), new Pose2d(0.983, 0.818, Rotation2d.fromDegrees(54))), Meters.of(1)),
 	//Blue Alliance (1.511, 7.194) Red Alliance (16.263, 0.983)
