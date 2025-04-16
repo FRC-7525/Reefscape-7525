@@ -83,6 +83,25 @@ public final class SubsystemManagerConstants {
 		REEF_TARGET_MAP = Map.copyOf(hexagonTargetSides);
 	}
 
+	public static final Map<AAReefTarget, AutoAlignStates> L1_TARGET_MAP;
+
+	static {
+		final Map<AAReefTarget, AutoAlignStates> L1HexagonTargetSides = new HashMap<>();
+		L1HexagonTargetSides.put(AAReefTarget.of(1, true), AutoAlignStates.L1_1);
+		L1HexagonTargetSides.put(AAReefTarget.of(1, false), AutoAlignStates.L1_1);
+		L1HexagonTargetSides.put(AAReefTarget.of(2, true), AutoAlignStates.L1_2);
+		L1HexagonTargetSides.put(AAReefTarget.of(2, false), AutoAlignStates.L1_2);
+		L1HexagonTargetSides.put(AAReefTarget.of(3, true), AutoAlignStates.L1_3);
+		L1HexagonTargetSides.put(AAReefTarget.of(3, false), AutoAlignStates.L1_3);
+		L1HexagonTargetSides.put(AAReefTarget.of(4, true), AutoAlignStates.L1_4);
+		L1HexagonTargetSides.put(AAReefTarget.of(4, false), AutoAlignStates.L1_4);
+		L1HexagonTargetSides.put(AAReefTarget.of(5, true), AutoAlignStates.L1_5);
+		L1HexagonTargetSides.put(AAReefTarget.of(5, false), AutoAlignStates.L1_5);
+		L1HexagonTargetSides.put(AAReefTarget.of(6, true), AutoAlignStates.L1_6);
+		L1HexagonTargetSides.put(AAReefTarget.of(6, false), AutoAlignStates.L1_6);
+		L1_TARGET_MAP = Map.copyOf(L1HexagonTargetSides);
+	}
+
 	public static final Map<Boolean, AutoAlignStates> SOURCE_TARGET_MAP = Map.of(true, AutoAlignStates.LEFT_SOURCE, false, AutoAlignStates.RIGHT_SOURCE);
 
 	public static final Map<Integer, LEDStates> LED_TO_REEF_LEVEL = Map.of(1, LEDStates.L1, 2, LEDStates.L2, 3, LEDStates.L3, 4, LEDStates.L4);

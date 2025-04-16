@@ -52,6 +52,11 @@ public class CoralerIOSim implements CoralerIO {
 	}
 
 	@Override
+	public boolean gamepieceLeft() {
+		return true;
+	}
+
+	@Override
 	public boolean hasGamepiece() {
 		return Coraler.getInstance().getStateTime() > Sim.INTAKE_TIME.in(Seconds) && AutoAlign.getInstance().nearGoal();
 	}

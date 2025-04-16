@@ -31,7 +31,6 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public int hexagonTargetSide = 1;
 	public boolean scoringReefLeft = false;
 	private final Debouncer bouncing = new Debouncer(0.05, DebounceType.kBoth);
-	private final Debouncer L1Debouncer = new Debouncer(L1_DEBOUNCE_TIME, DebounceType.kBoth);
 
 	private SubsystemManager() {
 		super(SUBSYSTEM_NAME, SubsystemManagerStates.IDLE);
@@ -110,7 +109,9 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(SCORING_REEF_MANUAL, IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 		addTrigger(SCORING_L1, IDLE, DRIVER_CONTROLLER::getYButtonPressed);
 
-		addTrigger(SCORING_REEF_MANUAL, SCORING_L1, () -> driverReefScoringLevel == 1 && L1Debouncer.calculate(!Coraler.getInstance().hasGamepiece()));
+		addTrigger(SCORING_REEF_MANUAL, SCORING_L1, () -> {
+			return driverReefScoringLevel == 1 && Coraler.getInstance().gamepieceLeft();
+		});
 
 		// Auto ONLY transition for alignment
 		addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
@@ -196,7 +197,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		}
 
 		// Set States, drive and vision are rogue so you don't need to set state
-		// Elevator.getInstance().setState(getState().getElevatorStateSupplier().get());
+		Elevator.getInstance().setState(getState().getElevatorStateSupplier().get());
 		Coraler.getInstance().setState(getState().getCoralerState());
 		AutoAlign.getInstance().setState(getState().getAutoAlignSupplier().get());
 		LED.getInstance().setState(getState().getLedStateSupplier().get());
@@ -204,7 +205,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 
 		// Periodics
 		Tracer.traceFunc("AutoAlignPeriodic", AutoAlign.getInstance()::periodic);
-		// Tracer.traceFunc("ElevatorPeriodic", Elevator.getInstance()::periodic);
+		Tracer.traceFunc("ElevatorPeriodic", Elevator.getInstance()::periodic);
 		Tracer.traceFunc("CoralerPeriodic", Coraler.getInstance()::periodic);
 		Tracer.traceFunc("VisionPeriodic", Vision.getInstance()::periodic);
 		Tracer.traceFunc("DrivePeriodic", Drive.getInstance()::periodic);

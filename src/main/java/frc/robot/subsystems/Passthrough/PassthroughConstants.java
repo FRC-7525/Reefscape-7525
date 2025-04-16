@@ -7,7 +7,7 @@ public class PassthroughConstants {
 	public static final int WHEEL_MOTOR_CAN_ID = 29;
 	public static final double GEARING = 1;
 
-	public static final double INTAKING_VELOCITY = -0.6;
+	public static final double INTAKING_VELOCITY = -0.7;
 	public static final double OUTTAKING_VELOCITY = 0.05;
 	public static final double OFF_VELOCITY = 0;
 

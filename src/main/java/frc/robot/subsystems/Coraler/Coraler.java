@@ -7,6 +7,7 @@ import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
 
@@ -48,6 +49,10 @@ public class Coraler extends Subsystem<CoralerStates> {
 
 	public boolean currentSenseGamepiece() {
 		return debouncer.calculate(io.currentLimitReached());
+	}
+
+	public boolean gamepieceLeft() {
+		return io.gamepieceLeft();
 	}
 
 	public boolean hasGamepiece() {

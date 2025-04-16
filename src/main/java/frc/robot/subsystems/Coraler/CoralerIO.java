@@ -17,6 +17,8 @@ public interface CoralerIO {
 
 	public boolean currentLimitReached();
 
+	public boolean gamepieceLeft();
+
 	public boolean hasGamepiece();
 
 	public TalonFX getMotor();
