@@ -30,7 +30,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	public int operatorReefScoringLevel = 1;
 	public int hexagonTargetSide = 1;
 	public boolean scoringReefLeft = false;
-	private final Debouncer bouncing = new Debouncer(0.05, DebounceType.kBoth);
+	private final Debouncer bouncing = new Debouncer(0.03, DebounceType.kBoth);
 
 	private SubsystemManager() {
 		super(SUBSYSTEM_NAME, SubsystemManagerStates.IDLE);
@@ -97,7 +97,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		});
 		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> AutoAlign.getInstance().nearGoalSource());
 		addTrigger(INTAKING_CORALER, IDLE, () -> bouncing.calculate(Coraler.getInstance().hasGamepiece()));
-		addTrigger(IDLE, OUTTAKING, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() > 0.8);
+		addTrigger(IDLE, OUTTAKING, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() > 0.2);
+		addTrigger(OUTTAKING, IDLE, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() <= 0.2);
 
 		// Manual
 		addTrigger(IDLE, INTAKING_CORALER_AA_OFF, DRIVER_CONTROLLER::getXButtonPressed);

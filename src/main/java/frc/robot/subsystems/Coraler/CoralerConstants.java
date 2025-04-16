@@ -31,10 +31,10 @@ public class CoralerConstants {
 	public static final double CORALING_VELOCITY_L3_L2 = 0.3;
 	public static final double CORALING_VELOCITY_L1 = 0.15; //TODO: TUNE
 	public static final double CORALING_VELOCITY_L1_SCORING = 0.08; //TODO: TUNE
-	public static final double INTAKING_VELOCITY = 0.20;
+	public static final double INTAKING_VELOCITY = 0.5;
 	public static final double CENTERING_VELOCITY = 0.2;
 	public static final double IDLE_VELOCITY = 0;
-	public static final double OUTTAKING_VELOCITY = -0.2;
+	public static final double OUTTAKING_VELOCITY = -1;
 
 	public static final double L1_DEBOUNCE_TIME = 0.06;
 	public static final double STATOR_CURRENT_SENSING_LIMIT = 23;

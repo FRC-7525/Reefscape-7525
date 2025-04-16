@@ -52,7 +52,7 @@ public class Elevator extends Subsystem<ElevatorStates> {
 		if (getState() != ElevatorStates.IDLE && TOGGLE_MANUAL_CONTROL) {
 			//TODO: Could make this a runnable trigger in SubsystemManager but does it matter?
 			if (leftAxis > TRIGGER_THRESHOLD) {
-				io.setHeightGoalpoint(io.getHeight().plus(MANUAL_HEIGHT_CHANGE));
+				io.setHeightGoalpoint(io.getHeight().plus(MANUAL_HEIGHT_CHANGE.times(2)));
 			} else if (rightAxis > TRIGGER_THRESHOLD) {
 				io.setHeightGoalpoint(io.getHeight().minus(MANUAL_HEIGHT_CHANGE));
 			}

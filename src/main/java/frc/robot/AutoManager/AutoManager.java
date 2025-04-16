@@ -42,6 +42,7 @@ public class AutoManager extends Subsystem<AutoStates> {
 		scoringLocationChooser.addOption("A B | 2 Piece | Move Forward", new AutoScoringLocation[] { new AutoScoringLocation(false, 1), new AutoScoringLocation(true, 1) });
 		scoringLocationChooser.addOption("K L | 2 Piece | Left", new AutoScoringLocation[] { new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 6) });
 		scoringLocationChooser.addOption("G | 1 Piece | Move Forward", new AutoScoringLocation[] { new AutoScoringLocation(true, 4) });
+		scoringLocationChooser.addOption("H | 1 Piece | Move Forward", new AutoScoringLocation[] { new AutoScoringLocation(false, 4) });
 		scoringLocationChooser.addOption("A | 1 Piece | Move Forward", new AutoScoringLocation[] { new AutoScoringLocation(false, 1) });
 
 		addTrigger(SCORING_CORAL, GOING_DOWN, () -> {
