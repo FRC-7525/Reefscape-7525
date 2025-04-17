@@ -120,7 +120,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
 		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && Elevator.getInstance().nearTarget());
 		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, () -> {
-			return AutoAlign.getInstance().timedOut() && DriverStation.isAutonomous();
+			return (AutoAlign.getInstance().timedOut() && DriverStation.isAutonomous()) || DRIVER_CONTROLLER.getYButtonPressed();
 		});
 
 		// Scoring Reef Auto Align

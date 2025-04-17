@@ -36,6 +36,10 @@ public class AutoManager extends Subsystem<AutoStates> {
 			"I J K L A B| 6 Piece | Left",
 			new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(true, 6), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 1), new AutoScoringLocation(false, 1) }
 		);
+		scoringLocationChooser.addOption("J K L A | 4 Piece | Left", new AutoScoringLocation[] { new AutoScoringLocation(false, 5), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 6), new AutoScoringLocation(true, 1) });
+		scoringLocationChooser.addOption("E D C B | 4 Piece | Right", new AutoScoringLocation[] { new AutoScoringLocation(true, 3), new AutoScoringLocation(false, 2), new AutoScoringLocation(true, 2), new AutoScoringLocation(false, 1) });
+		scoringLocationChooser.addOption("I J K L | 4 Piece | Left", new AutoScoringLocation[] { new AutoScoringLocation(true, 5), new AutoScoringLocation(false, 5), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 6), new AutoScoringLocation(true, 1) });
+		scoringLocationChooser.addOption("F E D C | 4 Piece | Right", new AutoScoringLocation[] { new AutoScoringLocation(false, 3), new AutoScoringLocation(true, 3), new AutoScoringLocation(false, 2), new AutoScoringLocation(true, 2), new AutoScoringLocation(false, 1) });
 		scoringLocationChooser.addOption("J K L | 3 Piece | Left", new AutoScoringLocation[] { new AutoScoringLocation(false, 5), new AutoScoringLocation(false, 6), new AutoScoringLocation(true, 6) });
 		scoringLocationChooser.addOption("E D C | 3 Piece | Right", new AutoScoringLocation[] { new AutoScoringLocation(true, 3), new AutoScoringLocation(false, 2), new AutoScoringLocation(true, 2) });
 		scoringLocationChooser.addOption("D C | 2 Piece | Right", new AutoScoringLocation[] { new AutoScoringLocation(false, 2), new AutoScoringLocation(true, 2) });
