@@ -5,6 +5,8 @@ import static frc.robot.GlobalConstants.*;
 import static frc.robot.SubsystemManager.SubsystemManagerConstants.L1_DEBOUNCE_TIME;
 import static frc.robot.Subsystems.Coraler.CoralerConstants.*;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.ReverseLimitValue;
@@ -28,6 +30,7 @@ public class CoralerIOTalonFX implements CoralerIO {
 	public CoralerIOTalonFX() {
 		velocityMotor = new TalonFX(Real.WHEEL_MOTOR_CAN_ID);
 		velocityMotor.setNeutralMode(NeutralModeValue.Brake);
+		velocityMotor.getConfigurator().apply(new TalonFXConfiguration().withCurrentLimits(new CurrentLimitsConfigs().withStatorCurrentLimit(120)));
 		// beamBreak = new DigitalInput(Real.DIO_PORT);
 
 		velocityController = VELOCITY_CONTROLLER.get();

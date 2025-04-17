@@ -95,6 +95,8 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 				return false;
 			}
 		});
+		addTrigger(IDLE, MAX_OUTTAKING, () -> DRIVER_CONTROLLER.getRightTriggerAxis() > 0.2);
+		addTrigger(MAX_OUTTAKING, IDLE, () -> DRIVER_CONTROLLER.getRightTriggerAxis() <= 0.2);
 		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> AutoAlign.getInstance().nearGoalSource());
 		addTrigger(INTAKING_CORALER, IDLE, () -> bouncing.calculate(Coraler.getInstance().hasGamepiece()));
 		addTrigger(IDLE, OUTTAKING, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() > 0.2);
