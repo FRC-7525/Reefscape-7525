@@ -1,6 +1,12 @@
 package frc.robot.Subsystems.Elevator;
 
+import static edu.wpi.first.units.Units.Inches;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.L1_HEIGHT;
+import static frc.robot.Subsystems.Elevator.ElevatorConstants.L1_SCORING_HEIGHT;
+
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.util.function.Supplier;
 import org.team7525.subsystem.SubsystemStates;
 
 public enum ElevatorStates implements SubsystemStates {

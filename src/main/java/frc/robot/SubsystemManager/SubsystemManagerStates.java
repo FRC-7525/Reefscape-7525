@@ -20,7 +20,11 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		"Aligning Close",
 		() -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getOperatorReefScoringLevel()),
 		CoralerStates.IDLE,
-		() -> REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())),
+		() -> {
+			return SubsystemManager.getInstance().getOperatorReefScoringLevel() != 1
+				? REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()))
+				: L1_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()));
+		},
 		() -> LEDStates.AUTOALIGN,
 		PassthroughStates.OFF
 	),
@@ -28,7 +32,11 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		"Aligning Far",
 		() -> SubsystemManager.getInstance().getOperatorReefScoringLevel() < 3 ? ElevatorStates.IDLE : ElevatorStates.TRANSITIONING,
 		CoralerStates.IDLE,
-		() -> REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft())),
+		() -> {
+			return SubsystemManager.getInstance().getOperatorReefScoringLevel() != 1
+				? REEF_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()))
+				: L1_TARGET_MAP.get(AAReefTarget.of(SubsystemManager.getInstance().getHexagonTargetSide(), SubsystemManager.getInstance().getScoringReefLeft()));
+		},
 		() -> LEDStates.AUTOALIGN,
 		PassthroughStates.OFF
 	),
@@ -42,6 +50,7 @@ public enum SubsystemManagerStates implements SubsystemStates {
 	),
 	INTAKING_CORALER_AA_OFF("Intaking Coral Station with Driver Control", () -> ElevatorStates.IDLE, CoralerStates.INAKING, () -> AutoAlignStates.OFF, () -> LEDStates.INTAKING, PassthroughStates.INTAKING),
 	OUTTAKING("Outtaking coral", () -> ElevatorStates.IDLE, CoralerStates.OUTTAKING, () -> AutoAlignStates.OFF, () -> LEDStates.INTAKING, PassthroughStates.INTAKING),
+	MAX_OUTTAKING("Outtaking coral forward", () -> ElevatorStates.IDLE, CoralerStates.MAX_OUTAKE, () -> AutoAlignStates.OFF, () -> LEDStates.INTAKING, PassthroughStates.INTAKING),
 	SCORING_REEF_MANUAL("Scoring Reef", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getDriverReefScoringLevel()), CoralerStates.CORALING, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, PassthroughStates.OFF),
 	SCORING_REEF_AA("Scoring Reef AA", () -> REEF_SCORING_LEVELS.get(SubsystemManager.getInstance().getOperatorReefScoringLevel()), CoralerStates.CORALING, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, PassthroughStates.OFF),
 	TRANSITIONING_SCORING_REEF(
@@ -53,7 +62,7 @@ public enum SubsystemManagerStates implements SubsystemStates {
 		PassthroughStates.OFF
 	),
 	ZEROING_ELEVATOR("Zeroing Elevator", () -> ElevatorStates.ZEROING, CoralerStates.IDLE, () -> AutoAlignStates.OFF, () -> LEDStates.IDLE, PassthroughStates.OFF),
-	SCORING_L1("Scoring L1", () -> ElevatorStates.L1_SCORING, CoralerStates.CORALING, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, PassthroughStates.OFF);
+	SCORING_L1("Scoring L1", () -> ElevatorStates.L1_SCORING, CoralerStates.SCORING_L1, () -> AutoAlignStates.OFF, () -> LEDStates.SCORING, PassthroughStates.OFF);
 
 	SubsystemManagerStates(String stateString, Supplier<ElevatorStates> elevatorStateSupplier, CoralerStates coralerState, Supplier<AutoAlignStates> autoAlignSupplier, Supplier<LEDStates> ledStateSupplier, PassthroughStates passthroughState) {
 		this.stateString = stateString;

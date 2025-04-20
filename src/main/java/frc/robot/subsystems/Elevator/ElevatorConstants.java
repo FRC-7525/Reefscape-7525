@@ -24,7 +24,7 @@ public final class ElevatorConstants {
 	public static final int RIGHT_MOTOR_CANID = 13;
 
 	public static final Distance POSITION_TOLERANCE = Meter.of(0.1);
-	public static final Distance NEAR_ENOUGH_POSITION = Inches.of(10);
+	public static final Distance NEAR_ENOUGH_POSITION = Inches.of(19);
 	public static final LinearVelocity VELOCITY_TOLERANCE = MetersPerSecond.of(0.1);
 	// TODO: Set to smaller numbers once we have robot (low max vel/acc for testing, real should be around 100)
 	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
@@ -38,7 +38,7 @@ public final class ElevatorConstants {
 	//TODO: Tune for use in real
 	//It seems that if its too small, then the change is within the PID tolerance
 	//and the elevator doesn't bother moving and so it no longer works
-	public static final Distance MANUAL_HEIGHT_CHANGE = Inches.of(0.25);
+	public static final Distance MANUAL_HEIGHT_CHANGE = Inches.of(0.75);
 
 	public static final Constraints TRAPEZOID_PROFILE_CONSTRAINTS = new TrapezoidProfile.Constraints(MAX_VELOCITY.in(MetersPerSecond), MAX_ACCELERATION.in(MetersPerSecondPerSecond));
 	//TODO: Tune in real life so that its not so fast that it slams but also fast enough
@@ -46,10 +46,10 @@ public final class ElevatorConstants {
 
 	public static final Distance TRANSITION_HEIGHT = Inches.of(12);
 	public static final Distance L4_HEIGHT = Inches.of(23.2);
-	public static final Distance L3_HEIGHT = Inches.of(15.5);
-	public static final Distance L2_HEIGHT = Inches.of(12);
-	public static final Distance L1_HEIGHT = Inches.of(7.5); // was 5
-	public static final Distance L1_SCORING_HEIGHT = Inches.of(10); //TODO: TUNE
+	public static final Distance L3_HEIGHT = Inches.of(14.5);
+	public static final Distance L2_HEIGHT = Inches.of(9.5);
+	public static final Distance L1_HEIGHT = Inches.of(6.1);
+	public static final Distance L1_SCORING_HEIGHT = Inches.of(9.1); //TODO: TUNE
 	public static final Distance IDLE_HEIGHT = Inches.of(0);
 
 	public static final Distance METERS_PER_ROTATION = Meters.of((1 / GEARING) * (2 * Math.PI * DRUM_RADIUS.in(Meters))); // double check if this is right
@@ -78,12 +78,12 @@ public final class ElevatorConstants {
 		public static final boolean LEFT_INVERTED = false;
 		public static final NeutralModeValue LEFT_NEUTRAL_MODE = NeutralModeValue.Brake;
 		public static final boolean LEFT_STRATOR_CURRENT_LIMIT_ENABLED = true;
-		public static final Current LEFT_STRATOR_CURRENT_LIMIT = Amps.of(100);
+		public static final Current LEFT_STRATOR_CURRENT_LIMIT = Amps.of(70);
 
 		public static final boolean RIGHT_INVERTED = false;
 		public static final NeutralModeValue RIGHT_NEUTRAL_MODE = NeutralModeValue.Brake;
 		public static final boolean RIGHT_STRATOR_CURRENT_LIMIT_ENABLED = true;
-		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(100);
+		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(70);
 
 		public static final PIDCoefficients PROFILLED_PID_CONSTANTS = new PIDCoefficients(30, 0, 1, 0);
 		// The move is prob to keep this at 0 and not bother tuning
