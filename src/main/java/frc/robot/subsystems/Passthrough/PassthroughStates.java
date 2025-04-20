@@ -1,8 +1,8 @@
 package frc.robot.Subsystems.Passthrough;
 
-import static frc.robot.Subsystems.Passthrough.PassthroughConstants.OUTTAKING_VELOCITY;
 import static frc.robot.Subsystems.Passthrough.PassthroughConstants.INTAKING_VELOCITY;
 import static frc.robot.Subsystems.Passthrough.PassthroughConstants.OFF_VELOCITY;
+import static frc.robot.Subsystems.Passthrough.PassthroughConstants.OUTTAKING_VELOCITY;
 
 import org.team7525.subsystem.SubsystemStates;
 
