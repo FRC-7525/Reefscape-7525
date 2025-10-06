@@ -52,7 +52,7 @@ public class Robot extends LoggedRobot {
 	@Override
 	public void robotPeriodic() {
 		Tracer.startTrace("RobotPeriodic");
-		CommandScheduler.getInstance().run();
+		// CommandScheduler.getInstance().run();
 		Tracer.traceFunc("SubsystemManager", manager::periodic);
 		Tracer.endTrace();
 	}

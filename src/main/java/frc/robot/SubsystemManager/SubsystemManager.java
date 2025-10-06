@@ -35,6 +35,7 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 	private SubsystemManager() {
 		super(SUBSYSTEM_NAME, SubsystemManagerStates.IDLE);
 		// Toggling which level to score at (manual)
+		addRunnableTrigger(() -> Drive.getInstance().zeroGyro(), () -> DRIVER_CONTROLLER.getBButtonPressed());
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 1, () -> DRIVER_CONTROLLER.getPOV() == DOWN_DPAD);
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 2, () -> DRIVER_CONTROLLER.getPOV() == RIGHT_DPAD);
 		addRunnableTrigger(() -> this.driverReefScoringLevel = 3, () -> DRIVER_CONTROLLER.getPOV() == LEFT_DPAD);
@@ -82,22 +83,22 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 		addRunnableTrigger(() -> this.scoringReefLeft = true, () -> OPERATOR_CONTROLLER.getRawButton(1)); // 1
 		addRunnableTrigger(() -> this.scoringReefLeft = false, () -> OPERATOR_CONTROLLER.getRawButton(3)); // 3
 
-		// Intaking at Coral Station with AA
-		addTrigger(IDLE, INTAKING_CORALER, () -> {
-			// Is either bumper pressed, if so transition. Configure which source to align to based on which is pressed
-			if (DRIVER_CONTROLLER.getLeftBumperButtonPressed()) {
-				this.leftSourceSelected = true;
-				return true;
-			} else if (DRIVER_CONTROLLER.getRightBumperButtonPressed()) {
-				this.leftSourceSelected = false;
-				return true;
-			} else {
-				return false;
-			}
-		});
+		// // Intaking at Coral Station with AA
+		// addTrigger(IDLE, INTAKING_CORALER, () -> {
+		// 	// Is either bumper pressed, if so transition. Configure which source to align to based on which is pressed
+		// 	if (DRIVER_CONTROLLER.getLeftBumperButtonPressed()) {
+		// 		this.leftSourceSelected = true;
+		// 		return true;
+		// 	} else if (DRIVER_CONTROLLER.getRightBumperButtonPressed()) {
+		// 		this.leftSourceSelected = false;
+		// 		return true;
+		// 	} else {
+		// 		return false;
+		// 	}
+		// });
 		addTrigger(IDLE, MAX_OUTTAKING, () -> DRIVER_CONTROLLER.getRightTriggerAxis() > 0.2);
 		addTrigger(MAX_OUTTAKING, IDLE, () -> DRIVER_CONTROLLER.getRightTriggerAxis() <= 0.2);
-		addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> AutoAlign.getInstance().nearGoalSource());
+		//addTrigger(INTAKING_CORALER, INTAKING_CORALER_AA_OFF, () -> AutoAlign.getInstance().nearGoalSource());
 		addTrigger(INTAKING_CORALER, IDLE, () -> bouncing.calculate(Coraler.getInstance().hasGamepiece()));
 		addTrigger(IDLE, OUTTAKING, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() > 0.2);
 		addTrigger(OUTTAKING, IDLE, () -> DRIVER_CONTROLLER.getLeftTriggerAxis() <= 0.2);
@@ -116,17 +117,17 @@ public class SubsystemManager extends Subsystem<SubsystemManagerStates> {
 			return driverReefScoringLevel == 1 && Coraler.getInstance().gamepieceLeft();
 		});
 
-		// Auto ONLY transition for alignment
-		addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
-		addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && Elevator.getInstance().nearTarget());
-		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, () -> {
-			return (AutoAlign.getInstance().timedOut() && DriverStation.isAutonomous()) || DRIVER_CONTROLLER.getYButtonPressed();
-		});
+		// // Auto ONLY transition for alignment
+		// addTrigger(SCORING_REEF_MANUAL, IDLE, () -> DriverStation.isAutonomous() && getStateTime() > SCORING_TIME);
+		// addTrigger(TRANSITIONING_SCORING_REEF, SCORING_REEF_MANUAL, () -> DriverStation.isAutonomous() && Elevator.getInstance().nearTarget());
+		// addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, () -> {
+		// 	return (AutoAlign.getInstance().timedOut() && DriverStation.isAutonomous()) || DRIVER_CONTROLLER.getYButtonPressed();
+		// });
 
-		// Scoring Reef Auto Align
-		addTrigger(IDLE, AUTO_ALIGN_FAR, DRIVER_CONTROLLER::getYButtonPressed);
-		addTrigger(AUTO_ALIGN_FAR, AUTO_ALIGN_CLOSE, AutoAlign.getInstance()::readyForClose);
-		addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, AutoAlign.getInstance()::nearGoal);
+		// // Scoring Reef Auto Align
+		// addTrigger(IDLE, AUTO_ALIGN_FAR, DRIVER_CONTROLLER::getYButtonPressed);
+		// addTrigger(AUTO_ALIGN_FAR, AUTO_ALIGN_CLOSE, AutoAlign.getInstance()::readyForClose);
+		// addTrigger(AUTO_ALIGN_CLOSE, TRANSITIONING_SCORING_REEF, AutoAlign.getInstance()::nearGoal);
 
 		// Elevator Zeroing
 		addTrigger(IDLE, ZEROING_ELEVATOR, () -> OPERATOR_CONTROLLER.getRawButtonPressed(4));
