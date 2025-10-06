@@ -29,8 +29,8 @@ public final class ElevatorConstants {
 	// TODO: Set to smaller numbers once we have robot (low max vel/acc for testing, real should be around 100)
 	// public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(10);
 	// public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(10);
-	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(60);
-	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(150);
+	public static final LinearVelocity MAX_VELOCITY = InchesPerSecond.of(40);
+	public static final LinearAcceleration MAX_ACCELERATION = InchesPerSecond.per(Second).of(40);
 
 	public static final double TRIGGER_THRESHOLD = 0.1;
 
@@ -85,7 +85,7 @@ public final class ElevatorConstants {
 		public static final boolean RIGHT_STRATOR_CURRENT_LIMIT_ENABLED = true;
 		public static final Current RIGHT_STRATOR_CURRENT_LIMIT = Amps.of(70);
 
-		public static final PIDCoefficients PROFILLED_PID_CONSTANTS = new PIDCoefficients(30, 0, 1, 0);
+		public static final PIDCoefficients PROFILLED_PID_CONSTANTS = new PIDCoefficients(20, 0, 1, 0);
 		// The move is prob to keep this at 0 and not bother tuning
 		// public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.61, 3.11, 0.06);
 		public static final FFConstants FF_CONSTANTS = new FFConstants(0, 0.11, 4, 0.01);
